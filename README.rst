@@ -30,7 +30,8 @@ Via github
         $ sudo ./setup.py install
         $
 
-Or whatever variance of that you want to use.
+Or whatever variance of that you want to use. There is a Makefile
+included.
 
 CloudFlare API version 4
 ------------------------
@@ -144,7 +145,7 @@ Using configuration file to store email and keys
 
 .. code:: bash
 
-    $ cat ~/.cloudflare/cloudflare.cfg 
+    $ cat ~/.cloudflare/cloudflare.cfg
     [CloudFlare]
     email = user@example.com
     token = 00000000000000000000000000000000
@@ -290,7 +291,7 @@ A somewhat useful listing of available plans for a specific zone.
     {"id":"1ac039f6c29b691475c3d74fe588d1ae","name":"Business Website"}
     {"id":"94f3b7b768b0458b56d2cac4fe5ec0f9","name":"Enterprise Website"}
     {"id":"0feeeeeeeeeeeeeeeeeeeeeeeeeeeeee","name":"Free Website"}
-    $ 
+    $
 
 DNSSEC CLI examples
 ~~~~~~~~~~~~~~~~~~~
@@ -305,21 +306,21 @@ DNSSEC CLI examples
     {"status":"pending"}
     $
 
-    $ cli4 /zones/:example.com/dnssec 
+    $ cli4 /zones/:example.com/dnssec
     {
-        "algorithm": "13", 
-        "digest": "41600621c65065b09230ebc9556ced937eb7fd86e31635d0025326ccf09a7194", 
-        "digest_algorithm": "SHA256", 
-        "digest_type": "2", 
-        "ds": "example.com. 3600 IN DS 2371 13 2 41600621c65065b09230ebc9556ced937eb7fd86e31635d0025326ccf09a7194", 
-        "flags": 257, 
-        "key_tag": 2371, 
-        "key_type": "ECDSAP256SHA256", 
-        "modified_on": "2016-05-01T22:42:15.591158Z", 
-        "public_key": "mdsswUyr3DPW132mOi8V9xESWE8jTo0dxCjjnopKl+GqJxpVXckHAeF+KkxLbxILfDLUT0rAK9iUzy1L53eKGQ==", 
+        "algorithm": "13",
+        "digest": "41600621c65065b09230ebc9556ced937eb7fd86e31635d0025326ccf09a7194",
+        "digest_algorithm": "SHA256",
+        "digest_type": "2",
+        "ds": "example.com. 3600 IN DS 2371 13 2 41600621c65065b09230ebc9556ced937eb7fd86e31635d0025326ccf09a7194",
+        "flags": 257,
+        "key_tag": 2371,
+        "key_type": "ECDSAP256SHA256",
+        "modified_on": "2016-05-01T22:42:15.591158Z",
+        "public_key": "mdsswUyr3DPW132mOi8V9xESWE8jTo0dxCjjnopKl+GqJxpVXckHAeF+KkxLbxILfDLUT0rAK9iUzy1L53eKGQ==",
         "status": "pending"
     }
-    $ 
+    $
 
 Implemented API calls
 ---------------------
@@ -473,12 +474,12 @@ Extra API calls can be added via the configuration file
 
 .. code:: bash
 
-    $ cat ~/.cloudflare/cloudflare.cfg 
+    $ cat ~/.cloudflare/cloudflare.cfg
     [CloudFlare]
     extras=
-            /client/v4/command
-            /client/v4/command/:command_identifier
-            /client/v4/command/:command_identifier/settings
+        /client/v4/command
+        /client/v4/command/:command_identifier
+        /client/v4/command/:command_identifier/settings
     $
 
 While it's easy to call anything within CloudFlare's API, it's not very
@@ -502,6 +503,18 @@ The solution can be found
 `here <https://urllib3.readthedocs.org/en/latest/security.html#insecureplatformwarning>`__
 and/or
 `here <http://stackoverflow.com/questions/35144550/how-to-install-cryptography-on-ubuntu>`__.
+
+Python 2.x vs 3.x support
+-------------------------
+
+As of May/June 2016 the code is now tested againt pylint. This was
+required in order to move the codebase into Python 3.x. The motivation
+for this came from `Danielle Madeley
+(danni) <https://github.com/danni>`__.
+
+While the codebase has been edited to run on Python 3.x, there's not
+been enough Python 3.x testing performed. If you can help in this
+regard; please contact the maintainers.
 
 Credit
 ------
