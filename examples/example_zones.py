@@ -1,60 +1,64 @@
 #!/usr/bin/env python
+"""CloudFlare API code - example"""
 
 import os
 import sys
+import re
+
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
 
-import re
-
 def main():
-	# Grab the first argument, if there is one
-	try:
-		zone_name = sys.argv[1]
-		params = {'name':zone_name,'per_page':1}
-	except:
-		params = {'per_page':50}
+    """CloudFlare API code - example"""
 
-	cf = CloudFlare.CloudFlare()
+    # Grab the first argument, if there is one
+    try:
+        zone_name = sys.argv[1]
+        params = {'name':zone_name, 'per_page':1}
+    except IndexError:
+        params = {'per_page':50}
 
-	# grab the zone identifier
-	try:
-		zones = cf.zones.get(params=params)
-	except CloudFlare.CloudFlareAPIError as e:
-		exit('/zones %d %s - api call failed' % (e, e))
-	except Exception as e:
-		exit('/zones.get - %s - api call failed' % (e))
+    cf = CloudFlare.CloudFlare()
 
-	# there should only be one zone
-	for zone in sorted(zones, key=lambda v: v['name']):
-		zone_name = zone['name']
-		zone_id = zone['id']
-		if 'email' in zone['owner']:
-			zone_owner = zone['owner']['email']
-		else:
-			zone_owner = '"' + zone['owner']['name'] + '"'
-		zone_plan = zone['plan']['name']
+    # grab the zone identifier
+    try:
+        zones = cf.zones.get(params=params)
+    except CloudFlare.CloudFlareAPIError as e:
+        exit('/zones %d %s - api call failed' % (e, e))
+    except Exception as e:
+        exit('/zones.get - %s - api call failed' % (e))
 
-		try:
-			dns_records = cf.zones.dns_records.get(zone_id)
-		except CloudFlare.CloudFlareAPIError as e:
-			exit('/zones/dns_records %d %s - api call failed' % (e, e))
+    # there should only be one zone
+    for zone in sorted(zones, key=lambda v: v['name']):
+        zone_name = zone['name']
+        zone_id = zone['id']
+        if 'email' in zone['owner']:
+            zone_owner = zone['owner']['email']
+        else:
+            zone_owner = '"' + zone['owner']['name'] + '"'
+        zone_plan = zone['plan']['name']
 
-		print zone_id, zone_name, zone_owner, zone_plan
+        try:
+            dns_records = cf.zones.dns_records.get(zone_id)
+        except CloudFlare.CloudFlareAPIError as e:
+            exit('/zones/dns_records %d %s - api call failed' % (e, e))
 
-		prog = re.compile('\.*'+zone_name+'$')
-		for dns_record in sorted(dns_records, key=lambda v: prog.sub('', v['name']) + '_' + v['type']):
-			r_name = dns_record['name']
-			r_type = dns_record['type']
-			r_value = dns_record['content']
-			r_ttl = dns_record['ttl']
-			r_id = dns_record['id']
-			print '\t%s %60s %6d %-5s %s' % (r_id, r_name, r_ttl, r_type, r_value)
+        print zone_id, zone_name, zone_owner, zone_plan
 
-		print ''
+        prog = re.compile('\.*'+zone_name+'$')
+        dns_records = sorted(dns_records, key=lambda v: prog.sub('', v['name']) + '_' + v['type'])
+        for dns_record in dns_records:
+            r_name = dns_record['name']
+            r_type = dns_record['type']
+            r_value = dns_record['content']
+            r_ttl = dns_record['ttl']
+            r_id = dns_record['id']
+            print '\t%s %60s %6d %-5s %s' % (r_id, r_name, r_ttl, r_type, r_value)
 
-	exit(0)
+        print ''
+
+    exit(0)
 
 if __name__ == '__main__':
-	main()
+    main()
 
