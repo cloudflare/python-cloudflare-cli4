@@ -1,4 +1,3 @@
-
 """ CloudFlare v4 API"""
 
 import json
@@ -33,15 +32,28 @@ class CloudFlare(object):
             else:
                 self.logger = None
 
-        def _call_with_no_auth(self, method, api_call_part1, api_call_part2=None, api_call_part3=None, identifier1=None, identifier2=None, params=None, data=None):
+        def _call_with_no_auth(self, method,
+                               api_call_part1,
+                               api_call_part2=None,
+                               api_call_part3=None,
+                               identifier1=None, identifier2=None,
+                               params=None, data=None):
             """ CloudFlare v4 API"""
 
             headers = {
                 'Content-Type': 'application/json'
             }
-            return self._call(method, headers, api_call_part1, api_call_part2, api_call_part3, identifier1, identifier2, params, data)
+            return self._call(method, headers,
+                              api_call_part1, api_call_part2, api_call_part3,
+                              identifier1, identifier2,
+                              params, data)
 
-        def _call_with_auth(self, method, api_call_part1, api_call_part2=None, api_call_part3=None, identifier1=None, identifier2=None, params=None, data=None):
+        def _call_with_auth(self, method,
+                            api_call_part1,
+                            api_call_part2=None,
+                            api_call_part3=None,
+                            identifier1=None, identifier2=None,
+                            params=None, data=None):
             """ CloudFlare v4 API"""
 
             if self.email is '' or self.token is '':
@@ -51,9 +63,17 @@ class CloudFlare(object):
                 "X-Auth-Key": self.token,
                 'Content-Type': 'application/json'
             }
-            return self._call(method, headers, api_call_part1, api_call_part2, api_call_part3, identifier1, identifier2, params, data)
+            return self._call(method, headers,
+                              api_call_part1, api_call_part2, api_call_part3,
+                              identifier1, identifier2,
+                              params, data)
 
-        def _call_with_certauth(self, method, api_call_part1, api_call_part2=None, api_call_part3=None, identifier1=None, identifier2=None, params=None, data=None):
+        def _call_with_certauth(self, method,
+                                api_call_part1,
+                                api_call_part2=None,
+                                api_call_part3=None,
+                                identifier1=None, identifier2=None,
+                                params=None, data=None):
             """ CloudFlare v4 API"""
 
             if self.certtoken is '':
@@ -62,33 +82,57 @@ class CloudFlare(object):
                 "X-Auth-User-Service-Key": self.certtoken,
                 'Content-Type': 'application/json'
             }
-            return self._call(method, headers, api_call_part1, api_call_part2, api_call_part3, identifier1, identifier2, params, data)
+            return self._call(method, headers,
+                              api_call_part1, api_call_part2, api_call_part3,
+                              identifier1, identifier2,
+                              params, data)
 
-        def _call(self, method, headers, api_call_part1, api_call_part2=None, api_call_part3=None, identifier1=None, identifier2=None, params=None, data=None):
+        def _call(self, method, headers,
+                  api_call_part1,
+                  api_call_part2=None,
+                  api_call_part3=None, identifier1=None,
+                  identifier2=None, params=None,
+                  data=None):
             """ CloudFlare v4 API"""
 
             if api_call_part2 is not None or (data is not None and method == 'GET'):
                 if identifier2 is None:
-                    url = self.base_url + '/' + api_call_part1 + '/' + identifier1 + '/' + api_call_part2
+                    url = self.base_url + '/' + \
+                          api_call_part1 + '/' + \
+                          identifier1 + '/' + \
+                          api_call_part2
                 else:
-                    url = self.base_url + '/' + api_call_part1 + '/' + identifier1 + '/' + api_call_part2 + '/' + identifier2
+                    url = self.base_url + '/' + \
+                          api_call_part1 + '/' + \
+                          identifier1 + '/' + \
+                          api_call_part2 + '/' + \
+                          identifier2
             else:
                 if identifier1 is None:
-                    url = self.base_url + '/' + api_call_part1
+                    url = self.base_url + '/' + \
+                          api_call_part1
                 else:
-                    url = self.base_url + '/' + api_call_part1 + '/' + identifier1
+                    url = self.base_url + '/' + \
+                          api_call_part1 + '/' + \
+                          identifier1
             if api_call_part3:
                 url += '/' + api_call_part3
 
             if self.logger:
-                self.logger.debug("Call: %s,%s,%s,%s,%s" % (str(api_call_part1), str(identifier1), str(api_call_part2), str(identifier2), str(api_call_part3)))
-                self.logger.debug("Call: optional params and data: %s %s" % (str(params), str(data)))
+                self.logger.debug("Call: %s,%s,%s,%s,%s" % (str(api_call_part1),
+                                                            str(identifier1),
+                                                            str(api_call_part2),
+                                                            str(identifier2),
+                                                            str(api_call_part3)))
+                self.logger.debug("Call: optional params and data: %s %s" % (str(params),
+                                                                             str(data)))
                 self.logger.debug("Call: url is: %s" % (str(url)))
                 self.logger.debug("Call: method is: %s" % (str(method)))
                 self.logger.debug("Call: headers %s" % str(utils.sanitize_secrets(headers)))
 
             if (method is None) or (api_call_part1 is None):
-                raise CloudFlareInternalError('You must specify a method and endpoint') # should never happen
+                # should never happen
+                raise CloudFlareInternalError('You must specify a method and endpoint')
 
             method = method.upper()
 
@@ -109,7 +153,8 @@ class CloudFlare(object):
                 else:
                     response = requests.request('PATCH', url, headers=headers, params=params)
             else:
-                raise CloudFlareAPIError(0, 'method not supported') # should never happen
+                # should never happen
+                raise CloudFlareAPIError(0, 'method not supported')
 
             if self.logger:
                 self.logger.debug("Response url: %s", response.url)
@@ -124,7 +169,8 @@ class CloudFlare(object):
 
             if response_data['success'] is False:
                 if self.logger:
-                    self.logger.debug("response_data error: %d %s" % (response_data['errors'][0]['code'], response_data['errors'][0]['message']))
+                    self.logger.debug("response_data error: %d %s" % (response_data['errors'][0]['code'],
+                                                                      response_data['errors'][0]['message']))
                 raise CloudFlareAPIError(response_data['errors'][0]['code'], response_data['errors'][0]['message'])
 
             return response_data['result']
