@@ -149,9 +149,16 @@ class CloudFlare(object):
                     response = requests.delete(url, headers=headers)
             elif method == 'PATCH':
                 if data:
-                    response = requests.request('PATCH', url, headers=headers, params=params, json=data)
+                    response = requests.request('PATCH',
+                                                url,
+                                                headers=headers,
+                                                params=params,
+                                                json=data)
                 else:
-                    response = requests.request('PATCH', url, headers=headers, params=params)
+                    response = requests.request('PATCH',
+                                                url,
+                                                headers=headers,
+                                                params=params)
             else:
                 # should never happen
                 raise CloudFlareAPIError(0, 'method not supported')
@@ -168,10 +175,11 @@ class CloudFlare(object):
                 raise CloudFlareAPIError(0, 'JSON parse failed.')
 
             if response_data['success'] is False:
+                code = response_data['errors'][0]['code']
+                message = response_data['errors'][0]['message']
                 if self.logger:
-                    self.logger.debug("response_data error: %d %s" % (response_data['errors'][0]['code'],
-                                                                      response_data['errors'][0]['message']))
-                raise CloudFlareAPIError(response_data['errors'][0]['code'], response_data['errors'][0]['message'])
+                    self.logger.debug("response_data error: %d %s" % (code, message))
+                raise CloudFlareAPIError(code, message)
 
             return response_data['result']
 
@@ -181,8 +189,6 @@ class CloudFlare(object):
         def __init__(self, base, api_call_part1, api_call_part2=None, api_call_part3=None):
             """ CloudFlare v4 API"""
 
-            #if self.logger:
-            #    self.logger.debug("_unused %s,%s,%s" % (str(base), str(api_call_part1), str(api_call_part2)))
             self.base = base
             self.api_call_part1 = api_call_part1
             self.api_call_part2 = api_call_part2
@@ -194,8 +200,6 @@ class CloudFlare(object):
         def __init__(self, base, api_call_part1, api_call_part2=None, api_call_part3=None):
             """ CloudFlare v4 API"""
 
-            #if self.logger:
-            #    self.logger.debug("_client_noauth %s,%s,%s" % (str(base), str(api_call_part1), str(api_call_part2)))
             self.base = base
             self.api_call_part1 = api_call_part1
             self.api_call_part2 = api_call_part2
@@ -204,7 +208,13 @@ class CloudFlare(object):
         def get(self, identifier1=None, identifier2=None, params=None, data=None):
             """ CloudFlare v4 API"""
 
-            return self.base._call_with_no_auth('GET', self.api_call_part1, self.api_call_part2, self.api_call_part3, identifier1, identifier2, params, data)
+            return self.base._call_with_no_auth('GET',
+                                                self.api_call_part1,
+                                                self.api_call_part2,
+                                                self.api_call_part3,
+                                                identifier1,
+                                                identifier2,
+                                                params, data)
 
     class _client_with_auth(object):
         """ CloudFlare v4 API"""
@@ -212,8 +222,6 @@ class CloudFlare(object):
         def __init__(self, base, api_call_part1, api_call_part2=None, api_call_part3=None):
             """ CloudFlare v4 API"""
 
-            #if self.logger:
-            #    self.logger.debug("_client_with_auth %s,%s,%s" % (str(base), str(api_call_part1), str(api_call_part2)))
             self.base = base
             self.api_call_part1 = api_call_part1
             self.api_call_part2 = api_call_part2
@@ -222,27 +230,57 @@ class CloudFlare(object):
         def get(self, identifier1=None, identifier2=None, params=None, data=None):
             """ CloudFlare v4 API"""
 
-            return self.base._call_with_auth('GET', self.api_call_part1, self.api_call_part2, self.api_call_part3, identifier1, identifier2, params, data)
+            return self.base._call_with_auth('GET',
+                                             self.api_call_part1,
+                                             self.api_call_part2,
+                                             self.api_call_part3,
+                                             identifier1,
+                                             identifier2,
+                                             params, data)
 
         def patch(self, identifier1=None, identifier2=None, params=None, data=None):
             """ CloudFlare v4 API"""
 
-            return self.base._call_with_auth('PATCH', self.api_call_part1, self.api_call_part2, self.api_call_part3, identifier1, identifier2, params, data)
+            return self.base._call_with_auth('PATCH',
+                                             self.api_call_part1,
+                                             self.api_call_part2,
+                                             self.api_call_part3,
+                                             identifier1,
+                                             identifier2,
+                                             params, data)
 
         def post(self, identifier1=None, identifier2=None, params=None, data=None):
             """ CloudFlare v4 API"""
 
-            return self.base._call_with_auth('POST', self.api_call_part1, self.api_call_part2, self.api_call_part3, identifier1, identifier2, params, data)
+            return self.base._call_with_auth('POST',
+                                             self.api_call_part1,
+                                             self.api_call_part2,
+                                             self.api_call_part3,
+                                             identifier1,
+                                             identifier2,
+                                             params, data)
 
         def put(self, identifier1=None, identifier2=None, params=None, data=None):
             """ CloudFlare v4 API"""
 
-            return self.base._call_with_auth('PUT', self.api_call_part1, self.api_call_part2, self.api_call_part3, identifier1, identifier2, params, data)
+            return self.base._call_with_auth('PUT',
+                                             self.api_call_part1,
+                                             self.api_call_part2,
+                                             self.api_call_part3,
+                                             identifier1,
+                                             identifier2,
+                                             params, data)
 
         def delete(self, identifier1=None, identifier2=None, params=None, data=None):
             """ CloudFlare v4 API"""
 
-            return self.base._call_with_auth('DELETE', self.api_call_part1, self.api_call_part2, self.api_call_part3, identifier1, identifier2, params, data)
+            return self.base._call_with_auth('DELETE',
+                                             self.api_call_part1,
+                                             self.api_call_part2,
+                                             self.api_call_part3,
+                                             identifier1,
+                                             identifier2,
+                                             params, data)
 
     class _client_with_cert_auth(object):
         """ CloudFlare v4 API"""
@@ -250,8 +288,6 @@ class CloudFlare(object):
         def __init__(self, base, api_call_part1, api_call_part2=None, api_call_part3=None):
             """ CloudFlare v4 API"""
 
-            #if self.logger:
-            #    self.logger.debug("_client_with_cert_auth %s,%s,%s" % (str(base), str(api_call_part1), str(api_call_part2)))
             self.base = base
             self.api_call_part1 = api_call_part1
             self.api_call_part2 = api_call_part2
@@ -260,27 +296,57 @@ class CloudFlare(object):
         def get(self, identifier1=None, identifier2=None, params=None, data=None):
             """ CloudFlare v4 API"""
 
-            return self.base._call_with_certauth('GET', self.api_call_part1, self.api_call_part2, self.api_call_part3, identifier1, identifier2, params, data)
+            return self.base._call_with_certauth('GET',
+                                                 self.api_call_part1,
+                                                 self.api_call_part2,
+                                                 self.api_call_part3,
+                                                 identifier1,
+                                                 identifier2,
+                                                 params, data)
 
         def patch(self, identifier1=None, identifier2=None, params=None, data=None):
             """ CloudFlare v4 API"""
 
-            return self.base._call_with_certauth('PATCH', self.api_call_part1, self.api_call_part2, self.api_call_part3, identifier1, identifier2, params, data)
+            return self.base._call_with_certauth('PATCH',
+                                                 self.api_call_part1,
+                                                 self.api_call_part2,
+                                                 self.api_call_part3,
+                                                 identifier1,
+                                                 identifier2,
+                                                 params, data)
 
         def post(self, identifier1=None, identifier2=None, params=None, data=None):
             """ CloudFlare v4 API"""
 
-            return self.base._call_with_certauth('POST', self.api_call_part1, self.api_call_part2, self.api_call_part3, identifier1, identifier2, params, data)
+            return self.base._call_with_certauth('POST',
+                                                 self.api_call_part1,
+                                                 self.api_call_part2,
+                                                 self.api_call_part3,
+                                                 identifier1,
+                                                 identifier2,
+                                                 params, data)
 
         def put(self, identifier1=None, identifier2=None, params=None, data=None):
             """ CloudFlare v4 API"""
 
-            return self.base._call_with_certauth('PUT', self.api_call_part1, self.api_call_part2, self.api_call_part3, identifier1, identifier2, params, data)
+            return self.base._call_with_certauth('PUT',
+                                                 self.api_call_part1,
+                                                 self.api_call_part2,
+                                                 self.api_call_part3,
+                                                 identifier1,
+                                                 identifier2,
+                                                 params, data)
 
         def delete(self, identifier1=None, identifier2=None, params=None, data=None):
             """ CloudFlare v4 API"""
 
-            return self.base._call_with_certauth('DELETE', self.api_call_part1, self.api_call_part2, self.api_call_part3, identifier1, identifier2, params, data)
+            return self.base._call_with_certauth('DELETE',
+                                                 self.api_call_part1,
+                                                 self.api_call_part2,
+                                                 self.api_call_part3,
+                                                 identifier1,
+                                                 identifier2,
+                                                 params, data)
 
     def __init__(self, email=None, token=None, certtoken=None, debug=False):
         """ CloudFlare v4 API"""
