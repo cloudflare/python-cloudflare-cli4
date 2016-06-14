@@ -129,11 +129,12 @@ $ cat ~/.cloudflare/cloudflare.cfg
 [CloudFlare]
 email = user@example.com
 token = 00000000000000000000000000000000
-certoken = v1.0-...
+certtoken = v1.0-...
+extras =
 $
 ```
 
-The *CF_API_CERTKEY* or *certtoken* values are used for the Origin-CA */certificates* API calls.
+The *CF_API_CERTKEY* or *certtoken* values are used for the Origin-CA */certificates* API calls. At the time of being, you must leave extras in the configuration, the value can be left blank.
 
 ## Included example code
 
