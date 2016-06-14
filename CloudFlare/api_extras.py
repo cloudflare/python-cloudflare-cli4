@@ -36,7 +36,8 @@ def api_extras(self, extras=None):
                 if element == parts[0][-1] and len(parts) > 1:
                     api_call_part1 = '/'.join(element_path)
                     api_call_part2 = '/'.join(parts[1])
-                    setattr(m, parts[1][0], self._client_with_auth(self.base, api_call_part1, api_call_part2))
+                    setattr(m, parts[1][0],
+                            self._client_with_auth(self.base, api_call_part1, api_call_part2))
                 current = m
                 continue
             except:
@@ -46,9 +47,11 @@ def api_extras(self, extras=None):
                 # last element
                 api_call_part1 = '/'.join(element_path)
                 api_call_part2 = '/'.join(parts[1])
-                setattr(current, element, self._client_with_auth(self.base, api_call_part1, api_call_part2))
+                setattr(current, element,
+                        self._client_with_auth(self.base, api_call_part1, api_call_part2))
             else:
                 api_call_part1 = '/'.join(element_path)
-                setattr(current, element, self._client_with_auth(self.base, api_call_part1))
+                setattr(current, element,
+                        self._client_with_auth(self.base, api_call_part1))
             current = getattr(current, element)
 
