@@ -28,7 +28,7 @@ class CloudFlare(object):
             self.base_url = base_url
 
             if debug:
-                self.logger = logger.Logger(debug).getLogger()
+                self.logger = Logger(debug).getLogger()
             else:
                 self.logger = None
 
@@ -59,8 +59,8 @@ class CloudFlare(object):
             if self.email is '' or self.token is '':
                 raise CloudFlareAPIError(0, 'no email and/or token defined')
             headers = {
-                "X-Auth-Email": self.email,
-                "X-Auth-Key": self.token,
+                'X-Auth-Email': self.email,
+                'X-Auth-Key': self.token,
                 'Content-Type': 'application/json'
             }
             return self._call(method, headers,
@@ -79,7 +79,7 @@ class CloudFlare(object):
             if self.certtoken is '':
                 raise CloudFlareAPIError(0, 'no email and/or cert token defined')
             headers = {
-                "X-Auth-User-Service-Key": self.certtoken,
+                'X-Auth-User-Service-Key': self.certtoken,
                 'Content-Type': 'application/json'
             }
             return self._call(method, headers,
@@ -97,37 +97,37 @@ class CloudFlare(object):
 
             if api_call_part2 is not None or (data is not None and method == 'GET'):
                 if identifier2 is None:
-                    url = self.base_url + '/' + \
-                          api_call_part1 + '/' + \
-                          identifier1 + '/' + \
-                          api_call_part2
+                    url = (self.base_url + '/'
+                           + api_call_part1 + '/'
+                           + identifier1 + '/'
+                           + api_call_part2)
                 else:
-                    url = self.base_url + '/' + \
-                          api_call_part1 + '/' + \
-                          identifier1 + '/' + \
-                          api_call_part2 + '/' + \
-                          identifier2
+                    url = (self.base_url + '/'
+                           + api_call_part1 + '/'
+                           + identifier1 + '/'
+                           + api_call_part2 + '/'
+                           + identifier2)
             else:
                 if identifier1 is None:
-                    url = self.base_url + '/' + \
-                          api_call_part1
+                    url = (self.base_url + '/'
+                           + api_call_part1)
                 else:
-                    url = self.base_url + '/' + \
-                          api_call_part1 + '/' + \
-                          identifier1
+                    url = (self.base_url + '/'
+                           + api_call_part1 + '/'
+                           + identifier1)
             if api_call_part3:
                 url += '/' + api_call_part3
 
             if self.logger:
-                self.logger.debug("Call: %s,%s,%s,%s,%s" % (str(api_call_part1),
+                self.logger.debug('Call: %s,%s,%s,%s,%s' % (str(api_call_part1),
                                                             str(identifier1),
                                                             str(api_call_part2),
                                                             str(identifier2),
                                                             str(api_call_part3)))
-                self.logger.debug("Call: optional params and data %s %s" % (str(params),
+                self.logger.debug('Call: optional params and data %s %s' % (str(params),
                                                                             str(data)))
-                self.logger.debug("Call: method and url %s %s" % (str(method, url)))
-                self.logger.debug("Call: headers %s" % str(utils.sanitize_secrets(headers)))
+                self.logger.debug('Call: method and url %s %s' % (str(method), str(url)))
+                self.logger.debug('Call: headers %s' % str(sanitize_secrets(headers)))
 
             if (method is None) or (api_call_part1 is None):
                 # should never happen
@@ -135,27 +135,37 @@ class CloudFlare(object):
 
             method = method.upper()
 
-            if method == 'GET':
-                response = requests.get(url, headers=headers, params=params, data=data)
-            elif method == 'POST':
-                response = requests.post(url, headers=headers, params=params, json=data)
-            elif method == 'PUT':
-                response = requests.put(url, headers=headers, params=params, json=data)
-            elif method == 'DELETE':
-                response = requests.delete(url, headers=headers, json=data)
-            elif method == 'PATCH':
-                response = requests.request('PATCH', url,
-                                            headers=headers, params=params, json=data)
-            else:
-                # should never happen
-                raise CloudFlareAPIError(0, 'method not supported')
+            if self.logger:
+                self.logger.debug('Call: doit!')
+
+            try:
+                if method == 'GET':
+                    response = requests.get(url, headers=headers, params=params, data=data)
+                elif method == 'POST':
+                    response = requests.post(url, headers=headers, params=params, json=data)
+                elif method == 'PUT':
+                    response = requests.put(url, headers=headers, params=params, json=data)
+                elif method == 'DELETE':
+                    response = requests.delete(url, headers=headers, json=data)
+                elif method == 'PATCH':
+                    response = requests.request('PATCH', url,
+                                                headers=headers, params=params, json=data)
+                else:
+                    # should never happen
+                    raise CloudFlareAPIError(0, 'method not supported')
+                if self.logger:
+                    self.logger.debug('Call: done!')
+            except Exception as e:
+                if self.logger:
+                    self.logger.debug('Call: exception!')
+                raise CloudFlareAPIError(0, 'connection failed.')
 
             if self.logger:
-                self.logger.debug("Response: url %s", response.url)
+                self.logger.debug('Response: url %s', response.url)
 
             response_data = response.text
             if self.logger:
-                self.logger.debug("Response: data %s" % response_data)
+                self.logger.debug('Response: data %s' % response_data)
             try:
                 response_data = json.loads(response_data)
             except ValueError:
@@ -165,12 +175,12 @@ class CloudFlare(object):
                 code = response_data['errors'][0]['code']
                 message = response_data['errors'][0]['message']
                 if self.logger:
-                    self.logger.debug("Response: error %d %s" % (code, message))
+                    self.logger.debug('Response: error %d %s' % (code, message))
                 raise CloudFlareAPIError(code, message)
 
             result = response_data['result']
             if self.logger:
-                self.logger.debug("Response: %s" % (result))
+                self.logger.debug('Response: %s' % (result))
             return result
 
     class add_unused(object):
