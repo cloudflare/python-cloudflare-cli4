@@ -32,12 +32,12 @@ class CloudFlare(object):
             else:
                 self.logger = None
 
-        def _call_with_no_auth(self, method,
-                               api_call_part1,
-                               api_call_part2=None,
-                               api_call_part3=None,
-                               identifier1=None, identifier2=None,
-                               params=None, data=None):
+        def call_with_no_auth(self, method,
+                              api_call_part1,
+                              api_call_part2=None,
+                              api_call_part3=None,
+                              identifier1=None, identifier2=None,
+                              params=None, data=None):
             """ CloudFlare v4 API"""
 
             headers = {
@@ -48,12 +48,12 @@ class CloudFlare(object):
                               identifier1, identifier2,
                               params, data)
 
-        def _call_with_auth(self, method,
-                            api_call_part1,
-                            api_call_part2=None,
-                            api_call_part3=None,
-                            identifier1=None, identifier2=None,
-                            params=None, data=None):
+        def call_with_auth(self, method,
+                           api_call_part1,
+                           api_call_part2=None,
+                           api_call_part3=None,
+                           identifier1=None, identifier2=None,
+                           params=None, data=None):
             """ CloudFlare v4 API"""
 
             if self.email is '' or self.token is '':
@@ -68,12 +68,12 @@ class CloudFlare(object):
                               identifier1, identifier2,
                               params, data)
 
-        def _call_with_certauth(self, method,
-                                api_call_part1,
-                                api_call_part2=None,
-                                api_call_part3=None,
-                                identifier1=None, identifier2=None,
-                                params=None, data=None):
+        def call_with_certauth(self, method,
+                               api_call_part1,
+                               api_call_part2=None,
+                               api_call_part3=None,
+                               identifier1=None, identifier2=None,
+                               params=None, data=None):
             """ CloudFlare v4 API"""
 
             if self.certtoken is '':
@@ -90,9 +90,9 @@ class CloudFlare(object):
         def _call(self, method, headers,
                   api_call_part1,
                   api_call_part2=None,
-                  api_call_part3=None, identifier1=None,
-                  identifier2=None, params=None,
-                  data=None):
+                  api_call_part3=None,
+                  identifier1=None, identifier2=None,
+                  params=None, data=None):
             """ CloudFlare v4 API"""
 
             if api_call_part2 is not None or (data is not None and method == 'GET'):
@@ -124,15 +124,14 @@ class CloudFlare(object):
                                                             str(api_call_part2),
                                                             str(identifier2),
                                                             str(api_call_part3)))
-                self.logger.debug("Call: optional params and data: %s %s" % (str(params),
-                                                                             str(data)))
-                self.logger.debug("Call: url is: %s" % (str(url)))
-                self.logger.debug("Call: method is: %s" % (str(method)))
+                self.logger.debug("Call: optional params and data %s %s" % (str(params),
+                                                                            str(data)))
+                self.logger.debug("Call: method and url %s %s" % (str(method, url)))
                 self.logger.debug("Call: headers %s" % str(utils.sanitize_secrets(headers)))
 
             if (method is None) or (api_call_part1 is None):
                 # should never happen
-                raise CloudFlareInternalError('You must specify a method and endpoint')
+                raise CloudFlareInternalError(0, 'You must specify a method and endpoint')
 
             method = method.upper()
 
@@ -143,32 +142,20 @@ class CloudFlare(object):
             elif method == 'PUT':
                 response = requests.put(url, headers=headers, params=params, json=data)
             elif method == 'DELETE':
-                if data:
-                    response = requests.delete(url, headers=headers, json=data)
-                else:
-                    response = requests.delete(url, headers=headers)
+                response = requests.delete(url, headers=headers, json=data)
             elif method == 'PATCH':
-                if data:
-                    response = requests.request('PATCH',
-                                                url,
-                                                headers=headers,
-                                                params=params,
-                                                json=data)
-                else:
-                    response = requests.request('PATCH',
-                                                url,
-                                                headers=headers,
-                                                params=params)
+                response = requests.request('PATCH', url,
+                                            headers=headers, params=params, json=data)
             else:
                 # should never happen
                 raise CloudFlareAPIError(0, 'method not supported')
 
             if self.logger:
-                self.logger.debug("Response url: %s", response.url)
+                self.logger.debug("Response: url %s", response.url)
 
             response_data = response.text
             if self.logger:
-                self.logger.debug("Response_data: %s" % response_data)
+                self.logger.debug("Response: data %s" % response_data)
             try:
                 response_data = json.loads(response_data)
             except ValueError:
@@ -178,12 +165,15 @@ class CloudFlare(object):
                 code = response_data['errors'][0]['code']
                 message = response_data['errors'][0]['message']
                 if self.logger:
-                    self.logger.debug("response_data error: %d %s" % (code, message))
+                    self.logger.debug("Response: error %d %s" % (code, message))
                 raise CloudFlareAPIError(code, message)
 
-            return response_data['result']
+            result = response_data['result']
+            if self.logger:
+                self.logger.debug("Response: %s" % (result))
+            return result
 
-    class _unused(object):
+    class add_unused(object):
         """ CloudFlare v4 API"""
 
         def __init__(self, base, api_call_part1, api_call_part2=None, api_call_part3=None):
@@ -194,7 +184,7 @@ class CloudFlare(object):
             self.api_call_part2 = api_call_part2
             self.api_call_part3 = api_call_part3
 
-    class _client_noauth(object):
+    class add_noauth(object):
         """ CloudFlare v4 API"""
 
         def __init__(self, base, api_call_part1, api_call_part2=None, api_call_part3=None):
@@ -208,145 +198,134 @@ class CloudFlare(object):
         def get(self, identifier1=None, identifier2=None, params=None, data=None):
             """ CloudFlare v4 API"""
 
-            return self.base._call_with_no_auth('GET',
+            return self.base.call_with_no_auth('GET',
+                                               self.api_call_part1,
+                                               self.api_call_part2,
+                                               self.api_call_part3,
+                                               identifier1, identifier2,
+                                               params, data)
+
+    class add_with_auth(object):
+        """ CloudFlare v4 API"""
+
+        def __init__(self, base, api_call_part1, api_call_part2=None, api_call_part3=None):
+            """ CloudFlare v4 API"""
+
+            self.base = base
+            self.api_call_part1 = api_call_part1
+            self.api_call_part2 = api_call_part2
+            self.api_call_part3 = api_call_part3
+
+        def get(self, identifier1=None, identifier2=None, params=None, data=None):
+            """ CloudFlare v4 API"""
+
+            return self.base.call_with_auth('GET',
+                                            self.api_call_part1,
+                                            self.api_call_part2,
+                                            self.api_call_part3,
+                                            identifier1, identifier2,
+                                            params, data)
+
+        def patch(self, identifier1=None, identifier2=None, params=None, data=None):
+            """ CloudFlare v4 API"""
+
+            return self.base.call_with_auth('PATCH',
+                                            self.api_call_part1,
+                                            self.api_call_part2,
+                                            self.api_call_part3,
+                                            identifier1, identifier2,
+                                            params, data)
+
+        def post(self, identifier1=None, identifier2=None, params=None, data=None):
+            """ CloudFlare v4 API"""
+
+            return self.base.call_with_auth('POST',
+                                            self.api_call_part1,
+                                            self.api_call_part2,
+                                            self.api_call_part3,
+                                            identifier1, identifier2,
+                                            params, data)
+
+        def put(self, identifier1=None, identifier2=None, params=None, data=None):
+            """ CloudFlare v4 API"""
+
+            return self.base.call_with_auth('PUT',
+                                            self.api_call_part1,
+                                            self.api_call_part2,
+                                            self.api_call_part3,
+                                            identifier1, identifier2,
+                                            params, data)
+
+        def delete(self, identifier1=None, identifier2=None, params=None, data=None):
+            """ CloudFlare v4 API"""
+
+            return self.base.call_with_auth('DELETE',
+                                            self.api_call_part1,
+                                            self.api_call_part2,
+                                            self.api_call_part3,
+                                            identifier1, identifier2,
+                                            params, data)
+
+    class add_with_cert_auth(object):
+        """ CloudFlare v4 API"""
+
+        def __init__(self, base, api_call_part1, api_call_part2=None, api_call_part3=None):
+            """ CloudFlare v4 API"""
+
+            self.base = base
+            self.api_call_part1 = api_call_part1
+            self.api_call_part2 = api_call_part2
+            self.api_call_part3 = api_call_part3
+
+        def get(self, identifier1=None, identifier2=None, params=None, data=None):
+            """ CloudFlare v4 API"""
+
+            return self.base.call_with_certauth('GET',
                                                 self.api_call_part1,
                                                 self.api_call_part2,
                                                 self.api_call_part3,
-                                                identifier1,
-                                                identifier2,
+                                                identifier1, identifier2,
                                                 params, data)
 
-    class _client_with_auth(object):
-        """ CloudFlare v4 API"""
-
-        def __init__(self, base, api_call_part1, api_call_part2=None, api_call_part3=None):
-            """ CloudFlare v4 API"""
-
-            self.base = base
-            self.api_call_part1 = api_call_part1
-            self.api_call_part2 = api_call_part2
-            self.api_call_part3 = api_call_part3
-
-        def get(self, identifier1=None, identifier2=None, params=None, data=None):
-            """ CloudFlare v4 API"""
-
-            return self.base._call_with_auth('GET',
-                                             self.api_call_part1,
-                                             self.api_call_part2,
-                                             self.api_call_part3,
-                                             identifier1,
-                                             identifier2,
-                                             params, data)
-
         def patch(self, identifier1=None, identifier2=None, params=None, data=None):
             """ CloudFlare v4 API"""
 
-            return self.base._call_with_auth('PATCH',
-                                             self.api_call_part1,
-                                             self.api_call_part2,
-                                             self.api_call_part3,
-                                             identifier1,
-                                             identifier2,
-                                             params, data)
+            return self.base.call_with_certauth('PATCH',
+                                                self.api_call_part1,
+                                                self.api_call_part2,
+                                                self.api_call_part3,
+                                                identifier1, identifier2,
+                                                params, data)
 
         def post(self, identifier1=None, identifier2=None, params=None, data=None):
             """ CloudFlare v4 API"""
 
-            return self.base._call_with_auth('POST',
-                                             self.api_call_part1,
-                                             self.api_call_part2,
-                                             self.api_call_part3,
-                                             identifier1,
-                                             identifier2,
-                                             params, data)
+            return self.base.call_with_certauth('POST',
+                                                self.api_call_part1,
+                                                self.api_call_part2,
+                                                self.api_call_part3,
+                                                identifier1, identifier2,
+                                                params, data)
 
         def put(self, identifier1=None, identifier2=None, params=None, data=None):
             """ CloudFlare v4 API"""
 
-            return self.base._call_with_auth('PUT',
-                                             self.api_call_part1,
-                                             self.api_call_part2,
-                                             self.api_call_part3,
-                                             identifier1,
-                                             identifier2,
-                                             params, data)
+            return self.base.call_with_certauth('PUT',
+                                                self.api_call_part1,
+                                                self.api_call_part2,
+                                                self.api_call_part3,
+                                                identifier1, identifier2,
+                                                params, data)
 
         def delete(self, identifier1=None, identifier2=None, params=None, data=None):
             """ CloudFlare v4 API"""
 
-            return self.base._call_with_auth('DELETE',
-                                             self.api_call_part1,
-                                             self.api_call_part2,
-                                             self.api_call_part3,
-                                             identifier1,
-                                             identifier2,
-                                             params, data)
-
-    class _client_with_cert_auth(object):
-        """ CloudFlare v4 API"""
-
-        def __init__(self, base, api_call_part1, api_call_part2=None, api_call_part3=None):
-            """ CloudFlare v4 API"""
-
-            self.base = base
-            self.api_call_part1 = api_call_part1
-            self.api_call_part2 = api_call_part2
-            self.api_call_part3 = api_call_part3
-
-        def get(self, identifier1=None, identifier2=None, params=None, data=None):
-            """ CloudFlare v4 API"""
-
-            return self.base._call_with_certauth('GET',
-                                                 self.api_call_part1,
-                                                 self.api_call_part2,
-                                                 self.api_call_part3,
-                                                 identifier1,
-                                                 identifier2,
-                                                 params, data)
-
-        def patch(self, identifier1=None, identifier2=None, params=None, data=None):
-            """ CloudFlare v4 API"""
-
-            return self.base._call_with_certauth('PATCH',
-                                                 self.api_call_part1,
-                                                 self.api_call_part2,
-                                                 self.api_call_part3,
-                                                 identifier1,
-                                                 identifier2,
-                                                 params, data)
-
-        def post(self, identifier1=None, identifier2=None, params=None, data=None):
-            """ CloudFlare v4 API"""
-
-            return self.base._call_with_certauth('POST',
-                                                 self.api_call_part1,
-                                                 self.api_call_part2,
-                                                 self.api_call_part3,
-                                                 identifier1,
-                                                 identifier2,
-                                                 params, data)
-
-        def put(self, identifier1=None, identifier2=None, params=None, data=None):
-            """ CloudFlare v4 API"""
-
-            return self.base._call_with_certauth('PUT',
-                                                 self.api_call_part1,
-                                                 self.api_call_part2,
-                                                 self.api_call_part3,
-                                                 identifier1,
-                                                 identifier2,
-                                                 params, data)
-
-        def delete(self, identifier1=None, identifier2=None, params=None, data=None):
-            """ CloudFlare v4 API"""
-
-            return self.base._call_with_certauth('DELETE',
-                                                 self.api_call_part1,
-                                                 self.api_call_part2,
-                                                 self.api_call_part3,
-                                                 identifier1,
-                                                 identifier2,
-                                                 params, data)
+            return self.base.call_with_certauth('DELETE',
+                                                self.api_call_part1,
+                                                self.api_call_part2,
+                                                self.api_call_part3,
+                                                identifier1, identifier2,
+                                                params, data)
 
     def __init__(self, email=None, token=None, certtoken=None, debug=False):
         """ CloudFlare v4 API"""
@@ -362,10 +341,6 @@ class CloudFlare(object):
             token = conf_token
         if certtoken is None:
             certtoken = conf_certtoken
-
-        # Removed: There are cases where you don't need an email and token
-        # if email is None or token is None:
-        #     raise CloudFlareInternalError('You must at least specify an email and token string')
 
         self.base = self._base(email, token, certtoken, base_url, debug)
 
