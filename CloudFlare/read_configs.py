@@ -24,24 +24,24 @@ def read_configs():
         email = config.get('CloudFlare', 'email')
         try:
             email = re.sub(r"\s+", '', config.get('CloudFlare', 'email'))
-        except IndexError:
+        except ConfigParser.NoOptionError:
             email = None
 
     if token is None:
         try:
             token = re.sub(r"\s+", '', config.get('CloudFlare', 'token'))
-        except IndexError:
+        except ConfigParser.NoOptionError:
             token = None
 
     if certtoken is None:
         try:
             certtoken = re.sub(r"\s+", '', config.get('CloudFlare', 'certtoken'))
-        except IndexError:
+        except ConfigParser.NoOptionError:
             certtoken = None
 
     try:
         extras = re.sub(r"\s+", ' ', config.get('CloudFlare', 'extras'))
-    except IndexError:
+    except ConfigParser.NoOptionError:
         extras = None
 
     if extras:
