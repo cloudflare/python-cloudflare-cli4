@@ -104,11 +104,28 @@ if __name__ == '__main__':
 
 ## Providing CloudFlare Username and API Key
 
-When you create a _CloudFlare_ class you can pass up to three paramaters.
+When you create a _CloudFlare_ class you can pass up to four paramaters.
 
  * Account email
  * Account API key
+ * Optional Origin-CA Certificate Token
  * Optional Debug flag (True/False)
+
+```python
+import CloudFlare
+
+    # A minimal call - reading values from environment variables or configuration file
+    cf = CloudFlare.CloudFlare()
+
+    # A minimal call with debug enabled
+    cf = CloudFlare.CloudFlare(debug=True))
+
+    # A full blown call with passed basic account information
+    cf = CloudFlare.CloudFlare(email='user@example.com', token='00000000000000000000000000000000')
+
+    # A full blown call with passed basic account information and CA-Origin info
+    cf = CloudFlare.CloudFlare(email='user@example.com', token='00000000000000000000000000000000', certtoken='v1.0-...')
+```
 
 If the account email and API key are not passed when you create the class, then they are retreived from either the users exported shell environment variables or the .cloudflare.cfg or ~/.cloudflare.cfg or ~/.cloudflare/cloudflare.cfg files, in that order.
 
@@ -122,6 +139,8 @@ $ export CF_API_CERTKEY='v1.0-...'
 $
 ```
 
+These are optional environment variables; however, they do override the values set within a configuration file.
+
 ### Using configuration file to store email and keys
 
 ```bash
@@ -134,7 +153,12 @@ extras =
 $
 ```
 
-The *CF_API_CERTKEY* or *certtoken* values are used for the Origin-CA */certificates* API calls. At the time of being, you must leave extras in the configuration, the value can be left blank.
+The *CF_API_CERTKEY* or *certtoken* values are used for the Origin-CA */certificates* API calls.
+You can leave *certtoken* in the configuration with a blank value (or omit the option variable fully).
+
+The *extras* values are used when adding API calls outside of the core codebase.
+Technically, this is only useful for internal testing within CloudFlare.
+You can leave *extras* in the configuration with a blank value (or omit the option variable fully).
 
 ## Included example code
 
@@ -374,7 +398,7 @@ Extra API calls can be added via the configuration file
 ```bash
 $ cat ~/.cloudflare/cloudflare.cfg
 [CloudFlare]
-extras=
+extras =
     /client/v4/command
     /client/v4/command/:command_identifier
     /client/v4/command/:command_identifier/settings
