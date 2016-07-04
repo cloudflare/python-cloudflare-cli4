@@ -21,27 +21,26 @@ def read_configs():
     ])
 
     if email is None:
-        email = config.get('CloudFlare', 'email')
         try:
             email = re.sub(r"\s+", '', config.get('CloudFlare', 'email'))
-        except ConfigParser.NoOptionError:
+        except (ConfigParser.NoOptionError, ConfigParser.NoSectionError):
             email = None
 
     if token is None:
         try:
             token = re.sub(r"\s+", '', config.get('CloudFlare', 'token'))
-        except ConfigParser.NoOptionError:
+        except (ConfigParser.NoOptionError, ConfigParser.NoSectionError):
             token = None
 
     if certtoken is None:
         try:
             certtoken = re.sub(r"\s+", '', config.get('CloudFlare', 'certtoken'))
-        except ConfigParser.NoOptionError:
+        except (ConfigParser.NoOptionError, ConfigParser.NoSectionError):
             certtoken = None
 
     try:
         extras = re.sub(r"\s+", ' ', config.get('CloudFlare', 'extras'))
-    except ConfigParser.NoOptionError:
+    except (ConfigParser.NoOptionError, ConfigParser.NoSectionError):
         extras = None
 
     if extras:
