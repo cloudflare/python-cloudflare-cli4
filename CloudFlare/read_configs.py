@@ -11,6 +11,7 @@ def read_configs():
     email = os.getenv('CF_API_EMAIL')
     token = os.getenv('CF_API_KEY')
     certtoken = os.getenv('CF_API_CERTKEY')
+    extras = os.getenv('CF_API_EXTRAS')
 
     # grab values from config files
     config = ConfigParser.RawConfigParser()
@@ -41,7 +42,7 @@ def read_configs():
 
     try:
         extras = re.sub(r"\s+", ' ', config.get('CloudFlare', 'extras'))
-    except ConfigParser.NoOptionError:
+    except (ConfigParser.NoSectionError, ConfigParser.NoOptionError):
         extras = None
 
     if extras:
