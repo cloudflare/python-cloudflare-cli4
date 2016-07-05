@@ -23,7 +23,7 @@ def main():
         license='MIT',
         packages=['cli4']+find_packages(),
         #package_dir={'CloudFlare': 'lib'}
-        install_requires=['requests', 'future', 'pyyaml'],
+        install_requires=['requests', 'logger', 'future', 'pyyaml'],
         keywords='cloudflare',
         entry_points={
             'console_scripts': [
