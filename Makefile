@@ -1,6 +1,7 @@
 
 PYTHON = python
 PANDOC = pandoc
+PYLINT = pylint
 
 EMAIL = "mahtin@mahtin.com"
 
@@ -25,6 +26,9 @@ sdist: all
 
 upload: clean all
 	$(PYTHON) setup.py sdist upload --sign --identity="$(EMAIL)"
+
+lint:
+	$(PYLINT) CloudFlare cli4
 
 clean:
 	rm -rf build
