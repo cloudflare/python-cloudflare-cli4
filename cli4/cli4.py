@@ -119,15 +119,16 @@ def cli4(args):
     method = 'GET'
 
     usage = ('usage: cli4 '
-             + '[-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml]'
-             + '[--get|--patch|--post|-put|--delete]'
-             + '[item=value ...]'
+             + '[-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] '
+             + '[--get|--patch|--post|-put|--delete] '
+             + '[item=value ...] '
              + '/command...')
 
     try:
         opts, args = getopt.getopt(args,
                                    'VhvqjyGPOUD',
                                    [
+                                       'version',
                                        'help', 'version' 'verbose', 'quiet', 'json', 'yaml',
                                        'get', 'patch', 'post', 'put', 'delete'
                                    ])
@@ -142,6 +143,8 @@ def cli4(args):
             verbose = True
         elif opt in ('-q', '--quiet'):
             output = None
+        elif opt in ('-j', '--json'):
+            output = 'json'
         elif opt in ('-y', '--yaml'):
             output = 'yaml'
         elif opt in ('-G', '--get'):
