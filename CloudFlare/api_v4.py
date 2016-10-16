@@ -1,7 +1,7 @@
-""" API core commands for CloudFlare API"""
+""" API core commands for Cloudflare API"""
 
 def api_v4(self):
-    """ API core commands for CloudFlare API"""
+    """ API core commands for Cloudflare API"""
 
     # The API commands for /user/
     setattr(self, "user",

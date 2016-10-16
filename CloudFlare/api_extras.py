@@ -1,9 +1,9 @@
-""" API extras for CloudFlare API"""
+""" API extras for Cloudflare API"""
 
 import re
 
 def api_extras(self, extras=None):
-    """ API extras for CloudFlare API"""
+    """ API extras for Cloudflare API"""
 
     for extra in extras:
         if extra == '':

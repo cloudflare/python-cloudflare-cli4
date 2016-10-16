@@ -27,9 +27,14 @@ Yes - that simple! (the sudo may not be needed in some cases).
 Or whatever variance of that you want to use.
 There is a Makefile included.
 
-## CloudFlare API version 4
+## Cloudflare name change - dropping the capital F
 
-The CloudFlare API can be found [here](https://api.cloudflare.com/).
+In Sepember/October 2016 the company modified its company name and dropped the capital F.
+However, for now (and for backward compatibility reasons) the class name stays the same.
+
+## Cloudflare API version 4
+
+The Cloudflare API can be found [here](https://api.cloudflare.com/).
 Each API call is provided via a similarly named function within the _CloudFlare_ class.
 A full list is provided below.
 
@@ -102,7 +107,7 @@ if __name__ == '__main__':
     main()
 ```
 
-## Providing CloudFlare Username and API Key
+## Providing Cloudflare Username and API Key
 
 When you create a _CloudFlare_ class you can pass up to four paramaters.
 
@@ -157,7 +162,7 @@ The *CF_API_CERTKEY* or *certtoken* values are used for the Origin-CA */certific
 You can leave *certtoken* in the configuration with a blank value (or omit the option variable fully).
 
 The *extras* values are used when adding API calls outside of the core codebase.
-Technically, this is only useful for internal testing within CloudFlare.
+Technically, this is only useful for internal testing within Cloudflare.
 You can leave *extras* in the configuration with a blank value (or omit the option variable fully).
 
 ## Included example code
@@ -405,8 +410,8 @@ extras =
 $
 ```
 
-While it's easy to call anything within CloudFlare's API, it's not very useful to add items in here as they will simply return API URL errors.
-Technically, this is only useful for internal testing within CloudFlare.
+While it's easy to call anything within Cloudflare's API, it's not very useful to add items in here as they will simply return API URL errors.
+Technically, this is only useful for internal testing within Cloudflare.
 
 ## Issues
 
@@ -437,4 +442,4 @@ It has been seriously expanded upon.
 
 ## Copyright
 
-Portions copyright [Felix Wong (gnowxilef)](https://github.com/gnowxilef) 2015 and CloudFlare 2016.
+Portions copyright [Felix Wong (gnowxilef)](https://github.com/gnowxilef) 2015 and Cloudflare 2016.

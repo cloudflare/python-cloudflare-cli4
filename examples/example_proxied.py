@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""CloudFlare API code - example"""
+"""Cloudflare API code - example"""
 
 import os
 import sys

@@ -1,4 +1,4 @@
-""" CloudFlare v4 API"""
+""" Cloudflare v4 API"""
 
 from cloudflare import CloudFlare
 

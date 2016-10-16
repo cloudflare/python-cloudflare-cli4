@@ -1,7 +1,7 @@
-""" misc utilities  for CloudFlare API"""
+""" misc utilities  for Cloudflare API"""
 
 def sanitize_secrets(secrets):
-    """ misc utilities  for CloudFlare API"""
+    """ misc utilities  for Cloudflare API"""
     redacted_phrase = 'REDACTED'
 
     if secrets is None:

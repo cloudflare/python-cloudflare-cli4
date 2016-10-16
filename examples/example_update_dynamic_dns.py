@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""CloudFlare API code - example"""
+"""Cloudflare API code - example"""
 
 import os
 import sys
@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
 
 def my_ip_address():
-    """CloudFlare API code - example"""
+    """Cloudflare API code - example"""
 
     # This list is adjustable - plus some v6 enabled services are needed
     # url = 'http://myip.dnsomatic.com'
@@ -33,7 +33,7 @@ def my_ip_address():
     return ip_address, ip_address_type
 
 def do_dns_update(cf, zone_name, zone_id, dns_name, ip_address, ip_address_type):
-    """CloudFlare API code - example"""
+    """Cloudflare API code - example"""
 
     try:
         params = {'name':dns_name, 'match':'all', 'type':ip_address_type}
@@ -94,7 +94,7 @@ def do_dns_update(cf, zone_name, zone_id, dns_name, ip_address, ip_address_type)
     print 'CREATED: %s %s' % (dns_name, ip_address)
 
 def main():
-    """CloudFlare API code - example"""
+    """Cloudflare API code - example"""
 
     try:
         dns_name = sys.argv[1]

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""CloudFlare API via command line"""
+"""Cloudflare API via command line"""
 
 import os
 import sys
@@ -112,7 +112,7 @@ def convert_virtual_dns_to_identifier(cf, virtual_dns_name):
     exit('cli4: %s - no virtual_dns found' % (virtual_dns_name))
 
 def cli4(args):
-    """CloudFlare API via command line"""
+    """Cloudflare API via command line"""
 
     verbose = False
     output = 'json'
@@ -136,7 +136,7 @@ def cli4(args):
         exit(usage)
     for opt, arg in opts:
         if opt in ('-V', '--version'):
-            exit('CloudFlare library version: %s' % (CloudFlare.__version__))
+            exit('Cloudflare library version: %s' % (CloudFlare.__version__))
         if opt in ('-h', '--help'):
             exit(usage)
         elif opt in ('-v', '--verbose'):
@@ -196,7 +196,7 @@ def cli4(args):
         command = command[:-1]
 
     # break down command into it's seperate pieces
-    # these are then checked against the CloudFlare class
+    # these are then checked against the Cloudflare class
     # to confirm there is a method that matches
     parts = command.split('/')
 

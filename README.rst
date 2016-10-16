@@ -33,10 +33,17 @@ Via github
 Or whatever variance of that you want to use. There is a Makefile
 included.
 
-CloudFlare API version 4
+Cloudflare name change - dropping the capital F
+-----------------------------------------------
+
+In Sepember/October 2016 the company modified its company name and
+dropped the capital F. However, for now (and for backward compatibility
+reasons) the class name stays the same.
+
+Cloudflare API version 4
 ------------------------
 
-The CloudFlare API can be found `here <https://api.cloudflare.com/>`__.
+The Cloudflare API can be found `here <https://api.cloudflare.com/>`__.
 Each API call is provided via a similarly named function within the
 *CloudFlare* class. A full list is provided below.
 
@@ -111,7 +118,7 @@ A more complex example follows.
     if __name__ == '__main__':
         main()
 
-Providing CloudFlare Username and API Key
+Providing Cloudflare Username and API Key
 -----------------------------------------
 
 When you create a *CloudFlare* class you can pass up to four paramaters.
@@ -178,7 +185,7 @@ configuration with a blank value (or omit the option variable fully).
 
 The *extras* values are used when adding API calls outside of the core
 codebase. Technically, this is only useful for internal testing within
-CloudFlare. You can leave *extras* in the configuration with a blank
+Cloudflare. You can leave *extras* in the configuration with a blank
 value (or omit the option variable fully).
 
 Included example code
@@ -508,9 +515,9 @@ Extra API calls can be added via the configuration file
         /client/v4/command/:command_identifier/settings
     $
 
-While it's easy to call anything within CloudFlare's API, it's not very
+While it's easy to call anything within Cloudflare's API, it's not very
 useful to add items in here as they will simply return API URL errors.
-Technically, this is only useful for internal testing within CloudFlare.
+Technically, this is only useful for internal testing within Cloudflare.
 
 Issues
 ------
@@ -554,4 +561,4 @@ Copyright
 ---------
 
 Portions copyright `Felix Wong
-(gnowxilef) <https://github.com/gnowxilef>`__ 2015 and CloudFlare 2016.
+(gnowxilef) <https://github.com/gnowxilef>`__ 2015 and Cloudflare 2016.

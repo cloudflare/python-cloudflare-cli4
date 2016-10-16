@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""CloudFlare API code - example"""
+"""Cloudflare API code - example"""
 
 import os
 import sys
@@ -8,7 +8,7 @@ sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
 
 def main():
-    """CloudFlare API code - example"""
+    """Cloudflare API code - example"""
 
     try:
         zone_name = sys.argv[1]
@@ -18,7 +18,7 @@ def main():
     cf = CloudFlare.CloudFlare()
 
     # Create zone - which will only work if ...
-    # 1) The zone is not on CloudFlare.
+    # 1) The zone is not on Cloudflare.
     # 2) The zone passes a whois test
     print 'Create zone %s ...' % (zone_name)
     try:
