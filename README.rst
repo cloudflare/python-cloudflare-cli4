@@ -47,6 +47,14 @@ The Cloudflare API can be found `here <https://api.cloudflare.com/>`__.
 Each API call is provided via a similarly named function within the
 *CloudFlare* class. A full list is provided below.
 
+Example code
+------------
+
+All example code is available on GitHub (see
+`package <https://github.com/cloudflare/python-cloudflare>`__ in the
+`examples <https://github.com/cloudflare/python-cloudflare/tree/master/examples>`__
+folder.
+
 Getting Started
 ---------------
 
@@ -188,11 +196,81 @@ codebase. Technically, this is only useful for internal testing within
 Cloudflare. You can leave *extras* in the configuration with a blank
 value (or omit the option variable fully).
 
+Exceptions and return values
+----------------------------
+
+The response is build from the JSON in the API call. It contains the
+**results** values; but does not contain the paging values.
+
+You can return all the paging values by calling the class with raw=True.
+Here's an example without paging.
+
+.. code:: python
+
+    #!/usr/bin/env python
+
+    import json
+    import CloudFlare
+
+    def main():
+        cf = CloudFlare.CloudFlare()
+        zones = cf.zones.get(params={'per_page':5})
+        print len(zones)
+
+    if __name__ == '__main__':
+        main()
+
+The results are as follows.
+
+::
+
+    5
+
+When you add the raw option; the APIs full structure is returned. This
+means the paging values can be seen.
+
+.. code:: python
+
+    #!/usr/bin/env python
+
+    import json
+    import CloudFlare
+
+    def main():
+        cf = CloudFlare.CloudFlare(raw=True)
+        zones = cf.zones.get(params={'per_page':5})
+        print zones.length()
+        print json.dumps(zones, indent=4, sort_keys=True)
+
+    if __name__ == '__main__':
+        main()
+
+This produces.
+
+::
+
+    5
+    {
+        "result": [
+            ...
+        ],
+        "result_info": {
+            "count": 5,
+            "page": 1,
+            "per_page": 5,
+            "total_count": 31,
+            "total_pages": 7
+        }
+    }
+
+A full example of paging is provided below.
+
 Included example code
 ---------------------
 
-The *examples* folder contains many examples in both simple and verbose
-formats.
+The
+`examples <https://github.com/cloudflare/python-cloudflare/tree/master/examples>`__
+folder contains many examples in both simple and verbose formats.
 
 A DNS zone code example
 -----------------------
@@ -233,13 +311,14 @@ convert domain names on-the-fly into zone\_identifier's.
 
 .. code:: bash
 
-    $ cli4 [-h|--help] [-v|--verbose] [-q|--quiet] [--get|--patch|--post|-put|--delete] [item=value ...] /command...
+    $ cli4 [-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] [-r|--raw] [--get|--patch|--post|-put|--delete] [item=value ...] /command...
 
 For API calls that need a set of date or parameters passed there is a
 item=value format. If you want a numeric value passed, then *==* can be
 used to force the value to be treated as a numeric value.
 
-The output from the CLI command is in json format (and human readable).
+The output from the CLI command is in JSON or YAML format (and human
+readable).
 
 Simple CLI examples
 ~~~~~~~~~~~~~~~~~~~
@@ -325,6 +404,52 @@ A somewhat useful listing of available plans for a specific zone.
     {"id":"94f3b7b768b0458b56d2cac4fe5ec0f9","name":"Enterprise Website"}
     {"id":"0feeeeeeeeeeeeeeeeeeeeeeeeeeeeee","name":"Free Website"}
     $
+
+Paging CLI examples
+~~~~~~~~~~~~~~~~~~~
+
+The **--raw** command provides access to the paging returned values. See
+the API documentation for all the info. Here's an example of how to page
+thru a list of zones (it's included in the examples folder as
+**example\_paging\_thru\_zones.sh**).
+
+.. code:: bash
+
+    :
+    tmp=/tmp/$$_
+    trap "rm ${tmp}; exit 0" 0 1 2 15
+    PAGE=0
+    while true
+    do
+        cli4 --raw per_page=5 page=${PAGE} /zones > ${tmp}
+        domains=`jq -c '.|.result|.[]|.name' < ${tmp} | tr -d '"'`
+        result_info=`jq -c '.|.result_info' < ${tmp}`
+        COUNT=`      echo "${result_info}" | jq .count`
+        PAGE=`       echo "${result_info}" | jq .page`
+        PER_PAGE=`   echo "${result_info}" | jq .per_page`
+        TOTAL_COUNT=`echo "${result_info}" | jq .total_count`
+        TOTAL_PAGES=`echo "${result_info}" | jq .total_pages`
+        echo COUNT=${COUNT} PAGE=${PAGE} PER_PAGE=${PER_PAGE} TOTAL_COUNT=${TOTAL_COUNT} TOTAL_PAGES=${TOTAL_PAGES} -- ${domains}
+        if [ "${PAGE}" == "${TOTAL_PAGES}" ]
+        then
+            ## last section
+            break
+        fi
+        # grab the next page
+        PAGE=`expr ${PAGE} + 1`
+    done
+
+It produces the following results.
+
+::
+
+    COUNT=5 PAGE=1 PER_PAGE=5 TOTAL_COUNT=31 TOTAL_PAGES=7 -- accumsan.example auctor.example consectetur.example dapibus.example elementum.example
+    COUNT=5 PAGE=2 PER_PAGE=5 TOTAL_COUNT=31 TOTAL_PAGES=7 -- felis.example iaculis.example ipsum.example justo.example lacus.example
+    COUNT=5 PAGE=3 PER_PAGE=5 TOTAL_COUNT=31 TOTAL_PAGES=7 -- lectus.example lobortis.example maximus.example morbi.example pharetra.example
+    COUNT=5 PAGE=4 PER_PAGE=5 TOTAL_COUNT=31 TOTAL_PAGES=7 -- porttitor.example potenti.example pretium.example purus.example quisque.example
+    COUNT=5 PAGE=5 PER_PAGE=5 TOTAL_COUNT=31 TOTAL_PAGES=7 -- sagittis.example semper.example sollicitudin.example suspendisse.example tortor.example
+    COUNT=1 PAGE=7 PER_PAGE=5 TOTAL_COUNT=31 TOTAL_PAGES=7 -- varius.example vehicula.example velit.example velit.example vitae.example
+    COUNT=5 PAGE=6 PER_PAGE=5 TOTAL_COUNT=31 TOTAL_PAGES=7 -- vivamus.example
 
 DNSSEC CLI examples
 ~~~~~~~~~~~~~~~~~~~
