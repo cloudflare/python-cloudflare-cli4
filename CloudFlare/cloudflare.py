@@ -194,14 +194,13 @@ class CloudFlare(object):
             if self.logger:
                 self.logger.debug('Response: %s' % (response_data.result))
             if self.raw:
-                ## no need to return success, errors, or messages as they return via an exception
                 result = {}
-                if 'result' in response_data:
-                    result['result'] = response_data['result']
+                # theres always a result value
+                result['result'] = response_data['result']
+                # theres may not be a result_info on every call
                 if 'result_info' in response_data:
                     result['result_info'] = response_data['result_info']
-                if 'total_count' in response_data:
-                    result['total_count'] = response_data['total_count']
+                # no need to return success, errors, or messages as they return via an exception
             else:
                 # theres always a result value
                 result = response_data['result']
