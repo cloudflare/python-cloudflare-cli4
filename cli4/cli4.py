@@ -116,20 +116,23 @@ def cli4(args):
 
     verbose = False
     output = 'json'
+    raw = False
     method = 'GET'
 
     usage = ('usage: cli4 '
              + '[-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] '
+             + '[-r|--raw] '
              + '[--get|--patch|--post|-put|--delete] '
              + '[item=value ...] '
              + '/command...')
 
     try:
         opts, args = getopt.getopt(args,
-                                   'VhvqjyGPOUD',
+                                   'VhvqjyrGPOUD',
                                    [
                                        'version',
-                                       'help', 'version' 'verbose', 'quiet', 'json', 'yaml',
+                                       'help', 'verbose', 'quiet', 'json', 'yaml',
+                                       'raw',
                                        'get', 'patch', 'post', 'put', 'delete'
                                    ])
     except getopt.GetoptError:
@@ -147,6 +150,8 @@ def cli4(args):
             output = 'json'
         elif opt in ('-y', '--yaml'):
             output = 'yaml'
+        elif opt in ('-r', '--raw'):
+            raw = True
         elif opt in ('-G', '--get'):
             method = 'GET'
         elif opt in ('-P', '--patch'):
@@ -206,7 +211,7 @@ def cli4(args):
 
     hex_only = re.compile('^[0-9a-fA-F]+$')
 
-    cf = CloudFlare.CloudFlare(debug=verbose)
+    cf = CloudFlare.CloudFlare(debug=verbose, raw=raw)
 
     m = cf
     for element in parts:
