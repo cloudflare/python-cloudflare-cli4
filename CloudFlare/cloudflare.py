@@ -19,13 +19,14 @@ class CloudFlare(object):
     class _base(object):
         """ Cloudflare v4 API"""
 
-        def __init__(self, email, token, certtoken, base_url, debug):
+        def __init__(self, email, token, certtoken, base_url, debug, raw):
             """ Cloudflare v4 API"""
 
             self.email = email
             self.token = token
             self.certtoken = certtoken
             self.base_url = base_url
+            self.raw = raw
 
             if debug:
                 self.logger = Logger(debug).getLogger()
@@ -87,12 +88,10 @@ class CloudFlare(object):
                               identifier1, identifier2,
                               params, data)
 
-        def _call(self, method, headers,
-                  api_call_part1,
-                  api_call_part2=None,
-                  api_call_part3=None,
-                  identifier1=None, identifier2=None,
-                  params=None, data=None):
+        def _raw(self, method, headers,
+                 api_call_part1, api_call_part2=None, api_call_part3=None,
+                 identifier1=None, identifier2=None,
+                 params=None, data=None):
             """ Cloudflare v4 API"""
 
             if api_call_part2 is not None or (data is not None and method == 'GET'):
@@ -171,6 +170,20 @@ class CloudFlare(object):
             except ValueError:
                 raise CloudFlareAPIError(0, 'JSON parse failed.')
 
+            return response_data
+
+        def _call(self, method, headers,
+                  api_call_part1,
+                  api_call_part2=None,
+                  api_call_part3=None,
+                  identifier1=None, identifier2=None,
+                  params=None, data=None):
+            """ Cloudflare v4 API"""
+
+            response_data = self._raw(method, headers,
+                                      api_call_part1, api_call_part2, api_call_part3,
+                                      identifier1, identifier2,
+                                      params, data)
             if response_data['success'] is False:
                 code = response_data['errors'][0]['code']
                 message = response_data['errors'][0]['message']
@@ -178,9 +191,20 @@ class CloudFlare(object):
                     self.logger.debug('Response: error %d %s' % (code, message))
                 raise CloudFlareAPIError(code, message)
 
-            result = response_data['result']
             if self.logger:
-                self.logger.debug('Response: %s' % (result))
+                self.logger.debug('Response: %s' % (response_data.result))
+            if self.raw:
+                ## no need to return success, errors, or messages as they return via an exception
+                result = {}
+                if 'result' in response_data:
+                    result['result'] = response_data['result']
+                if 'result_info' in response_data:
+                    result['result_info'] = response_data['result_info']
+                if 'total_count' in response_data:
+                    result['total_count'] = response_data['total_count']
+            else:
+                # theres always a result value
+                result = response_data['result']
             return result
 
     class add_unused(object):
@@ -337,7 +361,7 @@ class CloudFlare(object):
                                                 identifier1, identifier2,
                                                 params, data)
 
-    def __init__(self, email=None, token=None, certtoken=None, debug=False):
+    def __init__(self, email=None, token=None, certtoken=None, debug=False, raw=False):
         """ Cloudflare v4 API"""
 
         base_url = BASE_URL
@@ -352,7 +376,7 @@ class CloudFlare(object):
         if certtoken is None:
             certtoken = conf_certtoken
 
-        self.base = self._base(email, token, certtoken, base_url, debug)
+        self.base = self._base(email, token, certtoken, base_url, debug, raw)
 
         # add the API calls
         api_v4(self)
