@@ -4,6 +4,7 @@ PANDOC = pandoc
 PYLINT = pylint
 
 EMAIL = "mahtin@mahtin.com"
+NAME = "cloudflare"
 
 all:	README.rst build
 
@@ -23,6 +24,13 @@ sdist: all
 	make clean
 	make test
 	$(PYTHON) setup.py sdist
+	rm -rf ${NAME}.egg-info
+
+bdist: all
+	make clean
+	make test
+	$(PYTHON) setup.py bdist
+	rm -rf ${NAME}.egg-info
 
 upload: clean all
 	$(PYTHON) setup.py sdist upload --sign --identity="$(EMAIL)"
@@ -35,4 +43,5 @@ clean:
 	rm -rf dist
 	mkdir build dist
 	$(PYTHON) setup.py clean
+	rm -rf ${NAME}.egg-info
 
