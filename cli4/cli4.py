@@ -111,28 +111,51 @@ def convert_virtual_dns_to_identifier(cf, virtual_dns_name):
 
     exit('cli4: %s - no virtual_dns found' % (virtual_dns_name))
 
+def walk(m, s):
+    """recursive walk of the tree"""
+    for n in sorted(dir(m)):
+	if n[0] == '_':
+            # internal
+            continue
+        if n in ['delete', 'get', 'patch', 'post', 'put']:
+            # gone too far
+            continue
+        a = getattr(m, n)
+        d = dir(a)
+        if 'delete' in d or 'get' in d or 'patch' in d or 'post' in d or 'put' in d:
+            # it's a known api call - lets print it and continue down the tree
+	    print s + '/' + n
+            walk(a, s + '/' + n)
+
+def dump_commands(cf):
+    """dump a tree of all the known API commands"""
+    walk(cf, '')
+
 def cli4(args):
     """Cloudflare API via command line"""
 
     verbose = False
     output = 'json'
     raw = False
+    dump = False
     method = 'GET'
 
     usage = ('usage: cli4 '
              + '[-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] '
              + '[-r|--raw] '
+             + '[-d|--dump] '
              + '[--get|--patch|--post|-put|--delete] '
              + '[item=value ...] '
              + '/command...')
 
     try:
         opts, args = getopt.getopt(args,
-                                   'VhvqjyrGPOUD',
+                                   'VhvqjyrdGPOUD',
                                    [
                                        'version',
                                        'help', 'verbose', 'quiet', 'json', 'yaml',
                                        'raw',
+                                       'dump',
                                        'get', 'patch', 'post', 'put', 'delete'
                                    ])
     except getopt.GetoptError:
@@ -152,6 +175,8 @@ def cli4(args):
             output = 'yaml'
         elif opt in ('-r', '--raw'):
             raw = True
+        elif opt in ('-d', '--dump'):
+            dump = True
         elif opt in ('-G', '--get'):
             method = 'GET'
         elif opt in ('-P', '--patch'):
@@ -188,6 +213,11 @@ def cli4(args):
             value = value_string
         tag = tag_string
         params[tag] = value
+
+    if dump:
+        cf = CloudFlare.CloudFlare()
+        dump_commands(cf)
+        exit(0)
 
     # what's left is the command itself
     if len(args) != 1:
