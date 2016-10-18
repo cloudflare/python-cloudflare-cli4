@@ -16,6 +16,7 @@ build: setup.py
 
 install: build
 	sudo $(PYTHON) setup.py install
+	sudo rm -rf ${NAME}.egg-info
 
 test: all
 	# to be done
