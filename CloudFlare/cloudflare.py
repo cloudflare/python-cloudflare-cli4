@@ -192,7 +192,7 @@ class CloudFlare(object):
                 raise CloudFlareAPIError(code, message)
 
             if self.logger:
-                self.logger.debug('Response: %s' % (response_data.result))
+                self.logger.debug('Response: %s' % (response_data['result']))
             if self.raw:
                 result = {}
                 # theres always a result value
