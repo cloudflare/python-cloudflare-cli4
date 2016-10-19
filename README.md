@@ -275,7 +275,8 @@ All API calls can be called from the command line.
 The command will convert domain names on-the-fly into zone_identifier's.
 
 ```bash
-$ cli4 [-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] [-r|--raw] [--get|--patch|--post|-put|--delete] [item=value ...] /command...
+$ cli4 [-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] [-r|--raw] [-d|--dump] [--get|--patch|--post|-put|--delete] [item=value ...] /command...
+
 ```
 
 For API calls that need a set of date or parameters passed there is a item=value format.
@@ -439,6 +440,22 @@ $
 ```
 
 ## Implemented API calls
+
+The **--dump** argument to cli4 will produce a list of all the call implemented within the library.
+
+```bash
+$ cli4 --dump
+/certificates
+/ips
+/organizations
+...
+/zones/ssl/analyze
+/zones/ssl/certificate_packs
+/zones/ssl/verification
+$
+```
+
+### Table of commands
 
 |`GET`   |`PUT`   |`POST`  |`PATCH` |`DELETE`|API call|
 |--------|--------|--------|--------|--------|:--------|
