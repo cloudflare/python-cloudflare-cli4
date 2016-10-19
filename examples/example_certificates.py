@@ -7,6 +7,7 @@ import json
 
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
+import CloudFlare.exceptions
 
 def main():
     """Cloudflare API code - example"""
@@ -23,7 +24,7 @@ def main():
     # grab the zone identifier
     try:
         zones = cf.zones.get(params=params)
-    except CloudFlare.CloudFlareAPIError as e:
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/zones %d %s - api call failed' % (e, e))
     except Exception as e:
         exit('/zones - %s - api call failed' % (e))
@@ -34,7 +35,7 @@ def main():
         zone_id = zone['id']
         try:
             certificates = cf.zones.ssl.certificate_packs.get(zone_id)
-        except CloudFlare.CloudFlareAPIError as e:
+        except CloudFlare.exceptions.CloudFlareAPIError as e:
             exit('/zones.ssl.certificate_packs %d %s - api call failed' % (e, e))
 
         for certificate in certificates:

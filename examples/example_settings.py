@@ -6,6 +6,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
+import CloudFlare.exceptions
 
 def main():
     """Cloudflare API code - example"""
@@ -22,7 +23,7 @@ def main():
     # grab the zone identifier
     try:
         zones = cf.zones.get(params=params)
-    except CloudFlare.CloudFlareAPIError as e:
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/zones.get %d %s - api call failed' % (e, e))
     except Exception as e:
         exit('/zones.get - %s - api call failed' % (e))
@@ -33,7 +34,7 @@ def main():
         zone_id = zone['id']
         try:
             settings = cf.zones.settings.get(zone_id)
-        except CloudFlare.CloudFlareAPIError as e:
+        except CloudFlare.exceptions.CloudFlareAPIError as e:
             exit('/zones.settings.get %d %s - api call failed' % (e, e))
 
         print zone_id, zone_name

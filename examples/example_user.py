@@ -7,6 +7,7 @@ import json
 
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
+import CloudFlare.exceptions
 
 def main():
     """Cloudflare API code - example"""
@@ -17,7 +18,7 @@ def main():
     # grab the user info
     try:
         user = cf.user.get()
-    except CloudFlare.CloudFlareAPIError as e:
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/user.get %d %s - api call failed' % (e, e))
     except Exception as e:
         exit('/user.get - %s - api call failed' % (e))
@@ -45,7 +46,7 @@ def main():
     # grab the user organizations info
     try:
         organizations = cf.user.organizations.get()
-    except CloudFlare.CloudFlareAPIError as e:
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/user.organizations.get %d %s - api call failed' % (e, e))
     if len(organizations) == 0:
         print '\tNo organization'
@@ -60,7 +61,7 @@ def main():
     # grab the user invites info
     try:
         invites = cf.user.invites.get()
-    except CloudFlare.CloudFlareAPIError as e:
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/user.invites.get %d %s - api call failed' % (e, e))
     if len(invites) == 0:
         print '\tNo user invites'
@@ -89,7 +90,7 @@ def main():
     # grab the user billing profile info
     try:
         profile = cf.user.billing.profile.get()
-    except CloudFlare.CloudFlareAPIError as e:
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/user.billing.profile.get %d %s - api call failed' % (e, e))
     profile_id = profile['id']
     profile_first = profile['first_name']
@@ -139,7 +140,7 @@ def main():
     # grab the user billing history info
     try:
         history = cf.user.billing.history.get()
-    except CloudFlare.CloudFlareAPIError as e:
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/user.billing.history.get %d %s - api call failed' % (e, e))
     if len(history) == 0:
         print '\tNo billing history'

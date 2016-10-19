@@ -6,6 +6,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
+import CloudFlare.exceptions
 
 def main():
     """Cloudflare API code - example"""
@@ -31,7 +32,7 @@ def main():
     # grab the zone identifier
     try:
         zones = cf.zones.get(params=params)
-    except CloudFlare.CloudFlareAPIError as e:
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/zones.get %d %s - api call failed' % (e, e))
     except Exception as e:
         exit('/zones - %s - api call failed' % (e))
@@ -41,7 +42,7 @@ def main():
         zone_id = zone['id']
         try:
             ipv6 = cf.zones.settings.ipv6.get(zone_id)
-        except CloudFlare.CloudFlareAPIError as e:
+        except CloudFlare.exceptions.CloudFlareAPIError as e:
             exit('/zones.settings.ipv6.get %d %s - api call failed' % (e, e))
 
         ipv6_value = ipv6['value']
@@ -49,7 +50,7 @@ def main():
             print zone_id, ipv6_value, zone_name, '(now updating... off -> on)'
             try:
                 ipv6 = cf.zones.settings.ipv6.patch(zone_id, data={'value':'on'})
-            except CloudFlare.CloudFlareAPIError as e:
+            except CloudFlare.exceptions.CloudFlareAPIError as e:
                 exit('/zones.settings.ipv6.patch %d %s - api call failed' % (e, e))
             ipv6_value = ipv6['value']
             if ipv6_value == 'on':

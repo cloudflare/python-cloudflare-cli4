@@ -68,8 +68,8 @@ if __name__ == '__main__':
 A more complex example follows.
 
 ```python
-import sys
 import CloudFlare
+import CloudFlare.exceptions
 
 def main():
     zone_name = 'example.com'
@@ -79,10 +79,13 @@ def main():
     # query for the zone name and expect only one value back
     try:
         zones = cf.zones.get(params = {'name':zone_name,'per_page':1})
-    except CloudFlare.CloudFlareAPIError as e:
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/zones.get %d %s - api call failed' % (e, e))
     except Exception as e:
         exit('/zones.get - %s - api call failed' % (e))
+
+    if len(zones) == 0:
+        exit('No zones found')
 
     # extract the zone_id which is needed to process that zone
     zone = zones[0]
@@ -91,7 +94,7 @@ def main():
     # request the DNS records from that zone
     try:
         dns_records = cf.zones.dns_records.get(zone_id)
-    except CloudFlare.CloudFlareAPIError as e:
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/zones/dns_records.get %d %s - api call failed' % (e, e))
 
     # print the results - first the zone name
@@ -171,7 +174,9 @@ You can leave *extras* in the configuration with a blank value (or omit the opti
 
 ## Exceptions and return values
 
-The response is  build from the JSON in the API call.
+### Response data
+
+The response is build from the JSON in the API call.
 It contains the **results** values; but does not contain the paging values.
 
 You can return all the paging values by calling the class with raw=True. Here's an example without paging.
@@ -234,6 +239,26 @@ This produces.
 ```
 
 A full example of paging is provided below.
+
+
+### Exceptions
+
+The library will raise **CloudFlareAPIError** when the API call fails.
+The exception returns both an integer and textual message in one value.
+
+```python
+import CloudFlare
+import CloudFlare.exceptions
+
+    ...
+    try
+        r = ...
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        exit('api error: %d %s' % (e, e))
+    ...
+```
+
+The other raised response is **CloudFlareInternalError** which can happen when calling an invalid method.
 
 ## Included example code
 

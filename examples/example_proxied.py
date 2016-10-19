@@ -6,6 +6,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
+import CloudFlare.exceptions
 
 def main():
     """Change the proxied value on a FQDN"""
@@ -30,7 +31,7 @@ def main():
     try:
         params = {'name':zone_name, 'per_page':1}
         zones = cf.zones.get(params=params)
-    except CloudFlare.CloudFlareAPIError as e:
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/zones.get %d %s - api call failed' % (e, e))
     except Exception as e:
         exit('/zones.get - %s - api call failed' % (e))
@@ -49,7 +50,7 @@ def main():
     try:
         params = {'name': dns_name}
         dns_records = cf.zones.dns_records.get(zone_id, params=params)
-    except CloudFlare.CloudFlareAPIError as e:
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/zones/dns_records.get %d %s - api call failed' % (e, e))
 
     if len(dns_records) == 0:
@@ -86,7 +87,7 @@ def main():
 
         try:
             dns_record = cf.zones.dns_records.put(zone_id, dns_record_id, data=new_dns_record)
-        except CloudFlare.CloudFlareAPIError as e:
+        except CloudFlare.exceptions.CloudFlareAPIError as e:
             exit('/zones/dns_records.put %d %s - api call failed' % (e, e))
 
         r_zone_id = dns_record['zone_id']

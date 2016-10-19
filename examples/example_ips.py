@@ -6,6 +6,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
+import CloudFlare.exceptions
 
 def main():
     """Cloudflare API code - example"""
@@ -13,7 +14,7 @@ def main():
     cf = CloudFlare.CloudFlare()
     try:
         ips = cf.ips.get()
-    except CloudFlare.CloudFlareAPIError as e:
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/ips - %d %s' % (e, e))
     except Exception as e:
         exit('/ips - %s - api call connection failed' % (e))

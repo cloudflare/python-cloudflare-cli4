@@ -6,6 +6,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
+import CloudFlare.exceptions
 
 def main():
     """Cloudflare API code - example"""
@@ -23,7 +24,7 @@ def main():
     print 'Create zone %s ...' % (zone_name)
     try:
         zone_info = cf.zones.post(data={'jump_start':False, 'name': zone_name})
-    except CloudFlare.CloudFlareAPIError as e:
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/zones.post %s - %d %s' % (zone_name, e, e))
     except Exception as e:
         exit('/zones.post %s - %s' % (zone_name, e))
@@ -58,7 +59,7 @@ def main():
         # Create DNS record
         try:
             r = cf.zones.dns_records.post(zone_id, data=dns_record)
-        except CloudFlare.CloudFlareAPIError as e:
+        except CloudFlare.exceptions.CloudFlareAPIError as e:
             exit('/zones.dns_records.post %s %s - %d %s' % (zone_name, dns_record['name'], e, e))
         # Print respose info - they should be the same
         dns_record = r
@@ -86,7 +87,7 @@ def main():
 
         try:
             dns_record = cf.zones.dns_records.put(zone_id, dns_record_id, data=new_dns_record)
-        except CloudFlare.CloudFlareAPIError as e:
+        except CloudFlare.exceptions.CloudFlareAPIError as e:
             exit('/zones/dns_records.put %d %s - api call failed' % (e, e))
 
     print ''
@@ -95,7 +96,7 @@ def main():
     print 'Read back DNS records ...'
     try:
         dns_records = cf.zones.dns_records.get(zone_id)
-    except CloudFlare.CloudFlareAPIError as e:
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/zones.dns_records.get %s - %d %s' % (zone_name, e, e))
 
     for dns_record in sorted(dns_records, key=lambda v: v['name']):
