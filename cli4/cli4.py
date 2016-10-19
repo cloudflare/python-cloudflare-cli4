@@ -122,9 +122,11 @@ def walk(m, s):
             continue
         a = getattr(m, n)
         d = dir(a)
-        if 'delete' in d or 'get' in d or 'patch' in d or 'post' in d or 'put' in d:
+        if '_base' in d:
             # it's a known api call - lets print it and continue down the tree
-	    print s + '/' + n
+            if 'delete' in d or 'get' in d or 'patch' in d or 'post' in d or 'put' in d:
+                # only print if a call exists for this part
+	        print s + '/' + n
             walk(a, s + '/' + n)
 
 def dump_commands(cf):
