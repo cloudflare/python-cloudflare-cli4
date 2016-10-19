@@ -44,6 +44,8 @@ def api_v4(self):
             self._add_with_auth(self._base, "zones", "activation_check"))
     setattr(zones, "available_plans",
             self._add_with_auth(self._base, "zones", "available_plans"))
+    setattr(zones, "available_rate_plans",
+            self._add_with_auth(self._base, "zones", "available_rate_plans"))
     setattr(zones, "custom_certificates",
             self._add_with_auth(self._base, "zones", "custom_certificates"))
     zones_custom_certificates = getattr(zones, "custom_certificates")
@@ -123,10 +125,12 @@ def api_v4(self):
             self._add_with_auth(self._base, "zones", "settings/tls_1_2_only"))
     setattr(zones_settings, "tls_1_3",
             self._add_with_auth(self._base, "zones", "settings/tls_1_3"))
-    setattr(zones_settings, "tlsadd_auth",
-            self._add_with_auth(self._base, "zones", "settings/tlsadd_auth"))
-    setattr(zones_settings, "trueadd_ip_header",
-            self._add_with_auth(self._base, "zones", "settings/trueadd_ip_header"))
+    # setattr(zones_settings, "tlsadd_auth",
+    #         self._add_with_auth(self._base, "zones", "settings/tlsadd_auth"))
+    # setattr(zones_settings, "trueadd_ip_header",
+    #         self._add_with_auth(self._base, "zones", "settings/trueadd_ip_header"))
+    setattr(zones_settings, "websockets",
+            self._add_with_auth(self._base, "zones", "settings/websockets"))
     setattr(zones_settings, "waf",
             self._add_with_auth(self._base, "zones", "settings/waf"))
     setattr(zones, "analytics",
@@ -198,15 +202,18 @@ def api_v4(self):
     setattr(self, "ips",
             self._add_noauth(self._base, "ips"))
 
-    # The DNSSEC commands
+    # The API commands for /zones/:zone_id/dnssec
     setattr(zones, "dnssec",
             self._add_with_auth(self._base, "zones", "dnssec"))
 
-    # EXTRAS
-    # /zones/:zone_id/ssl/certificate_packs
+    # The API commands for /zones/:zone_id/ssl
     setattr(zones, "ssl",
             self._add_unused(self._base, "zones", "ssl"))
     zones_ssl = getattr(zones, "ssl")
+    setattr(zones_ssl, "analyze",
+            self._add_with_auth(self._base, "zones", "ssl/analyze"))
     setattr(zones_ssl, "certificate_packs",
             self._add_with_auth(self._base, "zones", "ssl/certificate_packs"))
+    setattr(zones_ssl, "verification",
+            self._add_with_auth(self._base, "zones", "ssl/verification"))
 
