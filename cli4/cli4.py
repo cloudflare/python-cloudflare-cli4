@@ -312,6 +312,10 @@ def cli4(args):
             else:
                 pass
         except CloudFlare.exceptions.CloudFlareAPIError as e:
+            if len(e) > 0:
+                # more than one error returned by the API
+                for x in e:
+                    sys.stderr.write('cli4: /%s - %d %s\n' % (command, x, x))
             exit('cli4: /%s - %d %s' % (command, e, e))
         except Exception as e:
             exit('cli4: /%s - %s - api error' % (command, e))

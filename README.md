@@ -260,6 +260,26 @@ import CloudFlare.exceptions
 
 The other raised response is **CloudFlareInternalError** which can happen when calling an invalid method.
 
+In some cases more than one error is returned. In this case the return value **e** is also an array.
+You can itterate over that array to see the additional error.
+
+```python
+import sys
+import CloudFlare
+import CloudFlare.exceptions
+
+    ...
+    try
+        r = ...
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        if len(e) > 0:
+            sys.stderr.write('api error - more than one error value returned!\n')
+            for x in e:
+                sys.stderr.write('api error: %d %s\n' % (x, x))
+        exit('api error: %d %s' % (e, e))
+    ...
+```
+
 ## Included example code
 
 The [examples](https://github.com/cloudflare/python-cloudflare/tree/master/examples) folder contains many examples in both simple and verbose formats.

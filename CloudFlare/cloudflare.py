@@ -187,9 +187,18 @@ class CloudFlare(object):
             if response_data['success'] is False:
                 code = response_data['errors'][0]['code']
                 message = response_data['errors'][0]['message']
-                if self.logger:
-                    self.logger.debug('Response: error %d %s' % (code, message))
-                raise CloudFlareAPIError(code, message)
+                if 'error_chain' in response_data['errors'][0]:
+                    error_chain = response_data['errors'][0]['error_chain']
+                    for error in error_chain:
+                        if self.logger:
+                            self.logger.debug('Response: error %d %s - chain' % (error['code'], error['message']))
+                    if self.logger:
+                        self.logger.debug('Response: error %d %s' % (code, message))
+                    raise CloudFlareAPIError(code, message, error_chain)
+                else:
+                    if self.logger:
+                        self.logger.debug('Response: error %d %s' % (code, message))
+                    raise CloudFlareAPIError(code, message)
 
             if self.logger:
                 self.logger.debug('Response: %s' % (response_data['result']))
