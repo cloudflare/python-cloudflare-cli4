@@ -219,7 +219,7 @@ def api_v4(self):
 
     # The API commands for CTM /zones/:zone_id/load_balancers & /user/load_balancers
     setattr(zones, "load_balancers",
-            self._add_unused(self._base, "zones", "load_balancers"))
+            self._add_with_auth(self._base, "zones", "load_balancers"))
     setattr(user, "load_balancers",
             self._add_with_auth(self._base, "user/load_balancers"))
     user_load_balancers = getattr(user, "load_balancers")
