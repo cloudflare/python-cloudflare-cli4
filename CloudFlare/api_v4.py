@@ -217,3 +217,22 @@ def api_v4(self):
     setattr(zones_ssl, "verification",
             self._add_with_auth(self._base, "zones", "ssl/verification"))
 
+    # The API commands for CTM /zones/:zone_id/load_balancers & /user/load_balancers
+    setattr(zones, "load_balancers",
+            self._add_unused(self._base, "zones", "load_balancers"))
+    setattr(user, "load_balancers",
+            self._add_with_auth(self._base, "user/load_balancers"))
+    user_load_balancers = getattr(user, "load_balancers")
+    setattr(user_load_balancers, "global_policies",
+            self._add_with_auth(self._base, "user/load_balancers/global_policies"))
+    setattr(user_load_balancers, "monitors",
+            self._add_with_auth(self._base, "user/load_balancers/monitors"))
+    setattr(user_load_balancers, "notifiers",
+            self._add_with_auth(self._base, "user/load_balancers/notifiers"))
+    setattr(user_load_balancers, "origins",
+            self._add_with_auth(self._base, "user/load_balancers/origins"))
+    setattr(user_load_balancers, "pools",
+            self._add_with_auth(self._base, "user/load_balancers/pools"))
+    setattr(user_load_balancers, "maps",
+            self._add_with_auth(self._base, "user/load_balancers/maps"))
+
