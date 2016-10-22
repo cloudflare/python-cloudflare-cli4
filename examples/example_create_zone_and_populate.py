@@ -50,7 +50,7 @@ def main():
         {'name':'foo', 'type':'AAAA', 'content':'2001:d8b::1'},
         {'name':'foo', 'type':'A', 'content':'192.168.0.1'},
         {'name':'duh', 'type':'A', 'content':'10.0.0.1', 'ttl':120},
-        {'name':'bar', 'type':'CNAME', 'content':'foo'},
+        {'name':'bar', 'type':'CNAME', 'content':'foo.%s' % (zone_name)}, # CNAME requires FQDN at content
         {'name':'shakespeare', 'type':'TXT', 'content':"What's in a name? That which we call a rose by any other name would smell as sweet."}
     ]
 
