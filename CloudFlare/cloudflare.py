@@ -78,7 +78,7 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             if self.certtoken is '':
-                raise CloudFlareAPIError(0, 'no email and/or cert token defined')
+                raise CloudFlareAPIError(0, 'no cert token defined')
             headers = {
                 'X-Auth-User-Service-Key': self.certtoken,
                 'Content-Type': 'application/json'
@@ -185,10 +185,16 @@ class CloudFlare(object):
                                       identifier1, identifier2,
                                       params, data)
             if response_data['success'] is False:
-                code = response_data['errors'][0]['code']
-                message = response_data['errors'][0]['message']
-                if 'error_chain' in response_data['errors'][0]:
-                    error_chain = response_data['errors'][0]['error_chain']
+                errors = response_data['errors'][0]
+                code = errors['code']
+                if 'message' in errors:
+                    message = errors['message']
+                elif 'error' in errors:
+                    message = errors['error']
+                else:
+                    message = ''
+                if 'error_chain' in errors:
+                    error_chain = errors['error_chain']
                     for error in error_chain:
                         if self.logger:
                             self.logger.debug('Response: error %d %s - chain' % (error['code'], error['message']))
@@ -226,6 +232,31 @@ class CloudFlare(object):
             self.api_call_part2 = api_call_part2
             self.api_call_part3 = api_call_part3
 
+        def get(self, identifier1=None, identifier2=None, params=None, data=None):
+            """ Cloudflare v4 API"""
+
+	    raise CloudFlareAPIError(0, 'get() call not available for this endpoint')
+
+        def patch(self, identifier1=None, identifier2=None, params=None, data=None):
+            """ Cloudflare v4 API"""
+
+	    raise CloudFlareAPIError(0, 'patch() call not available for this endpoint')
+
+        def post(self, identifier1=None, identifier2=None, params=None, data=None):
+            """ Cloudflare v4 API"""
+
+	    raise CloudFlareAPIError(0, 'post() call not available for this endpoint')
+
+        def put(self, identifier1=None, identifier2=None, params=None, data=None):
+            """ Cloudflare v4 API"""
+
+	    raise CloudFlareAPIError(0, 'put() call not available for this endpoint')
+
+        def delete(self, identifier1=None, identifier2=None, params=None, data=None):
+            """ Cloudflare v4 API"""
+
+	    raise CloudFlareAPIError(0, 'delete() call not available for this endpoint')
+
     class _add_noauth(object):
         """ Cloudflare v4 API"""
 
@@ -246,6 +277,26 @@ class CloudFlare(object):
                                                self.api_call_part3,
                                                identifier1, identifier2,
                                                params, data)
+
+        def patch(self, identifier1=None, identifier2=None, params=None, data=None):
+            """ Cloudflare v4 API"""
+
+	    raise CloudFlareAPIError(0, 'patch() call not available for this endpoint')
+
+        def post(self, identifier1=None, identifier2=None, params=None, data=None):
+            """ Cloudflare v4 API"""
+
+	    raise CloudFlareAPIError(0, 'post() call not available for this endpoint')
+
+        def put(self, identifier1=None, identifier2=None, params=None, data=None):
+            """ Cloudflare v4 API"""
+
+	    raise CloudFlareAPIError(0, 'put() call not available for this endpoint')
+
+        def delete(self, identifier1=None, identifier2=None, params=None, data=None):
+            """ Cloudflare v4 API"""
+
+	    raise CloudFlareAPIError(0, 'delete() call not available for this endpoint')
 
     class _add_with_auth(object):
         """ Cloudflare v4 API"""
