@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+#
+# A Hack - not worth publishing
+#
+
 import os
 import pypandoc
 

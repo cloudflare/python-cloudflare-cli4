@@ -1,5 +1,9 @@
 :
 
+#
+# A Hack - not worth publishing
+#
+
 tmp="/tmp/c$$"
 tmp="/tmp/c0"
 
