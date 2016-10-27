@@ -6,10 +6,19 @@ PYLINT = pylint
 EMAIL = "mahtin@mahtin.com"
 NAME = "cloudflare"
 
-all:	README.rst build
+all:	README.rst CHANGELOG.md build
 
 README.rst: README.md
 	$(PANDOC) --from=markdown --to=rst < README.md > README.rst 
+
+CHANGELOG.md: FORCE
+	cp /dev/null CHANGELOG.md
+	echo '# Change Log' >> CHANGELOG.md
+	echo '' >> CHANGELOG.md
+	git log --date=iso-local --pretty=format:' - %ci [%h](https://github.com/cloudflare/python-cloudflare/commit/%H) %s' >> CHANGELOG.md
+	echo '' >> CHANGELOG.md
+
+FORCE:
 
 build: setup.py
 	$(PYTHON) setup.py build
