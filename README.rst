@@ -67,15 +67,70 @@ status of the zone.
 
     def main():
         cf = CloudFlare.CloudFlare()
-        zones = cf.zones.get(params = {'per_page':50})
+        zones = cf.zones.get()
         for zone in zones:
-            zone_name = zone['name']
             zone_id = zone['id']
-            settings_ipv6 = cf.zones.settings.ipv6.get(zone_id)
-            ipv6_status = settings_ipv6['value']
+            zone_name = zone['name']
+            print zone_id, zone_name
+
+    if __name__ == '__main__':
+        main()
+
+This example works when there are less than 50 zones (50 is the default
+number of values returned from a query like this).
+
+Now lets expand on that and add code to show the IPv6 and SSL status of
+the zones. Lets also query 100 zones.
+
+.. code:: python
+
+    import CloudFlare
+
+    def main():
+        cf = CloudFlare.CloudFlare()
+        zones = cf.zones.get(params = {'per_page':100})
+        for zone in zones:
+            zone_id = zone['id']
+            zone_name = zone['name']
+
             settings_ssl = cf.zones.settings.ssl.get(zone_id)
             ssl_status = settings_ssl['value']
-            print zone_id, ssl_status, ipv6_status, zone_name
+
+            settings_ipv6 = cf.zones.settings.ipv6.get(zone_id)
+            ipv6_status = settings_ipv6['value']
+
+            print zone_id, zone_name, ssl_status, ipv6_status
+
+    if __name__ == '__main__':
+        main()
+
+In order to query more than a single page of zones, we would have to use
+the raw mode (decribed more below). We can loop over many get calls and
+pass the page paramater to facilitate the paging.
+
+Raw mode is only needed when a get request has the possibility of
+returning many items.
+
+.. code:: python
+
+    import CloudFlare
+
+    def main():
+        cf = CloudFlare.CloudFlare(raw=True)
+        page_number = 0
+        while True:
+            raw_results = cf.zones.get(params={'per_page':5,'page':page_number})
+            zones = raw_results['result']
+
+            for zone in zones:
+                zone_id = zone['id']
+                zone_name = zone['name']
+                print zone_id, zone_name
+
+            total_pages = raw_results['result_info']['total_pages']
+            page_number += 1
+            if page_number == total_pages:
+                break
 
     if __name__ == '__main__':
         main()
