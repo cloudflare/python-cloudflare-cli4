@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2016-10-30 16:18:23 -0700 [2008a53](https://github.com/cloudflare/python-cloudflare/commit/2008a534891191ca37154f78aed1fd7de18aa5e6) flushed out tabs, converted print to print() - all python3 stuff
+ - 2016-10-29 12:50:28 -0700 [e179521](https://github.com/cloudflare/python-cloudflare/commit/e1795216aea9935b19ab2340cd63f68a8ed4065e) Added more examples of using raw mode and updated README
+ - 2016-10-27 09:15:22 -0700 [8f7b510](https://github.com/cloudflare/python-cloudflare/commit/8f7b51064c54884c095f598f9f93107a24cf2b7f) CHANGELOG.md creation added to Makefile - and pushed to github
  - 2016-10-27 09:09:47 -0700 [7711452](https://github.com/cloudflare/python-cloudflare/commit/7711452b94aa1cc556fef7e7430bcb005f7ca761) CHANGELOG.md creation added to Makefile
  - 2016-10-25 05:14:20 -0700 [206a699](https://github.com/cloudflare/python-cloudflare/commit/206a6992005fdc891e60bdf298e330d6de701810) working CTM release
  - 2016-10-25 05:10:25 -0700 [f107f40](https://github.com/cloudflare/python-cloudflare/commit/f107f40ad4388ad6f71c2e171d3b1a2eb9ba878a) support for CTM errors, cleaner exceptions for invalid methods, clearer cert exception message
