@@ -235,27 +235,27 @@ class CloudFlare(object):
         def get(self, identifier1=None, identifier2=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-	    raise CloudFlareAPIError(0, 'get() call not available for this endpoint')
+            raise CloudFlareAPIError(0, 'get() call not available for this endpoint')
 
         def patch(self, identifier1=None, identifier2=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-	    raise CloudFlareAPIError(0, 'patch() call not available for this endpoint')
+            raise CloudFlareAPIError(0, 'patch() call not available for this endpoint')
 
         def post(self, identifier1=None, identifier2=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-	    raise CloudFlareAPIError(0, 'post() call not available for this endpoint')
+            raise CloudFlareAPIError(0, 'post() call not available for this endpoint')
 
         def put(self, identifier1=None, identifier2=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-	    raise CloudFlareAPIError(0, 'put() call not available for this endpoint')
+            raise CloudFlareAPIError(0, 'put() call not available for this endpoint')
 
         def delete(self, identifier1=None, identifier2=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-	    raise CloudFlareAPIError(0, 'delete() call not available for this endpoint')
+            raise CloudFlareAPIError(0, 'delete() call not available for this endpoint')
 
     class _add_noauth(object):
         """ Cloudflare v4 API"""
@@ -281,22 +281,22 @@ class CloudFlare(object):
         def patch(self, identifier1=None, identifier2=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-	    raise CloudFlareAPIError(0, 'patch() call not available for this endpoint')
+            raise CloudFlareAPIError(0, 'patch() call not available for this endpoint')
 
         def post(self, identifier1=None, identifier2=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-	    raise CloudFlareAPIError(0, 'post() call not available for this endpoint')
+            raise CloudFlareAPIError(0, 'post() call not available for this endpoint')
 
         def put(self, identifier1=None, identifier2=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-	    raise CloudFlareAPIError(0, 'put() call not available for this endpoint')
+            raise CloudFlareAPIError(0, 'put() call not available for this endpoint')
 
         def delete(self, identifier1=None, identifier2=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-	    raise CloudFlareAPIError(0, 'delete() call not available for this endpoint')
+            raise CloudFlareAPIError(0, 'delete() call not available for this endpoint')
 
     class _add_with_auth(object):
         """ Cloudflare v4 API"""
