@@ -146,7 +146,7 @@ def cli4(args):
              + '[-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] '
              + '[-r|--raw] '
              + '[-d|--dump] '
-             + '[--get|--patch|--post|-put|--delete] '
+             + '[--get|--patch|--post|--put|--delete] '
              + '[item=value ...] '
              + '/command...')
 
