@@ -291,7 +291,6 @@ This produces.
 
 A full example of paging is provided below.
 
-
 ### Exceptions
 
 The library will raise **CloudFlareAPIError** when the API call fails.
@@ -329,6 +328,38 @@ import CloudFlare.exceptions
                 sys.stderr.write('api error: %d %s\n' % (x, x))
         exit('api error: %d %s' % (e, e))
     ...
+```
+
+### Exception examples
+
+Here's examples using the CLI command cli4 of the responses passed back in exceptions.
+
+First a simple get with a clean (non-error) response.
+
+```
+$ cli4 /zones/:example.com/dns_records | jq -c '.[]|{"name":.name,"type":.type,"content":.content}'
+{"name":"example.com","type":"MX","content":"something.example.com"}
+{"name":"something.example.com","type":"A","content":"10.10.10.10"}
+$
+```
+
+Next a simple/single error response.
+This is simulated by providing incorrect authentication information.
+
+```
+$ CF_API_EMAIL='someone@example.com' cli4 /zones/
+cli4: /zones - 9103 Unknown X-Auth-Key or X-Auth-Email
+$
+```
+
+Finally, a command that provides more than one error response.
+This is simulated by passing an invalid IPv4 address to a DNS record creation.
+
+```
+$ cli4 --post name='foo' type=A content="1" /zones/:example.com/dns_records
+cli4: /zones/:mahtin.net/dns_records - 9005 Content for A record is invalid. Must be a valid IPv4 address
+cli4: /zones/:mahtin.net/dns_records - 1004 DNS Validation Error
+$
 ```
 
 ## Included example code
