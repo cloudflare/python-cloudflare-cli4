@@ -1,5 +1,7 @@
 # Change Log
 
+ - 2016-11-28 12:51:07 -0800 [b41d1bb](https://github.com/cloudflare/python-cloudflare/commit/b41d1bb553a807fa245dd95dc2ba2df461ff0f70) Added documentation for error response
+ - 2016-10-30 16:21:52 -0700 [bed3f77](https://github.com/cloudflare/python-cloudflare/commit/bed3f77009be4160e3f7aef78f079c0ce8d6c9f8) 1.3.2 more Python3 work
  - 2016-10-30 16:18:23 -0700 [2008a53](https://github.com/cloudflare/python-cloudflare/commit/2008a534891191ca37154f78aed1fd7de18aa5e6) flushed out tabs, converted print to print() - all python3 stuff
  - 2016-10-29 12:50:28 -0700 [e179521](https://github.com/cloudflare/python-cloudflare/commit/e1795216aea9935b19ab2340cd63f68a8ed4065e) Added more examples of using raw mode and updated README
  - 2016-10-27 09:15:22 -0700 [8f7b510](https://github.com/cloudflare/python-cloudflare/commit/8f7b51064c54884c095f598f9f93107a24cf2b7f) CHANGELOG.md creation added to Makefile - and pushed to github
