@@ -398,8 +398,8 @@ simulated by passing an invalid IPv4 address to a DNS record creation.
 ::
 
     $ cli4 --post name='foo' type=A content="1" /zones/:example.com/dns_records
-    cli4: /zones/:mahtin.net/dns_records - 9005 Content for A record is invalid. Must be a valid IPv4 address
-    cli4: /zones/:mahtin.net/dns_records - 1004 DNS Validation Error
+    cli4: /zones/:example.com/dns_records - 9005 Content for A record is invalid. Must be a valid IPv4 address
+    cli4: /zones/:example.com/dns_records - 1004 DNS Validation Error
     $
 
 Included example code
