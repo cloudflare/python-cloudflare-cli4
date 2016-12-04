@@ -448,14 +448,36 @@ convert domain names on-the-fly into zone\_identifier's.
 
 .. code:: bash
 
-    $ cli4 [-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] [-r|--raw] [-d|--dump] [--get|--patch|--post|-put|--delete] [item=value ...] /command...
+    $ cli4 [-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] [-r|--raw] [-d|--dump] [--get|--patch|--post|--put|--delete] [item=value ...] /command...
 
-For API calls that need a set of date or parameters passed there is a
-item=value format. If you want a numeric value passed, then *==* can be
-used to force the value to be treated as a numeric value.
+CLI paramaters for POST/PUT/PATCH
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For API calls that need to pass data or parameters there is various
+formats to use.
+
+The simplest form is ``item=value``. This passes the value as a string
+within the APIs JSON data.
+
+If you need a numeric value passed then *==* can be used to force the
+value to be treated as a numeric value within the APIs JSON data. For
+example: ``item==value``.
+
+if you need to pass a list of items; then *[]* can be used. For example:
+
+::
+
+    pool_id1="11111111111111111111111111111111"
+    pool_id2="22222222222222222222222222222222"
+    pool_id3="33333333333333333333333333333333"
+    cli4 --post global_pools="[ ${pool_id1}, ${pool_id2}, ${pool_id3} ]" region_pools="[ ]" /user/load_balancers/maps
+
+CLI output
+~~~~~~~~~~
 
 The output from the CLI command is in JSON or YAML format (and human
-readable).
+readable). This is controled by the *--yaml* or *--json* flags (JSON is
+the default).
 
 Simple CLI examples
 ~~~~~~~~~~~~~~~~~~~
