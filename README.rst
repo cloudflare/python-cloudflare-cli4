@@ -503,7 +503,7 @@ and then the deletion of that entry.
 
     $ $ cli4 --post name="test" type="A" content="10.0.0.1" /zones/:example.com/dns_records
     {
-        "id": "94e028933c87b4bff3c70a42e6daac4f",
+        "id": "00000000000000000000000000000000",
         "name": "test.example.com",
         "type": "A",
         "content": "10.0.0.1",
@@ -513,14 +513,14 @@ and then the deletion of that entry.
 
     $ cli4 /zones/:example.com/dns_records/:test.example.com | jq '{"id":.id,"name":.name,"type":.type,"content":.content}'
     {
-      "id": "94e028933c87b4bff3c70a42e6daac4f",
+      "id": "00000000000000000000000000000000",
       "name": "test.example.com",
       "type": "A",
       "content": "10.0.0.1"
     }
 
     $ cli4 --delete /zones/:example.com/dns_records/:test.example.com | jq -c .
-    {"id":"94e028933c87b4bff3c70a42e6daac4f"}
+    {"id":"00000000000000000000000000000000"}
     $
 
 There's the ability to handle dns entries with multiple values. This
@@ -529,8 +529,8 @@ produces more than one API call within the command.
 ::
 
     $ cli4 /zones/:example.com/dns_records/:test.example.com | jq -c '.[]|{"id":.id,"name":.name,"type":.type,"content":.content}'
-    {"id":"bca0c4a5e3691e62841627e4dc3a19ed","name":"test.example.com","type":"A","content":"192.168.0.1"}
-    {"id":"d94f788e6bf72ba2a54145ad04b34f08","name":"test.example.com","type":"AAAA","content":"2001:d8b::1"}
+    {"id":"00000000000000000000000000000000","name":"test.example.com","type":"A","content":"192.168.0.1"}
+    {"id":"00000000000000000000000000000000","name":"test.example.com","type":"AAAA","content":"2001:d8b::1"}
     $
 
 Here are the cache purging commands.
@@ -538,15 +538,15 @@ Here are the cache purging commands.
 .. code:: bash
 
     $ cli4 --delete purge_everything=true /zones/:example.com/purge_cache | jq -c .
-    {"id":"d8afaec3dd2b7f8c1b470e594a21a01d"}
+    {"id":"00000000000000000000000000000000"}
     $
 
     $ cli4 --delete files='[http://example.com/css/styles.css]' /zones/:example.com/purge_cache | jq -c .
-    {"id":"d8afaec3dd2b7f8c1b470e594a21a01d"}
+    {"id":"00000000000000000000000000000000"}
     $
 
     $ cli4 --delete files='[http://example.com/css/styles.css,http://example.com/js/script.js]' /zones/:example.com/purge_cache | jq -c .
-    {"id":"d8afaec3dd2b7f8c1b470e594a21a01d"}
+    {"id":"00000000000000000000000000000000"}
     $
 
     $ cli4 --delete tags='[tag1,tag2,tag3]' /zones/:example.com/purge_cache | jq -c .
@@ -558,9 +558,9 @@ A somewhat useful listing of available plans for a specific zone.
 .. code:: bash
 
     $ cli4 /zones/:example.com/available_plans | jq -c '.[]|{"id":.id,"name":.name}'
-    {"id":"a577b510288e82b26486fd1df47000ec","name":"Pro Website"}
-    {"id":"1ac039f6c29b691475c3d74fe588d1ae","name":"Business Website"}
-    {"id":"94f3b7b768b0458b56d2cac4fe5ec0f9","name":"Enterprise Website"}
+    {"id":"00000000000000000000000000000000","name":"Pro Website"}
+    {"id":"00000000000000000000000000000000","name":"Business Website"}
+    {"id":"00000000000000000000000000000000","name":"Enterprise Website"}
     {"id":"0feeeeeeeeeeeeeeeeeeeeeeeeeeeeee","name":"Free Website"}
     $
 
