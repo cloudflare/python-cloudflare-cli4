@@ -35,7 +35,7 @@ However, for now (and for backward compatibility reasons) the class name stays t
 ## Cloudflare API version 4
 
 The Cloudflare API can be found [here](https://api.cloudflare.com/).
-Each API call is provided via a similarly named function within the _CloudFlare_ class.
+Each API call is provided via a similarly named function within the **CloudFlare** class.
 A full list is provided below.
 
 ## Example code
@@ -167,7 +167,7 @@ if __name__ == '__main__':
 
 ## Providing Cloudflare Username and API Key
 
-When you create a _CloudFlare_ class you can pass up to four paramaters.
+When you create a **CloudFlare** class you can pass up to four paramaters.
 
  * Account email
  * Account API key
@@ -412,10 +412,10 @@ For API calls that need to pass data or parameters there is various formats to u
 
 The simplest form is ```item=value```. This passes the value as a string within the APIs JSON data.
 
-If you need a numeric value passed then _==_ can be used to force the value to be treated as a numeric value within the APIs JSON data.
+If you need a numeric value passed then **==** can be used to force the value to be treated as a numeric value within the APIs JSON data.
 For example: ```item==value```.
 
-if you need to pass a list of items; then _[]_ can be used. For example:
+if you need to pass a list of items; then **[]** can be used. For example:
 
 ```
 pool_id1="11111111111111111111111111111111"
@@ -424,9 +424,20 @@ pool_id3="33333333333333333333333333333333"
 cli4 --post global_pools="[ ${pool_id1}, ${pool_id2}, ${pool_id3} ]" region_pools="[ ]" /user/load_balancers/maps
 ```
 
+Data or parameters can be either named or unnamed.
+It can not be both.
+Named is the majority format; as described above.
+Unnamed parameters simply don't have anything before the **=** sign, as in ```=value```.
+This format is presently only used by the Cloudflare Load Balancer API calls.
+For example:
+
+```
+cli4 --put ="[ 00000000000000000000000000000000 ]" /user/load_balancers/maps/:00000000000000000000000000000000/region/WNAM
+```
+
 ### CLI output
 
-The output from the CLI command is in JSON or YAML format (and human readable). This is controled by the _--yaml_ or _--json_ flags (JSON is the default).
+The output from the CLI command is in JSON or YAML format (and human readable). This is controled by the **--yaml** or **--json** flags (JSON is the default).
 
 ### Simple CLI examples
 

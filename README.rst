@@ -45,7 +45,7 @@ Cloudflare API version 4
 
 The Cloudflare API can be found `here <https://api.cloudflare.com/>`__.
 Each API call is provided via a similarly named function within the
-*CloudFlare* class. A full list is provided below.
+**CloudFlare** class. A full list is provided below.
 
 Example code
 ------------
@@ -187,7 +187,8 @@ A more complex example follows.
 Providing Cloudflare Username and API Key
 -----------------------------------------
 
-When you create a *CloudFlare* class you can pass up to four paramaters.
+When you create a **CloudFlare** class you can pass up to four
+paramaters.
 
 -  Account email
 -  Account API key
@@ -459,11 +460,12 @@ formats to use.
 The simplest form is ``item=value``. This passes the value as a string
 within the APIs JSON data.
 
-If you need a numeric value passed then *==* can be used to force the
+If you need a numeric value passed then **==** can be used to force the
 value to be treated as a numeric value within the APIs JSON data. For
 example: ``item==value``.
 
-if you need to pass a list of items; then *[]* can be used. For example:
+if you need to pass a list of items; then **[]** can be used. For
+example:
 
 ::
 
@@ -472,12 +474,22 @@ if you need to pass a list of items; then *[]* can be used. For example:
     pool_id3="33333333333333333333333333333333"
     cli4 --post global_pools="[ ${pool_id1}, ${pool_id2}, ${pool_id3} ]" region_pools="[ ]" /user/load_balancers/maps
 
+Data or parameters can be either named or unnamed. It can not be both.
+Named is the majority format; as described above. Unnamed parameters
+simply don't have anything before the **=** sign, as in ``=value``. This
+format is presently only used by the Cloudflare Load Balancer API calls.
+For example:
+
+::
+
+    cli4 --put ="[ 00000000000000000000000000000000 ]" /user/load_balancers/maps/:00000000000000000000000000000000/region/WNAM
+
 CLI output
 ~~~~~~~~~~
 
 The output from the CLI command is in JSON or YAML format (and human
-readable). This is controled by the *--yaml* or *--json* flags (JSON is
-the default).
+readable). This is controled by the **--yaml** or **--json** flags (JSON
+is the default).
 
 Simple CLI examples
 ~~~~~~~~~~~~~~~~~~~

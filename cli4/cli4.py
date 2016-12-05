@@ -146,7 +146,7 @@ def cli4(args):
              + '[-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] '
              + '[-r|--raw] '
              + '[-d|--dump] '
-             + '[--get|--patch|--post|-put|--delete] '
+             + '[--get|--patch|--post|--put|--delete] '
              + '[item=value ...] '
              + '/command...')
 
@@ -193,7 +193,7 @@ def cli4(args):
     digits_only = re.compile('^[0-9]+$')
 
     # next grab the params. These are in the form of tag=value
-    params = {}
+    params = None
     while len(args) > 0 and '=' in args[0]:
         tag_string, value_string = args.pop(0).split('=', 1)
         if value_string == 'true':
@@ -213,8 +213,22 @@ def cli4(args):
                 exit('cli4: %s="%s" - can\'t parse json value' % (tag_string, value_string))
         else:
             value = value_string
-        tag = tag_string
-        params[tag] = value
+        if tag_string == '':
+            # There's no tag; it's just an unnamed list
+            if params == None:
+                params = []
+            try:
+                params.append(value)
+            except AttributeError:
+                exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' % (tag_string, value_string))
+        else:
+            if params == None:
+                params = {}
+            tag = tag_string
+            try:
+                params[tag] = value
+            except TypeError:
+                exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' % (tag_string, value_string))
 
     if dump:
         cf = CloudFlare.CloudFlare()
