@@ -432,7 +432,7 @@ This format is presently only used by the Cloudflare Load Balancer API calls.
 For example:
 
 ```
-cli4 --put ="[ 00000000000000000000000000000000 ]" /user/load_balancers/maps/:00000000000000000000000000000000/region/WNAM
+cli4 --put ="00000000000000000000000000000000" /user/load_balancers/maps/:00000000000000000000000000000000/region/:WNAM
 ```
 
 ### CLI output
