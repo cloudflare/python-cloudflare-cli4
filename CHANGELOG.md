@@ -1,5 +1,6 @@
 # Change Log
 
+ - 2016-12-05 11:02:16 -0800 [2d4a5ee](https://github.com/cloudflare/python-cloudflare/commit/2d4a5ee85ade3702013e92f3ee72b2491b9bddb6) 1.4.0 release
  - 2016-12-05 10:58:59 -0800 [734204e](https://github.com/cloudflare/python-cloudflare/commit/734204e901dfcd486b24ed60dec2fcea75855412) cli4 can now do maps and regions in Cloudflare Load Balancer
  - 2016-12-05 10:57:57 -0800 [957f9b0](https://github.com/cloudflare/python-cloudflare/commit/957f9b0af2d434e41249533c2180164215fb73d7) Removed CloudFlare Load Balancer region example - moved to cli4
  - 2016-12-05 10:56:57 -0800 [dcb7456](https://github.com/cloudflare/python-cloudflare/commit/dcb74565cc0f1bc8aee6bd747043192accd6ff51) Cloudflare Load Balancer example updated
