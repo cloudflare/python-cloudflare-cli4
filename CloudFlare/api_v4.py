@@ -236,4 +236,7 @@ def api_v4(self):
             self._add_with_auth(self._base, "user/load_balancers/pools"))
     setattr(user_load_balancers, "maps",
             self._add_with_auth(self._base, "user/load_balancers/maps"))
+    user_load_balancers_maps = getattr(user_load_balancers, "maps")
+    setattr(user_load_balancers_maps, "region",
+            self._add_with_auth(self._base, "user/load_balancers/maps", "region"))
 
