@@ -1,5 +1,13 @@
 # Change Log
 
+ - 2016-12-05 10:58:59 -0800 [734204e](https://github.com/cloudflare/python-cloudflare/commit/734204e901dfcd486b24ed60dec2fcea75855412) cli4 can now do maps and regions in Cloudflare Load Balancer
+ - 2016-12-05 10:57:57 -0800 [957f9b0](https://github.com/cloudflare/python-cloudflare/commit/957f9b0af2d434e41249533c2180164215fb73d7) Removed CloudFlare Load Balancer region example - moved to cli4
+ - 2016-12-05 10:56:57 -0800 [dcb7456](https://github.com/cloudflare/python-cloudflare/commit/dcb74565cc0f1bc8aee6bd747043192accd6ff51) Cloudflare Load Balancer example updated
+ - 2016-12-04 16:17:25 -0800 [cc46b4d](https://github.com/cloudflare/python-cloudflare/commit/cc46b4d28aac69cf0811c8ac5973a15a0abad1dc) added unnamed data and param passing - used by CLB API
+ - 2016-12-04 13:43:50 -0800 [e57f421](https://github.com/cloudflare/python-cloudflare/commit/e57f421854a50e0c1954a80191f7efb70036ab81) changed most id values to all zeros
+ - 2016-12-04 13:34:31 -0800 [420d8da](https://github.com/cloudflare/python-cloudflare/commit/420d8dae3938d13f020d19f36683bfec31d9ea6b) added param examples
+ - 2016-11-28 12:53:44 -0800 [0e159f5](https://github.com/cloudflare/python-cloudflare/commit/0e159f5b938a319cf362061497f10565df3c2a34) typo
+ - 2016-11-28 12:51:42 -0800 [43afa2f](https://github.com/cloudflare/python-cloudflare/commit/43afa2f76f716cfa2b25ac0b06e99e5720e5fb41) CHANGELOG.md pushed to github
  - 2016-11-28 12:51:07 -0800 [b41d1bb](https://github.com/cloudflare/python-cloudflare/commit/b41d1bb553a807fa245dd95dc2ba2df461ff0f70) Added documentation for error response
  - 2016-10-30 16:21:52 -0700 [bed3f77](https://github.com/cloudflare/python-cloudflare/commit/bed3f77009be4160e3f7aef78f079c0ce8d6c9f8) 1.3.2 more Python3 work
  - 2016-10-30 16:18:23 -0700 [2008a53](https://github.com/cloudflare/python-cloudflare/commit/2008a534891191ca37154f78aed1fd7de18aa5e6) flushed out tabs, converted print to print() - all python3 stuff
