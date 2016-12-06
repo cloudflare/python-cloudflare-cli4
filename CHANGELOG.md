@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2016-12-06 07:52:56 -0800 [b717f6c](https://github.com/cloudflare/python-cloudflare/commit/b717f6c3f5087bade8cb729ca798af1575eb0f8a) Merge branch 'corywright-fix-usage-docstring'
+ - 2016-12-06 07:52:35 -0800 [e87ab0a](https://github.com/cloudflare/python-cloudflare/commit/e87ab0ae9c88a44dc1e1274baddb8eb701fb0330) Merge branch 'fix-usage-docstring' of https://github.com/corywright/python-cloudflare into corywright-fix-usage-docstring
+ - 2016-12-05 11:03:04 -0800 [99a85fb](https://github.com/cloudflare/python-cloudflare/commit/99a85fb2c51f626f1f10ce3e0db164277d4137a9) CHANGELOG.md pushed to github
  - 2016-12-05 11:02:16 -0800 [2d4a5ee](https://github.com/cloudflare/python-cloudflare/commit/2d4a5ee85ade3702013e92f3ee72b2491b9bddb6) 1.4.0 release
  - 2016-12-05 10:58:59 -0800 [734204e](https://github.com/cloudflare/python-cloudflare/commit/734204e901dfcd486b24ed60dec2fcea75855412) cli4 can now do maps and regions in Cloudflare Load Balancer
  - 2016-12-05 10:57:57 -0800 [957f9b0](https://github.com/cloudflare/python-cloudflare/commit/957f9b0af2d434e41249533c2180164215fb73d7) Removed CloudFlare Load Balancer region example - moved to cli4
@@ -10,6 +13,7 @@
  - 2016-11-28 12:53:44 -0800 [0e159f5](https://github.com/cloudflare/python-cloudflare/commit/0e159f5b938a319cf362061497f10565df3c2a34) typo
  - 2016-11-28 12:51:42 -0800 [43afa2f](https://github.com/cloudflare/python-cloudflare/commit/43afa2f76f716cfa2b25ac0b06e99e5720e5fb41) CHANGELOG.md pushed to github
  - 2016-11-28 12:51:07 -0800 [b41d1bb](https://github.com/cloudflare/python-cloudflare/commit/b41d1bb553a807fa245dd95dc2ba2df461ff0f70) Added documentation for error response
+ - 2016-11-23 15:26:02 -0500 [1f6e11c](https://github.com/cloudflare/python-cloudflare/commit/1f6e11c3cfeaeaa366af87257f34d32a13881cff) Fix usage typo: -put should be --put
  - 2016-10-30 16:21:52 -0700 [bed3f77](https://github.com/cloudflare/python-cloudflare/commit/bed3f77009be4160e3f7aef78f079c0ce8d6c9f8) 1.3.2 more Python3 work
  - 2016-10-30 16:18:23 -0700 [2008a53](https://github.com/cloudflare/python-cloudflare/commit/2008a534891191ca37154f78aed1fd7de18aa5e6) flushed out tabs, converted print to print() - all python3 stuff
  - 2016-10-29 12:50:28 -0700 [e179521](https://github.com/cloudflare/python-cloudflare/commit/e1795216aea9935b19ab2340cd63f68a8ed4065e) Added more examples of using raw mode and updated README
