@@ -228,9 +228,9 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             self._base = base
-            self.api_call_part1 = api_call_part1
-            self.api_call_part2 = api_call_part2
-            self.api_call_part3 = api_call_part3
+            # self.api_call_part1 = api_call_part1
+            # self.api_call_part2 = api_call_part2
+            # self.api_call_part3 = api_call_part3
 
         def get(self, identifier1=None, identifier2=None, params=None, data=None):
             """ Cloudflare v4 API"""
@@ -272,11 +272,11 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_no_auth('GET',
-                                               self.api_call_part1,
-                                               self.api_call_part2,
-                                               self.api_call_part3,
-                                               identifier1, identifier2,
-                                               params, data)
+                                                self.api_call_part1,
+                                                self.api_call_part2,
+                                                self.api_call_part3,
+                                                identifier1, identifier2,
+                                                params, data)
 
         def patch(self, identifier1=None, identifier2=None, params=None, data=None):
             """ Cloudflare v4 API"""
@@ -313,51 +313,51 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_auth('GET',
-                                            self.api_call_part1,
-                                            self.api_call_part2,
-                                            self.api_call_part3,
-                                            identifier1, identifier2,
-                                            params, data)
+                                                self.api_call_part1,
+                                                self.api_call_part2,
+                                                self.api_call_part3,
+                                                identifier1, identifier2,
+                                                params, data)
 
         def patch(self, identifier1=None, identifier2=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_auth('PATCH',
-                                            self.api_call_part1,
-                                            self.api_call_part2,
-                                            self.api_call_part3,
-                                            identifier1, identifier2,
-                                            params, data)
+                                                self.api_call_part1,
+                                                self.api_call_part2,
+                                                self.api_call_part3,
+                                                identifier1, identifier2,
+                                                params, data)
 
         def post(self, identifier1=None, identifier2=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_auth('POST',
-                                            self.api_call_part1,
-                                            self.api_call_part2,
-                                            self.api_call_part3,
-                                            identifier1, identifier2,
-                                            params, data)
+                                                self.api_call_part1,
+                                                self.api_call_part2,
+                                                self.api_call_part3,
+                                                identifier1, identifier2,
+                                                params, data)
 
         def put(self, identifier1=None, identifier2=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_auth('PUT',
-                                            self.api_call_part1,
-                                            self.api_call_part2,
-                                            self.api_call_part3,
-                                            identifier1, identifier2,
-                                            params, data)
+                                                self.api_call_part1,
+                                                self.api_call_part2,
+                                                self.api_call_part3,
+                                                identifier1, identifier2,
+                                                params, data)
 
         def delete(self, identifier1=None, identifier2=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_auth('DELETE',
-                                            self.api_call_part1,
-                                            self.api_call_part2,
-                                            self.api_call_part3,
-                                            identifier1, identifier2,
-                                            params, data)
+                                                self.api_call_part1,
+                                                self.api_call_part2,
+                                                self.api_call_part3,
+                                                identifier1, identifier2,
+                                                params, data)
 
     class _add_with_cert_auth(object):
         """ Cloudflare v4 API"""
@@ -419,6 +419,29 @@ class CloudFlare(object):
                                                 self.api_call_part3,
                                                 identifier1, identifier2,
                                                 params, data)
+
+    def api_list(self, m=None, s=''):
+        """recursive walk of the api tree returning a list of api calls"""
+        if m == None:
+            m = self
+        w = []
+        for n in sorted(dir(m)):
+            if n[0] == '_':
+                # internal
+                continue
+            if n in ['delete', 'get', 'patch', 'post', 'put']:
+                # gone too far
+                continue
+            a = getattr(m, n)
+            d = dir(a)
+            if '_base' in d:
+                # it's a known api call - lets show the result and continue down the tree
+                if 'delete' in d or 'get' in d or 'patch' in d or 'post' in d or 'put' in d:
+                    # only show the result if a call exists for this part
+                    if 'api_call_part1' in d:
+                        w.append(s + '/' + n)
+                w = w + self.api_list(a, s + '/' + n)
+        return w
 
     def __init__(self, email=None, token=None, certtoken=None, debug=False, raw=False):
         """ Cloudflare v4 API"""

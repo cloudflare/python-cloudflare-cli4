@@ -148,27 +148,10 @@ def convert_load_balancers_map_regions(cf, region_name):
         return region_name
     exit('cli4: %s - no region found' % (region_name))
 
-def walk(m, s):
-    """recursive walk of the tree"""
-    for n in sorted(dir(m)):
-        if n[0] == '_':
-            # internal
-            continue
-        if n in ['delete', 'get', 'patch', 'post', 'put']:
-            # gone too far
-            continue
-        a = getattr(m, n)
-        d = dir(a)
-        if '_base' in d:
-            # it's a known api call - lets show the result and continue down the tree
-            if 'delete' in d or 'get' in d or 'patch' in d or 'post' in d or 'put' in d:
-                # only show the result if a call exists for this part
-                print(s + '/' + n)
-            walk(a, s + '/' + n)
-
 def dump_commands(cf):
     """dump a tree of all the known API commands"""
-    walk(cf, '')
+    w = cf.api_list()
+    print('\n'.join(w))
 
 def cli4(args):
     """Cloudflare API via command line"""
