@@ -1,5 +1,9 @@
 # Change Log
 
+ - 2016-12-10 15:39:01 -0800 [f3d6377](https://github.com/cloudflare/python-cloudflare/commit/f3d637727d74acecd8faf4c9b6d652ee2cff183f) 1.4.1 release
+ - 2016-12-10 15:38:10 -0800 [8c66d32](https://github.com/cloudflare/python-cloudflare/commit/8c66d3253b6f257b61b0116600fb2b3d77e8f0fb) cleanup of yaml print output if yaml package isnt installed
+ - 2016-12-09 16:22:51 -0800 [894ae11](https://github.com/cloudflare/python-cloudflare/commit/894ae11788a2b1997e4f58895d205d1f74ab16f7) Moved walk into CloudFlare class - much cleaner
+ - 2016-12-06 08:24:29 -0800 [752ccb4](https://github.com/cloudflare/python-cloudflare/commit/752ccb45b40d2db245b6cd974b39e9c0f4880bf7) CHANGELOG.md pushed to github
  - 2016-12-06 07:52:56 -0800 [b717f6c](https://github.com/cloudflare/python-cloudflare/commit/b717f6c3f5087bade8cb729ca798af1575eb0f8a) Merge branch 'corywright-fix-usage-docstring'
  - 2016-12-06 07:52:35 -0800 [e87ab0a](https://github.com/cloudflare/python-cloudflare/commit/e87ab0ae9c88a44dc1e1274baddb8eb701fb0330) Merge branch 'fix-usage-docstring' of https://github.com/corywright/python-cloudflare into corywright-fix-usage-docstring
  - 2016-12-05 11:03:04 -0800 [99a85fb](https://github.com/cloudflare/python-cloudflare/commit/99a85fb2c51f626f1f10ce3e0db164277d4137a9) CHANGELOG.md pushed to github
