@@ -194,6 +194,8 @@ def cli4(args):
         elif opt in ('-j', '--json'):
             output = 'json'
         elif opt in ('-y', '--yaml'):
+            if yaml is None:
+                exit('cli4: install yaml support')
             output = 'yaml'
         elif opt in ('-r', '--raw'):
             raw = True
@@ -365,6 +367,6 @@ def cli4(args):
 
     if output == 'json':
         print(json.dumps(results, indent=4, sort_keys=True))
-    if output == 'yaml' and yaml is not None:
+    if output == 'yaml':
         print(yaml.safe_dump(results))
 
