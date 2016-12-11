@@ -77,7 +77,7 @@ class CloudFlare(object):
                                params=None, data=None):
             """ Cloudflare v4 API"""
 
-            if self.certtoken is '':
+            if self.certtoken is '' or self.certtoken is None:
                 raise CloudFlareAPIError(0, 'no cert token defined')
             headers = {
                 'X-Auth-User-Service-Key': self.certtoken,
@@ -184,6 +184,27 @@ class CloudFlare(object):
                                       api_call_part1, api_call_part2, api_call_part3,
                                       identifier1, identifier2,
                                       params, data)
+
+            # Sanatize the returned results - just in case API is messed up
+            if 'success' not in response_data:
+                if 'errors' in response_data:
+                    if self.logger:
+                        self.logger.debug('Response: missing success value - assuming success = "False"')
+                    response_data['success'] = False
+                else:
+                    if 'result' not in response_data:
+                        # Only happens on /certificates call - and should be fixed in /certificates API
+                        if self.logger:
+                            self.logger.debug('Response: missing success and error value - assuming success = "False"')
+                        r = response_data
+                        response_data['errors'] = []
+                        response_data['errors'].append(r)
+                        response_data['success'] = False
+                    else:
+                        if self.logger:
+                            self.logger.debug('Response: missing success value - assuming success = "True"')
+                        response_data['success'] = True
+
             if response_data['success'] is False:
                 errors = response_data['errors'][0]
                 code = errors['code']

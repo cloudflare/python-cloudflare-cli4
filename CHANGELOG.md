@@ -1,5 +1,6 @@
 # Change Log
 
+ - 2016-12-10 15:39:29 -0800 [080733b](https://github.com/cloudflare/python-cloudflare/commit/080733b58e144670116d7f3ccadf369d599bfc61) CHANGELOG.md pushed to github
  - 2016-12-10 15:39:01 -0800 [f3d6377](https://github.com/cloudflare/python-cloudflare/commit/f3d637727d74acecd8faf4c9b6d652ee2cff183f) 1.4.1 release
  - 2016-12-10 15:38:10 -0800 [8c66d32](https://github.com/cloudflare/python-cloudflare/commit/8c66d3253b6f257b61b0116600fb2b3d77e8f0fb) cleanup of yaml print output if yaml package isnt installed
  - 2016-12-09 16:22:51 -0800 [894ae11](https://github.com/cloudflare/python-cloudflare/commit/894ae11788a2b1997e4f58895d205d1f74ab16f7) Moved walk into CloudFlare class - much cleaner
