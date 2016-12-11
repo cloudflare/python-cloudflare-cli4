@@ -1,5 +1,7 @@
 # Change Log
 
+ - 2016-12-11 11:23:05 -0800 [37fab98](https://github.com/cloudflare/python-cloudflare/commit/37fab98e08c814d7db066af60266c4d613960b97) 1.4.2 release
+ - 2016-12-11 11:22:02 -0800 [52dda2e](https://github.com/cloudflare/python-cloudflare/commit/52dda2ededa1aa8fd21e7bc2dff2c1f2d2c58a9a) sanatize the returned results - just in case API is messed up
  - 2016-12-10 15:39:29 -0800 [080733b](https://github.com/cloudflare/python-cloudflare/commit/080733b58e144670116d7f3ccadf369d599bfc61) CHANGELOG.md pushed to github
  - 2016-12-10 15:39:01 -0800 [f3d6377](https://github.com/cloudflare/python-cloudflare/commit/f3d637727d74acecd8faf4c9b6d652ee2cff183f) 1.4.1 release
  - 2016-12-10 15:38:10 -0800 [8c66d32](https://github.com/cloudflare/python-cloudflare/commit/8c66d3253b6f257b61b0116600fb2b3d77e8f0fb) cleanup of yaml print output if yaml package isnt installed
