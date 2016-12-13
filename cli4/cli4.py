@@ -151,7 +151,7 @@ def convert_load_balancers_map_regions(cf, region_name):
 def dump_commands(cf):
     """dump a tree of all the known API commands"""
     w = cf.api_list()
-    print('\n'.join(w))
+    sys.stdout.write('\n'.join(w))
 
 def cli4(args):
     """Cloudflare API via command line"""
@@ -237,20 +237,22 @@ def cli4(args):
             value = value_string
         if tag_string == '':
             # There's no tag; it's just an unnamed list
-            if params == None:
+            if params is None:
                 params = []
             try:
                 params.append(value)
             except AttributeError:
-                exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' % (tag_string, value_string))
+                exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' %
+                     (tag_string, value_string))
         else:
-            if params == None:
+            if params is None:
                 params = {}
             tag = tag_string
             try:
                 params[tag] = value
             except TypeError:
-                exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' % (tag_string, value_string))
+                exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' %
+                     (tag_string, value_string))
 
     if dump:
         cf = CloudFlare.CloudFlare()
@@ -313,7 +315,10 @@ def cli4(args):
                     identifier2 = element
                 elif (cmd[0] and cmd[0] == 'zones') and (cmd[2] and cmd[2] == 'dns_records'):
                     identifier2 = convert_dns_record_to_identifier(cf, identifier1, element)
-                elif (cmd[0] == 'user') and (cmd[1] == 'load_balancers') and (cmd[2] == 'maps') and (cmd[4] == 'region'):
+                elif ((cmd[0] == 'user') and
+                      (cmd[1] == 'load_balancers') and
+                      (cmd[2] == 'maps') and
+                      (cmd[4] == 'region')):
                     identifier2 = convert_load_balancers_map_regions(cf, element)
                 else:
                     exit("/%s/%s :NOT CODED YET 2" % ('/'.join(cmd), element))
@@ -366,7 +371,7 @@ def cli4(args):
         results = results[0]
 
     if output == 'json':
-        print(json.dumps(results, indent=4, sort_keys=True))
+        sys.stdout.write(json.dumps(results, indent=4, sort_keys=True))
     if output == 'yaml':
-        print(yaml.safe_dump(results))
+        sys.stdout.write(yaml.safe_dump(results))
 

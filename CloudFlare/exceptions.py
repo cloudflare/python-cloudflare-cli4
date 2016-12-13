@@ -38,7 +38,7 @@ class CloudFlareError(Exception):
     def __len__(self):
         """ Cloudflare API errors can contain a chain of errors"""
 
-        if self.error_chain == None:
+        if self.error_chain is None:
             return 0
         else:
             return len(self.error_chain)
@@ -51,13 +51,13 @@ class CloudFlareError(Exception):
     def __iter__(self):
         """ Cloudflare API errors can contain a chain of errors"""
 
-        if self.error_chain == None:
+        if self.error_chain is None:
             raise StopIteration
         for e in self.error_chain:
             yield e
 
     def next(self):
-        if self.error_chain == None:
+        if self.error_chain is None:
             raise StopIteration()
 
 class CloudFlareAPIError(CloudFlareError):
