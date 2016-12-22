@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2016-12-22 14:29:29 -0800 [07fd70f](https://github.com/cloudflare/python-cloudflare/commit/07fd70fdb2d8d44814c7877ab4bff0073bf8631d) 1.4.4 release
+ - 2016-12-22 13:55:38 -0800 [0f670b5](https://github.com/cloudflare/python-cloudflare/commit/0f670b5ae88194a9ea314b8cc1f5b071dce56143) Added /zones/rate_limits API command
+ - 2016-12-22 13:46:42 -0800 [e144c66](https://github.com/cloudflare/python-cloudflare/commit/e144c663b5a4af1baf1791a422e00bcf3a239e66) CHANGELOG.md pushed to github
  - 2016-12-22 13:46:09 -0800 [8231b76](https://github.com/cloudflare/python-cloudflare/commit/8231b76dd4b87996c73e539b36e36eedcf94637c) 1.4.3 release
  - 2016-12-22 13:45:10 -0800 [1420966](https://github.com/cloudflare/python-cloudflare/commit/142096680954e7aa03c2620a0f545383c04686e1) pylint work
  - 2016-12-22 13:44:41 -0800 [b8fe4da](https://github.com/cloudflare/python-cloudflare/commit/b8fe4da34ac997edae6be87f6cd58069e2ff0f59) pylint work because of a typo
