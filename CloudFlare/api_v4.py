@@ -3,242 +3,321 @@
 def api_v4(self):
     """ API core commands for Cloudflare API"""
 
-    base = self._base
-
     # The API commands for /user/
+    user(self)
+    # The API commands for /zones/
+    zones(self)
+    zones_settings(self)
+    zones_analytics(self)
+    zones_firewall(self)
+    # The API commands for /railguns/
+    railguns(self)
+    # The API commands for /organizations/
+    organizations(self)
+    # The API commands for /certificates/
+    certificates(self)
+    # The API commands for /ips/
+    ips(self)
+    # The API commands for /zones/:zone_id/dnssec
+    zones_dnssec(self)
+    # The API commands for /zones/:zone_id/ssl
+    zones_ssl(self)
+    # The API commands for CLB /zones/:zone_id/load_balancers & /user/load_balancers
+    zones_load_balancers(self)
+    user_load_balancers(self)
+
+def user(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
     setattr(self, "user",
             self._add_with_auth(base, "user"))
-    user = getattr(self, "user")
-    setattr(user, "billing",
+    branch = getattr(self, "user")
+    setattr(branch, "billing",
             self._add_unused(base, "user/billing"))
-    user_billing = getattr(user, "billing")
-    setattr(user_billing, "history",
+    branch = getattr(getattr(self, "user"), "billing")
+    setattr(branch, "history",
             self._add_with_auth(base, "user/billing/history"))
-    setattr(user_billing, "profile",
+    setattr(branch, "profile",
             self._add_with_auth(base, "user/billing/profile"))
-    setattr(user_billing, "subscriptions",
+    setattr(branch, "subscriptions",
             self._add_unused(base, "user/billing/subscriptions"))
-    user_billing_subscriptions = getattr(user_billing, "subscriptions")
-    setattr(user_billing_subscriptions, "apps",
+    branch = getattr(getattr(getattr(self, "user"), "billing"), "subscriptions")
+    setattr(branch, "apps",
             self._add_with_auth(base, "user/billing/subscriptions/apps"))
-    setattr(user_billing_subscriptions, "zones",
+    setattr(branch, "zones",
             self._add_with_auth(base, "user/billing/subscriptions/zones"))
-    setattr(user, "firewall",
+    setattr(getattr(self, "user"), "firewall",
             self._add_unused(base, "user/firewall"))
-    user_firewall = getattr(user, "firewall")
-    setattr(user_firewall, "access_rules",
+    branch = getattr(getattr(self, "user"), "firewall")
+    setattr(branch, "access_rules",
             self._add_unused(base, "user/firewall/access_rules"))
-    user_firewall_access_rules = getattr(user_firewall, "access_rules")
-    setattr(user_firewall_access_rules, "rules",
+    branch = getattr(getattr(getattr(self, "user"), "firewall"), "access_rules")
+    setattr(branch, "rules",
             self._add_with_auth(base, "user/firewall/access_rules/rules"))
-    setattr(user, "organizations",
+    branch = getattr(self, "user")
+    setattr(branch, "organizations",
             self._add_with_auth(base, "user/organizations"))
-    setattr(user, "invites",
+    setattr(branch, "invites",
             self._add_with_auth(base, "user/invites"))
-    setattr(user, "virtual_dns",
+    setattr(branch, "virtual_dns",
             self._add_with_auth(base, "user/virtual_dns"))
 
-    # The API commands for /zones/
+def zones(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
     setattr(self, "zones",
             self._add_with_auth(base, "zones"))
-    zones = getattr(self, "zones")
-    setattr(zones, "activation_check",
+    branch = getattr(self, "zones")
+    setattr(branch, "activation_check",
             self._add_with_auth(base, "zones", "activation_check"))
-    setattr(zones, "available_plans",
+    setattr(branch, "available_plans",
             self._add_with_auth(base, "zones", "available_plans"))
-    setattr(zones, "available_rate_plans",
+    setattr(branch, "available_rate_plans",
             self._add_with_auth(base, "zones", "available_rate_plans"))
-    setattr(zones, "custom_certificates",
+    setattr(branch, "custom_certificates",
             self._add_with_auth(base, "zones", "custom_certificates"))
-    zones_custom_certificates = getattr(zones, "custom_certificates")
-    setattr(zones_custom_certificates, "prioritize",
+    branch = getattr(getattr(self, "zones"), "custom_certificates")
+    setattr(branch, "prioritize",
             self._add_with_auth(base, "zones", "custom_certificates/prioritize"))
-    setattr(zones, "custom_pages",
+    branch = getattr(self, "zones")
+    setattr(branch, "custom_pages",
             self._add_with_auth(base, "zones", "custom_pages"))
-    setattr(zones, "dns_records",
+    setattr(branch, "dns_records",
             self._add_with_auth(base, "zones", "dns_records"))
-    setattr(zones, "keyless_certificates",
+    setattr(branch, "keyless_certificates",
             self._add_with_auth(base, "zones", "keyless_certificates"))
-    setattr(zones, "pagerules",
+    setattr(branch, "pagerules",
             self._add_with_auth(base, "zones", "pagerules"))
-    setattr(zones, "purge_cache",
+    setattr(branch, "purge_cache",
             self._add_with_auth(base, "zones", "purge_cache"))
-    setattr(zones, "railguns",
+    setattr(branch, "railguns",
             self._add_with_auth(base, "zones", "railguns"))
-    zones_railguns = getattr(zones, "railguns")
-    setattr(zones_railguns, "diagnose",
+    branch = getattr(getattr(self, "zones"), "railguns")
+    setattr(branch, "diagnose",
             self._add_with_auth(base, "zones", "railguns", "diagnose"))
-    setattr(zones, "settings",
+
+def zones_settings(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
+    branch = getattr(self, "zones")
+    setattr(branch, "settings",
             self._add_with_auth(base, "zones", "settings"))
-    zones_settings = getattr(zones, "settings")
-    setattr(zones_settings, "advanced_ddos",
+    branch = getattr(getattr(self, "zones"), "settings")
+    setattr(branch, "advanced_ddos",
             self._add_with_auth(base, "zones", "settings/advanced_ddos"))
-    setattr(zones_settings, "always_online",
+    setattr(branch, "always_online",
             self._add_with_auth(base, "zones", "settings/always_online"))
-    setattr(zones_settings, "browser_cache_ttl",
+    setattr(branch, "browser_cache_ttl",
             self._add_with_auth(base, "zones", "settings/browser_cache_ttl"))
-    setattr(zones_settings, "browser_check",
+    setattr(branch, "browser_check",
             self._add_with_auth(base, "zones", "settings/browser_check"))
-    setattr(zones_settings, "cache_level",
+    setattr(branch, "cache_level",
             self._add_with_auth(base, "zones", "settings/cache_level"))
-    setattr(zones_settings, "challenge_ttl",
+    setattr(branch, "challenge_ttl",
             self._add_with_auth(base, "zones", "settings/challenge_ttl"))
-    setattr(zones_settings, "development_mode",
+    setattr(branch, "development_mode",
             self._add_with_auth(base, "zones", "settings/development_mode"))
-    setattr(zones_settings, "email_obfuscation",
+    setattr(branch, "email_obfuscation",
             self._add_with_auth(base, "zones", "settings/email_obfuscation"))
-    setattr(zones_settings, "hotlink_protection",
+    setattr(branch, "hotlink_protection",
             self._add_with_auth(base, "zones", "settings/hotlink_protection"))
-    setattr(zones_settings, "ip_geolocation",
+    setattr(branch, "ip_geolocation",
             self._add_with_auth(base, "zones", "settings/ip_geolocation"))
-    setattr(zones_settings, "ipv6",
+    setattr(branch, "ipv6",
             self._add_with_auth(base, "zones", "settings/ipv6"))
-    setattr(zones_settings, "minify",
+    setattr(branch, "minify",
             self._add_with_auth(base, "zones", "settings/minify"))
-    setattr(zones_settings, "mirage",
+    setattr(branch, "mirage",
             self._add_with_auth(base, "zones", "settings/mirage"))
-    setattr(zones_settings, "mobile_redirect",
+    setattr(branch, "mobile_redirect",
             self._add_with_auth(base, "zones", "settings/mobile_redirect"))
-    setattr(zones_settings, "origin_error_page_pass_thru",
+    setattr(branch, "origin_error_page_pass_thru",
             self._add_with_auth(base, "zones", "settings/origin_error_page_pass_thru"))
-    setattr(zones_settings, "polish",
+    setattr(branch, "polish",
             self._add_with_auth(base, "zones", "settings/polish"))
-    setattr(zones_settings, "prefetch_preload",
+    setattr(branch, "prefetch_preload",
             self._add_with_auth(base, "zones", "settings/prefetch_preload"))
-    setattr(zones_settings, "response_buffering",
+    setattr(branch, "response_buffering",
             self._add_with_auth(base, "zones", "settings/response_buffering"))
-    setattr(zones_settings, "rocket_loader",
+    setattr(branch, "rocket_loader",
             self._add_with_auth(base, "zones", "settings/rocket_loader"))
-    setattr(zones_settings, "security_header",
+    setattr(branch, "security_header",
             self._add_with_auth(base, "zones", "settings/security_header"))
-    setattr(zones_settings, "security_level",
+    setattr(branch, "security_level",
             self._add_with_auth(base, "zones", "settings/security_level"))
-    setattr(zones_settings, "server_side_exclude",
+    setattr(branch, "server_side_exclude",
             self._add_with_auth(base, "zones", "settings/server_side_exclude"))
-    setattr(zones_settings, "sort_query_string_for_cache",
+    setattr(branch, "sort_query_string_for_cache",
             self._add_with_auth(base, "zones", "settings/sort_query_string_for_cache"))
-    setattr(zones_settings, "ssl",
+    setattr(branch, "ssl",
             self._add_with_auth(base, "zones", "settings/ssl"))
-    setattr(zones_settings, "tls_client_auth",
+    setattr(branch, "tls_client_auth",
             self._add_with_auth(base, "zones", "settings/tls_client_auth"))
-    setattr(zones_settings, "true_client_ip_header",
+    setattr(branch, "true_client_ip_header",
             self._add_with_auth(base, "zones", "settings/true_client_ip_header"))
-    setattr(zones_settings, "tls_1_2_only",
+    setattr(branch, "tls_1_2_only",
             self._add_with_auth(base, "zones", "settings/tls_1_2_only"))
-    setattr(zones_settings, "tls_1_3",
+    setattr(branch, "tls_1_3",
             self._add_with_auth(base, "zones", "settings/tls_1_3"))
-    # setattr(zones_settings, "tlsadd_auth",
+    # setattr(branch, "tlsadd_auth",
     #         self._add_with_auth(base, "zones", "settings/tlsadd_auth"))
-    # setattr(zones_settings, "trueadd_ip_header",
+    # setattr(branch, "trueadd_ip_header",
     #         self._add_with_auth(base, "zones", "settings/trueadd_ip_header"))
-    setattr(zones_settings, "websockets",
+    setattr(branch, "websockets",
             self._add_with_auth(base, "zones", "settings/websockets"))
-    setattr(zones_settings, "waf",
+    setattr(branch, "waf",
             self._add_with_auth(base, "zones", "settings/waf"))
-    setattr(zones, "analytics",
+
+def zones_analytics(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
+    branch = getattr(self, "zones")
+    setattr(branch, "analytics",
             self._add_unused(base, "zones", "analytics"))
-    zones_analytics = getattr(zones, "analytics")
+    zones_analytics = getattr(getattr(self, "zones"), "analytics")
     setattr(zones_analytics, "colos",
             self._add_with_auth(base, "zones", "analytics/colos"))
     setattr(zones_analytics, "dashboard",
             self._add_with_auth(base, "zones", "analytics/dashboard"))
-    setattr(zones, "firewall",
-            self._add_unused(base, "zones", "firewall"))
-    zones_firewall = getattr(zones, "firewall")
-    setattr(zones_firewall, "access_rules",
+
+
+def zones_firewall(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
+    branch = getattr(self, "zones")
+    setattr(branch, "firewall",
+            self._add_unused(branch, "zones", "firewall"))
+    branch = getattr(getattr(self, "zones"), "firewall")
+    setattr(branch, "access_rules",
             self._add_unused(base, "zones", "firewall/access_rules"))
-    setattr(zones_firewall, "waf",
+    setattr(branch, "waf",
             self._add_unused(base, "zones", "firewall/waf"))
-    zones_firewall_waf = getattr(zones_firewall, "waf")
-    setattr(zones_firewall_waf, "packages",
+    branch = getattr(getattr(getattr(self, "zones"), "firewall"), "waf")
+    setattr(branch, "packages",
             self._add_with_auth(base, "zones", "firewall/waf/packages"))
-    zones_firewall_waf_packages = getattr(zones_firewall_waf, "packages")
-    setattr(zones_firewall_waf_packages, "groups",
+    branch = getattr(getattr(getattr(getattr(self, "zones"), "firewall"), "waf"), "packages")
+    setattr(branch, "groups",
             self._add_with_auth(base, "zones", "firewall/waf/packages", "groups"))
-    setattr(zones_firewall_waf_packages, "rules",
+    setattr(branch, "rules",
             self._add_with_auth(base, "zones", "firewall/waf/packages", "rules"))
-    zones_firewall_access_rules = getattr(zones_firewall, "access_rules")
-    setattr(zones_firewall_access_rules, "rules",
+    branch = getattr(getattr(getattr(self, "zones"), "firewall"), "access_rules")
+    setattr(branch, "rules",
             self._add_with_auth(base, "zones", "firewall/access_rules/rules"))
 
-    # The API commands for /railguns/
+def railguns(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
     setattr(self, "railguns",
             self._add_with_auth(base, "railguns"))
-    railguns = getattr(self, "railguns")
-    setattr(railguns, "zones",
+    branch = getattr(self, "railguns")
+    setattr(branch, "zones",
             self._add_with_auth(base, "railguns", "zones"))
 
-    # The API commands for /organizations/
+def organizations(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
     setattr(self, "organizations",
             self._add_with_auth(base, "organizations"))
-    organizations = getattr(self, "organizations")
-    setattr(organizations, "members",
+    branch = getattr(self, "organizations")
+    setattr(branch, "members",
             self._add_with_auth(base, "organizations", "members"))
-    setattr(organizations, "invite",
+    setattr(branch, "invite",
             self._add_with_auth(base, "organizations", "invite"))
-    setattr(organizations, "invites",
+    setattr(branch, "invites",
             self._add_with_auth(base, "organizations", "invites"))
-    setattr(organizations, "railguns",
+    setattr(branch, "railguns",
             self._add_with_auth(base, "organizations", "railguns"))
-    organizations_railguns = getattr(organizations, "railguns")
-    setattr(organizations_railguns, "zones",
+    branch = getattr(getattr(self, "organizations"), "railguns")
+    setattr(branch, "zones",
             self._add_with_auth(base, "organizations", "railguns", "zones"))
-    setattr(organizations, "roles",
+    branch = getattr(self, "organizations")
+    setattr(branch, "roles",
             self._add_with_auth(base, "organizations", "roles"))
-    setattr(organizations, "firewall",
+    setattr(branch, "firewall",
             self._add_unused(base, "organizations", "firewall"))
-    org_firewall = getattr(organizations, "firewall")
-    setattr(org_firewall, "access_rules",
+    branch = getattr(getattr(self, "organizations"), "firewall")
+    setattr(branch, "access_rules",
             self._add_unused(base, "organizations", "firewall/access_rules"))
-    org_firewall_access_rules = getattr(org_firewall, "access_rules")
-    setattr(org_firewall_access_rules, "rules",
+    branch = getattr(getattr(getattr(self, "organizations"), "firewall"), "access_rules")
+    setattr(branch, "rules",
             self._add_with_auth(base, "organizations", "firewall/access_rules/rules"))
-    setattr(organizations, "virtual_dns",
+    branch = getattr(self, "organizations")
+    setattr(branch, "virtual_dns",
             self._add_with_auth(base, "organizations", "virtual_dns"))
 
-    # The API commands for /certificates/
+def certificates(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
     setattr(self, "certificates",
             self._add_with_cert_auth(base, "certificates"))
 
-    # The API commands for /ips/
+def ips(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
     setattr(self, "ips",
             self._add_noauth(base, "ips"))
 
-    # The API commands for /zones/:zone_id/dnssec
-    setattr(zones, "dnssec",
+def zones_dnssec(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
+    branch = getattr(self, "zones")
+    setattr(branch, "dnssec",
             self._add_with_auth(base, "zones", "dnssec"))
 
-    # The API commands for /zones/:zone_id/ssl
-    setattr(zones, "ssl",
+def zones_ssl(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
+    branch = getattr(self, "zones")
+    setattr(branch, "ssl",
             self._add_unused(base, "zones", "ssl"))
-    zones_ssl = getattr(zones, "ssl")
-    setattr(zones_ssl, "analyze",
+    branch = getattr(getattr(self, "zones"), "ssl")
+    setattr(branch, "analyze",
             self._add_with_auth(base, "zones", "ssl/analyze"))
-    setattr(zones_ssl, "certificate_packs",
+    setattr(branch, "certificate_packs",
             self._add_with_auth(base, "zones", "ssl/certificate_packs"))
-    setattr(zones_ssl, "verification",
+    setattr(branch, "verification",
             self._add_with_auth(base, "zones", "ssl/verification"))
 
-    # The API commands for CTM /zones/:zone_id/load_balancers & /user/load_balancers
-    setattr(zones, "load_balancers",
+def zones_load_balancers(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
+    branch = getattr(self, "zones")
+    setattr(branch, "load_balancers",
             self._add_with_auth(base, "zones", "load_balancers"))
 
-    setattr(user, "load_balancers",
+def user_load_balancers(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
+    branch = getattr(self, "user")
+    setattr(branch, "load_balancers",
             self._add_unused(base, "user/load_balancers"))
-    user_load_balancers = getattr(user, "load_balancers")
-    setattr(user_load_balancers, "global_policies",
+    branch = getattr(getattr(self, "user"), "load_balancers")
+    setattr(branch, "global_policies",
             self._add_with_auth(base, "user/load_balancers/global_policies"))
-    setattr(user_load_balancers, "monitors",
+    setattr(branch, "monitors",
             self._add_with_auth(base, "user/load_balancers/monitors"))
-    setattr(user_load_balancers, "notifiers",
+    setattr(branch, "notifiers",
             self._add_with_auth(base, "user/load_balancers/notifiers"))
-    setattr(user_load_balancers, "origins",
+    setattr(branch, "origins",
             self._add_with_auth(base, "user/load_balancers/origins"))
-    setattr(user_load_balancers, "pools",
+    setattr(branch, "pools",
             self._add_with_auth(base, "user/load_balancers/pools"))
-    setattr(user_load_balancers, "maps",
+    setattr(branch, "maps",
             self._add_with_auth(base, "user/load_balancers/maps"))
-    user_load_balancers_maps = getattr(user_load_balancers, "maps")
-    setattr(user_load_balancers_maps, "region",
+    branch = getattr(getattr(getattr(self, "user"), "load_balancers"), "maps")
+    setattr(branch, "region",
             self._add_with_auth(base, "user/load_balancers/maps", "region"))
 
