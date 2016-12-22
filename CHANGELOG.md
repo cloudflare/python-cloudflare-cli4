@@ -1,5 +1,13 @@
 # Change Log
 
+ - 2016-12-22 13:46:09 -0800 [8231b76](https://github.com/cloudflare/python-cloudflare/commit/8231b76dd4b87996c73e539b36e36eedcf94637c) 1.4.3 release
+ - 2016-12-22 13:45:10 -0800 [1420966](https://github.com/cloudflare/python-cloudflare/commit/142096680954e7aa03c2620a0f545383c04686e1) pylint work
+ - 2016-12-22 13:44:41 -0800 [b8fe4da](https://github.com/cloudflare/python-cloudflare/commit/b8fe4da34ac997edae6be87f6cd58069e2ff0f59) pylint work because of a typo
+ - 2016-12-22 13:44:06 -0800 [a52baa4](https://github.com/cloudflare/python-cloudflare/commit/a52baa43a276630a7325503a6e7fc5a5788135d0) rewrite and restructure to handle modules of commands - was prompted by pylint output
+ - 2016-12-22 13:33:12 -0800 [5d7ddb0](https://github.com/cloudflare/python-cloudflare/commit/5d7ddb0db74e01c0add91a89542edf927414b422) was missing a newline at the end of the --dump command output
+ - 2016-12-22 13:31:53 -0800 [0193fcf](https://github.com/cloudflare/python-cloudflare/commit/0193fcf21864f43502f6bbd96137d6bbee26c0ff) more pylint work
+ - 2016-12-12 16:55:41 -0800 [6cdd04b](https://github.com/cloudflare/python-cloudflare/commit/6cdd04b0ced721d9f7116cd40b99cf8c27afa952) plenty of pylint edits - not that it changes anyway useful
+ - 2016-12-11 11:23:29 -0800 [824e1eb](https://github.com/cloudflare/python-cloudflare/commit/824e1ebc9968571c60f1fe48c80e3908c6da4698) CHANGELOG.md pushed to github
  - 2016-12-11 11:23:05 -0800 [37fab98](https://github.com/cloudflare/python-cloudflare/commit/37fab98e08c814d7db066af60266c4d613960b97) 1.4.2 release
  - 2016-12-11 11:22:02 -0800 [52dda2e](https://github.com/cloudflare/python-cloudflare/commit/52dda2ededa1aa8fd21e7bc2dff2c1f2d2c58a9a) sanatize the returned results - just in case API is messed up
  - 2016-12-10 15:39:29 -0800 [080733b](https://github.com/cloudflare/python-cloudflare/commit/080733b58e144670116d7f3ccadf369d599bfc61) CHANGELOG.md pushed to github
