@@ -151,7 +151,7 @@ def convert_load_balancers_map_regions(cf, region_name):
 def dump_commands(cf):
     """dump a tree of all the known API commands"""
     w = cf.api_list()
-    sys.stdout.write('\n'.join(w))
+    sys.stdout.write('\n'.join(w) + '\n')
 
 def cli4(args):
     """Cloudflare API via command line"""
