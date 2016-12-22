@@ -10,6 +10,7 @@ def api_v4(self):
     zones_settings(self)
     zones_analytics(self)
     zones_firewall(self)
+    zones_rate_limits(self)
     # The API commands for /railguns/
     railguns(self)
     # The API commands for /organizations/
@@ -207,6 +208,14 @@ def zones_firewall(self):
     branch = getattr(getattr(getattr(self, "zones"), "firewall"), "access_rules")
     setattr(branch, "rules",
             self._add_with_auth(base, "zones", "firewall/access_rules/rules"))
+
+def zones_rate_limits(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
+    branch = getattr(self, "zones")
+    setattr(branch, "rate_limits",
+            self._add_with_auth(base, "zones", "rate_limits"))
 
 def railguns(self):
     """ API core commands for Cloudflare API"""
