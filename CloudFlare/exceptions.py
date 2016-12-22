@@ -3,7 +3,7 @@
 class CloudFlareError(Exception):
     """ errors for Cloudflare API"""
 
-    class _code_message(object):
+    class code_and_message(object):
         """ a small class to save away an interger and string (the code and the message)"""
 
         def __init__(self, code, message):
@@ -17,12 +17,12 @@ class CloudFlareError(Exception):
     def __init__(self, code, message, error_chain=None):
         """ errors for Cloudflare API"""
 
-        self.e = self._code_message(int(code), str(message))
+        self.e = self.code_and_message(int(code), str(message))
         self.error_chain = None
         if error_chain != None:
             self.error_chain = []
             for e in error_chain:
-                self.error_chain.append(self._code_message(int(e['code']), str(e['message'])))
+                self.error_chain.append(self.code_and_message(int(e['code']), str(e['message'])))
             # self.error_chain.append({'code': self.code, 'message': str(self.message)})
 
     def __int__(self):
