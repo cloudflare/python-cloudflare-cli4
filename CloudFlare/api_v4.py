@@ -178,12 +178,11 @@ def zones_analytics(self):
     branch = getattr(self, "zones")
     setattr(branch, "analytics",
             self._add_unused(base, "zones", "analytics"))
-    zones_analytics = getattr(getattr(self, "zones"), "analytics")
-    setattr(zones_analytics, "colos",
+    branch = getattr(getattr(self, "zones"), "analytics")
+    setattr(branch, "colos",
             self._add_with_auth(base, "zones", "analytics/colos"))
-    setattr(zones_analytics, "dashboard",
+    setattr(branch, "dashboard",
             self._add_with_auth(base, "zones", "analytics/dashboard"))
-
 
 def zones_firewall(self):
     """ API core commands for Cloudflare API"""
