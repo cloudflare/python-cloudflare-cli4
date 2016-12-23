@@ -371,7 +371,7 @@ def cli4(args):
         results = results[0]
 
     if output == 'json':
-        sys.stdout.write(json.dumps(results, indent=4, sort_keys=True))
+        sys.stdout.write(json.dumps(results, indent=4, sort_keys=True) + '\n')
     if output == 'yaml':
         sys.stdout.write(yaml.safe_dump(results))
 
