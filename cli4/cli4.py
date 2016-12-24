@@ -212,7 +212,8 @@ def cli4(args):
         elif opt in ('-D', '--delete'):
             method = 'DELETE'
 
-    digits_only = re.compile('^[0-9]+$')
+    digits_only = re.compile('^-?[0-9]+$')
+    floats_only = re.compile('^-?[0-9.]+$')
 
     # next grab the params. These are in the form of tag=value
     params = None
@@ -222,8 +223,16 @@ def cli4(args):
             value = True
         elif value_string == 'false':
             value = False
+        elif value_string == '':
+            value = None
+        elif value_string[0] is '=' and value_string[1:] == '':
+            exit('cli4: %s== - no number value passed' % (tag_string))
         elif value_string[0] is '=' and digits_only.match(value_string[1:]):
             value = int(value_string[1:])
+        elif value_string[0] is '=' and floats_only.match(value_string[1:]):
+            value = float(value_string[1:])
+        elif value_string[0] is '=':
+            exit('cli4: %s== - invalid number value passed' % (tag_string))
         elif value_string[0] in '[{' and value_string[-1] in '}]':
             # a json structure - used in pagerules
             try:
