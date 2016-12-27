@@ -1,5 +1,10 @@
 # Change Log
 
+ - 2016-12-27 10:26:52 -0800 [c27d098](https://github.com/cloudflare/python-cloudflare/commit/c27d098b90f3de1a40d1e56aab7ddd5c72dbe2f7) 1.4.5 release
+ - 2016-12-27 10:26:03 -0800 [9d722f1](https://github.com/cloudflare/python-cloudflare/commit/9d722f163a71d849868c77091efa695331c75b30) added User-Agent support to help debug calls - should have been done on day zero - oh well
+ - 2016-12-24 10:17:01 -0800 [cc467af](https://github.com/cloudflare/python-cloudflare/commit/cc467af835957cb316d563c39bb06a94985bf02c) added support for params being Null/None, floats, negative numbers plus added more error checking
+ - 2016-12-22 16:22:26 -0800 [35f8ca1](https://github.com/cloudflare/python-cloudflare/commit/35f8ca1b46d0164048a7f843e14a464f655c0184) missing newline on json output
+ - 2016-12-22 14:29:56 -0800 [f1f99bd](https://github.com/cloudflare/python-cloudflare/commit/f1f99bd26f621a5b0984d5cbb4c875108db672ff) CHANGELOG.md pushed to github
  - 2016-12-22 14:29:29 -0800 [07fd70f](https://github.com/cloudflare/python-cloudflare/commit/07fd70fdb2d8d44814c7877ab4bff0073bf8631d) 1.4.4 release
  - 2016-12-22 13:55:38 -0800 [0f670b5](https://github.com/cloudflare/python-cloudflare/commit/0f670b5ae88194a9ea314b8cc1f5b071dce56143) Added /zones/rate_limits API command
  - 2016-12-22 13:46:42 -0800 [e144c66](https://github.com/cloudflare/python-cloudflare/commit/e144c663b5a4af1baf1791a422e00bcf3a239e66) CHANGELOG.md pushed to github
