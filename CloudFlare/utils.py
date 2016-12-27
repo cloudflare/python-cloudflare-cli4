@@ -1,5 +1,18 @@
 """ misc utilities  for Cloudflare API"""
 
+import sys
+import requests
+from __init__ import __version__
+
+def user_agent():
+    """ misc utilities  for Cloudflare API"""
+    # the default User-Agent is something like 'python-requests/2.11.1'
+    # this additional data helps support @ Cloudflare help customers
+    return ('python-cloudflare/' + __version__ + '/' +
+            'python-requests/' + str(requests.__version__) + '/' +
+            'python/' + '.'.join(map(str, sys.version_info[:3]))
+           )
+
 def sanitize_secrets(secrets):
     """ misc utilities  for Cloudflare API"""
     redacted_phrase = 'REDACTED'

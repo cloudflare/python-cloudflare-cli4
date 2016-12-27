@@ -5,7 +5,7 @@ import urllib
 import requests
 
 from logger import Logger
-from utils import sanitize_secrets
+from utils import user_agent, sanitize_secrets
 from read_configs import read_configs
 from api_v4 import api_v4
 from api_extras import api_extras
@@ -27,6 +27,7 @@ class CloudFlare(object):
             self.certtoken = certtoken
             self.base_url = base_url
             self.raw = raw
+            self.user_agent = user_agent()
 
             if debug:
                 self.logger = Logger(debug).getLogger()
@@ -42,6 +43,7 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             headers = {
+                'User-Agent': self.user_agent,
                 'Content-Type': 'application/json'
             }
             return self._call(method, headers,
@@ -60,6 +62,7 @@ class CloudFlare(object):
             if self.email is '' or self.token is '':
                 raise CloudFlareAPIError(0, 'no email and/or token defined')
             headers = {
+                'User-Agent': self.user_agent,
                 'X-Auth-Email': self.email,
                 'X-Auth-Key': self.token,
                 'Content-Type': 'application/json'
@@ -80,6 +83,7 @@ class CloudFlare(object):
             if self.certtoken is '' or self.certtoken is None:
                 raise CloudFlareAPIError(0, 'no cert token defined')
             headers = {
+                'User-Agent': self.user_agent,
                 'X-Auth-User-Service-Key': self.certtoken,
                 'Content-Type': 'application/json'
             }
