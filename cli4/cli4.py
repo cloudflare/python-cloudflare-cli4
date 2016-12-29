@@ -268,6 +268,7 @@ def cli4(args):
     identifier3 = None
 
     hex_only = re.compile('^[0-9a-fA-F]+$')
+    waf_rules = re.compile('^[0-9]+[A-F]*$')
 
     cf = CloudFlare.CloudFlare(debug=verbose, raw=raw)
 
@@ -314,6 +315,8 @@ def cli4(args):
             else:
                 if len(element) in [32, 40, 48] and hex_only.match(element):
                     # raw identifier - lets just use it as-is
+                    identifier3 = element
+                elif waf_rules.match(element):
                     identifier3 = element
                 else:
                     exit("/%s/%s :NOT CODED YET 3" % ('/'.join(cmd), element))
