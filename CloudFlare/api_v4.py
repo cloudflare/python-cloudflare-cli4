@@ -171,6 +171,10 @@ def zones_settings(self):
             self._add_with_auth(base, "zones", "settings/websockets"))
     setattr(branch, "waf",
             self._add_with_auth(base, "zones", "settings/waf"))
+    setattr(branch, "http2",
+            self._add_with_auth(base, "zones", "settings/http2"))
+    setattr(branch, "pseudo_ipv4",
+            self._add_with_auth(base, "zones", "settings/pseudo_ipv4"))
 
 def zones_analytics(self):
     """ API core commands for Cloudflare API"""
