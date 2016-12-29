@@ -287,6 +287,7 @@ def cli4(args):
     cmd = []
     identifier1 = None
     identifier2 = None
+    identifier3 = None
 
     hex_only = re.compile('^[0-9a-fA-F]+$')
 
@@ -318,7 +319,7 @@ def cli4(args):
                 else:
                     exit("/%s/%s :NOT CODED YET 1" % ('/'.join(cmd), element))
                 cmd.append(':' + identifier1)
-            else:
+            elif identifier2 is None:
                 if len(element) in [32, 40, 48] and hex_only.match(element):
                     # raw identifier - lets just use it as-is
                     identifier2 = element
@@ -337,6 +338,12 @@ def cli4(args):
                 else:
                     cmd.append(':' + identifier2)
                     identifier2 = [identifier2]
+            else:
+                if len(element) in [32, 40, 48] and hex_only.match(element):
+                    # raw identifier - lets just use it as-is
+                    identifier3 = element
+                else:
+                    exit("/%s/%s :NOT CODED YET 3" % ('/'.join(cmd), element))
         else:
             try:
                 m = getattr(m, element)
@@ -354,15 +361,15 @@ def cli4(args):
     for i2 in identifier2:
         try:
             if method is 'GET':
-                r = m.get(identifier1=identifier1, identifier2=i2, params=params)
+                r = m.get(identifier1=identifier1, identifier2=i2, identifier3=identifier3, params=params)
             elif method is 'PATCH':
-                r = m.patch(identifier1=identifier1, identifier2=i2, data=params)
+                r = m.patch(identifier1=identifier1, identifier2=i2, identifier3=identifier3, data=params)
             elif method is 'POST':
-                r = m.post(identifier1=identifier1, identifier2=i2, data=params)
+                r = m.post(identifier1=identifier1, identifier2=i2, identifier3=identifier3, data=params)
             elif method is 'PUT':
-                r = m.put(identifier1=identifier1, identifier2=i2, data=params)
+                r = m.put(identifier1=identifier1, identifier2=i2, identifier3=identifier3, data=params)
             elif method is 'DELETE':
-                r = m.delete(identifier1=identifier1, identifier2=i2, data=params)
+                r = m.delete(identifier1=identifier1, identifier2=i2, identifier3=identifier3, data=params)
             else:
                 pass
         except CloudFlare.exceptions.CloudFlareAPIError as e:

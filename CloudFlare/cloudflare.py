@@ -38,7 +38,7 @@ class CloudFlare(object):
                               api_call_part1,
                               api_call_part2=None,
                               api_call_part3=None,
-                              identifier1=None, identifier2=None,
+                              identifier1=None, identifier2=None, identifier3=None,
                               params=None, data=None):
             """ Cloudflare v4 API"""
 
@@ -48,14 +48,14 @@ class CloudFlare(object):
             }
             return self._call(method, headers,
                               api_call_part1, api_call_part2, api_call_part3,
-                              identifier1, identifier2,
+                              identifier1, identifier2, identifier3,
                               params, data)
 
         def call_with_auth(self, method,
                            api_call_part1,
                            api_call_part2=None,
                            api_call_part3=None,
-                           identifier1=None, identifier2=None,
+                           identifier1=None, identifier2=None, identifier3=None,
                            params=None, data=None):
             """ Cloudflare v4 API"""
 
@@ -69,14 +69,14 @@ class CloudFlare(object):
             }
             return self._call(method, headers,
                               api_call_part1, api_call_part2, api_call_part3,
-                              identifier1, identifier2,
+                              identifier1, identifier2, identifier3,
                               params, data)
 
         def call_with_certauth(self, method,
                                api_call_part1,
                                api_call_part2=None,
                                api_call_part3=None,
-                               identifier1=None, identifier2=None,
+                               identifier1=None, identifier2=None, identifier3=None,
                                params=None, data=None):
             """ Cloudflare v4 API"""
 
@@ -89,16 +89,32 @@ class CloudFlare(object):
             }
             return self._call(method, headers,
                               api_call_part1, api_call_part2, api_call_part3,
-                              identifier1, identifier2,
+                              identifier1, identifier2, identifier3,
                               params, data)
 
         def _raw(self, method, headers,
                  api_call_part1, api_call_part2=None, api_call_part3=None,
-                 identifier1=None, identifier2=None,
+                 identifier1=None, identifier2=None, identifier3=None,
                  params=None, data=None):
             """ Cloudflare v4 API"""
 
+            if self.logger:
+                self.logger.debug('Call: %s,%s,%s,%s,%s,%s' % (str(api_call_part1),
+                                                               str(identifier1),
+                                                               str(api_call_part2),
+                                                               str(identifier2),
+                                                               str(api_call_part3),
+                                                               str(identifier3)))
+                self.logger.debug('Call: optional params and data %s %s' % (str(params),
+                                                                            str(data)))
+
+            if (method is None) or (api_call_part1 is None):
+                # should never happen
+                raise CloudFlareInternalError(0, 'You must specify a method and endpoint')
+
             if api_call_part2 is not None or (data is not None and method == 'GET'):
+                if identifier1 is None:
+                    raise CloudFlareAPIError(0, 'You must specify identifier1')
                 if identifier2 is None:
                     url = (self.base_url + '/'
                            + api_call_part1 + '/'
@@ -120,21 +136,12 @@ class CloudFlare(object):
                            + identifier1)
             if api_call_part3:
                 url += '/' + api_call_part3
+            if identifier3:
+                url += '/' + identifier3
 
             if self.logger:
-                self.logger.debug('Call: %s,%s,%s,%s,%s' % (str(api_call_part1),
-                                                            str(identifier1),
-                                                            str(api_call_part2),
-                                                            str(identifier2),
-                                                            str(api_call_part3)))
-                self.logger.debug('Call: optional params and data %s %s' % (str(params),
-                                                                            str(data)))
                 self.logger.debug('Call: method and url %s %s' % (str(method), str(url)))
                 self.logger.debug('Call: headers %s' % str(sanitize_secrets(headers)))
-
-            if (method is None) or (api_call_part1 is None):
-                # should never happen
-                raise CloudFlareInternalError(0, 'You must specify a method and endpoint')
 
             method = method.upper()
 
@@ -180,13 +187,13 @@ class CloudFlare(object):
                   api_call_part1,
                   api_call_part2=None,
                   api_call_part3=None,
-                  identifier1=None, identifier2=None,
+                  identifier1=None, identifier2=None, identifier3=None,
                   params=None, data=None):
             """ Cloudflare v4 API"""
 
             response_data = self._raw(method, headers,
                                       api_call_part1, api_call_part2, api_call_part3,
-                                      identifier1, identifier2,
+                                      identifier1, identifier2, identifier3,
                                       params, data)
 
             # Sanatize the returned results - just in case API is messed up
@@ -259,27 +266,27 @@ class CloudFlare(object):
             # self.api_call_part2 = api_call_part2
             # self.api_call_part3 = api_call_part3
 
-        def get(self, identifier1=None, identifier2=None, params=None, data=None):
+        def get(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             raise CloudFlareAPIError(0, 'get() call not available for this endpoint')
 
-        def patch(self, identifier1=None, identifier2=None, params=None, data=None):
+        def patch(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             raise CloudFlareAPIError(0, 'patch() call not available for this endpoint')
 
-        def post(self, identifier1=None, identifier2=None, params=None, data=None):
+        def post(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             raise CloudFlareAPIError(0, 'post() call not available for this endpoint')
 
-        def put(self, identifier1=None, identifier2=None, params=None, data=None):
+        def put(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             raise CloudFlareAPIError(0, 'put() call not available for this endpoint')
 
-        def delete(self, identifier1=None, identifier2=None, params=None, data=None):
+        def delete(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             raise CloudFlareAPIError(0, 'delete() call not available for this endpoint')
@@ -295,32 +302,32 @@ class CloudFlare(object):
             self.api_call_part2 = api_call_part2
             self.api_call_part3 = api_call_part3
 
-        def get(self, identifier1=None, identifier2=None, params=None, data=None):
+        def get(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_no_auth('GET',
                                                 self.api_call_part1,
                                                 self.api_call_part2,
                                                 self.api_call_part3,
-                                                identifier1, identifier2,
+                                                identifier1, identifier2, identifier3,
                                                 params, data)
 
-        def patch(self, identifier1=None, identifier2=None, params=None, data=None):
+        def patch(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             raise CloudFlareAPIError(0, 'patch() call not available for this endpoint')
 
-        def post(self, identifier1=None, identifier2=None, params=None, data=None):
+        def post(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             raise CloudFlareAPIError(0, 'post() call not available for this endpoint')
 
-        def put(self, identifier1=None, identifier2=None, params=None, data=None):
+        def put(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             raise CloudFlareAPIError(0, 'put() call not available for this endpoint')
 
-        def delete(self, identifier1=None, identifier2=None, params=None, data=None):
+        def delete(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             raise CloudFlareAPIError(0, 'delete() call not available for this endpoint')
@@ -336,54 +343,54 @@ class CloudFlare(object):
             self.api_call_part2 = api_call_part2
             self.api_call_part3 = api_call_part3
 
-        def get(self, identifier1=None, identifier2=None, params=None, data=None):
+        def get(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_auth('GET',
                                              self.api_call_part1,
                                              self.api_call_part2,
                                              self.api_call_part3,
-                                             identifier1, identifier2,
+                                             identifier1, identifier2, identifier3,
                                              params, data)
 
-        def patch(self, identifier1=None, identifier2=None, params=None, data=None):
+        def patch(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_auth('PATCH',
                                              self.api_call_part1,
                                              self.api_call_part2,
                                              self.api_call_part3,
-                                             identifier1, identifier2,
+                                             identifier1, identifier2, identifier3,
                                              params, data)
 
-        def post(self, identifier1=None, identifier2=None, params=None, data=None):
+        def post(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_auth('POST',
                                              self.api_call_part1,
                                              self.api_call_part2,
                                              self.api_call_part3,
-                                             identifier1, identifier2,
+                                             identifier1, identifier2, identifier3,
                                              params, data)
 
-        def put(self, identifier1=None, identifier2=None, params=None, data=None):
+        def put(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_auth('PUT',
                                              self.api_call_part1,
                                              self.api_call_part2,
                                              self.api_call_part3,
-                                             identifier1, identifier2,
+                                             identifier1, identifier2, identifier3,
                                              params, data)
 
-        def delete(self, identifier1=None, identifier2=None, params=None, data=None):
+        def delete(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_auth('DELETE',
                                              self.api_call_part1,
                                              self.api_call_part2,
                                              self.api_call_part3,
-                                             identifier1, identifier2,
+                                             identifier1, identifier2, identifier3,
                                              params, data)
 
     class _add_with_cert_auth(object):
@@ -397,54 +404,54 @@ class CloudFlare(object):
             self.api_call_part2 = api_call_part2
             self.api_call_part3 = api_call_part3
 
-        def get(self, identifier1=None, identifier2=None, params=None, data=None):
+        def get(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_certauth('GET',
                                                  self.api_call_part1,
                                                  self.api_call_part2,
                                                  self.api_call_part3,
-                                                 identifier1, identifier2,
+                                                 identifier1, identifier2, identifier3,
                                                  params, data)
 
-        def patch(self, identifier1=None, identifier2=None, params=None, data=None):
+        def patch(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_certauth('PATCH',
                                                  self.api_call_part1,
                                                  self.api_call_part2,
                                                  self.api_call_part3,
-                                                 identifier1, identifier2,
+                                                 identifier1, identifier2, identifier3,
                                                  params, data)
 
-        def post(self, identifier1=None, identifier2=None, params=None, data=None):
+        def post(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_certauth('POST',
                                                  self.api_call_part1,
                                                  self.api_call_part2,
                                                  self.api_call_part3,
-                                                 identifier1, identifier2,
+                                                 identifier1, identifier2, identifier3,
                                                  params, data)
 
-        def put(self, identifier1=None, identifier2=None, params=None, data=None):
+        def put(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_certauth('PUT',
                                                  self.api_call_part1,
                                                  self.api_call_part2,
                                                  self.api_call_part3,
-                                                 identifier1, identifier2,
+                                                 identifier1, identifier2, identifier3,
                                                  params, data)
 
-        def delete(self, identifier1=None, identifier2=None, params=None, data=None):
+        def delete(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_certauth('DELETE',
                                                  self.api_call_part1,
                                                  self.api_call_part2,
                                                  self.api_call_part3,
-                                                 identifier1, identifier2,
+                                                 identifier1, identifier2, identifier3,
                                                  params, data)
 
     def api_list(self, m=None, s=''):
