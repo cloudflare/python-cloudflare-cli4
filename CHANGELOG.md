@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2016-12-28 20:31:37 -0800 [e15a4ba](https://github.com/cloudflare/python-cloudflare/commit/e15a4ba6abc7b576d7401d8bdcd3215faccb4402) 1.4.6 release
+ - 2016-12-28 20:30:45 -0800 [d5529e4](https://github.com/cloudflare/python-cloudflare/commit/d5529e4f0f54908c2c15fb16b16c3e6e6c0e3f78) added API support for third param - used by /zones/:id/firewall/waf/packages/:id/groups/:id & /zones/:id/firewall/waf/packages/:id/rules/:id
+ - 2016-12-27 10:27:23 -0800 [9c59aa3](https://github.com/cloudflare/python-cloudflare/commit/9c59aa3ea0847711b75e39b6d9d722c468c0ea05) CHANGELOG.md pushed to github
  - 2016-12-27 10:26:52 -0800 [c27d098](https://github.com/cloudflare/python-cloudflare/commit/c27d098b90f3de1a40d1e56aab7ddd5c72dbe2f7) 1.4.5 release
  - 2016-12-27 10:26:03 -0800 [9d722f1](https://github.com/cloudflare/python-cloudflare/commit/9d722f163a71d849868c77091efa695331c75b30) added User-Agent support to help debug calls - should have been done on day zero - oh well
  - 2016-12-24 10:17:01 -0800 [cc467af](https://github.com/cloudflare/python-cloudflare/commit/cc467af835957cb316d563c39bb06a94985bf02c) added support for params being Null/None, floats, negative numbers plus added more error checking
