@@ -313,19 +313,9 @@ def user_load_balancers(self):
     setattr(branch, "load_balancers",
             self._add_unused(base, "user/load_balancers"))
     branch = getattr(getattr(self, "user"), "load_balancers")
-    setattr(branch, "global_policies",
-            self._add_with_auth(base, "user/load_balancers/global_policies"))
     setattr(branch, "monitors",
             self._add_with_auth(base, "user/load_balancers/monitors"))
-    setattr(branch, "notifiers",
-            self._add_with_auth(base, "user/load_balancers/notifiers"))
-    setattr(branch, "origins",
-            self._add_with_auth(base, "user/load_balancers/origins"))
     setattr(branch, "pools",
             self._add_with_auth(base, "user/load_balancers/pools"))
-    setattr(branch, "maps",
-            self._add_with_auth(base, "user/load_balancers/maps"))
-    branch = getattr(getattr(getattr(self, "user"), "load_balancers"), "maps")
-    setattr(branch, "region",
-            self._add_with_auth(base, "user/load_balancers/maps", "region"))
+    branch = getattr(getattr(getattr(self, "user"), "load_balancers"), "pools")
 

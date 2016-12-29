@@ -111,42 +111,20 @@ def convert_virtual_dns_to_identifier(cf, virtual_dns_name):
 
     exit('cli4: %s - no virtual_dns found' % (virtual_dns_name))
 
-def convert_load_balancers_map_to_identifier(cf, map_name):
-    """load balancer map names to numbers"""
+def convert_load_balancers_pool_to_identifier(cf, pool_name):
+    """load balancer pool names to numbers"""
     try:
-        maps = cf.user.load_balancers.maps.get()
+        pools = cf.user.load_balancers.pools.get()
     except CloudFlare.exceptions.CloudFlareAPIError as e:
-        exit('cli4: %s - %d %s' % (map_name, e, e))
+        exit('cli4: %s - %d %s' % (pool_name, e, e))
     except Exception as e:
-        exit('cli4: %s - %s' % (map_name, e))
+        exit('cli4: %s - %s' % (pool_name, e))
 
-    for m in maps:
-        if map_name == m['description']:
-            return m['id']
+    for p in pools:
+        if pool_name == p['description']:
+            return p['id']
 
-    exit('cli4: %s - no maps found' % (map_name))
-
-def convert_load_balancers_map_regions(cf, region_name):
-    """load balancer map regions"""
-    # this will/must go away; however it allows :WNAM etc in path.
-    regions = {
-        'WNAM',	# Western North America
-        'ENAM',	# Eastern North America
-        'EU',	# Europe
-        'NSAM',	# Northern South America
-        'SSAM',	# Southern South America
-        'OC',	# Oceania
-        'ME',	# Middle East
-        'NAF',	# Northern Africa
-        'SAF',	# Southern Africa
-        'IN',	# India
-        'SEAS',	# Southeast Asia
-        'NEAS',	# Northeast Asia
-        'CHINA'	# China
-    }
-    if region_name in regions:
-        return region_name
-    exit('cli4: %s - no region found' % (region_name))
+    exit('cli4: %s - no pools found' % (pool_name))
 
 def dump_commands(cf):
     """dump a tree of all the known API commands"""
@@ -314,8 +292,8 @@ def cli4(args):
                     identifier1 = convert_invites_to_identifier(cf, element)
                 elif (cmd[0] == 'user') and (cmd[1] == 'virtual_dns'):
                     identifier1 = convert_virtual_dns_to_identifier(cf, element)
-                elif (cmd[0] == 'user') and (cmd[1] == 'load_balancers') and (cmd[2] == 'maps'):
-                    identifier1 = convert_load_balancers_map_to_identifier(cf, element)
+                elif (cmd[0] == 'user') and (cmd[1] == 'load_balancers') and (cmd[2] == 'pools'):
+                    identifier1 = convert_load_balancers_pool_to_identifier(cf, element)
                 else:
                     exit("/%s/%s :NOT CODED YET 1" % ('/'.join(cmd), element))
                 cmd.append(':' + identifier1)
@@ -325,11 +303,6 @@ def cli4(args):
                     identifier2 = element
                 elif (cmd[0] and cmd[0] == 'zones') and (cmd[2] and cmd[2] == 'dns_records'):
                     identifier2 = convert_dns_record_to_identifier(cf, identifier1, element)
-                elif ((cmd[0] == 'user') and
-                      (cmd[1] == 'load_balancers') and
-                      (cmd[2] == 'maps') and
-                      (cmd[4] == 'region')):
-                    identifier2 = convert_load_balancers_map_regions(cf, element)
                 else:
                     exit("/%s/%s :NOT CODED YET 2" % ('/'.join(cmd), element))
                 # identifier2 may be an array - this needs to be dealt with later
