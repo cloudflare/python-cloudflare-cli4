@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2016-12-28 20:55:07 -0800 [ed8a55d](https://github.com/cloudflare/python-cloudflare/commit/ed8a55db66352307a917433c93885491aabd5582) 1.4.8 release
+ - 2016-12-28 20:54:37 -0800 [61b316c](https://github.com/cloudflare/python-cloudflare/commit/61b316c7ef7dc095c3bb0b0da565facff70dd9c6) added rules support for /zones/:id/firewall/waf/packages/:id/rules/:id
+ - 2016-12-28 20:40:02 -0800 [520abbb](https://github.com/cloudflare/python-cloudflare/commit/520abbbf9127a9537aa976eda6f177003932a1c3) CHANGELOG.md pushed to github
  - 2016-12-28 20:38:48 -0800 [a9ca66f](https://github.com/cloudflare/python-cloudflare/commit/a9ca66ff17d56009a81ecdc82060e846fbbccdf1) 1.4.7 release
  - 2016-12-28 20:38:06 -0800 [8122b6d](https://github.com/cloudflare/python-cloudflare/commit/8122b6d911c1fee698241e82996201a1365587e1) Merge branch 'rita3ko-update/load-balancing'
  - 2016-12-28 20:35:47 -0800 [bd1886d](https://github.com/cloudflare/python-cloudflare/commit/bd1886dfb414f64ce5d901dd6a5f8363dcb8fa21) Merge branch 'update/load-balancing' of https://github.com/rita3ko/python-cloudflare into rita3ko-update/load-balancing
