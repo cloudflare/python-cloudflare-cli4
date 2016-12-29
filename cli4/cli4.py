@@ -268,7 +268,7 @@ def cli4(args):
     identifier3 = None
 
     hex_only = re.compile('^[0-9a-fA-F]+$')
-    waf_rules = re.compile('^[0-9]+[A-F]*$')
+    waf_rules = re.compile('^[0-9]+[A-Z]*$')
 
     cf = CloudFlare.CloudFlare(debug=verbose, raw=raw)
 
