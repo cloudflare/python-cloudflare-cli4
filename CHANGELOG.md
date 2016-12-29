@@ -1,5 +1,12 @@
 # Change Log
 
+ - 2016-12-29 12:29:51 -0800 [4413e7b](https://github.com/cloudflare/python-cloudflare/commit/4413e7b6b3187fbb538febf83da5174203bbf0d4) 1.4.10 release
+ - 2016-12-29 12:28:50 -0800 [0d17f04](https://github.com/cloudflare/python-cloudflare/commit/0d17f0438eb30484edcb5b229105a75ed6d1a21b) 1.4.9 release
+ - 2016-12-29 12:24:11 -0800 [12bb621](https://github.com/cloudflare/python-cloudflare/commit/12bb621300f68354cabc2d7eceaa75cd9d35cad4) Merge branch 'Sarga-master'
+ - 2016-12-29 13:00:10 +0200 [1d0ac45](https://github.com/cloudflare/python-cloudflare/commit/1d0ac45fbd08a8d7b5d57dd977ff81b11f19b59b) added http2,pseudo_ipv4 settings
+ - 2016-12-29 11:56:33 +0200 [5a2094f](https://github.com/cloudflare/python-cloudflare/commit/5a2094f39aab1f9060a7253a1876b9dc68f1b5b4) added http2,pseudo_ipv4 settings
+ - 2016-12-29 11:51:16 +0200 [cf90637](https://github.com/cloudflare/python-cloudflare/commit/cf90637ba83a3225fb63a6a2280911ab9c0b4c68) added http2,pseudo_ipv4 settings
+ - 2016-12-28 20:55:45 -0800 [180ea9c](https://github.com/cloudflare/python-cloudflare/commit/180ea9c27042db38317695d9c62989c54f8b55e2) CHANGELOG.md pushed to github
  - 2016-12-28 20:55:07 -0800 [ed8a55d](https://github.com/cloudflare/python-cloudflare/commit/ed8a55db66352307a917433c93885491aabd5582) 1.4.8 release
  - 2016-12-28 20:54:37 -0800 [61b316c](https://github.com/cloudflare/python-cloudflare/commit/61b316c7ef7dc095c3bb0b0da565facff70dd9c6) added rules support for /zones/:id/firewall/waf/packages/:id/rules/:id
  - 2016-12-28 20:40:02 -0800 [520abbb](https://github.com/cloudflare/python-cloudflare/commit/520abbbf9127a9537aa976eda6f177003932a1c3) CHANGELOG.md pushed to github
