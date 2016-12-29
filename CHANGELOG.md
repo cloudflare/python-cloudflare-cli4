@@ -1,7 +1,12 @@
 # Change Log
 
+ - 2016-12-28 20:38:48 -0800 [a9ca66f](https://github.com/cloudflare/python-cloudflare/commit/a9ca66ff17d56009a81ecdc82060e846fbbccdf1) 1.4.7 release
+ - 2016-12-28 20:38:06 -0800 [8122b6d](https://github.com/cloudflare/python-cloudflare/commit/8122b6d911c1fee698241e82996201a1365587e1) Merge branch 'rita3ko-update/load-balancing'
+ - 2016-12-28 20:35:47 -0800 [bd1886d](https://github.com/cloudflare/python-cloudflare/commit/bd1886dfb414f64ce5d901dd6a5f8363dcb8fa21) Merge branch 'update/load-balancing' of https://github.com/rita3ko/python-cloudflare into rita3ko-update/load-balancing
+ - 2016-12-28 20:32:32 -0800 [ad841f5](https://github.com/cloudflare/python-cloudflare/commit/ad841f527bd5f3852e3a434a0f74557f59fe3c84) CHANGELOG.md pushed to github
  - 2016-12-28 20:31:37 -0800 [e15a4ba](https://github.com/cloudflare/python-cloudflare/commit/e15a4ba6abc7b576d7401d8bdcd3215faccb4402) 1.4.6 release
  - 2016-12-28 20:30:45 -0800 [d5529e4](https://github.com/cloudflare/python-cloudflare/commit/d5529e4f0f54908c2c15fb16b16c3e6e6c0e3f78) added API support for third param - used by /zones/:id/firewall/waf/packages/:id/groups/:id & /zones/:id/firewall/waf/packages/:id/rules/:id
+ - 2016-12-28 11:19:14 -0800 [b1407ac](https://github.com/cloudflare/python-cloudflare/commit/b1407ac432879f0c740f128e808fa6be281c5c1f) Update Load Balancing endpoints to reflect latest API changes
  - 2016-12-27 10:27:23 -0800 [9c59aa3](https://github.com/cloudflare/python-cloudflare/commit/9c59aa3ea0847711b75e39b6d9d722c468c0ea05) CHANGELOG.md pushed to github
  - 2016-12-27 10:26:52 -0800 [c27d098](https://github.com/cloudflare/python-cloudflare/commit/c27d098b90f3de1a40d1e56aab7ddd5c72dbe2f7) 1.4.5 release
  - 2016-12-27 10:26:03 -0800 [9d722f1](https://github.com/cloudflare/python-cloudflare/commit/9d722f163a71d849868c77091efa695331c75b30) added User-Agent support to help debug calls - should have been done on day zero - oh well
