@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 """Cloudflare API via command line"""
 
-import os
 import sys
 import re
 import getopt
@@ -11,11 +10,9 @@ try:
 except ImportError:
     yaml = None
 
-import converters
+from . import converters
 
-sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
-import CloudFlare.exceptions
 
 def dump_commands(cf):
     """dump a tree of all the known API commands"""

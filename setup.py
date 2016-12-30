@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 """Cloudflare API code - setup.py file"""
-
+import re
 from setuptools import setup, find_packages
-from CloudFlare import __version__
+
+_version_re = re.compile(r"__version__\s=\s'(.*)'")
+
 
 def main():
     """Cloudflare API code - setup.py file"""
@@ -10,9 +12,12 @@ def main():
     with open('README.rst') as read_me:
         long_description = read_me.read()
 
+    with open('CloudFlare/__init__.py', 'r') as f:
+        version = _version_re.search(f.read()).group(1)
+
     setup(
         name='cloudflare',
-        version=__version__,
+        version=version,
         description='Python wrapper for the Cloudflare v4 API',
         long_description=long_description,
         author='Martin J. Levy',
@@ -50,6 +55,7 @@ def main():
             'Programming Language :: Python :: 3.6'
         ]
     )
+
 
 if __name__ == '__main__':
     main()

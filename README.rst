@@ -140,7 +140,6 @@ A more complex example follows.
 .. code:: python
 
     import CloudFlare
-    import CloudFlare.exceptions
 
     def main():
         zone_name = 'example.com'
@@ -336,7 +335,6 @@ The exception returns both an integer and textual message in one value.
 .. code:: python
 
     import CloudFlare
-    import CloudFlare.exceptions
 
         ...
         try
@@ -356,7 +354,6 @@ the additional error.
 
     import sys
     import CloudFlare
-    import CloudFlare.exceptions
 
         ...
         try

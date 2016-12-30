@@ -298,7 +298,6 @@ The exception returns both an integer and textual message in one value.
 
 ```python
 import CloudFlare
-import CloudFlare.exceptions
 
     ...
     try
@@ -316,7 +315,6 @@ You can itterate over that array to see the additional error.
 ```python
 import sys
 import CloudFlare
-import CloudFlare.exceptions
 
     ...
     try

@@ -1,12 +1,7 @@
-#!/usr/bin/env python
 """Cloudflare API via command line"""
+from __future__ import absolute_import
 
-import os
-import sys
-
-sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
-import CloudFlare.exceptions
 
 def convert_zones_to_identifier(cf, zone_name):
     """zone names to numbers"""
