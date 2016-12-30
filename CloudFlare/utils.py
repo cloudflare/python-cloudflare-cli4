@@ -1,8 +1,10 @@
 """ misc utilities  for Cloudflare API"""
+from __future__ import absolute_import
 
 import sys
 import requests
-from __init__ import __version__
+
+from . import __version__
 
 def user_agent():
     """ misc utilities  for Cloudflare API"""

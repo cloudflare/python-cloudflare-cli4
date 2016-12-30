@@ -2,7 +2,10 @@
 
 import os
 import re
-import ConfigParser
+try:
+    import ConfigParser  # py2
+except ImportError:
+    import configparser as ConfigParser  # py3
 
 def read_configs():
     """ reading the config file for Cloudflare API"""
