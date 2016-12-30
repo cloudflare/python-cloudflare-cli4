@@ -6,7 +6,6 @@ import sys
 
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
-import CloudFlare.exceptions
 
 def main():
     """Change the proxied value on a FQDN"""

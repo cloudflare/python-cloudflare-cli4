@@ -120,7 +120,6 @@ A more complex example follows.
 
 ```python
 import CloudFlare
-import CloudFlare.exceptions
 
 def main():
     zone_name = 'example.com'

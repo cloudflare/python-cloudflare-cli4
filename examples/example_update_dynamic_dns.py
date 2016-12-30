@@ -9,7 +9,6 @@ import requests
 
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
-import CloudFlare.exceptions
 
 def my_ip_address():
     """Cloudflare API code - example"""
