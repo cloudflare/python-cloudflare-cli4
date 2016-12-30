@@ -1,5 +1,10 @@
 # Change Log
 
+ - 2016-12-30 10:34:09 -0800 [f0a4fea](https://github.com/cloudflare/python-cloudflare/commit/f0a4fea03901b6547b861613769c758c439580dd) added reference to blog for historic reasons
+ - 2016-12-30 10:27:17 -0800 [c1c5096](https://github.com/cloudflare/python-cloudflare/commit/c1c5096e4c8e20609638dfde9b662be9c70c9c7b) 1.5.1 release
+ - 2016-12-30 10:27:06 -0800 [abf116c](https://github.com/cloudflare/python-cloudflare/commit/abf116c5f58a5e32ce7878bd7fc6ba6ccd2d4bba) added opportunistic_encryption, opportunistic_encryption, subscriptions API calls
+ - 2016-12-30 08:32:30 -0800 [37ddc7e](https://github.com/cloudflare/python-cloudflare/commit/37ddc7eea035b5629d5ec7e09ea6020c4c5520ff) removed import CloudFlare.exceptions from examples - as per @yesbox edits for python3
+ - 2016-12-30 08:18:51 -0800 [08aafa4](https://github.com/cloudflare/python-cloudflare/commit/08aafa4dc46fc3768ab046092bad6771691aa621) CHANGELOG.md pushed to github
  - 2016-12-30 08:18:19 -0800 [dba1257](https://github.com/cloudflare/python-cloudflare/commit/dba1257bd75196d4811ab3051c4c3a1519f42271) 1.5.0 release
  - 2016-12-30 08:13:26 -0800 [f82c055](https://github.com/cloudflare/python-cloudflare/commit/f82c055147250b15cf6378ffa17ba9c803e7ad92) Merge branch 'yesbox-refactor_imports'
  - 2016-12-30 16:18:13 +0100 [c013305](https://github.com/cloudflare/python-cloudflare/commit/c0133052de575c2e277d51643b8c8d39bbf96fe3) Refactor imports
