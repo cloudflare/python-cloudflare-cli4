@@ -63,6 +63,8 @@ def user(self):
             self._add_with_auth(base, "user/invites"))
     setattr(branch, "virtual_dns",
             self._add_with_auth(base, "user/virtual_dns"))
+    setattr(branch, "subscriptions",
+            self._add_with_auth(base, "user/subscriptions"))
 
 def zones(self):
     """ API core commands for Cloudflare API"""
@@ -98,6 +100,11 @@ def zones(self):
     branch = getattr(getattr(self, "zones"), "railguns")
     setattr(branch, "diagnose",
             self._add_with_auth(base, "zones", "railguns", "diagnose"))
+    branch = getattr(self, "zones")
+    setattr(branch, "subscription",
+            self._add_with_auth(base, "zones", "subscription"))
+    setattr(branch, "subscriptions",
+            self._add_with_auth(base, "zones", "subscriptions"))
 
 def zones_settings(self):
     """ API core commands for Cloudflare API"""
@@ -175,6 +182,10 @@ def zones_settings(self):
             self._add_with_auth(base, "zones", "settings/http2"))
     setattr(branch, "pseudo_ipv4",
             self._add_with_auth(base, "zones", "settings/pseudo_ipv4"))
+    setattr(branch, "opportunistic_encryption",
+            self._add_with_auth(base, "zones", "settings/opportunistic_encryption"))
+    setattr(branch, "automatic_https_rewrites",
+            self._add_with_auth(base, "zones", "settings/automatic_https_rewrites"))
 
 def zones_analytics(self):
     """ API core commands for Cloudflare API"""
