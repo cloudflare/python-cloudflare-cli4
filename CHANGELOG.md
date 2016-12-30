@@ -1,5 +1,11 @@
 # Change Log
 
+ - 2016-12-30 08:18:19 -0800 [dba1257](https://github.com/cloudflare/python-cloudflare/commit/dba1257bd75196d4811ab3051c4c3a1519f42271) 1.5.0 release
+ - 2016-12-30 08:13:26 -0800 [f82c055](https://github.com/cloudflare/python-cloudflare/commit/f82c055147250b15cf6378ffa17ba9c803e7ad92) Merge branch 'yesbox-refactor_imports'
+ - 2016-12-30 16:18:13 +0100 [c013305](https://github.com/cloudflare/python-cloudflare/commit/c0133052de575c2e277d51643b8c8d39bbf96fe3) Refactor imports
+ - 2016-12-29 20:25:27 -0800 [b4465b9](https://github.com/cloudflare/python-cloudflare/commit/b4465b9930441ebc9cc4ac454f38a28047e2c19e) 1.4.11 release
+ - 2016-12-29 20:24:05 -0800 [9c54a10](https://github.com/cloudflare/python-cloudflare/commit/9c54a10f9477232ea733ff99be07fd26ad7f21a0) moved converts into seperate file. corrected zone name converter to be simpler
+ - 2016-12-29 12:30:23 -0800 [9381a70](https://github.com/cloudflare/python-cloudflare/commit/9381a70f9c562eb606c808427006f86d23392dd0) CHANGELOG.md pushed to github
  - 2016-12-29 12:29:51 -0800 [4413e7b](https://github.com/cloudflare/python-cloudflare/commit/4413e7b6b3187fbb538febf83da5174203bbf0d4) 1.4.10 release
  - 2016-12-29 12:28:50 -0800 [0d17f04](https://github.com/cloudflare/python-cloudflare/commit/0d17f0438eb30484edcb5b229105a75ed6d1a21b) 1.4.9 release
  - 2016-12-29 12:24:11 -0800 [12bb621](https://github.com/cloudflare/python-cloudflare/commit/12bb621300f68354cabc2d7eceaa75cd9d35cad4) Merge branch 'Sarga-master'
