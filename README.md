@@ -42,6 +42,10 @@ A full list is provided below.
 
 All example code is available on GitHub (see [package](https://github.com/cloudflare/python-cloudflare) in the [examples](https://github.com/cloudflare/python-cloudflare/tree/master/examples) folder.
 
+## Blog
+
+This package was initially introduced [here](https://blog.cloudflare.com/python-cloudflare/) via Cloudflare's [blog](https://blog.cloudflare.com/).
+
 ## Getting Started
 
 A very simple listing of zones within your account; including the IPv6 status of the zone.

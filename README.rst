@@ -55,6 +55,13 @@ All example code is available on GitHub (see
 `examples <https://github.com/cloudflare/python-cloudflare/tree/master/examples>`__
 folder.
 
+Blog
+----
+
+This package was initially introduced
+`here <https://blog.cloudflare.com/python-cloudflare/>`__ via
+Cloudflare's `blog <https://blog.cloudflare.com/>`__.
+
 Getting Started
 ---------------
 
