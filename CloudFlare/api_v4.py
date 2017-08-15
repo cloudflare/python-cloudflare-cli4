@@ -274,6 +274,13 @@ def organizations(self):
     branch = getattr(self, "organizations")
     setattr(branch, "virtual_dns",
             self._add_with_auth(base, "organizations", "virtual_dns"))
+    setattr(branch, "load_balancers",
+            self._add_with_auth(base, "organizations", "load_balancers"))
+    branch = getattr(getattr(self, "organizations"), "load_balancers")
+    setattr(branch, "monitors",
+            self._add_with_auth(base, "organizations", "load_balancers/monitors"))
+    setattr(branch, "pools",
+            self._add_with_auth(base, "organizations", "load_balancers/pools"))
 
 def certificates(self):
     """ API core commands for Cloudflare API"""
