@@ -1,5 +1,16 @@
 # Change Log
 
+ - 2017-08-22 04:51:16 -0700 [cae98bb](https://github.com/cloudflare/python-cloudflare/commit/cae98bba8564d95a64ac6aa293805b1e587db2c6) 1.6.0 release
+ - 2017-08-22 04:39:52 -0700 [4745e20](https://github.com/cloudflare/python-cloudflare/commit/4745e20cc337d7d22a4c87ccc58a21961415a603) Merge pull request #35 from Bellardia/implement-argo
+ - 2017-08-22 04:37:06 -0700 [b07a3c9](https://github.com/cloudflare/python-cloudflare/commit/b07a3c99650b8a566116ff7ab68ba6860f4361fb) Merge pull request #34 from Bellardia/Bellardia-patch-1
+ - 2017-08-22 03:58:09 -0700 [fb12f30](https://github.com/cloudflare/python-cloudflare/commit/fb12f3000824051d34008a2c63e9eabce0822edc) fixed paging examples, as per pull request #28 & #29
+ - 2017-08-22 03:48:11 -0700 [152c9a1](https://github.com/cloudflare/python-cloudflare/commit/152c9a1fcdd447eca9aa6a5ef358aad1ac5307e1) Merge pull request #29 from crlorentzen/patch-1
+ - 2017-08-22 03:47:04 -0700 [9926050](https://github.com/cloudflare/python-cloudflare/commit/9926050443a81c821d93454c1745f420e1c2247c) Merge pull request #28 from crlorentzen/patch-2
+ - 2017-08-16 00:04:24 -0400 [d8d15c7](https://github.com/cloudflare/python-cloudflare/commit/d8d15c7163b19cec0859f4247de9c212d1bfecef) Add support for Argo
+ - 2017-08-15 11:03:51 -0400 [182a770](https://github.com/cloudflare/python-cloudflare/commit/182a7705d66ee8e9275066a703c734238eba59d3) Add support for organizational monitors and pools
+ - 2017-01-25 13:09:31 -0500 [6c86fef](https://github.com/cloudflare/python-cloudflare/commit/6c86fef75e01a2b8c1a92925cec3ac0dbac19bd6) Fixed pagination of raw example, same as c842b04
+ - 2017-01-25 13:05:46 -0500 [c842b04](https://github.com/cloudflare/python-cloudflare/commit/c842b04473627a22788d9e8bfac8729f72f504c9) Fix Pagination in example raw code
+ - 2016-12-30 10:34:40 -0800 [5358208](https://github.com/cloudflare/python-cloudflare/commit/5358208360c891cdabb954ba85c8ea269891a350) CHANGELOG.md pushed to github
  - 2016-12-30 10:34:09 -0800 [f0a4fea](https://github.com/cloudflare/python-cloudflare/commit/f0a4fea03901b6547b861613769c758c439580dd) added reference to blog for historic reasons
  - 2016-12-30 10:27:17 -0800 [c1c5096](https://github.com/cloudflare/python-cloudflare/commit/c1c5096e4c8e20609638dfde9b662be9c70c9c7b) 1.5.1 release
  - 2016-12-30 10:27:06 -0800 [abf116c](https://github.com/cloudflare/python-cloudflare/commit/abf116c5f58a5e32ce7878bd7fc6ba6ccd2d4bba) added opportunistic_encryption, opportunistic_encryption, subscriptions API calls
