@@ -1,5 +1,6 @@
 # Change Log
 
+ - 2017-08-22 04:51:51 -0700 [3a03516](https://github.com/cloudflare/python-cloudflare/commit/3a035163d3613756e8bb3e4bc26fb3642091861c) CHANGELOG.md pushed to github
  - 2017-08-22 04:51:16 -0700 [cae98bb](https://github.com/cloudflare/python-cloudflare/commit/cae98bba8564d95a64ac6aa293805b1e587db2c6) 1.6.0 release
  - 2017-08-22 04:39:52 -0700 [4745e20](https://github.com/cloudflare/python-cloudflare/commit/4745e20cc337d7d22a4c87ccc58a21961415a603) Merge pull request #35 from Bellardia/implement-argo
  - 2017-08-22 04:37:06 -0700 [b07a3c9](https://github.com/cloudflare/python-cloudflare/commit/b07a3c99650b8a566116ff7ab68ba6860f4361fb) Merge pull request #34 from Bellardia/Bellardia-patch-1
