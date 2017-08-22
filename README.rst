@@ -126,6 +126,7 @@ returning many items.
         cf = CloudFlare.CloudFlare(raw=True)
         page_number = 0
         while True:
+            page_number += 1
             raw_results = cf.zones.get(params={'per_page':5,'page':page_number})
             zones = raw_results['result']
 
@@ -135,7 +136,6 @@ returning many items.
                 print zone_id, zone_name
 
             total_pages = raw_results['result_info']['total_pages']
-            page_number += 1
             if page_number == total_pages:
                 break
 
