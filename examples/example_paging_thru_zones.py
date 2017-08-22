@@ -12,6 +12,7 @@ def main():
 
     page_number = 0
     while True: 
+        page_number += 1
         try:
             raw_results = cf.zones.get(params={'per_page':5,'page':page_number})
         except CloudFlare.exceptions.CloudFlareAPIError as e:
@@ -34,7 +35,6 @@ def main():
 
         if page_number == total_pages:
             break
-        page_number += 1
 
 if __name__ == '__main__':
     main()
