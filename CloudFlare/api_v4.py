@@ -19,6 +19,8 @@ def api_v4(self):
     certificates(self)
     # The API commands for /ips/
     ips(self)
+    # The API commands for /zones/:zone_id/argo
+    zones_argo(self)
     # The API commands for /zones/:zone_id/dnssec
     zones_dnssec(self)
     # The API commands for /zones/:zone_id/ssl
@@ -295,6 +297,19 @@ def ips(self):
     base = self._base
     setattr(self, "ips",
             self._add_noauth(base, "ips"))
+
+def zones_argo(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
+    branch = getattr(self, "zones")
+    setattr(branch, "argo",
+            self._add_unused(base, "zones", "argo"))
+    branch = getattr(getattr(self, "zones"), "argo")
+    setattr(branch, "tiered_caching",
+            self._add_with_auth(base, "zones", "argo/tiered_caching"))
+    setattr(branch, "smart_routing",
+            self._add_with_auth(base, "zones", "argo/smart_routing"))
 
 def zones_dnssec(self):
     """ API core commands for Cloudflare API"""
