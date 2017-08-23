@@ -4,7 +4,7 @@ import logging
 DEBUG = 0
 INFO = 1
 
-class Logger(object):
+class CFlogger(object):
     """ Logging for Cloudflare API"""
 
     def __init__(self, level):

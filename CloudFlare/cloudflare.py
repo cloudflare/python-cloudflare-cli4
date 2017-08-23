@@ -4,7 +4,7 @@ from __future__ import absolute_import
 import json
 import requests
 
-from .logger import Logger
+from .logging_helper import CFlogger
 from .utils import user_agent, sanitize_secrets
 from .read_configs import read_configs
 from .api_v4 import api_v4
@@ -30,7 +30,7 @@ class CloudFlare(object):
             self.user_agent = user_agent()
 
             if debug:
-                self.logger = Logger(debug).getLogger()
+                self.logger = CFlogger(debug).getLogger()
             else:
                 self.logger = None
 
