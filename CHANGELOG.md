@@ -1,5 +1,7 @@
 # Change Log
 
+ - 2017-08-23 02:58:51 -0700 [b1481fa](https://github.com/cloudflare/python-cloudflare/commit/b1481fa3cbf08d7a5b054c4488cda1e8357611c1) 1.6.2 release
+ - 2017-08-23 02:57:48 -0700 [16129a3](https://github.com/cloudflare/python-cloudflare/commit/16129a394cdc43e07e67cea9b6c14358311f66f4) removed requirement for logger package as its not used. changed Logger class  to CFlogger to remove confusion - issues/30
  - 2017-08-23 02:25:51 -0700 [90e3ea5](https://github.com/cloudflare/python-cloudflare/commit/90e3ea57e473b2cf332b7cc5ed22d5bf66ffe36a) added a delete dns record example - issues/33
  - 2017-08-22 05:10:15 -0700 [3fc396c](https://github.com/cloudflare/python-cloudflare/commit/3fc396cb685bf57ce094299a7505216d78624ac2) missing chmod +x on examples/example_paging_thru_zones.py
  - 2017-08-22 05:09:21 -0700 [1e13e8d](https://github.com/cloudflare/python-cloudflare/commit/1e13e8d5cbbe0c37f0a9d563869d51d91858cd50) CHANGELOG.md pushed to github
