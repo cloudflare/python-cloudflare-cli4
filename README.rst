@@ -445,6 +445,32 @@ A DNS zone code example
     if __name__ == '__main__':
         main()
 
+A DNS zone delete code example (be careful)
+-------------------------------------------
+
+.. code:: python
+
+    #!/usr/bin/env python
+
+    import sys
+    import CloudFlare
+
+    def main():
+        zone_name = sys.argv[1]
+        cf = CloudFlare.CloudFlare()
+        zone_info = cf.zones.get(param={'name': zone_name})
+        zone_id = zone_info['id']
+
+        dns_name = sys.argv[2]
+        dns_records = cf.zones.dns_records.get(zone_id, params={'name':dns_name + '.' + zone_name})
+        for dns_record in dns_records:
+            dns_record_id = dns_record['id']
+            r = cf.zones.dns_records.delete(zone_id, dns_record_id)
+        exit(0)
+
+    if __name__ == '__main__':
+        main()
+
 CLI
 ---
 
