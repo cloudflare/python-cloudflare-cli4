@@ -65,7 +65,7 @@ class CloudFlare(object):
                 'User-Agent': self.user_agent,
                 'X-Auth-Email': self.email,
                 'X-Auth-Key': self.token,
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': 'application/json'
             }
             if files:
                 # overwrite Content-Type as we are uploading data
