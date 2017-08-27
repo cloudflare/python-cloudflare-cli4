@@ -709,7 +709,7 @@ on API documentation for this feature.
     record4.example.com.    IN      TXT     "some text"
     $
 
-    $ cli4 --post file=@zone.txt /zones/:example.txt/dns_records/import
+    $ cli4 --post file=@zone.txt /zones/:example.com/dns_records/import
     {
         "recs_added": 4, 
         "total_records_parsed": 4
