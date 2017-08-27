@@ -1,5 +1,9 @@
 # Change Log
 
+ - 2017-08-26 23:49:08 -0700 [de7bbee](https://github.com/cloudflare/python-cloudflare/commit/de7bbee0a048f300eec39cdf00f129b17e5df7d3) 1.7.0 release
+ - 2017-08-26 23:47:04 -0700 [ee52cb3](https://github.com/cloudflare/python-cloudflare/commit/ee52cb33f95502e4b2df861cc5201f3a537137ba) tags added and some general cleanup
+ - 2017-08-26 23:46:13 -0700 [d400c56](https://github.com/cloudflare/python-cloudflare/commit/d400c565cb1a29440a45319e7feca2a93b081c90) support for dns_records/import and file upload via library and cli4 command
+ - 2017-08-23 02:59:08 -0700 [412ced6](https://github.com/cloudflare/python-cloudflare/commit/412ced60ccefb3c38302d7e431c78512a27f4290) CHANGELOG.md pushed to github
  - 2017-08-23 02:58:51 -0700 [b1481fa](https://github.com/cloudflare/python-cloudflare/commit/b1481fa3cbf08d7a5b054c4488cda1e8357611c1) 1.6.2 release
  - 2017-08-23 02:57:48 -0700 [16129a3](https://github.com/cloudflare/python-cloudflare/commit/16129a394cdc43e07e67cea9b6c14358311f66f4) removed requirement for logger package as its not used. changed Logger class  to CFlogger to remove confusion - issues/30
  - 2017-08-23 02:25:51 -0700 [90e3ea5](https://github.com/cloudflare/python-cloudflare/commit/90e3ea57e473b2cf332b7cc5ed22d5bf66ffe36a) added a delete dns record example - issues/33
