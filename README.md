@@ -622,7 +622,7 @@ $ cli4 /zones/:example.com/dnssec
 $
 ```
 
-### Zone file upload CLI examples
+### Zone file upload and download CLI examples (uses BIND format files)
 
 Refer to [Import DNS records](https://api.cloudflare.com/#dns-records-for-a-zone-import-dns-records) on API documentation for this feature.
 
@@ -649,6 +649,27 @@ $ cli4 --post file=@zone.txt /zones/:example.com/dns_records/import
 }
 $
 ```
+
+The following is documented within the **Advanced** option of the DNS page within the Cloudflare portal.
+
+```
+$ python -m cli4 /zones/:example.com/dns_records/export | jq -r . | egrep -v '^;;|^$'
+$ORIGIN .
+@	3600	IN	SOA	example.com.	root.example.com.	(
+		2025552311	; serial
+		7200		; refresh
+		3600		; retry
+		86400		; expire
+		3600)		; minimum
+example.com.	300	IN	NS	REPLACE&ME$WITH^YOUR@NAMESERVER.
+record4.example.com.	300	IN	TXT	"some text"
+record3.example.com.	300	IN	CNAME	record1.example.com.
+record1.example.com.	300	IN	A	10.0.0.1
+record2.example.com.	300	IN	AAAA	2001:d8b::2
+$
+```
+
+The **jq -r** option is used to convert newlines and tabs within the JSON response data. The egrep is used for documentation brevity.
 
 ## Implemented API calls
 
