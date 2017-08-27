@@ -108,6 +108,8 @@ def zones(self):
     setattr(branch, "subscriptions",
             self._add_with_auth(base, "zones", "subscriptions"))
     branch = getattr(getattr(self, "zones"), "dns_records")
+    setattr(branch, "export",
+            self._add_with_auth(base, "zones", "dns_records/export"))
     setattr(branch, "import",
             self._add_with_auth(base, "zones", "dns_records/import"))
 

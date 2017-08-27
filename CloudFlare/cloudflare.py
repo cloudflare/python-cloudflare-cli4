@@ -89,8 +89,8 @@ class CloudFlare(object):
                 raise CloudFlareAPIError(0, 'no cert token defined')
             headers = {
                 'User-Agent': self.user_agent,
-		'X-Auth-User-Service-Key': self.certtoken,
-		'Content-Type': 'application/json'
+                'X-Auth-User-Service-Key': self.certtoken,
+                'Content-Type': 'application/json'
             }
             return self._call(method, headers,
                               api_call_part1, api_call_part2, api_call_part3,
@@ -180,14 +180,101 @@ class CloudFlare(object):
             if self.logger:
                 self.logger.debug('Response: url %s', response.url)
 
-            response_data = response.text
-            if self.logger:
-                self.logger.debug('Response: data %s' % response_data)
+            # Create response_{type|code|data}
             try:
-                response_data = json.loads(response_data)
-            except ValueError:
-                raise CloudFlareAPIError(0, 'JSON parse failed.')
+                response_type = response.headers['Content-Type']
+                if ';' in response_type:
+                    # remove the ;paramaters part (like charset=, etc.)
+                    response_type = response_type[0:response_type.rfind(';')]
+                response_type = response_type.strip().lower()
+            except:
+                # API should always response; but if it doesn't; here's the default
+                response_type = 'application/octet-stream'
+            response_code = response.status_code
+            response_data = response.text
 
+            if self.logger:
+                self.logger.debug('Response: %d, %s %s' % (response_code, response_type, response_data))
+
+            if response_code >= 500 and response_code <= 599:
+                # 500 Internal Server Error
+                # 501 Not Implemented
+                # 502 Bad Gateway
+                # 503 Service Unavailable
+                # 504 Gateway Timeout
+                # 505 HTTP Version Not Supported
+                # 506 Variant Also Negotiates
+                # 507 Insufficient Storage
+                # 508 Loop Detected
+                # 509 Unassigned
+                # 510 Not Extended
+                # 511 Network Authentication Required
+
+                # the libary doesn't deal with these errors, just pass upwards!
+                # there's no value to add and the returned data is questionable or not useful
+                response.raise_for_status()
+
+                # should not be reached
+                raise CloudFlareInternalError(0, 'internal error in status code processing')
+
+            #if response_code >= 400 and response_code <= 499:
+            #    # 400 Bad Request
+            #    # 401 Unauthorized
+            #    # 403 Forbidden
+            #    # 405 Method Not Allowed
+            #    # 415 Unsupported Media Type
+            #    # 429 Too many requests
+            #
+            #    # don't deal with these errors, just pass upwards!
+            #    response.raise_for_status()
+            #
+            #if response_code >= 300 and response_code <= 399:
+            #    # 304 Not Modified
+            #
+            #    # don't deal with these errors, just pass upwards!
+            #    response.raise_for_status()
+            #
+            # should be a 200 response at this point
+
+            if response_type == 'application/json':
+                # API says it's JSON; so it better be parsable as JSON
+                try:
+                    response_data = json.loads(response_data)
+                except ValueError:
+                    # While this should not happen; it's always possible
+                    raise CloudFlareAPIError(0, 'JSON parse failed - report to Cloudflare.')
+
+                if response_code == requests.codes.ok:
+                    # 200 ok - so nothing needs to be done
+                    pass
+                else:
+                    # 3xx & 4xx errors - we should report that somehow - but not quite yet
+                    # response_data['code'] = response_code
+                    pass
+            elif response_type == 'text/plain' or response_type == 'application/octet-stream':
+                # API says it's text; but maybe it's actually JSON? - should be fixed in API
+                try:
+                    response_data = json.loads(response_data)
+                except ValueError:
+                    # So it wasn't JSON - moving on as if it's text!
+                    # A single value is returned (vs an array or object)
+                    if response_code == requests.codes.ok:
+                        # 200 ok
+                        response_data = {'success': True, 'result': str(response_data)}
+                    else:
+                        # 3xx & 4xx errors
+                        response_data = {'success': False, 'code': response_code, 'result': str(response_data)}
+            else:
+                # Assuming nothing - but continuing anyway
+                # A single value is returned (vs an array or object)
+                if response_code == requests.codes.ok:
+                    # 200 ok
+                    response_data = {'success': True, 'result': str(response_data)}
+                else:
+                    # 3xx & 4xx errors
+                    response_data = {'success': False, 'code': response_code, 'result': str(response_data)}
+
+            # it would be nice to return the error code and content type values; but not quite yet
             return response_data
 
         def _call(self, method, headers,
