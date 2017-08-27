@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2017-08-27 11:03:46 -0700 [6d5952c](https://github.com/cloudflare/python-cloudflare/commit/6d5952cbda642328c06b3c71b87214aa9ecc5304) 1.7.3 release
+ - 2017-08-27 11:03:18 -0700 [434efb8](https://github.com/cloudflare/python-cloudflare/commit/434efb8f7d716e3c968b62db09fa8a7147787ac9) added dns_records/export documentation
+ - 2017-08-27 10:48:34 -0700 [9a35d4f](https://github.com/cloudflare/python-cloudflare/commit/9a35d4f5180d40d6754e9dcf203feb188d0fc24b) CHANGELOG.md pushed to github
  - 2017-08-27 10:48:19 -0700 [c1bb920](https://github.com/cloudflare/python-cloudflare/commit/c1bb920a10b4ea017ef0c9b40896d30e49f5ed19) 1.7.2 release
  - 2017-08-27 10:47:41 -0700 [680d5b9](https://github.com/cloudflare/python-cloudflare/commit/680d5b9f6a805625be1ce8b50c8ab9ebb4e25d22) added dns_records/export API endpoint hence added code to handle non-JSON responses. added some initial http error code processing
  - 2017-08-27 09:28:57 -0700 [77a69b7](https://github.com/cloudflare/python-cloudflare/commit/77a69b72c76edd0cc76dde717ca85b1924ae17a9) CHANGELOG.md pushed to github
