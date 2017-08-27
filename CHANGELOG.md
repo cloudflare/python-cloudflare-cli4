@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2017-08-27 09:28:31 -0700 [d443410](https://github.com/cloudflare/python-cloudflare/commit/d4434106da68ef1828caaf49e8a25c442bb2dba2) 1.7.1 release
+ - 2017-08-26 23:54:06 -0700 [a86700a](https://github.com/cloudflare/python-cloudflare/commit/a86700af42da5efe49ae9d6178aeec315a373150) typo
+ - 2017-08-26 23:49:40 -0700 [684b001](https://github.com/cloudflare/python-cloudflare/commit/684b001baa6fb772bc55ca59be3d24f0766eabc5) CHANGELOG.md pushed to github
  - 2017-08-26 23:49:08 -0700 [de7bbee](https://github.com/cloudflare/python-cloudflare/commit/de7bbee0a048f300eec39cdf00f129b17e5df7d3) 1.7.0 release
  - 2017-08-26 23:47:04 -0700 [ee52cb3](https://github.com/cloudflare/python-cloudflare/commit/ee52cb33f95502e4b2df861cc5201f3a537137ba) tags added and some general cleanup
  - 2017-08-26 23:46:13 -0700 [d400c56](https://github.com/cloudflare/python-cloudflare/commit/d400c565cb1a29440a45319e7feca2a93b081c90) support for dns_records/import and file upload via library and cli4 command
