@@ -78,18 +78,24 @@ def cli4(args):
         elif opt in ('-D', '--delete'):
             method = 'DELETE'
 
+    if dump:
+        cf = CloudFlare.CloudFlare()
+        dump_commands(cf)
+        exit(0)
+
     digits_only = re.compile('^-?[0-9]+$')
     floats_only = re.compile('^-?[0-9.]+$')
 
     # next grab the params. These are in the form of tag=value
     params = None
+    files = None
     while len(args) > 0 and '=' in args[0]:
         tag_string, value_string = args.pop(0).split('=', 1)
-        if value_string == 'true':
+        if value_string.lower() == 'true':
             value = True
-        elif value_string == 'false':
+        elif value_string.lower() == 'false':
             value = False
-        elif value_string == '':
+        elif value_string == '' or value_string.lower() == 'none':
             value = None
         elif value_string[0] is '=' and value_string[1:] == '':
             exit('cli4: %s== - no number value passed' % (tag_string))
@@ -108,8 +114,21 @@ def cli4(args):
                 value = yaml.safe_load(value_string)
             except ValueError:
                 exit('cli4: %s="%s" - can\'t parse json value' % (tag_string, value_string))
+        elif value_string[0] is '@':
+            filename = value_string[1:]
+            # a file to be uploaded - used in dns_records/import - only via POST
+            if method != 'POST':
+                exit('cli4: %s=%s - file upload only with POST' % (tag_string, filename))
+            files = {}
+            try:
+                files[tag_string] = open(filename, 'rb')
+            except:
+                exit('cli4: %s=%s - file open failure' % (tag_string, filename))
+            # no need for param code below
+            continue
         else:
             value = value_string
+
         if tag_string == '':
             # There's no tag; it's just an unnamed list
             if params is None:
@@ -128,11 +147,6 @@ def cli4(args):
             except TypeError:
                 exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' %
                      (tag_string, value_string))
-
-    if dump:
-        cf = CloudFlare.CloudFlare()
-        dump_commands(cf)
-        exit(0)
 
     # what's left is the command itself
     if len(args) != 1:
@@ -240,7 +254,7 @@ def cli4(args):
                 r = m.post(identifier1=identifier1,
                            identifier2=i2,
                            identifier3=identifier3,
-                           data=params)
+                           data=params, files=files)
             elif method is 'PUT':
                 r = m.put(identifier1=identifier1,
                           identifier2=i2,

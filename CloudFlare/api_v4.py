@@ -107,6 +107,9 @@ def zones(self):
             self._add_with_auth(base, "zones", "subscription"))
     setattr(branch, "subscriptions",
             self._add_with_auth(base, "zones", "subscriptions"))
+    branch = getattr(getattr(self, "zones"), "dns_records")
+    setattr(branch, "import",
+            self._add_with_auth(base, "zones", "dns_records/import"))
 
 def zones_settings(self):
     """ API core commands for Cloudflare API"""

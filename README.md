@@ -461,6 +461,8 @@ For example:
 cli4 --put ="00000000000000000000000000000000" /user/load_balancers/maps/:00000000000000000000000000000000/region/:WNAM
 ```
 
+Data can also be uploaded from file contents. Using the ```item=@filename``` format will open the file and the contents uploaded in the POST.
+
 ### CLI output
 
 The output from the CLI command is in JSON or YAML format (and human readable). This is controled by the **--yaml** or **--json** flags (JSON is the default).
@@ -616,6 +618,34 @@ $ cli4 /zones/:example.com/dnssec
     "modified_on": "2016-05-01T22:42:15.591158Z",
     "public_key": "mdsswUyr3DPW132mOi8V9xESWE8jTo0dxCjjnopKl+GqJxpVXckHAeF+KkxLbxILfDLUT0rAK9iUzy1L53eKGQ==",
     "status": "pending"
+}
+$
+```
+
+### Zone file upload CLI examples
+
+Refer to [Import DNS records](https://api.cloudflare.com/#dns-records-for-a-zone-import-dns-records) on API documentation for this feature.
+
+```bash
+$ cat zone.txt
+example.com.            IN      SOA     somewhere.example.com. someone.example.com. (
+                                2017010101
+                                3H
+                                15
+                                1w
+                                3h
+                        )
+
+record1.example.com.    IN      A       10.0.0.1
+record2.example.com.    IN      AAAA    2001:d8b::2
+record3.example.com.    IN      CNAME   record1.example.com.
+record4.example.com.    IN      TXT     "some text"
+$
+
+$ cli4 --post file=@zone.txt /zones/:example.txt/dns_records/import
+{
+    "recs_added": 4, 
+    "total_records_parsed": 4
 }
 $
 ```

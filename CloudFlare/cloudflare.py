@@ -56,7 +56,7 @@ class CloudFlare(object):
                            api_call_part2=None,
                            api_call_part3=None,
                            identifier1=None, identifier2=None, identifier3=None,
-                           params=None, data=None):
+                           params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
             if self.email is '' or self.token is '':
@@ -65,12 +65,17 @@ class CloudFlare(object):
                 'User-Agent': self.user_agent,
                 'X-Auth-Email': self.email,
                 'X-Auth-Key': self.token,
-                'Content-Type': 'application/json'
+                'Content-Type': 'multipart/form-data'
             }
+            if files:
+                # overwrite Content-Type as we are uploading data
+                headers['Content-Type'] = 'multipart/form-data'
+                # however something isn't right and this works ... look at again later!
+                del headers['Content-Type']
             return self._call(method, headers,
                               api_call_part1, api_call_part2, api_call_part3,
                               identifier1, identifier2, identifier3,
-                              params, data)
+                              params, data, files)
 
         def call_with_certauth(self, method,
                                api_call_part1,
@@ -84,8 +89,8 @@ class CloudFlare(object):
                 raise CloudFlareAPIError(0, 'no cert token defined')
             headers = {
                 'User-Agent': self.user_agent,
-                'X-Auth-User-Service-Key': self.certtoken,
-                'Content-Type': 'application/json'
+		'X-Auth-User-Service-Key': self.certtoken,
+		'Content-Type': 'application/json'
             }
             return self._call(method, headers,
                               api_call_part1, api_call_part2, api_call_part3,
@@ -95,7 +100,7 @@ class CloudFlare(object):
         def _raw(self, method, headers,
                  api_call_part1, api_call_part2=None, api_call_part3=None,
                  identifier1=None, identifier2=None, identifier3=None,
-                 params=None, data=None):
+                 params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
             if self.logger:
@@ -107,6 +112,8 @@ class CloudFlare(object):
                                                                str(identifier3)))
                 self.logger.debug('Call: optional params and data %s %s' % (str(params),
                                                                             str(data)))
+                if files:
+                    self.logger.debug('Call: upload file %r' % (files))
 
             if (method is None) or (api_call_part1 is None):
                 # should never happen
@@ -152,7 +159,7 @@ class CloudFlare(object):
                 if method == 'GET':
                     response = requests.get(url, headers=headers, params=params, data=data)
                 elif method == 'POST':
-                    response = requests.post(url, headers=headers, params=params, json=data)
+                    response = requests.post(url, headers=headers, params=params, json=data, files=files)
                 elif method == 'PUT':
                     response = requests.put(url, headers=headers, params=params, json=data)
                 elif method == 'DELETE':
@@ -188,13 +195,13 @@ class CloudFlare(object):
                   api_call_part2=None,
                   api_call_part3=None,
                   identifier1=None, identifier2=None, identifier3=None,
-                  params=None, data=None):
+                  params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
             response_data = self._raw(method, headers,
                                       api_call_part1, api_call_part2, api_call_part3,
                                       identifier1, identifier2, identifier3,
-                                      params, data)
+                                      params, data, files)
 
             # Sanatize the returned results - just in case API is messed up
             if 'success' not in response_data:
@@ -363,7 +370,7 @@ class CloudFlare(object):
                                              identifier1, identifier2, identifier3,
                                              params, data)
 
-        def post(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
+        def post(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_auth('POST',
@@ -371,7 +378,7 @@ class CloudFlare(object):
                                              self.api_call_part2,
                                              self.api_call_part3,
                                              identifier1, identifier2, identifier3,
-                                             params, data)
+                                             params, data, files)
 
         def put(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
