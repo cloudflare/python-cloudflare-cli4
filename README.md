@@ -671,6 +671,30 @@ $
 
 The **jq -r** option is used to convert newlines and tabs within the JSON response data. The egrep is used for documentation brevity.
 
+This can also be done via Python code with the following example.
+```
+#!/usr/bin/env python
+import sys
+import CloudFlare
+
+def main():
+    zone_name = sys.argv[1]
+    cf = CloudFlare.CloudFlare()
+
+    zones = cf.zones.get(params={'name': zone_name})
+    zone_id = zones[0]['id']
+
+    dns_records = cf.zones.dns_records.export.get(zone_id)
+    for l in dns_records.splitlines():
+        if len(l) == 0 or l[0] == ';':
+            continue
+        print l
+    exit(0)
+
+if __name__ == '__main__':
+    main()
+```
+
 ## Implemented API calls
 
 The **--dump** argument to cli4 will produce a list of all the call implemented within the library.
