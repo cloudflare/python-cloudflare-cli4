@@ -1,5 +1,10 @@
 # Change Log
 
+ - 2017-09-12 00:16:18 -0700 [49f428e](https://github.com/cloudflare/python-cloudflare/commit/49f428e52ed0f1ea8845b7fa241d8044bea7d776) 1.7.5 release
+ - 2017-09-11 08:30:00 -0700 [dfe0afb](https://github.com/cloudflare/python-cloudflare/commit/dfe0afbec237c3f217f63ea8a92990eecb43a437) added more API commands. Made some efficency edits to the python code
+ - 2017-08-30 10:37:45 -0700 [06b4c6b](https://github.com/cloudflare/python-cloudflare/commit/06b4c6b9c1adf0ce7520762ecf46b013c4d840da) added example python code for dns_records/export
+ - 2017-08-27 18:44:04 -0700 [b596a90](https://github.com/cloudflare/python-cloudflare/commit/b596a903600e2d20dee4435e90b18933615ecbe2) typo
+ - 2017-08-27 11:53:56 -0700 [61a13eb](https://github.com/cloudflare/python-cloudflare/commit/61a13eb6888d1ef4eab57f9d4025e35606865e91) CHANGELOG.md pushed to github
  - 2017-08-27 11:53:43 -0700 [671758e](https://github.com/cloudflare/python-cloudflare/commit/671758e07830be2f9f1f70af393b92ba5e4ed46e) 1.7.4 release
  - 2017-08-27 11:52:19 -0700 [510a4b6](https://github.com/cloudflare/python-cloudflare/commit/510a4b65fee4d22513474d28698e8f4359c6c335) added /zones/amp & /zones/dns_analytics API calls
  - 2017-08-27 11:03:58 -0700 [a56ab78](https://github.com/cloudflare/python-cloudflare/commit/a56ab782de87d2fe9c94218b239c2bda0ac477be) CHANGELOG.md pushed to github
