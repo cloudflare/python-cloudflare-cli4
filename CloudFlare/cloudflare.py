@@ -39,7 +39,7 @@ class CloudFlare(object):
                               api_call_part2=None,
                               api_call_part3=None,
                               identifier1=None, identifier2=None, identifier3=None,
-                              params=None, data=None):
+                              params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
             headers = {
@@ -49,7 +49,7 @@ class CloudFlare(object):
             return self._call(method, headers,
                               api_call_part1, api_call_part2, api_call_part3,
                               identifier1, identifier2, identifier3,
-                              params, data)
+                              params, data, files)
 
         def call_with_auth(self, method,
                            api_call_part1,
@@ -82,7 +82,7 @@ class CloudFlare(object):
                                api_call_part2=None,
                                api_call_part3=None,
                                identifier1=None, identifier2=None, identifier3=None,
-                               params=None, data=None):
+                               params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
             if self.certtoken is '' or self.certtoken is None:
@@ -95,7 +95,7 @@ class CloudFlare(object):
             return self._call(method, headers,
                               api_call_part1, api_call_part2, api_call_part3,
                               identifier1, identifier2, identifier3,
-                              params, data)
+                              params, data, files)
 
         def _raw(self, method, headers,
                  api_call_part1, api_call_part2=None, api_call_part3=None,
@@ -518,7 +518,7 @@ class CloudFlare(object):
                                                  identifier1, identifier2, identifier3,
                                                  params, data)
 
-        def post(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
+        def post(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
             return self._base.call_with_certauth('POST',
@@ -526,7 +526,7 @@ class CloudFlare(object):
                                                  self.api_call_part2,
                                                  self.api_call_part3,
                                                  identifier1, identifier2, identifier3,
-                                                 params, data)
+                                                 params, data, files)
 
         def put(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
