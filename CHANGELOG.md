@@ -1,5 +1,9 @@
 # Change Log
 
+ - 2017-09-27 15:12:36 -0700 [522595b](https://github.com/cloudflare/python-cloudflare/commit/522595bc8cadf85b74b354a54951d0342311b45f) 1.8.0 release
+ - 2017-09-27 15:02:40 -0700 [3358773](https://github.com/cloudflare/python-cloudflare/commit/3358773568ba1454bd0b423960ec2e290e7a270f) Cloudflare CA CLI examples added
+ - 2017-09-27 15:01:03 -0700 [3731c06](https://github.com/cloudflare/python-cloudflare/commit/3731c0600fd3b09131cde9d4d565a1d537fd0187) needed to handle files= paramater for all POST calls
+ - 2017-09-12 00:16:44 -0700 [593b06b](https://github.com/cloudflare/python-cloudflare/commit/593b06b4be3f4463b0bb1a93696189216b074d22) CHANGELOG.md pushed to github
  - 2017-09-12 00:16:18 -0700 [49f428e](https://github.com/cloudflare/python-cloudflare/commit/49f428e52ed0f1ea8845b7fa241d8044bea7d776) 1.7.5 release
  - 2017-09-11 08:30:00 -0700 [dfe0afb](https://github.com/cloudflare/python-cloudflare/commit/dfe0afbec237c3f217f63ea8a92990eecb43a437) added more API commands. Made some efficency edits to the python code
  - 2017-08-30 10:37:45 -0700 [06b4c6b](https://github.com/cloudflare/python-cloudflare/commit/06b4c6b9c1adf0ce7520762ecf46b013c4d840da) added example python code for dns_records/export
