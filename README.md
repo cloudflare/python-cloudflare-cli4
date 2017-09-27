@@ -549,6 +549,67 @@ $ cli4 /zones/:example.com/available_plans | jq -c '.[]|{"id":.id,"name":.name}'
 $
 ```
 
+### Cloudflare CA CLI examples
+
+Here's some Cloudflare CA examples. Note the need of the zone_id= paramater with the basic **/certificates** call.
+
+```bash
+$ cli4 /zones/:example.com | jq -c '.|{"id":.id,"name":.name}'
+{"id":"12345678901234567890123456789012","name":"example.com"}
+$
+
+$ cli4 zone_id=12345678901234567890123456789012 /certificates | jq -c '.[]|{"id":.id,"expires_on":.expires_on,"hostnames":.hostnames,"certificate":.certificate}'
+{"id":"123456789012345678901234567890123456789012345678","expires_on":"2032-01-29 22:36:00 +0000 UTC","hostnames":["*.example.com","example.com"],"certificate":"-----BEGIN CERTIFICATE-----\n ... "}
+{"id":"123456789012345678901234567890123456789012345678","expires_on":"2032-01-28 23:23:00 +0000 UTC","hostnames":["*.example.com","example.com"],"certificate":"-----BEGIN CERTIFICATE-----\n ... "}
+{"id":"123456789012345678901234567890123456789012345678","expires_on":"2032-01-28 23:20:00 +0000 UTC","hostnames":["*.example.com","example.com"],"certificate":"-----BEGIN CERTIFICATE-----\n ... "}
+$
+```
+
+A certificate can be viewed via a simple GET request.
+```bash
+$ cli4 /certificates/:123456789012345678901234567890123456789012345678
+{
+    "certificate": "-----BEGIN CERTIFICATE-----\n ... ",
+    "expires_on": "2032-01-29 22:36:00 +0000 UTC",
+    "hostnames": [
+        "*.example.com",
+        "example.com"
+    ],
+    "id": "123456789012345678901234567890123456789012345678",
+    "request_type": "origin-rsa"
+}
+$
+```
+
+Creating a certificate. This is done with a **POST** request. Note the use of **==** in order to pass a decimal number (vs. string) in JSON. The CSR is not shown for simplicity sake.
+```bash
+$ CSR=`cat example.com.csr`
+$ cli4 --post hostnames='["example.com","*.example.com"]' requested_validity==365 request_type="origin-ecc" csr="$CSR" /certificates
+{
+    "certificate": "-----BEGIN CERTIFICATE-----\n ... ",
+    "csr": "-----BEGIN CERTIFICATE REQUEST-----\n ... ",
+    "expires_on": "2018-09-27 21:47:00 +0000 UTC",
+    "hostnames": [
+        "*.example.com",
+        "example.com"
+    ],
+    "id": "123456789012345678901234567890123456789012345678",
+    "request_type": "origin-ecc",
+    "requested_validity": 365
+}
+$
+```
+
+Deleting a certificate can be done with a **DELETE** call.
+```bash
+$ cli4 --delete /certificates/:123456789012345678901234567890123456789012345678
+{
+    "id": "123456789012345678901234567890123456789012345678",
+    "revoked_at": "0000-00-00T00:00:00Z"
+}
+$
+```
+
 ### Paging CLI examples
 
 The **--raw** command provides access to the paging returned values.
