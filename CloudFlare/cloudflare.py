@@ -34,10 +34,7 @@ class CloudFlare(object):
             else:
                 self.logger = None
 
-        def call_with_no_auth(self, method,
-                              api_call_part1,
-                              api_call_part2=None,
-                              api_call_part3=None,
+        def call_with_no_auth(self, method, parts,
                               identifier1=None, identifier2=None, identifier3=None,
                               params=None, data=None, files=None):
             """ Cloudflare v4 API"""
@@ -46,15 +43,11 @@ class CloudFlare(object):
                 'User-Agent': self.user_agent,
                 'Content-Type': 'application/json'
             }
-            return self._call(method, headers,
-                              api_call_part1, api_call_part2, api_call_part3,
+            return self._call(method, headers, parts,
                               identifier1, identifier2, identifier3,
                               params, data, files)
 
-        def call_with_auth(self, method,
-                           api_call_part1,
-                           api_call_part2=None,
-                           api_call_part3=None,
+        def call_with_auth(self, method, parts,
                            identifier1=None, identifier2=None, identifier3=None,
                            params=None, data=None, files=None):
             """ Cloudflare v4 API"""
@@ -72,15 +65,11 @@ class CloudFlare(object):
                 headers['Content-Type'] = 'multipart/form-data'
                 # however something isn't right and this works ... look at again later!
                 del headers['Content-Type']
-            return self._call(method, headers,
-                              api_call_part1, api_call_part2, api_call_part3,
+            return self._call(method, headers, parts,
                               identifier1, identifier2, identifier3,
                               params, data, files)
 
-        def call_with_certauth(self, method,
-                               api_call_part1,
-                               api_call_part2=None,
-                               api_call_part3=None,
+        def call_with_certauth(self, method, parts,
                                identifier1=None, identifier2=None, identifier3=None,
                                params=None, data=None, files=None):
             """ Cloudflare v4 API"""
@@ -92,57 +81,55 @@ class CloudFlare(object):
                 'X-Auth-User-Service-Key': self.certtoken,
                 'Content-Type': 'application/json'
             }
-            return self._call(method, headers,
-                              api_call_part1, api_call_part2, api_call_part3,
+            return self._call(method, headers, parts,
                               identifier1, identifier2, identifier3,
                               params, data, files)
 
-        def _raw(self, method, headers,
-                 api_call_part1, api_call_part2=None, api_call_part3=None,
+        def _raw(self, method, headers, parts,
                  identifier1=None, identifier2=None, identifier3=None,
                  params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
             if self.logger:
-                self.logger.debug('Call: %s,%s,%s,%s,%s,%s' % (str(api_call_part1),
+                self.logger.debug('Call: %s,%s,%s,%s,%s,%s' % (str(parts[0]),
                                                                str(identifier1),
-                                                               str(api_call_part2),
+                                                               str(parts[1]),
                                                                str(identifier2),
-                                                               str(api_call_part3),
+                                                               str(parts[2]),
                                                                str(identifier3)))
                 self.logger.debug('Call: optional params and data %s %s' % (str(params),
                                                                             str(data)))
                 if files:
                     self.logger.debug('Call: upload file %r' % (files))
 
-            if (method is None) or (api_call_part1 is None):
+            if (method is None) or (parts[0] is None):
                 # should never happen
                 raise CloudFlareInternalError(0, 'You must specify a method and endpoint')
 
-            if api_call_part2 is not None or (data is not None and method == 'GET'):
+            if parts[1] is not None or (data is not None and method == 'GET'):
                 if identifier1 is None:
                     raise CloudFlareAPIError(0, 'You must specify identifier1')
                 if identifier2 is None:
                     url = (self.base_url + '/'
-                           + api_call_part1 + '/'
+                           + parts[0] + '/'
                            + identifier1 + '/'
-                           + api_call_part2)
+                           + parts[1])
                 else:
                     url = (self.base_url + '/'
-                           + api_call_part1 + '/'
+                           + parts[0] + '/'
                            + identifier1 + '/'
-                           + api_call_part2 + '/'
+                           + parts[1] + '/'
                            + identifier2)
             else:
                 if identifier1 is None:
                     url = (self.base_url + '/'
-                           + api_call_part1)
+                           + parts[0])
                 else:
                     url = (self.base_url + '/'
-                           + api_call_part1 + '/'
+                           + parts[0] + '/'
                            + identifier1)
-            if api_call_part3:
-                url += '/' + api_call_part3
+            if parts[2]:
+                url += '/' + parts[2]
             if identifier3:
                 url += '/' + identifier3
 
@@ -194,7 +181,7 @@ class CloudFlare(object):
             response_data = response.text
 
             if self.logger:
-                self.logger.debug('Response: %d, %s %s' % (response_code, response_type, response_data))
+                self.logger.debug('Response: %d, %s, %s' % (response_code, response_type, response_data))
 
             if response_code >= 500 and response_code <= 599:
                 # 500 Internal Server Error
@@ -277,16 +264,12 @@ class CloudFlare(object):
             # it would be nice to return the error code and content type values; but not quite yet
             return response_data
 
-        def _call(self, method, headers,
-                  api_call_part1,
-                  api_call_part2=None,
-                  api_call_part3=None,
+        def _call(self, method, headers, parts,
                   identifier1=None, identifier2=None, identifier3=None,
                   params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            response_data = self._raw(method, headers,
-                                      api_call_part1, api_call_part2, api_call_part3,
+            response_data = self._raw(method, headers, parts,
                                       identifier1, identifier2, identifier3,
                                       params, data, files)
 
@@ -356,9 +339,18 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             self._base = base
-            # self.api_call_part1 = api_call_part1
-            # self.api_call_part2 = api_call_part2
-            # self.api_call_part3 = api_call_part3
+            self._parts = [api_call_part1, api_call_part2, api_call_part3]
+
+        def __call__(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
+            """ Cloudflare v4 API"""
+
+            # This is the same as a get()
+            return self.get(identifier1, identifier2, identifier3, params, data)
+
+        def __str__(self):
+            """ Cloudflare v4 API"""
+
+            return '[%s]' % ('/' + '/:id/'.join(filter(None, self._parts)))
 
         def get(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
@@ -392,17 +384,23 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             self._base = base
-            self.api_call_part1 = api_call_part1
-            self.api_call_part2 = api_call_part2
-            self.api_call_part3 = api_call_part3
+            self._parts = [api_call_part1, api_call_part2, api_call_part3]
+
+        def __call__(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
+            """ Cloudflare v4 API"""
+
+            # This is the same as a get()
+            return self.get(identifier1, identifier2, identifier3, params, data)
+
+        def __str__(self):
+            """ Cloudflare v4 API"""
+
+            return '[%s]' % ('/' + '/:id/'.join(filter(None, self._parts)))
 
         def get(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            return self._base.call_with_no_auth('GET',
-                                                self.api_call_part1,
-                                                self.api_call_part2,
-                                                self.api_call_part3,
+            return self._base.call_with_no_auth('GET', self._parts,
                                                 identifier1, identifier2, identifier3,
                                                 params, data)
 
@@ -433,57 +431,51 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             self._base = base
-            self.api_call_part1 = api_call_part1
-            self.api_call_part2 = api_call_part2
-            self.api_call_part3 = api_call_part3
+            self._parts = [api_call_part1, api_call_part2, api_call_part3]
+
+        def __call__(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
+            """ Cloudflare v4 API"""
+
+            # This is the same as a get()
+            return self.get(identifier1, identifier2, identifier3, params, data)
+
+        def __str__(self):
+            """ Cloudflare v4 API"""
+
+            return '[%s]' % ('/' + '/:id/'.join(filter(None, self._parts)))
 
         def get(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            return self._base.call_with_auth('GET',
-                                             self.api_call_part1,
-                                             self.api_call_part2,
-                                             self.api_call_part3,
+            return self._base.call_with_auth('GET', self._parts,
                                              identifier1, identifier2, identifier3,
                                              params, data)
 
         def patch(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            return self._base.call_with_auth('PATCH',
-                                             self.api_call_part1,
-                                             self.api_call_part2,
-                                             self.api_call_part3,
+            return self._base.call_with_auth('PATCH', self._parts,
                                              identifier1, identifier2, identifier3,
                                              params, data)
 
         def post(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            return self._base.call_with_auth('POST',
-                                             self.api_call_part1,
-                                             self.api_call_part2,
-                                             self.api_call_part3,
+            return self._base.call_with_auth('POST', self._parts,
                                              identifier1, identifier2, identifier3,
                                              params, data, files)
 
         def put(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            return self._base.call_with_auth('PUT',
-                                             self.api_call_part1,
-                                             self.api_call_part2,
-                                             self.api_call_part3,
+            return self._base.call_with_auth('PUT', self._parts,
                                              identifier1, identifier2, identifier3,
                                              params, data)
 
         def delete(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            return self._base.call_with_auth('DELETE',
-                                             self.api_call_part1,
-                                             self.api_call_part2,
-                                             self.api_call_part3,
+            return self._base.call_with_auth('DELETE', self._parts,
                                              identifier1, identifier2, identifier3,
                                              params, data)
 
@@ -494,57 +486,51 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             self._base = base
-            self.api_call_part1 = api_call_part1
-            self.api_call_part2 = api_call_part2
-            self.api_call_part3 = api_call_part3
+            self._parts = [api_call_part1, api_call_part2, api_call_part3]
+
+        def __call__(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
+            """ Cloudflare v4 API"""
+
+            # This is the same as a get()
+            return self.get(identifier1, identifier2, identifier3, params, data)
+
+        def __str__(self):
+            """ Cloudflare v4 API"""
+
+            return '[%s]' % ('/' + '/:id/'.join(filter(None, self._parts)))
 
         def get(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            return self._base.call_with_certauth('GET',
-                                                 self.api_call_part1,
-                                                 self.api_call_part2,
-                                                 self.api_call_part3,
+            return self._base.call_with_certauth('GET', self._parts,
                                                  identifier1, identifier2, identifier3,
                                                  params, data)
 
         def patch(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            return self._base.call_with_certauth('PATCH',
-                                                 self.api_call_part1,
-                                                 self.api_call_part2,
-                                                 self.api_call_part3,
+            return self._base.call_with_certauth('PATCH', self._parts,
                                                  identifier1, identifier2, identifier3,
                                                  params, data)
 
         def post(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            return self._base.call_with_certauth('POST',
-                                                 self.api_call_part1,
-                                                 self.api_call_part2,
-                                                 self.api_call_part3,
+            return self._base.call_with_certauth('POST', self._parts,
                                                  identifier1, identifier2, identifier3,
                                                  params, data, files)
 
         def put(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            return self._base.call_with_certauth('PUT',
-                                                 self.api_call_part1,
-                                                 self.api_call_part2,
-                                                 self.api_call_part3,
+            return self._base.call_with_certauth('PUT', self._parts,
                                                  identifier1, identifier2, identifier3,
                                                  params, data)
 
         def delete(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            return self._base.call_with_certauth('DELETE',
-                                                 self.api_call_part1,
-                                                 self.api_call_part2,
-                                                 self.api_call_part3,
+            return self._base.call_with_certauth('DELETE', self._parts,
                                                  identifier1, identifier2, identifier3,
                                                  params, data)
 
@@ -566,7 +552,7 @@ class CloudFlare(object):
                 # it's a known api call - lets show the result and continue down the tree
                 if 'delete' in d or 'get' in d or 'patch' in d or 'post' in d or 'put' in d:
                     # only show the result if a call exists for this part
-                    if 'api_call_part1' in d:
+                    if '_parts' in d:
                         w.append(s + '/' + n)
                 w = w + self.api_list(a, s + '/' + n)
         return w
@@ -592,3 +578,33 @@ class CloudFlare(object):
         api_v4(self)
         if extras:
             api_extras(self, extras)
+
+    def __call__(self):
+        """ Cloudflare v4 API"""
+
+        raise TypeError('object is not callable')
+
+    def __enter__(self):
+        """ Cloudflare v4 API"""
+        return self
+
+    def __exit__(self, t, v, tb):
+        """ Cloudflare v4 API"""
+        if t is None:
+            return True
+        # pretend we didn't deal with raised error - which is true
+        return False
+
+    def __str__(self):
+        """ Cloudflare v4 API"""
+
+        return '["%s","%s"]' % (self._base.email, "REDACTED")
+
+    def __repr__(self):
+        """ Cloudflare v4 API"""
+
+        return '%s,%s(%s,"%s","%s","%s",%s,"%s")' % (
+            self.__module__, type(self).__name__,
+            self._base.email, 'REDACTED', 'REDACTED',
+            self._base.base_url, self._base.raw, self._base.user_agent
+        )
