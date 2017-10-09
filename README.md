@@ -877,7 +877,7 @@ The solution can be found [here](https://urllib3.readthedocs.org/en/latest/secur
 
 ## Python 2.x vs 3.x support
 
-As of May/June 2016 the code is now tested againt pylint.
+As of May/June 2016 the code is now tested against pylint.
 This was required in order to move the codebase into Python 3.x.
 The motivation for this came from [Danielle Madeley (danni)](https://github.com/danni).
 
