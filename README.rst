@@ -789,7 +789,7 @@ page within the Cloudflare portal.
 
 ::
 
-    $ python -m cli4 /zones/:example.com/dns_records/export | egrep -v '^;;|^$'
+    $ cli4 /zones/:example.com/dns_records/export | egrep -v '^;;|^$'
     $ORIGIN .
     @   3600    IN  SOA example.com.    root.example.com.   (
             2025552311  ; serial
