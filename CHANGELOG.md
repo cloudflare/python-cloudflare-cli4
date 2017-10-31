@@ -1,5 +1,15 @@
 # Change Log
 
+ - 2017-10-31 04:45:40 -0700 [0c71205](https://github.com/cloudflare/python-cloudflare/commit/0c71205320597ef766f10ea4111dff482ba17d62) 1.8.1 release
+ - 2017-10-31 04:44:38 -0700 [378dede](https://github.com/cloudflare/python-cloudflare/commit/378dede277ad755b16fbfa5bd31cdc50f2a6ed9c) cleaned up string response for /zones/:id/dns_records/export API call
+ - 2017-10-09 08:21:04 -0700 [a25a4a9](https://github.com/cloudflare/python-cloudflare/commit/a25a4a99ffe3c86d143cf0c05b70fd303e94ac3f) unwonnd json write
+ - 2017-10-09 08:17:32 -0700 [0d61289](https://github.com/cloudflare/python-cloudflare/commit/0d6128920088961c62ff0b6c276cdc34c79053da) Merge branch 'master' of github.com:cloudflare/python-cloudflare
+ - 2017-10-09 08:15:59 -0700 [97cd013](https://github.com/cloudflare/python-cloudflare/commit/97cd013a3bab0c718f5e487565a524c9d8ae2e07) added with statement example
+ - 2017-10-09 08:13:14 -0700 [5c4a872](https://github.com/cloudflare/python-cloudflare/commit/5c4a87299ea6be802d9d7ad128b7f31daba13788) final json write mofified to help unicode mindset
+ - 2017-10-09 08:11:58 -0700 [0820e21](https://github.com/cloudflare/python-cloudflare/commit/0820e21dcab2d81d3a6cf2f5eb897ecea0f1473e) added code to handle python with construct, cleaned-up parts variable, allowed simple get() call without get method
+ - 2017-10-09 06:29:21 -0700 [409da8b](https://github.com/cloudflare/python-cloudflare/commit/409da8b15cf3d20a93a1fd8b766d9561a7314f89) Merge pull request #39 from drbachler/README
+ - 2017-10-09 15:10:16 +0200 [c69914a](https://github.com/cloudflare/python-cloudflare/commit/c69914a9d57ed3a2200e69ff885351bbc905cc37) Fixed typo in README.md
+ - 2017-09-27 15:12:51 -0700 [84ece92](https://github.com/cloudflare/python-cloudflare/commit/84ece92e5bb4309ae8d31a1e8ef8c8238669238b) CHANGELOG.md pushed to github
  - 2017-09-27 15:12:36 -0700 [522595b](https://github.com/cloudflare/python-cloudflare/commit/522595bc8cadf85b74b354a54951d0342311b45f) 1.8.0 release
  - 2017-09-27 15:02:40 -0700 [3358773](https://github.com/cloudflare/python-cloudflare/commit/3358773568ba1454bd0b423960ec2e290e7a270f) Cloudflare CA CLI examples added
  - 2017-09-27 15:01:03 -0700 [3731c06](https://github.com/cloudflare/python-cloudflare/commit/3731c0600fd3b09131cde9d4d565a1d537fd0187) needed to handle files= paramater for all POST calls
