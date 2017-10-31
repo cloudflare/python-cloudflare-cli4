@@ -281,10 +281,16 @@ def cli4(args):
     if len(results) == 1:
         results = results[0]
 
-    if output == 'json':
-        sys.stdout.write(json.dumps(results, indent=4, sort_keys=True) + '\n')
-        # json.dumps(results, sys.stdout, indent=4, sort_keys=True)
-        # sys.stdout.write('\n')
-    if output == 'yaml':
-        sys.stdout.write(yaml.safe_dump(results))
+    if isinstance(results, str):
+        # if the results are a simple string, then it should be dumped directly
+        # this is only used for /zones/:id/dns_records/export presently
+        sys.stdout.write(results)
+    else:
+        # anything more complex (dict, list, etc) should be dumped as JSON/YAML
+        if output == 'json':
+            sys.stdout.write(json.dumps(results, indent=4, sort_keys=True) + '\n')
+            # json.dumps(results, sys.stdout, indent=4, sort_keys=True)
+            # sys.stdout.write('\n')
+        if output == 'yaml':
+            sys.stdout.write(yaml.safe_dump(results))
 
