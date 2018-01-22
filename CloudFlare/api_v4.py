@@ -5,33 +5,42 @@ def api_v4(self):
 
     # The API commands for /user/
     user(self)
+    user_audit_logs(self)
     user_load_balancers(self)
+    user_load_balancing_analytics(self)
     user_virtual_dns(self)
+
     # The API commands for /zones/
     zones(self)
-    zones_settings(self)
-    zones_analytics(self)
-    zones_firewall(self)
-    zones_rate_limits(self)
     zones_amp(self)
+    zones_analytics(self)
+    zones_argo(self)
+    zones_dns_analytics(self)
+    zones_dnssec(self)
+    zones_firewall(self)
+    zones_load_balancers(self)
+    zones_logs(self)
+    zones_rate_limits(self)
+    zones_settings(self)
+    zones_ssl(self)
+
     # The API commands for /railguns/
     railguns(self)
+
     # The API commands for /organizations/
     organizations(self)
+    organizations_audit_logs(self)
     organizations_virtual_dns(self)
+
     # The API commands for /certificates/
     certificates(self)
+
     # The API commands for /ips/
     ips(self)
-    # The API commands for /zones/:zone_id/argo
-    zones_argo(self)
-    # The API commands for /zones/:zone_id/dnssec
-    zones_dnssec(self)
-    # The API commands for /zones/:zone_id/ssl
-    zones_ssl(self)
-    # The API commands for CLB /zones/:zone_id/load_balancers & /user/load_balancers
-    zones_load_balancers(self)
-    zones_dns_analytics(self)
+
+    # The API commands for /account/
+    account(self)
+    account_load_balancing_analytics(self)
 
 def user(self):
     """ API core commands for Cloudflare API"""
@@ -279,6 +288,20 @@ def zones_amp(self):
     setattr(branch, "viewer",
             self._add_with_auth(base, "zones", "amp/viewer"))
 
+def zones_logs(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
+    branch = self.zones
+    setattr(branch, "logs",
+            self._add_unused(base, "zones", "logs"))
+    branch = self.zones.logs
+    setattr(branch, "received",
+            self._add_with_auth_unwrapped(base, "zones", "logs/received"))
+    branch = self.zones.logs.received
+    setattr(branch, "fields",
+            self._add_with_auth_unwrapped(base, "zones", "logs/received/fields"))
+
 def railguns(self):
     """ API core commands for Cloudflare API"""
 
@@ -320,7 +343,7 @@ def organizations(self):
             self._add_with_auth(base, "organizations", "firewall/access_rules/rules"))
     branch = self.organizations
     setattr(branch, "load_balancers",
-            self._add_with_auth(base, "organizations", "load_balancers"))
+            self._add_unused(base, "organizations", "load_balancers"))
     branch = self.organizations.load_balancers
     setattr(branch, "monitors",
             self._add_with_auth(base, "organizations", "load_balancers/monitors"))
@@ -376,6 +399,11 @@ def zones_ssl(self):
             self._add_with_auth(base, "zones", "ssl/certificate_packs"))
     setattr(branch, "verification",
             self._add_with_auth(base, "zones", "ssl/verification"))
+    setattr(branch, "universal",
+            self._add_unused(base, "zones", "ssl/universal"))
+    branch = self.zones.ssl.universal
+    setattr(branch, "settings",
+            self._add_with_auth(base, "zones", "ssl/universal/settings"))
 
 def zones_load_balancers(self):
     """ API core commands for Cloudflare API"""
@@ -431,4 +459,53 @@ def organizations_virtual_dns(self):
     branch = self.organizations.virtual_dns.dns_analytics.report
     setattr(branch, "bytime",
             self._add_with_auth(base, "organizations", "virtual_dns", "dns_analytics/report/bytime"))
+
+def user_audit_logs(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
+    branch = self.user
+    setattr(branch, "audit_logs",
+            self._add_with_auth(base, "user/audit_logs"))
+
+def user_load_balancing_analytics(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
+    branch = self.user
+    setattr(branch, "load_balancing_analytics",
+            self._add_unused(base, "user/load_balancing_analytics"))
+    branch = self.user.load_balancing_analytics
+    setattr(branch, "events",
+            self._add_with_auth(base, "user/load_balancing_analytics/events"))
+    setattr(branch, "entities",
+            self._add_with_auth(base, "user/load_balancing_analytics/entities"))
+
+def organizations_audit_logs(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
+    branch = self.organizations
+    setattr(branch, "audit_logs",
+            self._add_with_auth(base, "organizations", "audit_logs"))
+
+def account(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
+    setattr(self, "account",
+            self._add_unused(base, "account"))
+
+def account_load_balancing_analytics(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
+    branch = self.account
+    setattr(branch, "load_balancing_analytics",
+            self._add_unused(base, "account", "load_balancing_analytics"))
+    branch = self.account.load_balancing_analytics
+    setattr(branch, "events",
+            self._add_with_auth(base, "account", "load_balancing_analytics/events"))
+    setattr(branch, "entities",
+            self._add_with_auth(base, "account", "load_balancing_analytics/entities"))
 
