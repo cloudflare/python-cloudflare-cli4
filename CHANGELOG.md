@@ -1,5 +1,10 @@
 # Change Log
 
+ - 2018-01-21 19:35:15 -0800 [631f2b2](https://github.com/cloudflare/python-cloudflare/commit/631f2b2c60aff223f0ed3dd33d80084277c07f16) 2.0.0 release
+ - 2018-01-21 19:32:55 -0800 [1b4a7a8](https://github.com/cloudflare/python-cloudflare/commit/1b4a7a8bf57fabcb1e8086e492dded0477c5f525) moved to use requests.Session(), split network out, added upwrapped code for enterprise log share support
+ - 2018-01-21 19:29:22 -0800 [91c0cc2](https://github.com/cloudflare/python-cloudflare/commit/91c0cc258c4a8b0072c4f7d52d0be32b1c076b3e) added to api: load_balancing_analytics, audit_logs, logs/received, ssl/universal/settings
+ - 2017-10-31 04:57:47 -0700 [3831bb0](https://github.com/cloudflare/python-cloudflare/commit/3831bb066f2c7be8c37b6348421d743a1d19ba8e) typo
+ - 2017-10-31 04:46:11 -0700 [31da853](https://github.com/cloudflare/python-cloudflare/commit/31da8531efd1956171a88d958363d945e7fffd8b) CHANGELOG.md pushed to github
  - 2017-10-31 04:45:40 -0700 [0c71205](https://github.com/cloudflare/python-cloudflare/commit/0c71205320597ef766f10ea4111dff482ba17d62) 1.8.1 release
  - 2017-10-31 04:44:38 -0700 [378dede](https://github.com/cloudflare/python-cloudflare/commit/378dede277ad755b16fbfa5bd31cdc50f2a6ed9c) cleaned up string response for /zones/:id/dns_records/export API call
  - 2017-10-09 08:21:04 -0700 [a25a4a9](https://github.com/cloudflare/python-cloudflare/commit/a25a4a99ffe3c86d143cf0c05b70fd303e94ac3f) unwonnd json write
