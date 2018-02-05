@@ -15,7 +15,7 @@ def main():
     try:
         if sys.argv[1] == '--off':
             update_flag = True
-	    new_value = 'off'
+            new_value = 'off'
             sys.argv.pop(1)
     except IndexError:
         pass
@@ -23,7 +23,7 @@ def main():
     try:
         if sys.argv[1] == '--on':
             update_flag = True
-	    new_value = 'on'
+            new_value = 'on'
             sys.argv.pop(1)
     except IndexError:
         pass
