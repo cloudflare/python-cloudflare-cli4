@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Cloudflare API code - example"""
 
+from __future__ import print_function
+
 import os
 import sys
 
@@ -15,7 +17,7 @@ def main():
     try:
         if sys.argv[1] == '--off':
             update_flag = True
-	    new_value = 'off'
+            new_value = 'off'
             sys.argv.pop(1)
     except IndexError:
         pass
@@ -23,7 +25,7 @@ def main():
     try:
         if sys.argv[1] == '--on':
             update_flag = True
-	    new_value = 'on'
+            new_value = 'on'
             sys.argv.pop(1)
     except IndexError:
         pass
@@ -55,17 +57,17 @@ def main():
 
     present_value = r['value']
 
-    print zone_id, zone_name, present_value
+    print(zone_id, zone_name, present_value)
 
     if update_flag and present_value != new_value:
-        print '\t', '(now updating... %s -> %s)' % (present_value, new_value)
+        print('\t', '(now updating... %s -> %s)' % (present_value, new_value))
         try:
             r = cf.zones.settings.always_use_https.patch(zone_id, data={'value':new_value})
         except CloudFlare.exceptions.CloudFlareAPIError as e:
             exit('/zones.settings.always_use_https.patch %d %s - api call failed' % (e, e))
         updated_value = r['value']
         if new_value == updated_value:
-            print '\t', '... updated!'
+            print('\t', '... updated!')
 
 if __name__ == '__main__':
     main()
