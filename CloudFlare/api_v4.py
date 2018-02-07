@@ -212,6 +212,10 @@ def zones_settings(self):
             self._add_with_auth(base, "zones", "settings/opportunistic_encryption"))
     setattr(branch, "automatic_https_rewrites",
             self._add_with_auth(base, "zones", "settings/automatic_https_rewrites"))
+    setattr(branch, "brotli",
+            self._add_with_auth(base, "zones", "settings/brotli"))
+    setattr(branch, "privacy_pass",
+            self._add_with_auth(base, "zones", "settings/privacy_pass"))
 
 def zones_analytics(self):
     """ API core commands for Cloudflare API"""
