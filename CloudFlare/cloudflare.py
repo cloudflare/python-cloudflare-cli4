@@ -278,7 +278,7 @@ class CloudFlare(object):
             if response_type == 'application/json':
                 # API says it's JSON; so it better be parsable as JSON
                 try:
-                    response_data = json.loads(response_data)
+                    response_data = json.loads(response_data.decode('utf-8'))
                 except ValueError:
                     if response_data == '':
                         # This should really be 'null' but it isn't. Even then, it's wrong!

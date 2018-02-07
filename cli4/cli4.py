@@ -288,9 +288,13 @@ def cli4(args):
     else:
         # anything more complex (dict, list, etc) should be dumped as JSON/YAML
         if output == 'json':
-            sys.stdout.write(json.dumps(results, indent=4, sort_keys=True) + '\n')
             # json.dumps(results, sys.stdout, indent=4, sort_keys=True)
             # sys.stdout.write('\n')
+            # sys.stdout.write(json.dumps(results, indent=4, sort_keys=True) + '\n')
+            try:
+                print(json.dumps(results, indent=4, sort_keys=True, ensure_ascii=False, encoding='utf8'))
+            except TypeError as e:
+                print(json.dumps(results, indent=4, sort_keys=True, ensure_ascii=False))
         if output == 'yaml':
             sys.stdout.write(yaml.safe_dump(results))
 
