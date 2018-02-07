@@ -1,5 +1,12 @@
 # Change Log
 
+ - 2018-02-07 03:34:27 -0800 [fdb6a7f](https://github.com/cloudflare/python-cloudflare/commit/fdb6a7f645ee47f3a1f2a93e6ce8b154031ff5e3) 2.0.1 release
+ - 2018-02-07 03:33:28 -0800 [25e3193](https://github.com/cloudflare/python-cloudflare/commit/25e31935af224f6adfe6f7d14c99fe26ff2cd47b) doing that python3 thingy
+ - 2018-02-07 03:33:06 -0800 [73d6386](https://github.com/cloudflare/python-cloudflare/commit/73d63864f4c0b91142bd4ad51009b5196425efed) doing that python3 thingy
+ - 2018-02-07 03:32:00 -0800 [7c0411c](https://github.com/cloudflare/python-cloudflare/commit/7c0411c86a5ccb8df1a2262a0864cc56c2e1ad1c) yet another fix for unicode/utf8 returned JSON data
+ - 2018-02-07 03:28:07 -0800 [99005c1](https://github.com/cloudflare/python-cloudflare/commit/99005c187795d7a46a52eb138404d7632829b031) settings/brotli & settings/privacy_pass added
+ - 2018-02-04 21:54:06 -0800 [a39ef72](https://github.com/cloudflare/python-cloudflare/commit/a39ef72534bc7453e7583f3f02ab1afc96181ce7) added example of always_use_https which can be the basis of any settings value change
+ - 2018-01-21 19:35:49 -0800 [cadc0eb](https://github.com/cloudflare/python-cloudflare/commit/cadc0ebc21b631ae46e2a7262a4e52988ccc231c) CHANGELOG.md pushed to github
  - 2018-01-21 19:35:15 -0800 [631f2b2](https://github.com/cloudflare/python-cloudflare/commit/631f2b2c60aff223f0ed3dd33d80084277c07f16) 2.0.0 release
  - 2018-01-21 19:32:55 -0800 [1b4a7a8](https://github.com/cloudflare/python-cloudflare/commit/1b4a7a8bf57fabcb1e8086e492dded0477c5f525) moved to use requests.Session(), split network out, added upwrapped code for enterprise log share support
  - 2018-01-21 19:29:22 -0800 [91c0cc2](https://github.com/cloudflare/python-cloudflare/commit/91c0cc258c4a8b0072c4f7d52d0be32b1c076b3e) added to api: load_balancing_analytics, audit_logs, logs/received, ssl/universal/settings
