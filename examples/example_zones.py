@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Cloudflare API code - example"""
 
+from __future__ import print_function
+
 import os
 import sys
 import re
@@ -43,7 +45,7 @@ def main():
         except CloudFlare.exceptions.CloudFlareAPIError as e:
             exit('/zones/dns_records %d %s - api call failed' % (e, e))
 
-        print zone_id, zone_name, zone_owner, zone_plan
+        print(zone_id, zone_name, zone_owner, zone_plan)
 
         prog = re.compile('\.*'+zone_name+'$')
         dns_records = sorted(dns_records, key=lambda v: prog.sub('', v['name']) + '_' + v['type'])
@@ -53,9 +55,9 @@ def main():
             r_value = dns_record['content']
             r_ttl = dns_record['ttl']
             r_id = dns_record['id']
-            print '\t%s %60s %6d %-5s %s' % (r_id, r_name, r_ttl, r_type, r_value)
+            print('\t%s %60s %6d %-5s %s' % (r_id, r_name, r_ttl, r_type, r_value))
 
-        print ''
+        print('')
 
     exit(0)
 
