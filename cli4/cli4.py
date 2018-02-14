@@ -88,6 +88,7 @@ def cli4(args):
 
     # next grab the params. These are in the form of tag=value
     params = None
+    content = None
     files = None
     while len(args) > 0 and '=' in args[0]:
         tag_string, value_string = args.pop(0).split('=', 1)
@@ -117,13 +118,25 @@ def cli4(args):
         elif value_string[0] is '@':
             filename = value_string[1:]
             # a file to be uploaded - used in dns_records/import - only via POST
-            if method != 'POST':
-                exit('cli4: %s=%s - file upload only with POST' % (tag_string, filename))
-            files = {}
-            try:
-                files[tag_string] = open(filename, 'rb')
-            except:
-                exit('cli4: %s=%s - file open failure' % (tag_string, filename))
+            if tag_string == '':
+                if method != 'PUT':
+                    exit('cli4: %s - raw file upload only with PUT' % (filename))
+                try:
+                    if filename == '-':
+                        content = sys.stdin.read()
+                    else:
+                        with open(filename, 'r') as f:
+                            content = f.read()
+                except:
+                    exit('cli4: %s - file open failure' % (filename))
+            else:
+                if method != 'POST':
+                    exit('cli4: %s=%s - file upload only with POST' % (tag_string, filename))
+                files = {}
+                try:
+                    files[tag_string] = open(filename, 'rb')
+                except:
+                    exit('cli4: %s=%s - file open failure' % (tag_string, filename))
             # no need for param code below
             continue
         else:
@@ -182,6 +195,9 @@ def cli4(args):
                 if len(element) in [32, 40, 48] and hex_only.match(element):
                     # raw identifier - lets just use it as-is
                     identifier1 = element
+                elif element[0] == ':':
+                    # raw string - used for workers script_name - use ::script_name
+                    identifier1 = element[1:]
                 elif cmd[0] == 'certificates':
                     # identifier1 = convert_certificates_to_identifier(cf, element)
                     identifier1 = converters.convert_zones_to_identifier(cf, element)
@@ -204,6 +220,9 @@ def cli4(args):
                 if len(element) in [32, 40, 48] and hex_only.match(element):
                     # raw identifier - lets just use it as-is
                     identifier2 = element
+                elif element[0] == ':':
+                    # raw string - used for workers script_names
+                    identifier2 = element[1:]
                 elif (cmd[0] and cmd[0] == 'zones') and (cmd[2] and cmd[2] == 'dns_records'):
                     identifier2 = converters.convert_dns_record_to_identifier(cf,
                                                                               identifier1,
@@ -234,6 +253,11 @@ def cli4(args):
                     exit('cli4: /%s - not found' % (element))
                 else:
                     exit('cli4: /%s/%s - not found' % ('/'.join(cmd), element))
+
+    if content and params:
+        exit('cli4: /%s - content and params not allowed together' % (command))
+    if content:
+        params = content
 
     results = []
     if identifier2 is None:
@@ -284,17 +308,18 @@ def cli4(args):
     if isinstance(results, str):
         # if the results are a simple string, then it should be dumped directly
         # this is only used for /zones/:id/dns_records/export presently
-        sys.stdout.write(results)
+        pass
     else:
         # anything more complex (dict, list, etc) should be dumped as JSON/YAML
         if output == 'json':
-            # json.dumps(results, sys.stdout, indent=4, sort_keys=True)
-            # sys.stdout.write('\n')
-            # sys.stdout.write(json.dumps(results, indent=4, sort_keys=True) + '\n')
             try:
-                print(json.dumps(results, indent=4, sort_keys=True, ensure_ascii=False, encoding='utf8'))
+                results = json.dumps(results, indent=4, sort_keys=True, ensure_ascii=False, encoding='utf8')
             except TypeError as e:
-                print(json.dumps(results, indent=4, sort_keys=True, ensure_ascii=False))
+                results = json.dumps(results, indent=4, sort_keys=True, ensure_ascii=False)
         if output == 'yaml':
-            sys.stdout.write(yaml.safe_dump(results))
+            results = yaml.safe_dump(results)
+
+    sys.stdout.write(results)
+    if not results.endswith('\n'):
+        sys.stdout.write('\n')
 
