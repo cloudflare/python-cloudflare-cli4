@@ -705,7 +705,7 @@ $
 
 $ cli4 --post file=@zone.txt /zones/:example.com/dns_records/import
 {
-    "recs_added": 4, 
+    "recs_added": 4,
     "total_records_parsed": 4
 }
 $
@@ -755,6 +755,126 @@ def main():
 if __name__ == '__main__':
     main()
 ```
+
+### Cloudflare Workers
+
+Cloudflare Workers are described on the Cloudflare blog at
+[here](https://blog.cloudflare.com/introducing-cloudflare-workers/) and
+[here](https://blog.cloudflare.com/code-everywhere-cloudflare-workers/), with the beta release announced
+[here](https://blog.cloudflare.com/cloudflare-workers-is-now-on-open-beta/).
+
+The Python libraries now support the Cloudflare Workers API calls. The following javascript is lifted from [https://cloudflareworkers.com/](https://cloudflareworkers.com/) and slightly modified.
+
+```
+$ cat modify-body.js
+addEventListener("fetch", event => {
+  event.respondWith(fetchAndModify(event.request));
+});
+
+async function fetchAndModify(request) {
+  console.log("got a request:", request);
+
+  // Send the request on to the origin server.
+  const response = await fetch(request);
+
+  // Read response body.
+  const text = await response.text();
+
+  // Modify it.
+  const modified = text.replace(
+  "<body>",
+  "<body style=\"background: #ff0;\">");
+
+  // Return modified response.
+  return new Response(modified, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: response.headers
+  });
+}
+$
+```
+
+Here's the website with it's simple ```<body>``` statement
+
+```
+$ curl -sS https://example.com/ | fgrep '<body'
+  <body>
+$
+```
+
+Now lets add the script. Looking above, you will see that it's simple action is to modify the ```<body>``` statement and make the background yellow.
+
+```
+$ cli4 --put =@- /zones/:example.com/workers/script < modify-body.js
+{
+    "etag": "1234567890123456789012345678901234567890123456789012345678901234",
+    "id": "example-com",
+    "modified_on": "2018-02-15T00:00:00.000000Z",
+    "script": "addEventListener(\"fetch\", event => {\n  event.respondWith(fetchAndModify(event.request));\n});\n\nasync function fetchAndModify(request) {\n  console.log(\"got a request:\", request);\n\n  // Send the request on to the origin server.\n  const response = await fetch(request);\n\n  // Read response body.\n  const text = await response.text();\n\n  // Modify it.\n  const modified = text.replace(\n  \"<body>\",\n  \"<body style=\\\"background: #ff0;\\\">\");\n\n  // Return modified response.\n  return new Response(modified, {\n    status: response.status,\n    statusText: response.statusText,\n    headers: response.headers\n  });\n}\n",
+    "size": 603
+}
+$
+```
+
+The following call checks that the script is associated with the zone. In this case, it's the only script added by this user.
+
+```
+$ python3 -m cli4 /user/workers/scripts
+[
+    {
+        "created_on": "2018-02-15T00:00:00.000000Z",
+        "etag": "1234567890123456789012345678901234567890123456789012345678901234",
+        "id": "example-com",
+        "modified_on": "2018-02-15T00:00:00.000000Z"
+    }
+]
+$
+```
+
+Next step is to make sure a route is added for that script on that zone.
+
+```
+$ cli4 --post pattern="example.com/*" script="example-com" /zones/:example.com/workers/routes
+{
+    "id": "12345678901234567890123456789012"
+}
+$
+
+$ cli4 /zones/:example.com/workers/routes
+[
+    {
+        "id": "12345678901234567890123456789012",
+        "pattern": "example.com/*",
+        "script": "example-com"
+    }
+]
+$
+```
+
+With that script added to the zone and the route added, we can now see the the website has been modified because of the Cloudflare Worker.
+
+```
+$ curl -sS https://example.com/ | fgrep '<body'
+  <body style="background: #ff0;">
+$
+```
+
+All this can be removed; hence bringing the website back to its initial state.
+
+```
+$ cli4 --delete /zones/:example.com/workers/script
+12345678901234567890123456789012
+$ cli4 --delete /zones/:example.com/workers/routes/:12345678901234567890123456789012
+true
+$
+
+$ curl -sS https://example.com/ | fgrep '<body'
+  <body>
+$
+```
+
+Refer to the Cloudflare Workers API documentation for more information.
 
 ## Implemented API calls
 
