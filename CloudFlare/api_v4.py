@@ -424,8 +424,8 @@ def zones_workers(self):
             self._add_with_auth(base, "zones", "workers/filters"))
     setattr(branch, "routes",
             self._add_with_auth(base, "zones", "workers/routes"))
-    setattr(branch, "scripts",
-            self._add_with_auth(base, "zones", "workers/scripts"))
+    setattr(branch, "script",
+            self._add_with_auth(base, "zones", "workers/script"))
 
 def zones_load_balancers(self):
     """ API core commands for Cloudflare API"""
