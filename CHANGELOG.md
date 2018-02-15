@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2018-02-14 20:25:04 -0800 [25ddfb3](https://github.com/cloudflare/python-cloudflare/commit/25ddfb3338115d65e7a7ae3640b91963aa0b0167) 2.0.3 release
+ - 2018-02-14 20:23:28 -0800 [0e3fc8a](https://github.com/cloudflare/python-cloudflare/commit/0e3fc8a4b81daed210f5809050b53f93838513ae) python2/python3 edits
+ - 2018-02-14 19:21:36 -0800 [9b60c39](https://github.com/cloudflare/python-cloudflare/commit/9b60c39ac2d6e5d99d92d0fd018cf55b1fba134d) CHANGELOG.md pushed to github
  - 2018-02-14 19:20:24 -0800 [1b7012e](https://github.com/cloudflare/python-cloudflare/commit/1b7012e81e13d124fc5f02fda2a90e8344db082b) 2.0.1 release
  - 2018-02-14 17:29:44 -0800 [db943d3](https://github.com/cloudflare/python-cloudflare/commit/db943d38ee5147bcd54cc7ac48ac7dee90a5eda3) python2/python3 updates - print functions part
  - 2018-02-14 17:16:25 -0800 [04ef03f](https://github.com/cloudflare/python-cloudflare/commit/04ef03f0508515b82e3104e186e8d2eff7c93240) no changes, but documented how to lower level http debugging
@@ -12,6 +15,9 @@
  - 2018-02-07 03:33:06 -0800 [73d6386](https://github.com/cloudflare/python-cloudflare/commit/73d63864f4c0b91142bd4ad51009b5196425efed) doing that python3 thingy
  - 2018-02-07 03:32:00 -0800 [7c0411c](https://github.com/cloudflare/python-cloudflare/commit/7c0411c86a5ccb8df1a2262a0864cc56c2e1ad1c) yet another fix for unicode/utf8 returned JSON data
  - 2018-02-07 03:28:07 -0800 [99005c1](https://github.com/cloudflare/python-cloudflare/commit/99005c187795d7a46a52eb138404d7632829b031) settings/brotli & settings/privacy_pass added
+ - 2018-02-04 22:07:44 -0800 [cfa6b2a](https://github.com/cloudflare/python-cloudflare/commit/cfa6b2a89420870db632ab250d498bd376fa6769) tabs vs spaces - arggg!
+ - 2018-02-04 21:58:44 -0800 [930ce84](https://github.com/cloudflare/python-cloudflare/commit/930ce84c81cda5dcebe4be582b6a20a0bfb7b8b0) Merge pull request #46 from cloudflare/example_always_use_https
+ - 2018-02-04 21:58:25 -0800 [ecb32aa](https://github.com/cloudflare/python-cloudflare/commit/ecb32aa51483848d868ba1f45dfa733f626bcefe) added example of always_use_https which can be the basis of any settings value change
  - 2018-02-04 21:54:06 -0800 [a39ef72](https://github.com/cloudflare/python-cloudflare/commit/a39ef72534bc7453e7583f3f02ab1afc96181ce7) added example of always_use_https which can be the basis of any settings value change
  - 2018-01-21 19:35:49 -0800 [cadc0eb](https://github.com/cloudflare/python-cloudflare/commit/cadc0ebc21b631ae46e2a7262a4e52988ccc231c) CHANGELOG.md pushed to github
  - 2018-01-21 19:35:15 -0800 [631f2b2](https://github.com/cloudflare/python-cloudflare/commit/631f2b2c60aff223f0ed3dd33d80084277c07f16) 2.0.0 release
