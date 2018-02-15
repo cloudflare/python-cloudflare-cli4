@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Cloudflare API code - example"""
 
+from __future__ import print_function
+
 import os
 import sys
 
@@ -44,7 +46,7 @@ def main():
     zone_name = zone['name']
     zone_id = zone['id']
 
-    print "Zone:\t%s %s" % (zone_id, zone_name)
+    print("Zone:\t%s %s" % (zone_id, zone_name))
 
     try:
         params = {'name': dns_name}
@@ -64,9 +66,9 @@ def main():
         r_ttl = dns_record['ttl']
         r_proxied = dns_record['proxied']
         r_proxiable = dns_record['proxiable']
-        print 'Record:\t%s %s %s %6d %-5s %s ; proxied=%s proxiable=%s' % (
+        print('Record:\t%s %s %s %6d %-5s %s ; proxied=%s proxiable=%s' % (
             r_zone_id, r_id, r_name, r_ttl, r_type, r_content, r_proxied, r_proxiable
-        )
+        ))
 
         if r_proxied == new_r_proxied_flag:
             # Nothing to do
@@ -97,9 +99,9 @@ def main():
         r_ttl = dns_record['ttl']
         r_proxied = dns_record['proxied']
         r_proxiable = dns_record['proxiable']
-        print 'Record:\t%s %s %s %6d %-5s %s ; proxied=%s proxiable=%s <<-- after' % (
+        print('Record:\t%s %s %s %6d %-5s %s ; proxied=%s proxiable=%s <<-- after' % (
             r_zone_id, r_id, r_name, r_ttl, r_type, r_content, r_proxied, r_proxiable
-        )
+        ))
 
     exit(0)
 

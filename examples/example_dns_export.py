@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Cloudflare API code - example"""
 
+from __future__ import print_function
+
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
@@ -43,7 +45,7 @@ def main():
         if len(l) == 0 or l[0] == ';':
             # blank line or comment line are skipped - to make example easy to see
             continue
-        print l
+        print(l)
 
     exit(0)
 

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Cloudflare API code - example"""
 
+from __future__ import print_function
+
 import os
 import sys
 import re
@@ -55,11 +57,11 @@ def do_dns_update(cf, zone_name, zone_id, dns_name, ip_address, ip_address_type)
         if ip_address_type != old_ip_address_type:
             # only update the correct address type (A or AAAA)
             # we don't see this becuase of the search params above
-            print 'IGNORED: %s %s ; wrong address family' % (dns_name, old_ip_address)
+            print('IGNORED: %s %s ; wrong address family' % (dns_name, old_ip_address))
             continue
 
         if ip_address == old_ip_address:
-            print 'UNCHANGED: %s %s' % (dns_name, ip_address)
+            print('UNCHANGED: %s %s' % (dns_name, ip_address))
             updated = True
             continue
 
@@ -75,7 +77,7 @@ def do_dns_update(cf, zone_name, zone_id, dns_name, ip_address, ip_address_type)
             dns_record = cf.zones.dns_records.put(zone_id, dns_record_id, data=dns_record)
         except CloudFlare.exceptions.CloudFlareAPIError as e:
             exit('/zones.dns_records.put %s - %d %s - api call failed' % (dns_name, e, e))
-        print 'UPDATED: %s %s -> %s' % (dns_name, old_ip_address, ip_address)
+        print('UPDATED: %s %s -> %s' % (dns_name, old_ip_address, ip_address))
         updated = True
 
     if updated:
@@ -91,7 +93,7 @@ def do_dns_update(cf, zone_name, zone_id, dns_name, ip_address, ip_address_type)
         dns_record = cf.zones.dns_records.post(zone_id, data=dns_record)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/zones.dns_records.post %s - %d %s - api call failed' % (dns_name, e, e))
-    print 'CREATED: %s %s' % (dns_name, ip_address)
+    print('CREATED: %s %s' % (dns_name, ip_address))
 
 def main():
     """Cloudflare API code - example"""
@@ -105,7 +107,7 @@ def main():
 
     ip_address, ip_address_type = my_ip_address()
 
-    print 'MY IP: %s %s' % (dns_name, ip_address)
+    print('MY IP: %s %s' % (dns_name, ip_address))
 
     cf = CloudFlare.CloudFlare()
 

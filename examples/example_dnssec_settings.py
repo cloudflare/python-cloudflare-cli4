@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Cloudflare API code - example"""
 
+from __future__ import print_function
+
 import os
 import sys
 
@@ -37,16 +39,16 @@ def main():
         except CloudFlare.exceptions.CloudFlareAPIError as e:
             exit('/zones.dnssec.get %d %s - api call failed' % (e, e))
 
-        print zone_id, zone_name
+        print(zone_id, zone_name)
         # display every setting value
         for setting in sorted(settings):
-            print '\t%-30s %10s = %s' % (
+            print('\t%-30s %10s = %s' % (
                 setting,
                 '(editable)' if setting == 'status' else '',
                 settings[setting]
-            )
+            ))
 
-        print ''
+        print('')
 
     exit(0)
 

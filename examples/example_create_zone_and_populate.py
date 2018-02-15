@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Cloudflare API code - example"""
 
+from __future__ import print_function
+
 import os
 import sys
 
@@ -20,7 +22,7 @@ def main():
     # Create zone - which will only work if ...
     # 1) The zone is not on Cloudflare.
     # 2) The zone passes a whois test
-    print 'Create zone %s ...' % (zone_name)
+    print('Create zone %s ...' % (zone_name))
     try:
         zone_info = cf.zones.post(data={'jump_start':False, 'name': zone_name})
     except CloudFlare.exceptions.CloudFlareAPIError as e:
@@ -35,13 +37,13 @@ def main():
         zone_owner = '"' + zone_info['owner']['name'] + '"'
     zone_plan = zone_info['plan']['name']
     zone_status = zone_info['status']
-    print '\t%s name=%s owner=%s plan=%s status=%s\n' % (
+    print('\t%s name=%s owner=%s plan=%s status=%s\n' % (
         zone_id,
         zone_name,
         zone_owner,
         zone_plan,
         zone_status
-    )
+    ))
 
     # DNS records to create
     dns_records = [
@@ -53,7 +55,7 @@ def main():
         {'name':'shakespeare', 'type':'TXT', 'content':"What's in a name? That which we call a rose by any other name would smell as sweet."}
     ]
 
-    print 'Create DNS records ...'
+    print('Create DNS records ...')
     for dns_record in dns_records:
         # Create DNS record
         try:
@@ -62,7 +64,7 @@ def main():
             exit('/zones.dns_records.post %s %s - %d %s' % (zone_name, dns_record['name'], e, e))
         # Print respose info - they should be the same
         dns_record = r
-        print '\t%s %30s %6d %-5s %s ; proxied=%s proxiable=%s' % (
+        print('\t%s %30s %6d %-5s %s ; proxied=%s proxiable=%s' % (
             dns_record['id'],
             dns_record['name'],
             dns_record['ttl'],
@@ -70,7 +72,7 @@ def main():
             dns_record['content'],
             dns_record['proxied'],
             dns_record['proxiable']
-        )
+        ))
 
         # set proxied flag to false - for example
         dns_record_id = dns_record['id']
@@ -89,17 +91,17 @@ def main():
         except CloudFlare.exceptions.CloudFlareAPIError as e:
             exit('/zones/dns_records.put %d %s - api call failed' % (e, e))
 
-    print ''
+    print('')
 
     # Now read back all the DNS records
-    print 'Read back DNS records ...'
+    print('Read back DNS records ...')
     try:
         dns_records = cf.zones.dns_records.get(zone_id)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/zones.dns_records.get %s - %d %s' % (zone_name, e, e))
 
     for dns_record in sorted(dns_records, key=lambda v: v['name']):
-        print '\t%s %30s %6d %-5s %s ; proxied=%s proxiable=%s' % (
+        print('\t%s %30s %6d %-5s %s ; proxied=%s proxiable=%s' % (
             dns_record['id'],
             dns_record['name'],
             dns_record['ttl'],
@@ -107,9 +109,9 @@ def main():
             dns_record['content'],
             dns_record['proxied'],
             dns_record['proxiable']
-        )
+        ))
 
-    print ''
+    print('')
 
     exit(0)
 

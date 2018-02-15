@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Cloudflare API code - example"""
 
+from __future__ import print_function
+
 import os
 import sys
 
@@ -17,7 +19,7 @@ def main():
         zone_id = zone['id']
         settings_ipv6 = cf.zones.settings.ipv6.get(zone_id)
         ipv6_on = settings_ipv6['value']
-        print zone_id, ipv6_on, zone_name
+        print(zone_id, ipv6_on, zone_name)
     exit(0)
 
 if __name__ == '__main__':

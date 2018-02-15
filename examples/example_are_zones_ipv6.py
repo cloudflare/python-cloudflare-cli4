@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Cloudflare API code - example"""
 
+from __future__ import print_function
+
 import os
 import sys
 
@@ -46,16 +48,16 @@ def main():
 
         ipv6_value = ipv6['value']
         if update_ipv6 and ipv6_value == 'off':
-            print zone_id, ipv6_value, zone_name, '(now updating... off -> on)'
+            print(zone_id, ipv6_value, zone_name, '(now updating... off -> on)')
             try:
                 ipv6 = cf.zones.settings.ipv6.patch(zone_id, data={'value':'on'})
             except CloudFlare.exceptions.CloudFlareAPIError as e:
                 exit('/zones.settings.ipv6.patch %d %s - api call failed' % (e, e))
             ipv6_value = ipv6['value']
             if ipv6_value == 'on':
-                print '\t', '... updated!'
+                print('\t', '... updated!')
         else:
-            print zone_id, ipv6_value, zone_name
+            print(zone_id, ipv6_value, zone_name)
 
     exit(0)
 

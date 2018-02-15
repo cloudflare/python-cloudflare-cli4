@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Cloudflare API code - example"""
 
+from __future__ import print_function
+
 import os
 import sys
 import json
@@ -45,35 +47,35 @@ def main():
             certificate_sig_count = len(certificate['certificates'])
             if certificate_sig_count > 1:
                 c = certificate['certificates'][0]
-                print '%-40s %-10s %-32s    %-15s [ %s ]' % (
+                print('%-40s %-10s %-32s    %-15s [ %s ]' % (
                     zone_name,
                     certificate_type,
                     primary_certificate,
                     c['signature'],
                     ','.join(certificate_hosts)
-                )
+                ))
                 nn = 0
                 for c in certificate['certificates']:
                     nn += 1
                     if nn == 1:
                         next
-                    print '%-40s %-10s %-32s %2d:%-15s [ %s ]' % (
+                    print('%-40s %-10s %-32s %2d:%-15s [ %s ]' % (
                         '',
                         '',
                         '',
                         nn,
                         c['signature'],
                         ''
-                    )
+                    ))
             else:
                 for c in certificate['certificates']:
-                    print '%-40s %-10s %-32s    %-15s [ %s ]' % (
+                    print('%-40s %-10s %-32s    %-15s [ %s ]' % (
                         zone_name,
                         certificate_type,
                         primary_certificate,
                         c['signature'],
                         ','.join(certificate_hosts)
-                    )
+                    ))
 
     exit(0)
 

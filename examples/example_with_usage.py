@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Cloudflare API code - example"""
 
+from __future__ import print_function
+
 import os
 import sys
 
@@ -23,7 +25,7 @@ def main():
     with CloudFlare.CloudFlare() as cf:
         zones = cf.zones(params=params)
         for zone in sorted(zones, key=lambda v: v['name']):
-            print zone['id'], zone['name']
+            print(zone['id'], zone['name'])
 
     exit(0)
 

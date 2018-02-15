@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Cloudflare API code - example"""
 
+from __future__ import print_function
+
 import os
 import sys
 
@@ -36,21 +38,21 @@ def main():
         except CloudFlare.exceptions.CloudFlareAPIError as e:
             exit('/zones.settings.get %d %s - api call failed' % (e, e))
 
-        print zone_id, zone_name
+        print(zone_id, zone_name)
         for setting in sorted(settings, key=lambda v: v['id']):
             r_name = setting['id']
             r_value = setting['value']
             r_editable = setting['editable']
             try:
                 k = sorted(r_value.keys())
-                print '\t%-30s %10s = %s' % (r_name, '(editable)' if r_editable else '', '{')
+                print('\t%-30s %10s = %s' % (r_name, '(editable)' if r_editable else '', '{'))
                 for k in sorted(r_value.keys()):
-                    print '\t%-30s %10s    %s = %s' % ('', '', r_name+'/'+k, r_value[k])
-                print '\t%-30s %10s = %s' % ('', '', '}')
+                    print('\t%-30s %10s    %s = %s' % ('', '', r_name+'/'+k, r_value[k]))
+                print('\t%-30s %10s = %s' % ('', '', '}'))
             except:
-                print '\t%-30s %10s = %s' % (r_name, '(editable)' if r_editable else '', r_value)
+                print('\t%-30s %10s = %s' % (r_name, '(editable)' if r_editable else '', r_value))
 
-        print ''
+        print('')
 
     exit(0)
 

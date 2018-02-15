@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Cloudflare API code - example"""
 
+from __future__ import print_function
+
 import os
 import sys
 
@@ -31,7 +33,7 @@ def main():
         total_count = raw_results['result_info']['total_count']
         total_pages = raw_results['result_info']['total_pages']
 
-        print "COUNT=%d PAGE=%d PER_PAGE=%d TOTAL_COUNT=%d TOTAL_PAGES=%d -- %s" % (count, page, per_page, total_count, total_pages, domains)
+        print("COUNT=%d PAGE=%d PER_PAGE=%d TOTAL_COUNT=%d TOTAL_PAGES=%d -- %s" % (count, page, per_page, total_count, total_pages, domains))
 
         if page_number == total_pages:
             break

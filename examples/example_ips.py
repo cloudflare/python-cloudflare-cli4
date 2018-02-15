@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Cloudflare API code - example"""
 
+from __future__ import print_function
+
 import os
 import sys
 
@@ -18,12 +20,12 @@ def main():
     except Exception as e:
         exit('/ips - %s - api call connection failed' % (e))
 
-    print 'ipv4_cidrs count = ', len(ips['ipv4_cidrs'])
+    print('ipv4_cidrs count = ', len(ips['ipv4_cidrs']))
     for cidr in sorted(set(ips['ipv4_cidrs'])):
-        print '\t', cidr
-    print 'ipv6_cidrs count = ', len(ips['ipv6_cidrs'])
+        print('\t', cidr)
+    print('ipv6_cidrs count = ', len(ips['ipv6_cidrs']))
     for cidr in sorted(set(ips['ipv6_cidrs'])):
-        print '\t', cidr
+        print('\t', cidr)
     exit(0)
 
 if __name__ == '__main__':

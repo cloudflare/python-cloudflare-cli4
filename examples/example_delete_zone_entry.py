@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Cloudflare API code - example"""
 
+from __future__ import print_function
+
 import os
 import sys
 import re
@@ -41,7 +43,7 @@ def main():
     zone_id = zone['id']
     zone_name = zone['name']
 
-    print 'ZONE:', zone_id, zone_name
+    print('ZONE:', zone_id, zone_name)
 
     try:
         params = {'name':dns_name + '.' + zone_name}
@@ -55,17 +57,17 @@ def main():
         dns_record_name = dns_record['name']
         dns_record_type = dns_record['type']
         dns_record_value = dns_record['content']
-        print 'DNS RECORD:', dns_record_id, dns_record_name, dns_record_type, dns_record_value
+        print('DNS RECORD:', dns_record_id, dns_record_name, dns_record_type, dns_record_value)
 
         try:
             dns_record = cf.zones.dns_records.delete(zone_id, dns_record_id)
-            print 'DELETED'
+            print('DELETED')
         except CloudFlare.exceptions.CloudFlareAPIError as e:
             exit('/zones.dns_records.delete %s - %d %s - api call failed' % (dns_name, e, e))
         found = True
 
     if not found:
-        print 'RECORD NOT FOUND'
+        print('RECORD NOT FOUND')
 
     exit(0)
 
