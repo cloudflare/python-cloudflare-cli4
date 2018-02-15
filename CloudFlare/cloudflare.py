@@ -62,6 +62,9 @@ class CloudFlare(object):
                 'X-Auth-Key': self.token,
                 'Content-Type': 'application/json'
             }
+            if type(data) == str:
+                # passing javascript vs JSON
+                headers['Content-Type'] = 'application/javascript'
             if files:
                 # overwrite Content-Type as we are uploading data
                 headers['Content-Type'] = 'multipart/form-data'
@@ -84,6 +87,9 @@ class CloudFlare(object):
                 'X-Auth-Key': self.token,
                 'Content-Type': 'application/json'
             }
+            if type(data) == str:
+                # passing javascript vs JSON
+                headers['Content-Type'] = 'application/javascript'
             if files:
                 # overwrite Content-Type as we are uploading data
                 headers['Content-Type'] = 'multipart/form-data'
@@ -176,24 +182,54 @@ class CloudFlare(object):
                 if method == 'GET':
                     response = self.session.get(url,
                                                 headers=headers,
-                                                params=params, data=data)
+                                                params=params,
+                                                data=data)
                 elif method == 'POST':
-                    response = self.session.post(url,
-                                                 headers=headers,
-                                                 params=params, json=data,
-                                                 files=files)
+                    if type(data) == str:
+                        response = self.session.post(url,
+                                                     headers=headers,
+                                                     params=params,
+                                                     data=data,
+                                                     files=files)
+                    else:
+                        response = self.session.post(url,
+                                                     headers=headers,
+                                                     params=params,
+                                                     json=data,
+                                                     files=files)
                 elif method == 'PUT':
-                    response = self.session.put(url,
-                                                headers=headers,
-                                                params=params, json=data)
-                elif method == 'DELETE':
-                    response = self.session.delete(url,
-                                                   headers=headers,
-                                                   json=data)
-                elif method == 'PATCH':
-                    response = self.session.request('PATCH', url,
+                    if type(data) == str:
+                        response = self.session.put(url,
                                                     headers=headers,
-                                                    params=params, json=data)
+                                                    params=params,
+                                                    data=data)
+                    else:
+                        response = self.session.put(url,
+                                                    headers=headers,
+                                                    params=params,
+                                                    json=data)
+                elif method == 'DELETE':
+                    if type(data) == str:
+                        response = self.session.delete(url,
+                                                       headers=headers,
+                                                       params=params,
+                                                       data=data)
+                    else:
+                        response = self.session.delete(url,
+                                                       headers=headers,
+                                                       params=params,
+                                                       json=data)
+                elif method == 'PATCH':
+                    if type(data) == str:
+                        response = self.session.request('PATCH', url,
+                                                        headers=headers,
+                                                        params=params,
+                                                        data=data)
+                    else:
+                        response = self.session.request('PATCH', url,
+                                                        headers=headers,
+                                                        params=params,
+                                                        json=data)
                 else:
                     # should never happen
                     raise CloudFlareAPIError(0, 'method not supported')
@@ -219,6 +255,8 @@ class CloudFlare(object):
                 response_type = 'application/octet-stream'
             response_code = response.status_code
             response_data = response.content
+            if type(response_data) != str:
+                response_data = response_data.decode("utf-8")
 
             if self.logger:
                 self.logger.debug('Response: %d, %s, %s' % (response_code, response_type, response_data))
@@ -278,7 +316,10 @@ class CloudFlare(object):
             if response_type == 'application/json':
                 # API says it's JSON; so it better be parsable as JSON
                 try:
-                    response_data = json.loads(response_data.decode('utf-8'))
+                    if hasattr(response_data, 'decode'):
+                        response_data = json.loads(response_data.decode('utf-8'))
+                    else:
+                        response_data = json.loads(response_data)
                 except ValueError:
                     if response_data == '':
                         # This should really be 'null' but it isn't. Even then, it's wrong!
@@ -303,7 +344,10 @@ class CloudFlare(object):
             elif response_type == 'text/plain' or response_type == 'application/octet-stream':
                 # API says it's text; but maybe it's actually JSON? - should be fixed in API
                 try:
-                    response_data = json.loads(response_data)
+                    if hasattr(response_data, 'decode'):
+                        response_data = json.loads(response_data.decode('utf-8'))
+                    else:
+                        response_data = json.loads(response_data)
                 except ValueError:
                     # So it wasn't JSON - moving on as if it's text!
                     # A single value is returned (vs an array or object)
@@ -313,6 +357,14 @@ class CloudFlare(object):
                     else:
                         # 3xx & 4xx errors
                         response_data = {'success': False, 'code': response_code, 'result': str(response_data)}
+            elif response_type == 'text/javascript' or response_type == 'application/javascript':
+                # used by Cloudflare workers
+                if response_code == requests.codes.ok:
+                    # 200 ok
+                    response_data = {'success': True, 'result': str(response_data)}
+                else:
+                    # 3xx & 4xx errors
+                    response_data = {'success': False, 'code': response_code, 'result': str(response_data)}
             else:
                 # Assuming nothing - but continuing anyway
                 # A single value is returned (vs an array or object)
