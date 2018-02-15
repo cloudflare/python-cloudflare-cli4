@@ -1,5 +1,9 @@
 # Change Log
 
+ - 2018-02-14 22:21:55 -0800 [60e7c61](https://github.com/cloudflare/python-cloudflare/commit/60e7c61647b0b7726e7d3919d4a3059e3f8a15d9) 2.0.4 release
+ - 2018-02-14 22:21:35 -0800 [43bf227](https://github.com/cloudflare/python-cloudflare/commit/43bf2277ac99030381984704542eead0e65e66f8) Cloudflare Workers examples added
+ - 2018-02-14 22:20:59 -0800 [3129f8e](https://github.com/cloudflare/python-cloudflare/commit/3129f8e61071aef85a14251f4090fbb01c87f03e) workers typo
+ - 2018-02-14 20:26:35 -0800 [d9ea7e8](https://github.com/cloudflare/python-cloudflare/commit/d9ea7e8bbd6fa1c17ef3535e339d79643b817df5) CHANGELOG.md pushed to github
  - 2018-02-14 20:25:04 -0800 [25ddfb3](https://github.com/cloudflare/python-cloudflare/commit/25ddfb3338115d65e7a7ae3640b91963aa0b0167) 2.0.3 release
  - 2018-02-14 20:23:28 -0800 [0e3fc8a](https://github.com/cloudflare/python-cloudflare/commit/0e3fc8a4b81daed210f5809050b53f93838513ae) python2/python3 edits
  - 2018-02-14 19:21:36 -0800 [9b60c39](https://github.com/cloudflare/python-cloudflare/commit/9b60c39ac2d6e5d99d92d0fd018cf55b1fba134d) CHANGELOG.md pushed to github
