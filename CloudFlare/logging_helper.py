@@ -1,6 +1,12 @@
 """ Logging for Cloudflare API"""
 import logging
 
+# try:
+#     import http.client as http_client
+# except ImportError:
+#     # Python 2
+#     import httplib as http_client
+
 DEBUG = 0
 INFO = 1
 
@@ -32,6 +38,8 @@ class CFlogger(object):
 
         # add ch to logger
         logger.addHandler(ch)
+
+        # http_client.HTTPConnection.debuglevel = 1
 
         return logger
 
