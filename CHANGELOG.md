@@ -1,5 +1,12 @@
 # Change Log
 
+ - 2018-02-14 19:20:24 -0800 [1b7012e](https://github.com/cloudflare/python-cloudflare/commit/1b7012e81e13d124fc5f02fda2a90e8344db082b) 2.0.1 release
+ - 2018-02-14 17:29:44 -0800 [db943d3](https://github.com/cloudflare/python-cloudflare/commit/db943d38ee5147bcd54cc7ac48ac7dee90a5eda3) python2/python3 updates - print functions part
+ - 2018-02-14 17:16:25 -0800 [04ef03f](https://github.com/cloudflare/python-cloudflare/commit/04ef03f0508515b82e3104e186e8d2eff7c93240) no changes, but documented how to lower level http debugging
+ - 2018-02-14 17:09:02 -0800 [d2d2f63](https://github.com/cloudflare/python-cloudflare/commit/d2d2f6323a41964f2280ce4d94eb4d7bf30a6eca) added javascript content-type for Cloudflare workers, added support for python2/python3 unicode differences, added params for DELETE method
+ - 2018-02-14 17:04:31 -0800 [c7f6759](https://github.com/cloudflare/python-cloudflare/commit/c7f675966ab7bb73cf7ef593bb42036c97ec15ab) added Cloudflare workers
+ - 2018-02-14 14:07:29 -0800 [1477dda](https://github.com/cloudflare/python-cloudflare/commit/1477dda07a92bdf0d22802808c1c7fb3ce897aa2) python2/python3 json output fixed for unicode, added cloudflare workers script/file uploading, added script name support
+ - 2018-02-07 03:34:47 -0800 [7d5cf4d](https://github.com/cloudflare/python-cloudflare/commit/7d5cf4df461526665eb340326219c6052e6ca542) CHANGELOG.md pushed to github
  - 2018-02-07 03:34:27 -0800 [fdb6a7f](https://github.com/cloudflare/python-cloudflare/commit/fdb6a7f645ee47f3a1f2a93e6ce8b154031ff5e3) 2.0.1 release
  - 2018-02-07 03:33:28 -0800 [25e3193](https://github.com/cloudflare/python-cloudflare/commit/25e31935af224f6adfe6f7d14c99fe26ff2cd47b) doing that python3 thingy
  - 2018-02-07 03:33:06 -0800 [73d6386](https://github.com/cloudflare/python-cloudflare/commit/73d63864f4c0b91142bd4ad51009b5196425efed) doing that python3 thingy
