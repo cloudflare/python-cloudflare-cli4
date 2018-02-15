@@ -9,6 +9,7 @@ def api_v4(self):
     user_load_balancers(self)
     user_load_balancing_analytics(self)
     user_virtual_dns(self)
+    user_workers(self)
 
     # The API commands for /zones/
     zones(self)
@@ -23,6 +24,7 @@ def api_v4(self):
     zones_rate_limits(self)
     zones_settings(self)
     zones_ssl(self)
+    zones_workers(self)
 
     # The API commands for /railguns/
     railguns(self)
@@ -31,6 +33,7 @@ def api_v4(self):
     organizations(self)
     organizations_audit_logs(self)
     organizations_virtual_dns(self)
+    organizations_workers(self)
 
     # The API commands for /certificates/
     certificates(self)
@@ -409,6 +412,21 @@ def zones_ssl(self):
     setattr(branch, "settings",
             self._add_with_auth(base, "zones", "ssl/universal/settings"))
 
+def zones_workers(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
+    branch = self.zones
+    setattr(branch, "workers",
+            self._add_unused(base, "zones", "workers"))
+    branch = self.zones.workers
+    setattr(branch, "filters",
+            self._add_with_auth(base, "zones", "workers/filters"))
+    setattr(branch, "routes",
+            self._add_with_auth(base, "zones", "workers/routes"))
+    setattr(branch, "scripts",
+            self._add_with_auth(base, "zones", "workers/scripts"))
+
 def zones_load_balancers(self):
     """ API core commands for Cloudflare API"""
 
@@ -446,6 +464,17 @@ def user_virtual_dns(self):
     branch = self.user.virtual_dns.dns_analytics.report
     setattr(branch, "bytime",
             self._add_with_auth(base, "user/virtual_dns", "dns_analytics/report/bytime"))
+
+def user_workers(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
+    branch = self.user
+    setattr(branch, "workers",
+            self._add_unused(base, "user/workers"))
+    branch = self.user.workers
+    setattr(branch, "scripts",
+            self._add_with_auth(base, "user/workers/scripts"))
 
 def organizations_virtual_dns(self):
     """ API core commands for Cloudflare API"""
@@ -492,6 +521,17 @@ def organizations_audit_logs(self):
     branch = self.organizations
     setattr(branch, "audit_logs",
             self._add_with_auth(base, "organizations", "audit_logs"))
+
+def organizations_workers(self):
+    """ API core commands for Cloudflare API"""
+
+    base = self._base
+    branch = self.organizations
+    setattr(branch, "workers",
+            self._add_unused(base, "organizations", "workers"))
+    branch = self.organizations.workers
+    setattr(branch, "scripts",
+            self._add_with_auth(base, "organizations", "workers/scripts"))
 
 def account(self):
     """ API core commands for Cloudflare API"""
