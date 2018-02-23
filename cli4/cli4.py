@@ -33,7 +33,7 @@ def cli4(args):
              + '[-r|--raw] '
              + '[-d|--dump] '
              + '[--get|--patch|--post|--put|--delete] '
-             + '[item=value ...] '
+             + '[item=value|item=@filename|@filename ...] '
              + '/command...')
 
     try:
@@ -86,12 +86,26 @@ def cli4(args):
     digits_only = re.compile('^-?[0-9]+$')
     floats_only = re.compile('^-?[0-9.]+$')
 
-    # next grab the params. These are in the form of tag=value
+    # next grab the params. These are in the form of tag=value or =value or @filename
     params = None
     content = None
     files = None
-    while len(args) > 0 and '=' in args[0]:
-        tag_string, value_string = args.pop(0).split('=', 1)
+    while len(args) > 0 and ('=' in args[0] or args[0][0] == '@'):
+        arg = args.pop(0)
+        if arg[0] == '@':
+            if method != 'PUT':
+                exit('cli4: %s - raw file upload only with PUT' % (filename))
+            filename = arg[1:]
+            try:
+                if filename == '-':
+                    content = sys.stdin.read()
+                else:
+                    with open(filename, 'r') as f:
+                        content = f.read()
+            except IOError:
+                exit('cli4: %s - file open failure' % (filename))
+            continue
+        tag_string, value_string = arg.split('=', 1)
         if value_string.lower() == 'true':
             value = True
         elif value_string.lower() == 'false':
@@ -118,25 +132,16 @@ def cli4(args):
         elif value_string[0] is '@':
             filename = value_string[1:]
             # a file to be uploaded - used in dns_records/import - only via POST
-            if tag_string == '':
-                if method != 'PUT':
-                    exit('cli4: %s - raw file upload only with PUT' % (filename))
-                try:
-                    if filename == '-':
-                        content = sys.stdin.read()
-                    else:
-                        with open(filename, 'r') as f:
-                            content = f.read()
-                except:
-                    exit('cli4: %s - file open failure' % (filename))
-            else:
-                if method != 'POST':
-                    exit('cli4: %s=%s - file upload only with POST' % (tag_string, filename))
-                files = {}
-                try:
+            if method != 'POST':
+                exit('cli4: %s=%s - file upload only with POST' % (tag_string, filename))
+            files = {}
+            try:
+                if filename == '-':
+                    files[tag_string] = sys.stdin
+                else:
                     files[tag_string] = open(filename, 'rb')
-                except:
-                    exit('cli4: %s=%s - file open failure' % (tag_string, filename))
+            except IOError:
+                exit('cli4: %s=%s - file open failure' % (tag_string, filename))
             # no need for param code below
             continue
         else:
@@ -313,9 +318,16 @@ def cli4(args):
         # anything more complex (dict, list, etc) should be dumped as JSON/YAML
         if output == 'json':
             try:
-                results = json.dumps(results, indent=4, sort_keys=True, ensure_ascii=False, encoding='utf8')
+                results = json.dumps(results,
+                                     indent=4,
+                                     sort_keys=True,
+                                     ensure_ascii=False,
+                                     encoding='utf8')
             except TypeError as e:
-                results = json.dumps(results, indent=4, sort_keys=True, ensure_ascii=False)
+                results = json.dumps(results,
+                                     indent=4,
+                                     sort_keys=True,
+                                     ensure_ascii=False)
         if output == 'yaml':
             results = yaml.safe_dump(results)
 
