@@ -806,7 +806,7 @@ $
 Now lets add the script. Looking above, you will see that it's simple action is to modify the ```<body>``` statement and make the background yellow.
 
 ```
-$ cli4 --put =@- /zones/:example.com/workers/script < modify-body.js
+$ cli4 --put @- /zones/:example.com/workers/script < modify-body.js
 {
     "etag": "1234567890123456789012345678901234567890123456789012345678901234",
     "id": "example-com",
