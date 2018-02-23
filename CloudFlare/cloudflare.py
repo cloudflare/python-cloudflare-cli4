@@ -121,16 +121,18 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             if self.logger:
-                self.logger.debug('Call: %s,%s,%s,%s,%s,%s' % (str(parts[0]),
-                                                               str(identifier1),
-                                                               str(parts[1]),
-                                                               str(identifier2),
-                                                               str(parts[2]),
-                                                               str(identifier3)))
-                self.logger.debug('Call: optional params and data %s %s' % (str(params),
-                                                                            str(data)))
+                self.logger.debug('Call: %s,%s,%s,%s,%s,%s',
+                                  str(parts[0]),
+                                  str(identifier1),
+                                  str(parts[1]),
+                                  str(identifier2),
+                                  str(parts[2]),
+                                  str(identifier3))
+                self.logger.debug('Call: optional params and data %s %s',
+                                  str(params),
+                                  str(data))
                 if files:
-                    self.logger.debug('Call: upload file %r' % (files))
+                    self.logger.debug('Call: upload file %r', files)
 
             if (method is None) or (parts[0] is None):
                 # should never happen
@@ -164,8 +166,8 @@ class CloudFlare(object):
                 url += '/' + identifier3
 
             if self.logger:
-                self.logger.debug('Call: method and url %s %s' % (str(method), str(url)))
-                self.logger.debug('Call: headers %s' % str(sanitize_secrets(headers)))
+                self.logger.debug('Call: method and url %s %s', str(method), str(url))
+                self.logger.debug('Call: headers %s', str(sanitize_secrets(headers)))
 
             method = method.upper()
 
@@ -259,7 +261,8 @@ class CloudFlare(object):
                 response_data = response_data.decode("utf-8")
 
             if self.logger:
-                self.logger.debug('Response: %d, %s, %s' % (response_code, response_type, response_data))
+                self.logger.debug('Response: %d, %s, %s',
+                                  response_code, response_type, response_data)
 
             if response_code >= 500 and response_code <= 599:
                 # 500 Internal Server Error
@@ -310,7 +313,9 @@ class CloudFlare(object):
 
             [response_type, response_code, response_data] = self._network(method,
                                                                           headers, parts,
-                                                                          identifier1, identifier2, identifier3,
+                                                                          identifier1,
+                                                                          identifier2,
+                                                                          identifier3,
                                                                           params, data, files)
 
             if response_type == 'application/json':
@@ -325,13 +330,16 @@ class CloudFlare(object):
                         # This should really be 'null' but it isn't. Even then, it's wrong!
                         if response_code == requests.codes.ok:
                             # 200 ok
-                            response_data = {'success': True, 'result': None}
+                            response_data = {'success': True,
+                                             'result': None}
                         else:
                             # 3xx & 4xx errors
-                            response_data = {'success': False, 'code': response_code, 'result': None}
+                            response_data = {'success': False,
+                                             'code': response_code,
+                                             'result': None}
                     else:
                         # While this should not happen; it's always possible
-                        self.logger.debug('Response data not JSON: %r' % (response_data))
+                        self.logger.debug('Response data not JSON: %r', response_data)
                         raise CloudFlareAPIError(0, 'JSON parse failed - report to Cloudflare.')
 
                 if response_code == requests.codes.ok:
@@ -356,24 +364,44 @@ class CloudFlare(object):
                         response_data = {'success': True, 'result': str(response_data)}
                     else:
                         # 3xx & 4xx errors
-                        response_data = {'success': False, 'code': response_code, 'result': str(response_data)}
+                        response_data = {'success': False,
+                                         'code': response_code,
+                                         'result': str(response_data)}
             elif response_type == 'text/javascript' or response_type == 'application/javascript':
                 # used by Cloudflare workers
                 if response_code == requests.codes.ok:
                     # 200 ok
-                    response_data = {'success': True, 'result': str(response_data)}
+                    response_data = {'success': True,
+                                     'result': str(response_data)}
                 else:
                     # 3xx & 4xx errors
-                    response_data = {'success': False, 'code': response_code, 'result': str(response_data)}
+                    response_data = {'success': False,
+                                     'code': response_code,
+                                     'result': str(response_data)}
+            elif response_type == 'text/html':
+                # used by media for preview
+                if response_code == requests.codes.ok:
+                    # 200 ok
+                    response_data = {'success': True,
+                                     'result': str(response_data)}
+                else:
+                    # 3xx & 4xx errors
+                    response_data = {'success': False,
+                                     'code': response_code,
+                                     'result': str(response_data)}
+
             else:
                 # Assuming nothing - but continuing anyway
                 # A single value is returned (vs an array or object)
                 if response_code == requests.codes.ok:
                     # 200 ok
-                    response_data = {'success': True, 'result': str(response_data)}
+                    response_data = {'success': True,
+                                     'result': str(response_data)}
                 else:
                     # 3xx & 4xx errors
-                    response_data = {'success': False, 'code': response_code, 'result': str(response_data)}
+                    response_data = {'success': False,
+                                     'code': response_code,
+                                     'result': str(response_data)}
 
             # it would be nice to return the error code and content type values; but not quite yet
             return response_data
@@ -417,22 +445,25 @@ class CloudFlare(object):
                     message = errors['error']
                 else:
                     message = ''
+                if 'messages' in response_data:
+                    errors['error_chain'] = response_data['messages']
                 if 'error_chain' in errors:
                     error_chain = errors['error_chain']
                     for error in error_chain:
                         if self.logger:
-                            self.logger.debug('Response: error %d %s - chain' %
-                                              (error['code'], error['message']))
+                            self.logger.debug('Response: error %d %s - chain',
+                                              error['code'],
+                                              error['message'])
                     if self.logger:
-                        self.logger.debug('Response: error %d %s' % (code, message))
+                        self.logger.debug('Response: error %d %s', code, message)
                     raise CloudFlareAPIError(code, message, error_chain)
                 else:
                     if self.logger:
-                        self.logger.debug('Response: error %d %s' % (code, message))
+                        self.logger.debug('Response: error %d %s', code, message)
                     raise CloudFlareAPIError(code, message)
 
             if self.logger:
-                self.logger.debug('Response: %s' % (response_data['result']))
+                self.logger.debug('Response: %s', response_data['result'])
             if self.raw:
                 result = {}
                 # theres always a result value
@@ -455,7 +486,7 @@ class CloudFlare(object):
                                       identifier1, identifier2, identifier3,
                                       params, data, files)
             if self.logger:
-                self.logger.debug('Response: %s' % (response_data))
+                self.logger.debug('Response: %s', response_data)
             result = response_data
             return result
 
@@ -715,6 +746,34 @@ class CloudFlare(object):
             return self._base.call_with_certauth('DELETE', self._parts,
                                                  identifier1, identifier2, identifier3,
                                                  params, data)
+
+    def add(self, t, branch, api_call_part1, api_call_part2=None, api_call_part3=None):
+        """add api call to class"""
+        if api_call_part3:
+            name = api_call_part3.rsplit('/', 1)[-1]
+        elif api_call_part2:
+            name = api_call_part2.rsplit('/', 1)[-1]
+        elif api_call_part1:
+            name = api_call_part1.rsplit('/', 1)[-1]
+        else:
+            # should never happen
+            raise CloudFlareAPIError(0, 'api load name failed')
+
+        if t == 'VOID':
+            f = self._add_unused(self._base, api_call_part1, api_call_part2, api_call_part3)
+        elif t == 'OPEN':
+            f = self._add_noauth(self._base, api_call_part1, api_call_part2, api_call_part3)
+        elif t == 'AUTH':
+            f = self._add_with_auth(self._base, api_call_part1, api_call_part2, api_call_part3)
+        elif t == 'CERT':
+            f = self._add_with_cert_auth(self._base, api_call_part1, api_call_part2, api_call_part3)
+        elif t == 'AUTH_UNWRAPPED':
+            f = self._add_with_auth_unwrapped(self._base, api_call_part1, api_call_part2, api_call_part3)
+        else:
+            # should never happen
+            raise CloudFlareAPIError(0, 'api load type mismatch')
+
+        setattr(branch, name, f)
 
     def api_list(self, m=None, s=''):
         """recursive walk of the api tree returning a list of api calls"""
