@@ -14,163 +14,14 @@ from . import converters
 
 import CloudFlare
 
-def dump_commands(cf):
+def dump_commands():
     """dump a tree of all the known API commands"""
+    cf = CloudFlare.CloudFlare()
     w = cf.api_list()
     sys.stdout.write('\n'.join(w) + '\n')
 
-def cli4(args):
-    """Cloudflare API via command line"""
-
-    verbose = False
-    output = 'json'
-    raw = False
-    dump = False
-    method = 'GET'
-
-    usage = ('usage: cli4 '
-             + '[-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] '
-             + '[-r|--raw] '
-             + '[-d|--dump] '
-             + '[--get|--patch|--post|--put|--delete] '
-             + '[item=value|item=@filename|@filename ...] '
-             + '/command...')
-
-    try:
-        opts, args = getopt.getopt(args,
-                                   'VhvqjyrdGPOUD',
-                                   [
-                                       'version',
-                                       'help', 'verbose', 'quiet', 'json', 'yaml',
-                                       'raw',
-                                       'dump',
-                                       'get', 'patch', 'post', 'put', 'delete'
-                                   ])
-    except getopt.GetoptError:
-        exit(usage)
-    for opt, arg in opts:
-        if opt in ('-V', '--version'):
-            exit('Cloudflare library version: %s' % (CloudFlare.__version__))
-        if opt in ('-h', '--help'):
-            exit(usage)
-        elif opt in ('-v', '--verbose'):
-            verbose = True
-        elif opt in ('-q', '--quiet'):
-            output = None
-        elif opt in ('-j', '--json'):
-            output = 'json'
-        elif opt in ('-y', '--yaml'):
-            if yaml is None:
-                exit('cli4: install yaml support')
-            output = 'yaml'
-        elif opt in ('-r', '--raw'):
-            raw = True
-        elif opt in ('-d', '--dump'):
-            dump = True
-        elif opt in ('-G', '--get'):
-            method = 'GET'
-        elif opt in ('-P', '--patch'):
-            method = 'PATCH'
-        elif opt in ('-O', '--post'):
-            method = 'POST'
-        elif opt in ('-U', '--put'):
-            method = 'PUT'
-        elif opt in ('-D', '--delete'):
-            method = 'DELETE'
-
-    if dump:
-        cf = CloudFlare.CloudFlare()
-        dump_commands(cf)
-        exit(0)
-
-    digits_only = re.compile('^-?[0-9]+$')
-    floats_only = re.compile('^-?[0-9.]+$')
-
-    # next grab the params. These are in the form of tag=value or =value or @filename
-    params = None
-    content = None
-    files = None
-    while len(args) > 0 and ('=' in args[0] or args[0][0] == '@'):
-        arg = args.pop(0)
-        if arg[0] == '@':
-            if method != 'PUT':
-                exit('cli4: %s - raw file upload only with PUT' % (filename))
-            filename = arg[1:]
-            try:
-                if filename == '-':
-                    content = sys.stdin.read()
-                else:
-                    with open(filename, 'r') as f:
-                        content = f.read()
-            except IOError:
-                exit('cli4: %s - file open failure' % (filename))
-            continue
-        tag_string, value_string = arg.split('=', 1)
-        if value_string.lower() == 'true':
-            value = True
-        elif value_string.lower() == 'false':
-            value = False
-        elif value_string == '' or value_string.lower() == 'none':
-            value = None
-        elif value_string[0] is '=' and value_string[1:] == '':
-            exit('cli4: %s== - no number value passed' % (tag_string))
-        elif value_string[0] is '=' and digits_only.match(value_string[1:]):
-            value = int(value_string[1:])
-        elif value_string[0] is '=' and floats_only.match(value_string[1:]):
-            value = float(value_string[1:])
-        elif value_string[0] is '=':
-            exit('cli4: %s== - invalid number value passed' % (tag_string))
-        elif value_string[0] in '[{' and value_string[-1] in '}]':
-            # a json structure - used in pagerules
-            try:
-                #value = json.loads(value) - changed to yaml code to remove unicode string issues
-                if yaml is None:
-                    exit('cli4: install yaml support')
-                value = yaml.safe_load(value_string)
-            except ValueError:
-                exit('cli4: %s="%s" - can\'t parse json value' % (tag_string, value_string))
-        elif value_string[0] is '@':
-            filename = value_string[1:]
-            # a file to be uploaded - used in dns_records/import - only via POST
-            if method != 'POST':
-                exit('cli4: %s=%s - file upload only with POST' % (tag_string, filename))
-            files = {}
-            try:
-                if filename == '-':
-                    files[tag_string] = sys.stdin
-                else:
-                    files[tag_string] = open(filename, 'rb')
-            except IOError:
-                exit('cli4: %s=%s - file open failure' % (tag_string, filename))
-            # no need for param code below
-            continue
-        else:
-            value = value_string
-
-        if tag_string == '':
-            # There's no tag; it's just an unnamed list
-            if params is None:
-                params = []
-            try:
-                params.append(value)
-            except AttributeError:
-                exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' %
-                     (tag_string, value_string))
-        else:
-            if params is None:
-                params = {}
-            tag = tag_string
-            try:
-                params[tag] = value
-            except TypeError:
-                exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' %
-                     (tag_string, value_string))
-
-    # what's left is the command itself
-    if len(args) != 1:
-        exit(usage)
-
-    command = args[0]
+def run_command(cf, method, command, params=None, content=None, files=None):
+    """run the command line"""
     # remove leading and trailing /'s
     if command[0] == '/':
         command = command[1:]
@@ -189,8 +40,6 @@ def cli4(args):
 
     hex_only = re.compile('^[0-9a-fA-F]+$')
     waf_rules = re.compile('^[0-9]+[A-Z]*$')
-
-    cf = CloudFlare.CloudFlare(debug=verbose, raw=raw)
 
     m = cf
     for element in parts:
@@ -302,10 +151,16 @@ def cli4(args):
                 for x in e:
                     sys.stderr.write('cli4: /%s - %d %s\n' % (command, x, x))
             exit('cli4: /%s - %d %s' % (command, e, e))
+        except CloudFlare.exceptions.CloudFlareInternalError as e:
+            exit('cli4: InternalError: /%s - %d %s' % (command, e, e))
         except Exception as e:
             exit('cli4: /%s - %s - api error' % (command, e))
 
         results.append(r)
+    return results
+
+def write_results(results, output):
+    """dump the results"""
 
     if len(results) == 1:
         results = results[0]
@@ -334,4 +189,166 @@ def cli4(args):
     sys.stdout.write(results)
     if not results.endswith('\n'):
         sys.stdout.write('\n')
+
+def do_it(args):
+    """Cloudflare API via command line"""
+
+    verbose = False
+    output = 'json'
+    raw = False
+    dump = False
+    method = 'GET'
+
+    usage = ('usage: cli4 '
+             + '[-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] '
+             + '[-r|--raw] '
+             + '[-d|--dump] '
+             + '[--get|--patch|--post|--put|--delete] '
+             + '[item=value|item=@filename|@filename ...] '
+             + '/command...')
+
+    try:
+        opts, args = getopt.getopt(args,
+                                   'VhvqjyrdGPOUD',
+                                   [
+                                       'version',
+                                       'help', 'verbose', 'quiet', 'json', 'yaml',
+                                       'raw',
+                                       'dump',
+                                       'get', 'patch', 'post', 'put', 'delete'
+                                   ])
+    except getopt.GetoptError:
+        exit(usage)
+    for opt, arg in opts:
+        if opt in ('-V', '--version'):
+            exit('Cloudflare library version: %s' % (CloudFlare.__version__))
+        if opt in ('-h', '--help'):
+            exit(usage)
+        elif opt in ('-v', '--verbose'):
+            verbose = True
+        elif opt in ('-q', '--quiet'):
+            output = None
+        elif opt in ('-j', '--json'):
+            output = 'json'
+        elif opt in ('-y', '--yaml'):
+            if yaml is None:
+                exit('cli4: install yaml support')
+            output = 'yaml'
+        elif opt in ('-r', '--raw'):
+            raw = True
+        elif opt in ('-d', '--dump'):
+            dump = True
+        elif opt in ('-G', '--get'):
+            method = 'GET'
+        elif opt in ('-P', '--patch'):
+            method = 'PATCH'
+        elif opt in ('-O', '--post'):
+            method = 'POST'
+        elif opt in ('-U', '--put'):
+            method = 'PUT'
+        elif opt in ('-D', '--delete'):
+            method = 'DELETE'
+
+    if dump:
+        dump_commands()
+        exit(0)
+
+    digits_only = re.compile('^-?[0-9]+$')
+    floats_only = re.compile('^-?[0-9.]+$')
+
+    # next grab the params. These are in the form of tag=value or =value or @filename
+    params = None
+    content = None
+    files = None
+    while len(args) > 0 and ('=' in args[0] or args[0][0] == '@'):
+        arg = args.pop(0)
+        if arg[0] == '@':
+            # a file to be uploaded - used in workers/script - only via PUT
+            filename = arg[1:]
+            if method != 'PUT':
+                exit('cli4: %s - raw file upload only with PUT' % (filename))
+            try:
+                if filename == '-':
+                    content = sys.stdin.read()
+                else:
+                    with open(filename, 'r') as f:
+                        content = f.read()
+            except IOError:
+                exit('cli4: %s - file open failure' % (filename))
+            continue
+        tag_string, value_string = arg.split('=', 1)
+        if value_string.lower() == 'true':
+            value = True
+        elif value_string.lower() == 'false':
+            value = False
+        elif value_string == '' or value_string.lower() == 'none':
+            value = None
+        elif value_string[0] is '=' and value_string[1:] == '':
+            exit('cli4: %s== - no number value passed' % (tag_string))
+        elif value_string[0] is '=' and digits_only.match(value_string[1:]):
+            value = int(value_string[1:])
+        elif value_string[0] is '=' and floats_only.match(value_string[1:]):
+            value = float(value_string[1:])
+        elif value_string[0] is '=':
+            exit('cli4: %s== - invalid number value passed' % (tag_string))
+        elif value_string[0] in '[{' and value_string[-1] in '}]':
+            # a json structure - used in pagerules
+            try:
+                #value = json.loads(value) - changed to yaml code to remove unicode string issues
+                if yaml is None:
+                    exit('cli4: install yaml support')
+                value = yaml.safe_load(value_string)
+            except ValueError:
+                exit('cli4: %s="%s" - can\'t parse json value' % (tag_string, value_string))
+        elif value_string[0] is '@':
+            # a file to be uploaded - used in dns_records/import - only via POST
+            filename = value_string[1:]
+            if method != 'POST':
+                exit('cli4: %s=%s - file upload only with POST' % (tag_string, filename))
+            files = {}
+            try:
+                if filename == '-':
+                    files[tag_string] = sys.stdin
+                else:
+                    files[tag_string] = open(filename, 'rb')
+            except IOError:
+                exit('cli4: %s=%s - file open failure' % (tag_string, filename))
+            # no need for param code below
+            continue
+        else:
+            value = value_string
+
+        if tag_string == '':
+            # There's no tag; it's just an unnamed list
+            if params is None:
+                params = []
+            try:
+                params.append(value)
+            except AttributeError:
+                exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' %
+                     (tag_string, value_string))
+        else:
+            if params is None:
+                params = {}
+            tag = tag_string
+            try:
+                params[tag] = value
+            except TypeError:
+                exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' %
+                     (tag_string, value_string))
+
+    # what's left is the command itself
+    if len(args) != 1:
+        exit(usage)
+    command = args[0]
+
+    cf = CloudFlare.CloudFlare(debug=verbose, raw=raw)
+    results = run_command(cf, method, command, params, content, files)
+    write_results(results, output)
+
+def cli4(args):
+    """Cloudflare API via command line"""
+
+    do_it(args)
+    exit(0)
 
