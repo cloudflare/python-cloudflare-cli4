@@ -520,7 +520,7 @@ class CloudFlare(object):
 
             raise CloudFlareAPIError(0, 'patch() call not available for this endpoint')
 
-        def post(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
+        def post(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
             raise CloudFlareAPIError(0, 'post() call not available for this endpoint')
@@ -567,7 +567,7 @@ class CloudFlare(object):
 
             raise CloudFlareAPIError(0, 'patch() call not available for this endpoint')
 
-        def post(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
+        def post(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
             raise CloudFlareAPIError(0, 'post() call not available for this endpoint')
