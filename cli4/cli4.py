@@ -210,7 +210,8 @@ def do_it(args):
     method = 'GET'
 
     usage = ('usage: cli4 '
-             + '[-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] [-n|ndjson]'
+             + '[-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] '
+             + '[-j|--json] [-y|--yaml] [-n|ndjson]'
              + '[-r|--raw] '
              + '[-d|--dump] '
              + '[--get|--patch|--post|--put|--delete] '
