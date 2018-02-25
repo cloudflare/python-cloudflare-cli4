@@ -1,5 +1,17 @@
 # Change Log
 
+ - 2018-02-25 03:42:04 -0800 [33feada](https://github.com/cloudflare/python-cloudflare/commit/33feada897f25b00f8728474e4050e68935c96b5) 2.1.0 release
+ - 2018-02-25 03:41:16 -0800 [b6d79dc](https://github.com/cloudflare/python-cloudflare/commit/b6d79dcb495a070946c7765a63d97623d1c64b19) minor lint thingy
+ - 2018-02-25 03:39:57 -0800 [ed9bb8d](https://github.com/cloudflare/python-cloudflare/commit/ed9bb8dc467745fc2d1b4d41760f37d7048ba2cb) added support for NDJSON, cheaned up command preload
+ - 2018-02-25 02:09:58 -0800 [c2224e4](https://github.com/cloudflare/python-cloudflare/commit/c2224e4fa466ba8372e2f5898fc299b8923c6c73) NDJSON output supported - used by Enterprise Logs
+ - 2018-02-25 01:05:45 -0800 [ead7bbd](https://github.com/cloudflare/python-cloudflare/commit/ead7bbdca170f1e126e9d09703fe43eb7a80b10f) added jsonlines package in order to handle NDJSON formatted responses
+ - 2018-02-23 21:50:51 -0800 [c73a674](https://github.com/cloudflare/python-cloudflare/commit/c73a674ac1835e4c9b3738797383fbc9d846f635) finally clean up the one large cli4 routine. it needed to be split a long time ago
+ - 2018-02-23 21:37:55 -0800 [1a6593c](https://github.com/cloudflare/python-cloudflare/commit/1a6593c728ee6b99d2a7bf37980945c932ceffd3) forgot files on some post calls
+ - 2018-02-22 23:20:56 -0800 [2d3ba3a](https://github.com/cloudflare/python-cloudflare/commit/2d3ba3a559bab6ee7ee3ef6cb31fa2a2366b0672) tweak of workers file upload syntax
+ - 2018-02-22 23:19:16 -0800 [a9995a7](https://github.com/cloudflare/python-cloudflare/commit/a9995a77679ce6c11852b77ba926e76a60639342) added support for cleaner command line filename passing - used for workers javascript uploads
+ - 2018-02-22 23:11:12 -0800 [71f7ddd](https://github.com/cloudflare/python-cloudflare/commit/71f7dddd44463c50ac74a49576f3668865d54c0c) major cleanup using add() method which is cleaner and makes pylint happy
+ - 2018-02-22 23:10:20 -0800 [d4f1ebd](https://github.com/cloudflare/python-cloudflare/commit/d4f1ebd78c069fda4823ff5fbf9e537884ea81e4) fixed logger lint issue, added add() for cleaner command loading, added html response support for madia
+ - 2018-02-14 22:22:16 -0800 [2988312](https://github.com/cloudflare/python-cloudflare/commit/2988312d61f14b2752747367188508b089366a03) CHANGELOG.md pushed to github
  - 2018-02-14 22:21:55 -0800 [60e7c61](https://github.com/cloudflare/python-cloudflare/commit/60e7c61647b0b7726e7d3919d4a3059e3f8a15d9) 2.0.4 release
  - 2018-02-14 22:21:35 -0800 [43bf227](https://github.com/cloudflare/python-cloudflare/commit/43bf2277ac99030381984704542eead0e65e66f8) Cloudflare Workers examples added
  - 2018-02-14 22:20:59 -0800 [3129f8e](https://github.com/cloudflare/python-cloudflare/commit/3129f8e61071aef85a14251f4090fbb01c87f03e) workers typo
