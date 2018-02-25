@@ -320,11 +320,11 @@ class CloudFlare(object):
 
             if response_type == 'application/json':
                 # API says it's JSON; so it better be parsable as JSON
+                # NDJSON is returned by Enterprise Log Share i.e. /zones/:id/logs/received
+                if hasattr(response_data, 'decode'):
+                    response_data = response_data.decode('utf-8')
                 try:
-                    if hasattr(response_data, 'decode'):
-                        response_data = json.loads(response_data.decode('utf-8'))
-                    else:
-                        response_data = json.loads(response_data)
+                    response_data = json.loads(response_data)
                 except ValueError:
                     if response_data == '':
                         # This should really be 'null' but it isn't. Even then, it's wrong!
@@ -338,9 +338,18 @@ class CloudFlare(object):
                                              'code': response_code,
                                              'result': None}
                     else:
-                        # While this should not happen; it's always possible
-                        self.logger.debug('Response data not JSON: %r', response_data)
-                        raise CloudFlareAPIError(0, 'JSON parse failed - report to Cloudflare.')
+                        # Lets see if it's NDJSON data
+                        # NDJSON is a series of JSON elements with newlines between each element
+                        try:
+                            r = []
+                            for l in response_data.splitlines():
+                                r.append(json.loads(l))
+                            response_data = r
+                        except:
+                            # While this should not happen; it's always possible
+                            if self.logger:
+                                self.logger.debug('Response data not JSON: %r', response_data)
+                            raise CloudFlareAPIError(0, 'JSON parse failed - report to Cloudflare.')
 
                 if response_code == requests.codes.ok:
                     # 200 ok - so nothing needs to be done
@@ -351,11 +360,10 @@ class CloudFlare(object):
                     pass
             elif response_type == 'text/plain' or response_type == 'application/octet-stream':
                 # API says it's text; but maybe it's actually JSON? - should be fixed in API
+                if hasattr(response_data, 'decode'):
+                    response_data = response_data.decode('utf-8')
                 try:
-                    if hasattr(response_data, 'decode'):
-                        response_data = json.loads(response_data.decode('utf-8'))
-                    else:
-                        response_data = json.loads(response_data)
+                    response_data = json.loads(response_data)
                 except ValueError:
                     # So it wasn't JSON - moving on as if it's text!
                     # A single value is returned (vs an array or object)
@@ -493,11 +501,11 @@ class CloudFlare(object):
     class _add_unused(object):
         """ Cloudflare v4 API"""
 
-        def __init__(self, base, api_call_part1, api_call_part2=None, api_call_part3=None):
+        def __init__(self, base, p1, p2=None, p3=None):
             """ Cloudflare v4 API"""
 
             self._base = base
-            self._parts_unused = [api_call_part1, api_call_part2, api_call_part3]
+            self._parts_unused = [p1, p2, p3]
 
         def __call__(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
@@ -538,11 +546,11 @@ class CloudFlare(object):
     class _add_noauth(object):
         """ Cloudflare v4 API"""
 
-        def __init__(self, base, api_call_part1, api_call_part2=None, api_call_part3=None):
+        def __init__(self, base, p1, p2=None, p3=None):
             """ Cloudflare v4 API"""
 
             self._base = base
-            self._parts = [api_call_part1, api_call_part2, api_call_part3]
+            self._parts = [p1, p2, p3]
 
         def __call__(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
@@ -585,11 +593,11 @@ class CloudFlare(object):
     class _add_with_auth(object):
         """ Cloudflare v4 API"""
 
-        def __init__(self, base, api_call_part1, api_call_part2=None, api_call_part3=None):
+        def __init__(self, base, p1, p2=None, p3=None):
             """ Cloudflare v4 API"""
 
             self._base = base
-            self._parts = [api_call_part1, api_call_part2, api_call_part3]
+            self._parts = [p1, p2, p3]
 
         def __call__(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
@@ -640,11 +648,11 @@ class CloudFlare(object):
     class _add_with_auth_unwrapped(object):
         """ Cloudflare v4 API"""
 
-        def __init__(self, base, api_call_part1, api_call_part2=None, api_call_part3=None):
+        def __init__(self, base, p1, p2=None, p3=None):
             """ Cloudflare v4 API"""
 
             self._base = base
-            self._parts = [api_call_part1, api_call_part2, api_call_part3]
+            self._parts = [p1, p2, p3]
 
         def __call__(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
@@ -695,11 +703,11 @@ class CloudFlare(object):
     class _add_with_cert_auth(object):
         """ Cloudflare v4 API"""
 
-        def __init__(self, base, api_call_part1, api_call_part2=None, api_call_part3=None):
+        def __init__(self, base, p1, p2=None, p3=None):
             """ Cloudflare v4 API"""
 
             self._base = base
-            self._parts = [api_call_part1, api_call_part2, api_call_part3]
+            self._parts = [p1, p2, p3]
 
         def __call__(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
@@ -747,28 +755,36 @@ class CloudFlare(object):
                                                  identifier1, identifier2, identifier3,
                                                  params, data)
 
-    def add(self, t, branch, api_call_part1, api_call_part2=None, api_call_part3=None):
+    def add(self, t, p1, p2=None, p3=None):
         """add api call to class"""
-        if api_call_part3:
-            name = api_call_part3.rsplit('/', 1)[-1]
-        elif api_call_part2:
-            name = api_call_part2.rsplit('/', 1)[-1]
-        elif api_call_part1:
-            name = api_call_part1.rsplit('/', 1)[-1]
-        else:
-            # should never happen
-            raise CloudFlareAPIError(0, 'api load name failed')
+
+        a = []
+        if p1:
+            a += p1.split('/')
+        if p2:
+            a += p2.split('/')
+        if p3:
+            a += p3.split('/')
+
+        branch = self
+        for element in a[0:-1]:
+            try:
+                branch = getattr(branch, element)
+            except:
+                # should never happen
+                raise CloudFlareAPIError(0, 'api load name failed')
+        name = a[-1]
 
         if t == 'VOID':
-            f = self._add_unused(self._base, api_call_part1, api_call_part2, api_call_part3)
+            f = self._add_unused(self._base, p1, p2, p3)
         elif t == 'OPEN':
-            f = self._add_noauth(self._base, api_call_part1, api_call_part2, api_call_part3)
+            f = self._add_noauth(self._base, p1, p2, p3)
         elif t == 'AUTH':
-            f = self._add_with_auth(self._base, api_call_part1, api_call_part2, api_call_part3)
+            f = self._add_with_auth(self._base, p1, p2, p3)
         elif t == 'CERT':
-            f = self._add_with_cert_auth(self._base, api_call_part1, api_call_part2, api_call_part3)
+            f = self._add_with_cert_auth(self._base, p1, p2, p3)
         elif t == 'AUTH_UNWRAPPED':
-            f = self._add_with_auth_unwrapped(self._base, api_call_part1, api_call_part2, api_call_part3)
+            f = self._add_with_auth_unwrapped(self._base, p1, p2, p3)
         else:
             # should never happen
             raise CloudFlareAPIError(0, 'api load type mismatch')
