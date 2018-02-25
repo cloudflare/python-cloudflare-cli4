@@ -11,6 +11,7 @@ cli4 \- Command line access to CloudFlare v4 API
 [\fB\-q\fR|\fB\-\-quiet]
 [\fB\-j\fR|\fB\-\-json]
 [\fB\-y\fR|\fB\-\-yaml]
+[\fB\-n\fR|\fB\-\-ndjson]
 [\fBitem\fR=\fIvalue\fR ...]
 [\fB\-G\fR|\fB\-\-get]
 [\fB\-P\fR|\fB\-\-patch]
@@ -37,6 +38,8 @@ Don't output any JSON/YAML responses.
 Output response data in JSON format (the default).
 .IP "[\-y, \-\-yaml]"
 Output response data in YAML format (if yaml package installed).
+.IP "[\-n, \-\-ndjson]"
+Output response data in NDJSON format (if jsonlines package installed).
 .IP "\-\-get"
 Send HTTP request as a \fBGET\fR (the default).
 .IP "\-\-patch"

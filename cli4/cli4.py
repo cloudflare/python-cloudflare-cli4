@@ -9,6 +9,10 @@ try:
     import yaml
 except ImportError:
     yaml = None
+try:
+    import jsonlines
+except ImportError:
+    jsonlines = None
 
 from . import converters
 
@@ -185,6 +189,12 @@ def write_results(results, output):
                                      ensure_ascii=False)
         if output == 'yaml':
             results = yaml.safe_dump(results)
+        if output == 'ndjson':
+            # NDJSON support seems like a hack. There has to be a better way
+            writer = jsonlines.Writer(sys.stdout)
+            writer.write_all(results)
+            writer.close()
+            return
 
     sys.stdout.write(results)
     if not results.endswith('\n'):
@@ -200,7 +210,7 @@ def do_it(args):
     method = 'GET'
 
     usage = ('usage: cli4 '
-             + '[-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] '
+             + '[-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] [-n|ndjson]'
              + '[-r|--raw] '
              + '[-d|--dump] '
              + '[--get|--patch|--post|--put|--delete] '
@@ -212,7 +222,7 @@ def do_it(args):
                                    'VhvqjyrdGPOUD',
                                    [
                                        'version',
-                                       'help', 'verbose', 'quiet', 'json', 'yaml',
+                                       'help', 'verbose', 'quiet', 'json', 'yaml', 'ndjson',
                                        'raw',
                                        'dump',
                                        'get', 'patch', 'post', 'put', 'delete'
@@ -234,6 +244,10 @@ def do_it(args):
             if yaml is None:
                 exit('cli4: install yaml support')
             output = 'yaml'
+        elif opt in ('-n', '--ndjson'):
+            if jsonlines is None:
+                exit('cli4: install jsonlines support')
+            output = 'ndjson'
         elif opt in ('-r', '--raw'):
             raw = True
         elif opt in ('-d', '--dump'):
