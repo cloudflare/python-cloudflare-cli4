@@ -408,7 +408,7 @@ import CloudFlare
 def main():
     zone_name = sys.argv[1]
     cf = CloudFlare.CloudFlare()
-    zone_info = cf.zones.get(param={'name': zone_name})
+    zone_info = cf.zones.get(params={'name': zone_name})
     zone_id = zone_info['id']
 
     dns_name = sys.argv[2]
