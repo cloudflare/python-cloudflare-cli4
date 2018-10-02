@@ -103,7 +103,7 @@ def main():
     except IndexError:
         exit('usage: example-update-dynamic-dns.py fqdn-hostname')
 
-    host_name, zone_name = dns_name.split('.', 1)
+    host_name, zone_name = '.'.join(dns_name.split('.')[:2]), '.'.join(dns_name.split('.')[-2:])
 
     ip_address, ip_address_type = my_ip_address()
 
