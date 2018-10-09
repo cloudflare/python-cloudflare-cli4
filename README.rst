@@ -53,7 +53,7 @@ Example code
 All example code is available on GitHub (see
 `package <https://github.com/cloudflare/python-cloudflare>`__ in the
 `examples <https://github.com/cloudflare/python-cloudflare/tree/master/examples>`__
-folder.
+folder).
 
 Blog
 ----
@@ -113,7 +113,7 @@ the zones. Lets also query 100 zones.
 
 In order to query more than a single page of zones, we would have to use
 the raw mode (decribed more below). We can loop over many get calls and
-pass the page paramater to facilitate the paging.
+pass the page parameter to facilitate the paging.
 
 Raw mode is only needed when a get request has the possibility of
 returning many items.
@@ -194,7 +194,7 @@ Providing Cloudflare Username and API Key
 -----------------------------------------
 
 When you create a **CloudFlare** class you can pass up to four
-paramaters.
+parameters.
 
 -  Account email
 -  Account API key
@@ -218,7 +218,7 @@ paramaters.
         cf = CloudFlare.CloudFlare(email='user@example.com', token='00000000000000000000000000000000', certtoken='v1.0-...')
 
 If the account email and API key are not passed when you create the
-class, then they are retreived from either the users exported shell
+class, then they are retrieved from either the users exported shell
 environment variables or the .cloudflare.cfg or ~/.cloudflare.cfg or
 ~/.cloudflare/cloudflare.cfg files, in that order.
 
@@ -354,7 +354,7 @@ The other raised response is **CloudFlareInternalError** which can
 happen when calling an invalid method.
 
 In some cases more than one error is returned. In this case the return
-value **e** is also an array. You can itterate over that array to see
+value **e** is also an array. You can iterate over that array to see
 the additional error.
 
 .. code:: python
@@ -481,7 +481,7 @@ convert domain names on-the-fly into zone\_identifier's.
 
     $ cli4 [-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] [-r|--raw] [-d|--dump] [--get|--patch|--post|--put|--delete] [item=value ...] /command...
 
-CLI paramaters for POST/PUT/PATCH
+CLI parameters for POST/PUT/PATCH
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For API calls that need to pass data or parameters there is various
@@ -614,7 +614,7 @@ Cloudflare CA CLI examples
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here's some Cloudflare CA examples. Note the need of the zone\_id=
-paramater with the basic **/certificates** call.
+parameter with the basic **/certificates** call.
 
 .. code:: bash
 
@@ -936,7 +936,7 @@ Next step is to make sure a route is added for that script on that zone.
     $
 
 With that script added to the zone and the route added, we can now see
-the the website has been modified because of the Cloudflare Worker.
+the website has been modified because of the Cloudflare Worker.
 
 ::
 
