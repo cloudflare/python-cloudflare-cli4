@@ -1,5 +1,4 @@
 requests>=2.4.2
-logger
 future
 pyyaml
 jsonlines
