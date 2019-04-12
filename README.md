@@ -40,7 +40,7 @@ A full list is provided below.
 
 ## Example code
 
-All example code is available on GitHub (see [package](https://github.com/cloudflare/python-cloudflare) in the [examples](https://github.com/cloudflare/python-cloudflare/tree/master/examples) folder.
+All example code is available on GitHub (see [package](https://github.com/cloudflare/python-cloudflare) in the [examples](https://github.com/cloudflare/python-cloudflare/tree/master/examples) folder).
 
 ## Blog
 
@@ -91,8 +91,8 @@ if __name__ == '__main__':
     main()
 ```
 
-In order to query more than a single page of zones, we would have to use the raw mode (decribed more below).
-We can loop over many get calls and pass the page paramater to facilitate the paging.
+In order to query more than a single page of zones, we would have to use the raw mode (described more below).
+We can loop over many get calls and pass the page parameter to facilitate the paging.
 
 Raw mode is only needed when a get request has the possibility of returning many items.
 
@@ -170,7 +170,7 @@ if __name__ == '__main__':
 
 ## Providing Cloudflare Username and API Key
 
-When you create a **CloudFlare** class you can pass up to four paramaters.
+When you create a **CloudFlare** class you can pass up to four parameters.
 
  * Account email
  * Account API key
@@ -193,7 +193,7 @@ import CloudFlare
     cf = CloudFlare.CloudFlare(email='user@example.com', token='00000000000000000000000000000000', certtoken='v1.0-...')
 ```
 
-If the account email and API key are not passed when you create the class, then they are retreived from either the users exported shell environment variables or the .cloudflare.cfg or ~/.cloudflare.cfg or ~/.cloudflare/cloudflare.cfg files, in that order.
+If the account email and API key are not passed when you create the class, then they are retrieved from either the users exported shell environment variables or the .cloudflare.cfg or ~/.cloudflare.cfg or ~/.cloudflare/cloudflare.cfg files, in that order.
 
 There is one call that presently doesn't need any email or token certification (the */ips* call); hence you can test without any values saved away.
 
@@ -313,7 +313,7 @@ import CloudFlare
 The other raised response is **CloudFlareInternalError** which can happen when calling an invalid method.
 
 In some cases more than one error is returned. In this case the return value **e** is also an array.
-You can itterate over that array to see the additional error.
+You can iterate over that array to see the additional error.
 
 ```python
 import sys
@@ -432,7 +432,7 @@ $ cli4 [-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--
 
 ```
 
-### CLI paramaters for POST/PUT/PATCH
+### CLI parameters for POST/PUT/PATCH
 
 For API calls that need to pass data or parameters there is various formats to use.
 
@@ -551,7 +551,7 @@ $
 
 ### Cloudflare CA CLI examples
 
-Here's some Cloudflare CA examples. Note the need of the zone_id= paramater with the basic **/certificates** call.
+Here's some Cloudflare CA examples. Note the need of the zone_id= parameter with the basic **/certificates** call.
 
 ```bash
 $ cli4 /zones/:example.com | jq -c '.|{"id":.id,"name":.name}'
@@ -852,7 +852,7 @@ $ cli4 /zones/:example.com/workers/routes
 $
 ```
 
-With that script added to the zone and the route added, we can now see the the website has been modified because of the Cloudflare Worker.
+With that script added to the zone and the route added, we can now see the website has been modified because of the Cloudflare Worker.
 
 ```
 $ curl -sS https://example.com/ | fgrep '<body'
