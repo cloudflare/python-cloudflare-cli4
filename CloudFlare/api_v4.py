@@ -45,6 +45,7 @@ def api_v4(self):
     # The API commands for /account/
     account(self)
     account_load_balancing_analytics(self)
+    account_secondary_dns(self)
 
 def user(self):
     """ API core commands for Cloudflare API"""
@@ -82,6 +83,7 @@ def zones(self):
     self.add('AUTH', "zones", "purge_cache")
     self.add('AUTH', "zones", "railguns")
     self.add('AUTH', "zones", "railguns", "diagnose")
+    self.add('AUTH', "zones", "secondary_dns")
     self.add('AUTH', "zones", "subscription")
     self.add('AUTH', "zones", "subscriptions")
 
@@ -306,6 +308,13 @@ def account_load_balancing_analytics(self):
     self.add('VOID', "account", "load_balancing_analytics")
     self.add('AUTH', "account", "load_balancing_analytics/events")
     self.add('AUTH', "account", "load_balancing_analytics/entities")
+
+def account_secondary_dns(self):
+    """ API core commands for Cloudflare API"""
+
+    self.add('VOID', "account", "secondary_dns")
+    self.add('AUTH', "account", "secondary_dns/masters")
+    self.add('AUTH', "account", "secondary_dns/tsigs")
 
 def zones_media(self):
     """ API core commands for Cloudflare API"""
