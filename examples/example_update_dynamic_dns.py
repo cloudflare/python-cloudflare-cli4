@@ -65,13 +65,16 @@ def do_dns_update(cf, zone_name, zone_id, dns_name, ip_address, ip_address_type)
             updated = True
             continue
 
+        proxied_state = dns_record['proxied']
+ 
         # Yes, we need to update this record - we know it's the same address type
 
         dns_record_id = dns_record['id']
         dns_record = {
             'name':dns_name,
             'type':ip_address_type,
-            'content':ip_address
+            'content':ip_address,
+            'proxied':proxied_state
         }
         try:
             dns_record = cf.zones.dns_records.put(zone_id, dns_record_id, data=dns_record)
