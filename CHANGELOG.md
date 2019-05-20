@@ -1,5 +1,17 @@
 # Change Log
 
+ - 2019-05-20 08:23:52 -0700 [b024609](https://github.com/cloudflare/python-cloudflare/commit/b0246091fc0d367e7e36bb422ebe7e55a93bf6c0) 2.2.0 release
+ - 2019-05-14 09:25:39 -0700 [630612a](https://github.com/cloudflare/python-cloudflare/commit/630612a52adad05fc9fc1ec05c52a9c08eacaa80) Add Python 3.7
+ - 2019-04-12 13:53:41 +0100 [286cb0f](https://github.com/cloudflare/python-cloudflare/commit/286cb0f25e5bf13adacdf9ce7956bd514e508214) Merge pull request #64 from aaranmcguire/support-secondary-dns
+ - 2019-04-12 13:52:50 +0100 [11cc361](https://github.com/cloudflare/python-cloudflare/commit/11cc361b17e39ebf4ff3c4ab21a9d9e1bacaa578) Merge pull request #57 from sulf1ron/master
+ - 2019-04-12 13:21:28 +0100 [2255073](https://github.com/cloudflare/python-cloudflare/commit/22550738c9680779dcdc5152eda8c355e0924f8c) Merge pull request #53 from weisi/master
+ - 2019-04-12 13:20:13 +0100 [f48ab53](https://github.com/cloudflare/python-cloudflare/commit/f48ab53cb7c1e5b7d69ce1cc86b84d5cafaed4a7) Merge pull request #58 from dargor/fix_typos
+ - 2019-04-12 10:06:58 +0100 [019393a](https://github.com/cloudflare/python-cloudflare/commit/019393a88f2e36730bb1efed45580cc9b756a8d3) DNS-3431: Support Secondary DNS Endpoints
+ - 2018-10-09 17:02:00 +0200 [63a4159](https://github.com/cloudflare/python-cloudflare/commit/63a4159eb331b11e2a8c29641d101a08da9f4290) Fix some typos.
+ - 2018-10-02 22:48:39 +0800 [a8e47cd](https://github.com/cloudflare/python-cloudflare/commit/a8e47cd4b6759f255dc49377ab221d521ecc2904) Fix a minor bug in examples\example_update_dynamic_dns.py
+ - 2018-08-05 18:33:00 -0400 [f4eb124](https://github.com/cloudflare/python-cloudflare/commit/f4eb124be4c9817e826deb81bd7a0040c347ef30) README: Fix typo of kwarg "params" in sample code.
+ - 2018-03-05 01:56:27 -0800 [fd6464e](https://github.com/cloudflare/python-cloudflare/commit/fd6464e15b91263f1ce395e4336b1c1fac542880) requests needs to be newer than 2.4.2 it order to use json keyword
+ - 2018-02-25 03:42:55 -0800 [c07a6c5](https://github.com/cloudflare/python-cloudflare/commit/c07a6c5418ff1be83f8a828d211d5e56785254f4) CHANGELOG.md pushed to github
  - 2018-02-25 03:42:04 -0800 [33feada](https://github.com/cloudflare/python-cloudflare/commit/33feada897f25b00f8728474e4050e68935c96b5) 2.1.0 release
  - 2018-02-25 03:41:16 -0800 [b6d79dc](https://github.com/cloudflare/python-cloudflare/commit/b6d79dcb495a070946c7765a63d97623d1c64b19) minor lint thingy
  - 2018-02-25 03:39:57 -0800 [ed9bb8d](https://github.com/cloudflare/python-cloudflare/commit/ed9bb8dc467745fc2d1b4d41760f37d7048ba2cb) added support for NDJSON, cheaned up command preload
