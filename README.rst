@@ -211,6 +211,9 @@ parameters.
         # A minimal call with debug enabled
         cf = CloudFlare.CloudFlare(debug=True))
 
+        # Using API Token (note missing email)
+        cf = CloudFlare.CloudFlare(token='00000000000000000000000000000000')
+
         # A full blown call with passed basic account information
         cf = CloudFlare.CloudFlare(email='user@example.com', token='00000000000000000000000000000000')
 
