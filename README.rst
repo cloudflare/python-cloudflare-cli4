@@ -112,7 +112,7 @@ the zones. Lets also query 100 zones.
         main()
 
 In order to query more than a single page of zones, we would have to use
-the raw mode (decribed more below). We can loop over many get calls and
+the raw mode (described more below). We can loop over many get calls and
 pass the page parameter to facilitate the paging.
 
 Raw mode is only needed when a get request has the possibility of
