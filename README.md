@@ -172,8 +172,8 @@ if __name__ == '__main__':
 
 When you create a **CloudFlare** class you can pass up to four parameters.
 
- * Account email
- * Account API key
+ * API Token or API Key
+ * Account email (only if an API Key is being used)
  * Optional Origin-CA Certificate Token
  * Optional Debug flag (True/False)
 
@@ -186,10 +186,13 @@ import CloudFlare
     # A minimal call with debug enabled
     cf = CloudFlare.CloudFlare(debug=True))
 
-    # A full blown call with passed basic account information
+    # An authenticated call using an API Token (note the missing email)
+    cf = CloudFlare.CloudFlare(token='00000000000000000000000000000000')
+
+    # An authenticated call using an API Key
     cf = CloudFlare.CloudFlare(email='user@example.com', token='00000000000000000000000000000000')
 
-    # A full blown call with passed basic account information and CA-Origin info
+    # An authenticated call using an API Key and CA-Origin info
     cf = CloudFlare.CloudFlare(email='user@example.com', token='00000000000000000000000000000000', certtoken='v1.0-...')
 ```
 

@@ -196,8 +196,8 @@ Providing Cloudflare Username and API Key
 When you create a **CloudFlare** class you can pass up to four
 parameters.
 
--  Account email
--  Account API key
+-  API Token or API Key
+-  Account email (only if an API Key is being used)
 -  Optional Origin-CA Certificate Token
 -  Optional Debug flag (True/False)
 
@@ -211,13 +211,13 @@ parameters.
         # A minimal call with debug enabled
         cf = CloudFlare.CloudFlare(debug=True))
 
-        # Using API Token (note missing email)
+        # An authenticated call using an API Token (note the missing email)
         cf = CloudFlare.CloudFlare(token='00000000000000000000000000000000')
 
-        # A full blown call with passed basic account information
+        # An authenticated call using an API Key
         cf = CloudFlare.CloudFlare(email='user@example.com', token='00000000000000000000000000000000')
 
-        # A full blown call with passed basic account information and CA-Origin info
+        # An authenticated call using an API Key and CA-Origin info
         cf = CloudFlare.CloudFlare(email='user@example.com', token='00000000000000000000000000000000', certtoken='v1.0-...')
 
 If the account email and API key are not passed when you create the
