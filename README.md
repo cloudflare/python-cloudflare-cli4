@@ -198,11 +198,13 @@ import CloudFlare
 
 If the account email and API key are not passed when you create the class, then they are retrieved from either the users exported shell environment variables or the .cloudflare.cfg or ~/.cloudflare.cfg or ~/.cloudflare/cloudflare.cfg files, in that order.
 
+If you're using an API Token, any `cloudflare.cfg` file must not contain an `email` attribute and the `CF_API_EMAIL` environment variable must be unset, otherwise the token will be treated as a key and will throw an error.
+
 There is one call that presently doesn't need any email or token certification (the */ips* call); hence you can test without any values saved away.
 
 ### Using shell environment variables
 ```bash
-$ export CF_API_EMAIL='user@example.com'
+$ export CF_API_EMAIL='user@example.com' # Do not set if using an API Token
 $ export CF_API_KEY='00000000000000000000000000000000'
 $ export CF_API_CERTKEY='v1.0-...'
 $
@@ -215,7 +217,7 @@ These are optional environment variables; however, they do override the values s
 ```bash
 $ cat ~/.cloudflare/cloudflare.cfg
 [CloudFlare]
-email = user@example.com
+email = user@example.com # Do not set if using an API Token
 token = 00000000000000000000000000000000
 certtoken = v1.0-...
 extras =
