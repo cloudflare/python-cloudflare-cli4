@@ -49,6 +49,14 @@ class CloudFlare(object):
                               identifier1, identifier2, identifier3,
                               params, data, files)
 
+        def _add_auth_headers(self, headers):
+            """ Add authentication headers """
+            if self.email:
+                headers['X-Auth-Email'] = self.email
+                headers['X-Auth-Key'] = self.token
+            else:
+                headers['Authorization'] = 'Bearer {}'.format(self.token)
+
         def call_with_auth(self, method, parts,
                            identifier1=None, identifier2=None, identifier3=None,
                            params=None, data=None, files=None):
@@ -58,10 +66,9 @@ class CloudFlare(object):
                 raise CloudFlareAPIError(0, 'no email and/or token defined')
             headers = {
                 'User-Agent': self.user_agent,
-                'X-Auth-Email': self.email,
-                'X-Auth-Key': self.token,
                 'Content-Type': 'application/json'
             }
+            self._add_auth_headers(headers)
             if type(data) == str:
                 # passing javascript vs JSON
                 headers['Content-Type'] = 'application/javascript'
@@ -83,10 +90,9 @@ class CloudFlare(object):
                 raise CloudFlareAPIError(0, 'no email and/or token defined')
             headers = {
                 'User-Agent': self.user_agent,
-                'X-Auth-Email': self.email,
-                'X-Auth-Key': self.token,
                 'Content-Type': 'application/json'
             }
+            self._add_auth_headers(headers)
             if type(data) == str:
                 # passing javascript vs JSON
                 headers['Content-Type'] = 'application/javascript'

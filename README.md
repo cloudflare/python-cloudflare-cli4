@@ -172,8 +172,8 @@ if __name__ == '__main__':
 
 When you create a **CloudFlare** class you can pass up to four parameters.
 
- * Account email
- * Account API key
+ * API Token or API Key
+ * Account email (only if an API Key is being used)
  * Optional Origin-CA Certificate Token
  * Optional Debug flag (True/False)
 
@@ -186,20 +186,25 @@ import CloudFlare
     # A minimal call with debug enabled
     cf = CloudFlare.CloudFlare(debug=True))
 
-    # A full blown call with passed basic account information
+    # An authenticated call using an API Token (note the missing email)
+    cf = CloudFlare.CloudFlare(token='00000000000000000000000000000000')
+
+    # An authenticated call using an API Key
     cf = CloudFlare.CloudFlare(email='user@example.com', token='00000000000000000000000000000000')
 
-    # A full blown call with passed basic account information and CA-Origin info
+    # An authenticated call using an API Key and CA-Origin info
     cf = CloudFlare.CloudFlare(email='user@example.com', token='00000000000000000000000000000000', certtoken='v1.0-...')
 ```
 
 If the account email and API key are not passed when you create the class, then they are retrieved from either the users exported shell environment variables or the .cloudflare.cfg or ~/.cloudflare.cfg or ~/.cloudflare/cloudflare.cfg files, in that order.
 
+If you're using an API Token, any `cloudflare.cfg` file must not contain an `email` attribute and the `CF_API_EMAIL` environment variable must be unset, otherwise the token will be treated as a key and will throw an error.
+
 There is one call that presently doesn't need any email or token certification (the */ips* call); hence you can test without any values saved away.
 
 ### Using shell environment variables
 ```bash
-$ export CF_API_EMAIL='user@example.com'
+$ export CF_API_EMAIL='user@example.com' # Do not set if using an API Token
 $ export CF_API_KEY='00000000000000000000000000000000'
 $ export CF_API_CERTKEY='v1.0-...'
 $
@@ -212,7 +217,7 @@ These are optional environment variables; however, they do override the values s
 ```bash
 $ cat ~/.cloudflare/cloudflare.cfg
 [CloudFlare]
-email = user@example.com
+email = user@example.com # Do not set if using an API Token
 token = 00000000000000000000000000000000
 certtoken = v1.0-...
 extras =
