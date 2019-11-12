@@ -430,7 +430,7 @@ if __name__ == '__main__':
 ## CLI
 
 All API calls can be called from the command line.
-The command will convert domain names on-the-fly into zone_identifier's.
+The command will convert domain names prefixed with a colon (`:`) into zone_identifiers: e.g. to view `example.com` you must use `cli4 /zones/:example.com` (the zone ID cannot be used).
 
 ```bash
 $ cli4 [-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] [-r|--raw] [-d|--dump] [--get|--patch|--post|--put|--delete] [item=value ...] /command...
