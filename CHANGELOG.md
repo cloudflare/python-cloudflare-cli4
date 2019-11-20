@@ -1,5 +1,13 @@
 # Change Log
 
+ - 2019-11-20 10:36:15 -0800 [b80a4dc](https://github.com/cloudflare/python-cloudflare/commit/b80a4dc6d516d1737f16be3c7c4f13a83be905bb) 2.3.1 release
+ - 2019-10-08 14:32:36 +0100 [ce30a10](https://github.com/cloudflare/python-cloudflare/commit/ce30a10d9dabe8dff3ff3941aff9568ffaaa0704) Merge pull request #78 from Tugzrida/patch-1
+ - 2019-10-08 14:10:33 +0100 [6e63048](https://github.com/cloudflare/python-cloudflare/commit/6e63048956493726414cc478d9234769d037c67e) Merge pull request #76 from nijel/patch-1
+ - 2019-09-20 11:03:08 +0200 [09d0605](https://github.com/cloudflare/python-cloudflare/commit/09d06054111cbc8f6454a3ae5568e240432dd22a) Clarify token use with env variables and config files (#2)
+ - 2019-09-16 14:05:30 +0200 [c4f9107](https://github.com/cloudflare/python-cloudflare/commit/c4f9107d47867926f60b4188aacabc5e0682593d) Enhance API Token documentation
+ - 2019-09-13 16:52:56 +1000 [de33ceb](https://github.com/cloudflare/python-cloudflare/commit/de33ceb5d4b87f60e01eff58bf53679eb93ee748) Spelling fix
+ - 2019-08-23 20:14:17 +0200 [9f28c65](https://github.com/cloudflare/python-cloudflare/commit/9f28c659d784fe06c705ea7977acee2bf3a2cc2e) Add support for API Tokens
+ - 2019-05-20 08:24:29 -0700 [cf084ee](https://github.com/cloudflare/python-cloudflare/commit/cf084ee22b454cbb50804c748ee969cab9c451a2) 2.2.0 release
  - 2019-05-20 08:23:52 -0700 [b024609](https://github.com/cloudflare/python-cloudflare/commit/b0246091fc0d367e7e36bb422ebe7e55a93bf6c0) 2.2.0 release
  - 2019-05-14 09:25:39 -0700 [630612a](https://github.com/cloudflare/python-cloudflare/commit/630612a52adad05fc9fc1ec05c52a9c08eacaa80) Add Python 3.7
  - 2019-04-12 13:53:41 +0100 [286cb0f](https://github.com/cloudflare/python-cloudflare/commit/286cb0f25e5bf13adacdf9ce7956bd514e508214) Merge pull request #64 from aaranmcguire/support-secondary-dns
