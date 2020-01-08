@@ -1006,8 +1006,12 @@ As of May/June 2016 the code is now tested against pylint.
 This was required in order to move the codebase into Python 3.x.
 The motivation for this came from [Danielle Madeley (danni)](https://github.com/danni).
 
-While the codebase has been edited to run on Python 3.x, there's not been enough Python 3.x testing performed.
-If you can help in this regard; please contact the maintainers.
+~~While the codebase has been edited to run on Python 3.x, there's not been enough Python 3.x testing performed.~~
+~~If you can help in this regard; please contact the maintainers.~~
+
+As of January 2020 the code is Python3 clean.
+
+As of January 2020 the code is shipped up to pypi with Python2 support removed.
 
 ## Credit
 
