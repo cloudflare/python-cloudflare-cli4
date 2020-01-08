@@ -225,10 +225,11 @@ class, then they are retrieved from either the users exported shell
 environment variables or the .cloudflare.cfg or ~/.cloudflare.cfg or
 ~/.cloudflare/cloudflare.cfg files, in that order.
 
-If you're using an API Token, any ``cloudflare.cfg`` file must not
-contain an ``email`` attribute and the ``CF_API_EMAIL`` environment
-variable must be unset, otherwise the token will be treated as a key
-and will throw an error.
+If you're using an API Token, any ``cloudflare.cfg`` file must either
+not contain an ``email`` attribute or be a zero length string and the
+``CF_API_EMAIL`` environment variable must be unset or be a zero length
+string, otherwise the token will be treated as a key and will throw an
+error.
 
 There is one call that presently doesn't need any email or token
 certification (the */ips* call); hence you can test without any values
@@ -362,8 +363,8 @@ The other raised response is **CloudFlareInternalError** which can
 happen when calling an invalid method.
 
 In some cases more than one error is returned. In this case the return
-value **e** is also an array. You can iterate over that array to see
-the additional error.
+value **e** is also an array. You can iterate over that array to see the
+additional error.
 
 .. code:: python
 

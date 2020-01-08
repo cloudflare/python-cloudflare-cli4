@@ -41,33 +41,42 @@ class CloudFlare(object):
                               params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            headers = {
-                'User-Agent': self.user_agent,
-                'Content-Type': 'application/json'
-            }
+            headers = {}
+            self._add_headers(headers)
             return self._call(method, headers, parts,
                               identifier1, identifier2, identifier3,
                               params, data, files)
 
+        def _add_headers(self, headers):
+            """ Add default headers """
+            headers['User-Agent'] = self.user_agent
+            headers['Content-Type'] = 'application/json'
+
         def _add_auth_headers(self, headers):
             """ Add authentication headers """
-            if self.email:
+            if self.email is None and self.token is None:
+                raise CloudFlareAPIError(0, 'no email and no token defined')
+            if self.token is None:
+                raise CloudFlareAPIError(0, 'no token defined')
+            if self.email is None:
+                headers['Authorization'] = 'Bearer %s' % (self.token)
+            else:
                 headers['X-Auth-Email'] = self.email
                 headers['X-Auth-Key'] = self.token
-            else:
-                headers['Authorization'] = 'Bearer {}'.format(self.token)
+
+        def _add_certtoken_headers(self, headers):
+            """ Add authentication headers """
+            if self.certtoken is None:
+                raise CloudFlareAPIError(0, 'no cert token defined')
+            headers['X-Auth-User-Service-Key'] = self.certtoken
 
         def call_with_auth(self, method, parts,
                            identifier1=None, identifier2=None, identifier3=None,
                            params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            if self.email is '' or self.token is '':
-                raise CloudFlareAPIError(0, 'no email and/or token defined')
-            headers = {
-                'User-Agent': self.user_agent,
-                'Content-Type': 'application/json'
-            }
+            headers = {}
+            self._add_headers(headers)
             self._add_auth_headers(headers)
             if type(data) == str:
                 # passing javascript vs JSON
@@ -86,12 +95,8 @@ class CloudFlare(object):
                                      params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            if self.email is '' or self.token is '':
-                raise CloudFlareAPIError(0, 'no email and/or token defined')
-            headers = {
-                'User-Agent': self.user_agent,
-                'Content-Type': 'application/json'
-            }
+            headers = {}
+            self._add_headers(headers)
             self._add_auth_headers(headers)
             if type(data) == str:
                 # passing javascript vs JSON
@@ -110,13 +115,9 @@ class CloudFlare(object):
                                params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            if self.certtoken is '' or self.certtoken is None:
-                raise CloudFlareAPIError(0, 'no cert token defined')
-            headers = {
-                'User-Agent': self.user_agent,
-                'X-Auth-User-Service-Key': self.certtoken,
-                'Content-Type': 'application/json'
-            }
+            headers = {}
+            self._add_headers(headers)
+            self._add_certtoken_headers(headers)
             return self._call(method, headers, parts,
                               identifier1, identifier2, identifier3,
                               params, data, files)
@@ -245,7 +246,7 @@ class CloudFlare(object):
                     self.logger.debug('Call: done!')
             except Exception as e:
                 if self.logger:
-                    self.logger.debug('Call: exception!')
+                    self.logger.debug('Call: exception! "%s"' % (e))
                 raise CloudFlareAPIError(0, 'connection failed.')
 
             if self.logger:
@@ -835,6 +836,12 @@ class CloudFlare(object):
         if certtoken is None:
             certtoken = conf_certtoken
 
+        if email is '':
+            email = None
+        if token is '':
+            token = None
+        if certtoken is '':
+            certtoken = None
         self._base = self._v4base(email, token, certtoken, base_url, debug, raw, use_sessions)
 
         # add the API calls
@@ -861,13 +868,24 @@ class CloudFlare(object):
     def __str__(self):
         """ Cloudflare v4 API"""
 
-        return '["%s","%s"]' % (self._base.email, "REDACTED")
+        if self._base.email is None:
+            return '["%s"]' % ('REDACTED')
+        else:
+            return '["%s","%s"]' % (self._base.email, 'REDACTED')
 
     def __repr__(self):
         """ Cloudflare v4 API"""
 
-        return '%s,%s(%s,"%s","%s","%s",%s,"%s")' % (
-            self.__module__, type(self).__name__,
-            self._base.email, 'REDACTED', 'REDACTED',
-            self._base.base_url, self._base.raw, self._base.user_agent
-        )
+        if self._base.email is None:
+            return '%s,%s(%s,"%s","%s",%s,"%s")' % (
+                self.__module__, type(self).__name__,
+                'REDACTED', 'REDACTED',
+                self._base.base_url, self._base.raw, self._base.user_agent
+            )
+        else:
+            return '%s,%s(%s,"%s","%s","%s",%s,"%s")' % (
+                self.__module__, type(self).__name__,
+                self._base.email, 'REDACTED', 'REDACTED',
+                self._base.base_url, self._base.raw, self._base.user_agent
+            )
+

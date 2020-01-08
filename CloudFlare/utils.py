@@ -29,5 +29,7 @@ def sanitize_secrets(secrets):
         secrets_copy['X-Auth-Key'] = redacted_phrase
     elif 'X-Auth-User-Service-Key' in secrets_copy:
         secrets_copy['X-Auth-User-Service-Key'] = redacted_phrase
+    elif 'Authorization' in secrets_copy:
+        secrets_copy['Authorization'] = redacted_phrase
 
     return secrets_copy
