@@ -1,5 +1,9 @@
 # Change Log
 
+ - 2020-01-08 14:51:45 -0800 [0eb6d73](https://github.com/cloudflare/python-cloudflare/commit/0eb6d735393a8b371bae5916fb14faf9262b41cb) 2.4.0 release
+ - 2020-01-08 14:50:06 -0800 [41c5348](https://github.com/cloudflare/python-cloudflare/commit/41c5348cc7b1a462f337ea553a464a3c827afd4d) removed python2 from setup.py so that pypi is only Python3
+ - 2020-01-08 14:40:56 -0800 [ca5cb96](https://github.com/cloudflare/python-cloudflare/commit/ca5cb961d772bc6b7b962bf33e25929960a18566) auth methods cleaned up to allow empty/null strings in values plus confirmed all authentication code is consistent. Updated README.
+ - 2019-11-20 10:37:17 -0800 [f71c3e2](https://github.com/cloudflare/python-cloudflare/commit/f71c3e221735ad50230918f3c9bee6d34471ae58) CHANGELOG.md pushed to github
  - 2019-11-20 10:36:15 -0800 [b80a4dc](https://github.com/cloudflare/python-cloudflare/commit/b80a4dc6d516d1737f16be3c7c4f13a83be905bb) 2.3.1 release
  - 2019-10-08 14:32:36 +0100 [ce30a10](https://github.com/cloudflare/python-cloudflare/commit/ce30a10d9dabe8dff3ff3941aff9568ffaaa0704) Merge pull request #78 from Tugzrida/patch-1
  - 2019-10-08 14:10:33 +0100 [6e63048](https://github.com/cloudflare/python-cloudflare/commit/6e63048956493726414cc478d9234769d037c67e) Merge pull request #76 from nijel/patch-1
