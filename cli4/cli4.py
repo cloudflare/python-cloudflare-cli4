@@ -122,27 +122,27 @@ def run_command(cf, method, command, params=None, content=None, files=None):
         identifier2 = [None]
     for i2 in identifier2:
         try:
-            if method is 'GET':
+            if method == 'GET':
                 r = m.get(identifier1=identifier1,
                           identifier2=i2,
                           identifier3=identifier3,
                           params=params)
-            elif method is 'PATCH':
+            elif method == 'PATCH':
                 r = m.patch(identifier1=identifier1,
                             identifier2=i2,
                             identifier3=identifier3,
                             data=params)
-            elif method is 'POST':
+            elif method == 'POST':
                 r = m.post(identifier1=identifier1,
                            identifier2=i2,
                            identifier3=identifier3,
                            data=params, files=files)
-            elif method is 'PUT':
+            elif method == 'PUT':
                 r = m.put(identifier1=identifier1,
                           identifier2=i2,
                           identifier3=identifier3,
                           data=params)
-            elif method is 'DELETE':
+            elif method == 'DELETE':
                 r = m.delete(identifier1=identifier1,
                              identifier2=i2,
                              identifier3=identifier3,
@@ -298,13 +298,13 @@ def do_it(args):
             value = False
         elif value_string == '' or value_string.lower() == 'none':
             value = None
-        elif value_string[0] is '=' and value_string[1:] == '':
+        elif value_string[0] == '=' and value_string[1:] == '':
             exit('cli4: %s== - no number value passed' % (tag_string))
-        elif value_string[0] is '=' and digits_only.match(value_string[1:]):
+        elif value_string[0] == '=' and digits_only.match(value_string[1:]):
             value = int(value_string[1:])
-        elif value_string[0] is '=' and floats_only.match(value_string[1:]):
+        elif value_string[0] == '=' and floats_only.match(value_string[1:]):
             value = float(value_string[1:])
-        elif value_string[0] is '=':
+        elif value_string[0] == '=':
             exit('cli4: %s== - invalid number value passed' % (tag_string))
         elif value_string[0] in '[{' and value_string[-1] in '}]':
             # a json structure - used in pagerules
@@ -315,7 +315,7 @@ def do_it(args):
                 value = yaml.safe_load(value_string)
             except ValueError:
                 exit('cli4: %s="%s" - can\'t parse json value' % (tag_string, value_string))
-        elif value_string[0] is '@':
+        elif value_string[0] == '@':
             # a file to be uploaded - used in dns_records/import - only via POST
             filename = value_string[1:]
             if method != 'POST':

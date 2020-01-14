@@ -1013,6 +1013,8 @@ As of January 2020 the code is Python3 clean.
 
 As of January 2020 the code is shipped up to pypi with Python2 support removed.
 
+As of January 2020 the code is Python3.8 clean. The new `SyntaxWarning` messages (i.e. `SyntaxWarning: "is" with a literal. Did you mean "=="?`) meant minor edits were needed.
+
 ## Credit
 
 This is based on work by [Felix Wong (gnowxilef)](https://github.com/gnowxilef) found [here](https://github.com/cloudflare-api/python-cloudflare-v4).
