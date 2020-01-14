@@ -179,7 +179,7 @@ def write_results(results, output):
     else:
         # anything more complex (dict, list, etc) should be dumped as JSON/YAML
         if output is None:
-	    results = None
+            results = None
         if output == 'json':
             try:
                 results = json.dumps(results,
