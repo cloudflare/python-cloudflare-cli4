@@ -20,6 +20,7 @@ def api_v4(self):
     zones_dnssec(self)
     zones_firewall(self)
     zones_load_balancers(self)
+    zones_logpush(self)
     zones_logs(self)
     zones_media(self)
     zones_rate_limits(self)
@@ -191,6 +192,21 @@ def zones_amp(self):
 
     self.add('VOID', "zones", "amp")
     self.add('AUTH', "zones", "amp/viewer")
+
+def zones_logpush(self):
+    """ API core commands for Cloudflare API"""
+
+    self.add('VOID', "zones", "logpush")
+    self.add('VOID', "zones", "logpush/datasets")
+    self.add('AUTH', "zones", "logpush/datasets", "fields")
+    self.add('AUTH', "zones", "logpush/datasets", "jobs")
+    self.add('AUTH', "zones", "logpush/jobs")
+    self.add('AUTH', "zones", "logpush/ownership")
+    self.add('AUTH', "zones", "logpush/ownership/validate")
+    self.add('VOID', "zones", "logpush/validate")
+    self.add('VOID', "zones", "logpush/validate/destination")
+    self.add('AUTH', "zones", "logpush/validate/destination/exitss")
+    self.add('AUTH', "zones", "logpush/validate/origin")
 
 def zones_logs(self):
     """ API core commands for Cloudflare API"""
