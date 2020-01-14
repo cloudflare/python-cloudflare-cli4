@@ -1,5 +1,7 @@
 # Change Log
 
+ - 2020-01-13 20:17:20 -0800 [b5cd481](https://github.com/cloudflare/python-cloudflare/commit/b5cd4811925aa1aa14241b3cc34e35c19bad2c0e) Python 3.8 needed SyntaxWarning fixes - as annoying as that was!
+ - 2020-01-08 14:52:33 -0800 [d76dd70](https://github.com/cloudflare/python-cloudflare/commit/d76dd70ba7c8e07f8ef2e465e35e40fa74bd6949) CHANGELOG.md pushed to github
  - 2020-01-08 14:51:45 -0800 [0eb6d73](https://github.com/cloudflare/python-cloudflare/commit/0eb6d735393a8b371bae5916fb14faf9262b41cb) 2.4.0 release
  - 2020-01-08 14:50:06 -0800 [41c5348](https://github.com/cloudflare/python-cloudflare/commit/41c5348cc7b1a462f337ea553a464a3c827afd4d) removed python2 from setup.py so that pypi is only Python3
  - 2020-01-08 14:40:56 -0800 [ca5cb96](https://github.com/cloudflare/python-cloudflare/commit/ca5cb961d772bc6b7b962bf33e25929960a18566) auth methods cleaned up to allow empty/null strings in values plus confirmed all authentication code is consistent. Updated README.
