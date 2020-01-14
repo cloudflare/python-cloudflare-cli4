@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2020-01-13 22:21:25 -0800 [9be691c](https://github.com/cloudflare/python-cloudflare/commit/9be691c7a9cf2bd1181bf85dd220c6f3d2ca914a) 2.4.3 release
+ - 2020-01-13 22:20:50 -0800 [defd8c1](https://github.com/cloudflare/python-cloudflare/commit/defd8c1f4f3ec550b2182ef06edba18d8e067490) added more API calls
+ - 2020-01-13 21:34:33 -0800 [eb6b260](https://github.com/cloudflare/python-cloudflare/commit/eb6b26043f19e32ba76dfe53883905067b1f5442) CHANGELOG.ms pushed to github
  - 2020-01-13 21:34:00 -0800 [67fdfcb](https://github.com/cloudflare/python-cloudflare/commit/67fdfcb5e3480a1c99624c71e3a798d5698685cf) 2.4.2
  - 2020-01-13 21:32:35 -0800 [b7311a3](https://github.com/cloudflare/python-cloudflare/commit/b7311a368f4822134c6a7576bb9e9e9433b157a7) --quite options yields TypeError - fixed!
  - 2020-01-13 21:31:33 -0800 [9b31b51](https://github.com/cloudflare/python-cloudflare/commit/9b31b514a566c1b102d5960bf9be3d2a387426e2) --quite options yields TypeError - fixed!
