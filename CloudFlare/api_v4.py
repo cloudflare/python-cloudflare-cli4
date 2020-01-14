@@ -42,10 +42,13 @@ def api_v4(self):
     # The API commands for /ips/
     ips(self)
 
-    # The API commands for /account/
-    account(self)
-    account_load_balancing_analytics(self)
-    account_secondary_dns(self)
+    # The API commands for /accounts/
+    accounts(self)
+    accounts_firewall(self)
+    accounts_secondary_dns(self)
+
+    # The API commands for /memberships/
+    memberships(self)
 
 def user(self):
     """ API core commands for Cloudflare API"""
@@ -68,6 +71,11 @@ def zones(self):
     """ API core commands for Cloudflare API"""
 
     self.add('AUTH', "zones")
+    self.add('VOID', "zones", "access")
+    self.add('AUTH', "zones", "access/apps")
+    self.add('AUTH', "zones", "access/apps/policies")
+    self.add('AUTH', "zones", "access/apps/revoke-tokens")
+    self.add('AUTH', "zones", "access/certificates")
     self.add('AUTH', "zones", "activation_check")
     self.add('AUTH', "zones", "available_plans")
     self.add('AUTH', "zones", "available_rate_plans")
@@ -78,12 +86,17 @@ def zones(self):
     self.add('AUTH', "zones", "dns_records")
     self.add('AUTH', "zones", "dns_records/export")
     self.add('AUTH', "zones", "dns_records/import")
+    self.add('AUTH', "zones", "filters")
+    self.add('AUTH', "zones", "healthchecks")
     self.add('AUTH', "zones", "keyless_certificates")
     self.add('AUTH', "zones", "pagerules")
+    self.add('AUTH', "zones", "pagerules/settings")
     self.add('AUTH', "zones", "purge_cache")
     self.add('AUTH', "zones", "railguns")
     self.add('AUTH', "zones", "railguns", "diagnose")
     self.add('AUTH', "zones", "secondary_dns")
+    self.add('VOID', "zones", "security")
+    self.add('AUTH', "zones", "security/events")
     self.add('AUTH', "zones", "subscription")
     self.add('AUTH', "zones", "subscriptions")
 
@@ -91,24 +104,37 @@ def zones_settings(self):
     """ API core commands for Cloudflare API"""
 
     self.add('AUTH', "zones", "settings")
+    self.add('AUTH', "zones", "settings/0rtt")
     self.add('AUTH', "zones", "settings/advanced_ddos")
     self.add('AUTH', "zones", "settings/always_online")
     self.add('AUTH', "zones", "settings/always_use_https")
+    self.add('AUTH', "zones", "settings/automatic_https_rewrites")
+    self.add('AUTH', "zones", "settings/brotli")
     self.add('AUTH', "zones", "settings/browser_cache_ttl")
     self.add('AUTH', "zones", "settings/browser_check")
     self.add('AUTH', "zones", "settings/cache_level")
     self.add('AUTH', "zones", "settings/challenge_ttl")
+    self.add('AUTH', "zones", "settings/ciphers")
     self.add('AUTH', "zones", "settings/development_mode")
     self.add('AUTH', "zones", "settings/email_obfuscation")
+    self.add('AUTH', "zones", "settings/h2_prioritization")
     self.add('AUTH', "zones", "settings/hotlink_protection")
+    self.add('AUTH', "zones", "settings/http2")
+    self.add('AUTH', "zones", "settings/http3")
+    self.add('AUTH', "zones", "settings/image_resizing")
     self.add('AUTH', "zones", "settings/ip_geolocation")
     self.add('AUTH', "zones", "settings/ipv6")
+    self.add('AUTH', "zones", "settings/min_tls_version")
     self.add('AUTH', "zones", "settings/minify")
     self.add('AUTH', "zones", "settings/mirage")
     self.add('AUTH', "zones", "settings/mobile_redirect")
+    self.add('AUTH', "zones", "settings/opportunistic_encryption")
+    self.add('AUTH', "zones", "settings/opportunistic_onion")
     self.add('AUTH', "zones", "settings/origin_error_page_pass_thru")
     self.add('AUTH', "zones", "settings/polish")
     self.add('AUTH', "zones", "settings/prefetch_preload")
+    self.add('AUTH', "zones", "settings/privacy_pass")
+    self.add('AUTH', "zones", "settings/pseudo_ipv4")
     self.add('AUTH', "zones", "settings/response_buffering")
     self.add('AUTH', "zones", "settings/rocket_loader")
     self.add('AUTH', "zones", "settings/security_header")
@@ -116,19 +142,13 @@ def zones_settings(self):
     self.add('AUTH', "zones", "settings/server_side_exclude")
     self.add('AUTH', "zones", "settings/sort_query_string_for_cache")
     self.add('AUTH', "zones", "settings/ssl")
-    self.add('AUTH', "zones", "settings/tls_client_auth")
-    self.add('AUTH', "zones", "settings/true_client_ip_header")
     self.add('AUTH', "zones", "settings/tls_1_2_only")
     self.add('AUTH', "zones", "settings/tls_1_3")
-    self.add('AUTH', "zones", "settings/websockets")
+    self.add('AUTH', "zones", "settings/tls_client_auth")
+    self.add('AUTH', "zones", "settings/true_client_ip_header")
     self.add('AUTH', "zones", "settings/waf")
     self.add('AUTH', "zones", "settings/webp")
-    self.add('AUTH', "zones", "settings/http2")
-    self.add('AUTH', "zones", "settings/pseudo_ipv4")
-    self.add('AUTH', "zones", "settings/opportunistic_encryption")
-    self.add('AUTH', "zones", "settings/automatic_https_rewrites")
-    self.add('AUTH', "zones", "settings/brotli")
-    self.add('AUTH', "zones", "settings/privacy_pass")
+    self.add('AUTH', "zones", "settings/websockets")
 
 def zones_analytics(self):
     """ API core commands for Cloudflare API"""
@@ -136,6 +156,8 @@ def zones_analytics(self):
     self.add('VOID', "zones", "analytics")
     self.add('AUTH', "zones", "analytics/colos")
     self.add('AUTH', "zones", "analytics/dashboard")
+    self.add('AUTH', "zones", "analytics/latency")
+    self.add('AUTH', "zones", "analytics/latency/colos")
 
 def zones_firewall(self):
     """ API core commands for Cloudflare API"""
@@ -144,8 +166,10 @@ def zones_firewall(self):
     self.add('VOID', "zones", "firewall/access_rules")
     self.add('AUTH', "zones", "firewall/access_rules/rules")
     self.add('AUTH', "zones", "firewall/lockdowns")
+    self.add('AUTH', "zones", "firewall/rules")
     self.add('AUTH', "zones", "firewall/ua_rules")
     self.add('VOID', "zones", "firewall/waf")
+    self.add('AUTH', "zones", "firewall/waf/overrides")
     self.add('AUTH', "zones", "firewall/waf/packages")
     self.add('AUTH', "zones", "firewall/waf/packages", "groups")
     self.add('AUTH', "zones", "firewall/waf/packages", "rules")
@@ -174,6 +198,7 @@ def zones_logs(self):
     self.add('VOID', "zones", "logs")
     self.add('AUTH_UNWRAPPED', "zones", "logs/received")
     self.add('AUTH_UNWRAPPED', "zones", "logs/received/fields")
+    self.add('AUTH_UNWRAPPED', "zones", "logs/rayids")
 
 def railguns(self):
     """ API core commands for Cloudflare API"""
@@ -197,6 +222,7 @@ def organizations(self):
     self.add('VOID', "organizations", "load_balancers")
     self.add('AUTH', "organizations", "load_balancers/monitors")
     self.add('AUTH', "organizations", "load_balancers/pools")
+    self.add('AUTH', "organizations", "load_balancers/pools", "health")
 
 def certificates(self):
     """ API core commands for Cloudflare API"""
@@ -237,6 +263,7 @@ def zones_workers(self):
     self.add('AUTH', "zones", "workers/filters")
     self.add('AUTH', "zones", "workers/routes")
     self.add('AUTH', "zones", "workers/script")
+    self.add('AUTH', "zones", "workers/script/bindings")
 
 def zones_load_balancers(self):
     """ API core commands for Cloudflare API"""
@@ -249,6 +276,7 @@ def user_load_balancers(self):
     self.add('VOID', "user/load_balancers")
     self.add('AUTH', "user/load_balancers/monitors")
     self.add('AUTH', "user/load_balancers/pools")
+    self.add('AUTH', "user/load_balancers/pools", "health")
 
 def user_virtual_dns(self):
     """ API core commands for Cloudflare API"""
@@ -297,24 +325,24 @@ def organizations_workers(self):
     self.add('VOID', "organizations", "workers")
     self.add('AUTH', "organizations", "workers/scripts")
 
-def account(self):
+def accounts(self):
     """ API core commands for Cloudflare API"""
 
-    self.add('VOID', "account")
+    self.add('VOID', "accounts")
 
-def account_load_balancing_analytics(self):
+def accounts_firewall(self):
     """ API core commands for Cloudflare API"""
 
-    self.add('VOID', "account", "load_balancing_analytics")
-    self.add('AUTH', "account", "load_balancing_analytics/events")
-    self.add('AUTH', "account", "load_balancing_analytics/entities")
+    self.add('VOID', "accounts", "firewall")
+    self.add('VOID', "accounts", "firewall/access_rules")
+    self.add('AUTH', "accounts", "firewall/access_rules/rules")
 
-def account_secondary_dns(self):
+def accounts_secondary_dns(self):
     """ API core commands for Cloudflare API"""
 
-    self.add('VOID', "account", "secondary_dns")
-    self.add('AUTH', "account", "secondary_dns/masters")
-    self.add('AUTH', "account", "secondary_dns/tsigs")
+    self.add('VOID', "accounts", "secondary_dns")
+    self.add('AUTH', "accounts", "secondary_dns/masters")
+    self.add('AUTH', "accounts", "secondary_dns/tsigs")
 
 def zones_media(self):
     """ API core commands for Cloudflare API"""
@@ -322,4 +350,9 @@ def zones_media(self):
     self.add('AUTH', "zones", "media")
     self.add('AUTH', "zones", "media", "embed")
     self.add('AUTH', "zones", "media", "preview")
+
+def memberships(self):
+    """ API core commands for Cloudflare API"""
+
+    self.add('AUTH', "memberships")
 
