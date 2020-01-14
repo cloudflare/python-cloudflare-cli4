@@ -166,6 +166,9 @@ def run_command(cf, method, command, params=None, content=None, files=None):
 def write_results(results, output):
     """dump the results"""
 
+    if output is None:
+        return
+
     if len(results) == 1:
         results = results[0]
 
@@ -175,6 +178,8 @@ def write_results(results, output):
         pass
     else:
         # anything more complex (dict, list, etc) should be dumped as JSON/YAML
+        if output is None:
+	    results = None
         if output == 'json':
             try:
                 results = json.dumps(results,
@@ -196,9 +201,10 @@ def write_results(results, output):
             writer.close()
             return
 
-    sys.stdout.write(results)
-    if not results.endswith('\n'):
-        sys.stdout.write('\n')
+    if results:
+        sys.stdout.write(results)
+        if not results.endswith('\n'):
+            sys.stdout.write('\n')
 
 def do_it(args):
     """Cloudflare API via command line"""
