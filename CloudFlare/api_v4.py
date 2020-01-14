@@ -24,7 +24,9 @@ def api_v4(self):
     zones_logs(self)
     zones_media(self)
     zones_rate_limits(self)
+    zones_secondary_dns(self)
     zones_settings(self)
+    zones_spectrum(self)
     zones_ssl(self)
     zones_workers(self)
 
@@ -35,7 +37,6 @@ def api_v4(self):
     organizations(self)
     organizations_audit_logs(self)
     organizations_virtual_dns(self)
-    organizations_workers(self)
 
     # The API commands for /certificates/
     certificates(self)
@@ -95,11 +96,9 @@ def zones(self):
     self.add('AUTH', "zones", "purge_cache")
     self.add('AUTH', "zones", "railguns")
     self.add('AUTH', "zones", "railguns", "diagnose")
-    self.add('AUTH', "zones", "secondary_dns")
     self.add('VOID', "zones", "security")
     self.add('AUTH', "zones", "security/events")
     self.add('AUTH', "zones", "subscription")
-    self.add('AUTH', "zones", "subscriptions")
 
 def zones_settings(self):
     """ API core commands for Cloudflare API"""
@@ -143,7 +142,6 @@ def zones_settings(self):
     self.add('AUTH', "zones", "settings/server_side_exclude")
     self.add('AUTH', "zones", "settings/sort_query_string_for_cache")
     self.add('AUTH', "zones", "settings/ssl")
-    self.add('AUTH', "zones", "settings/tls_1_2_only")
     self.add('AUTH', "zones", "settings/tls_1_3")
     self.add('AUTH', "zones", "settings/tls_client_auth")
     self.add('AUTH', "zones", "settings/true_client_ip_header")
@@ -205,7 +203,7 @@ def zones_logpush(self):
     self.add('AUTH', "zones", "logpush/ownership/validate")
     self.add('VOID', "zones", "logpush/validate")
     self.add('VOID', "zones", "logpush/validate/destination")
-    self.add('AUTH', "zones", "logpush/validate/destination/exitss")
+    self.add('AUTH', "zones", "logpush/validate/destination/exists")
     self.add('AUTH', "zones", "logpush/validate/origin")
 
 def zones_logs(self):
@@ -227,7 +225,6 @@ def organizations(self):
 
     self.add('AUTH', "organizations")
     self.add('AUTH', "organizations", "members")
-    self.add('AUTH', "organizations", "invite")
     self.add('AUTH', "organizations", "invites")
     self.add('AUTH', "organizations", "railguns")
     self.add('AUTH', "organizations", "railguns", "zones")
@@ -262,6 +259,18 @@ def zones_dnssec(self):
 
     self.add('AUTH', "zones", "dnssec")
 
+def zones_spectrum(self):
+    """ API core commands for Cloudflare API"""
+
+    self.add('VOID', "zones", "spectrum")
+    self.add('VOID', "zones", "spectrum/analytics")
+    self.add('VOID', "zones", "spectrum/analytics/aggregate")
+    self.add('AUTH', "zones", "spectrum/analytics/aggregate/current")
+    self.add('VOID', "zones", "spectrum/analytics/events")
+    self.add('AUTH', "zones", "spectrum/analytics/events/bytime")
+    self.add('AUTH', "zones", "spectrum/analytics/events/summary")
+    self.add('AUTH', "zones", "spectrum/apps")
+
 def zones_ssl(self):
     """ API core commands for Cloudflare API"""
 
@@ -285,6 +294,11 @@ def zones_load_balancers(self):
     """ API core commands for Cloudflare API"""
 
     self.add('AUTH', "zones", "load_balancers")
+
+def zones_secondary_dns(self):
+    """ API core commands for Cloudflare API"""
+
+    self.add('AUTH', "zones", "secondary_dns")
 
 def user_load_balancers(self):
     """ API core commands for Cloudflare API"""
@@ -335,16 +349,47 @@ def organizations_audit_logs(self):
 
     self.add('AUTH', "organizations", "audit_logs")
 
-def organizations_workers(self):
-    """ API core commands for Cloudflare API"""
-
-    self.add('VOID', "organizations", "workers")
-    self.add('AUTH', "organizations", "workers/scripts")
-
 def accounts(self):
     """ API core commands for Cloudflare API"""
 
-    self.add('VOID', "accounts")
+    self.add('AUTH', "accounts")
+    self.add('VOID', "accounts", "access")
+    self.add('AUTH', "accounts", "access/groups")
+    self.add('AUTH', "accounts", "access/identity_providers")
+    self.add('AUTH', "accounts", "access/organizations")
+    self.add('AUTH', "accounts", "access/organizations/revoke_user")
+    self.add('AUTH', "accounts", "access/service_tokens")
+    self.add('VOID', "accounts", "billing")
+    self.add('AUTH', "accounts", "billing/profile")
+    self.add('AUTH', "accounts", "custom_pages")
+    self.add('VOID', "accounts", "load_balancers")
+    self.add('AUTH', "accounts", "load_balancers/monitors")
+    self.add('AUTH', "accounts", "load_balancers/pools")
+    self.add('AUTH', "accounts", "load_balancers/pools", "health")
+    self.add('AUTH', "accounts", "members")
+    self.add('AUTH', "accounts", "railguns")
+    self.add('AUTH', "accounts", "railguns/connections")
+    self.add('VOID', "accounts", "registrar")
+    self.add('AUTH', "accounts", "registrar/domains")
+    self.add('AUTH', "accounts", "roles")
+    self.add('VOID', "accounts", "storage")
+    self.add('AUTH', "accounts", "storage/analytics")
+    self.add('AUTH', "accounts", "storage/analytics/stored")
+    self.add('VOID', "accounts", "storage/kv")
+    self.add('AUTH', "accounts", "storage/kv/namespaces")
+    self.add('AUTH', "accounts", "storage/kv/namespaces", "bulk")
+    self.add('AUTH', "accounts", "storage/kv/namespaces", "keys")
+    self.add('AUTH', "accounts", "storage/kv/namespaces", "values")
+    self.add('AUTH', "accounts", "stream")
+    self.add('AUTH', "accounts", "stream/embed")
+    self.add('AUTH', "accounts", "stream/preview")
+    self.add('AUTH', "accounts", "subscriptions")
+    self.add('AUTH', "accounts", "virtual_dns")
+    self.add('VOID', "accounts", "virtual_dns/dns_analytics")
+    self.add('AUTH', "accounts", "virtual_dns/dns_analytics/report")
+    self.add('AUTH', "accounts", "virtual_dns/dns_analytics/report/bytime")
+    self.add('VOID', "accounts", "workers")
+    self.add('AUTH', "accounts", "workers/scripts")
 
 def accounts_firewall(self):
     """ API core commands for Cloudflare API"""
