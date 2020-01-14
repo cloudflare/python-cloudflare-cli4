@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2020-01-14 13:42:22 -0800 [5ec421b](https://github.com/cloudflare/python-cloudflare/commit/5ec421b2327013115c888192ce2a99066694b8de) 2.4.4 release
+ - 2020-01-14 13:41:58 -0800 [378f3a7](https://github.com/cloudflare/python-cloudflare/commit/378f3a7ce63a937baf5f09c5d152aa55f2261f5e) added logpush
+ - 2020-01-14 10:37:04 -0800 [e80cdf8](https://github.com/cloudflare/python-cloudflare/commit/e80cdf880d0ce5880b43bdc44b89528e2f53d7fc) CHANGELOG.ms pushed to github
  - 2020-01-13 22:21:25 -0800 [9be691c](https://github.com/cloudflare/python-cloudflare/commit/9be691c7a9cf2bd1181bf85dd220c6f3d2ca914a) 2.4.3 release
  - 2020-01-13 22:20:50 -0800 [defd8c1](https://github.com/cloudflare/python-cloudflare/commit/defd8c1f4f3ec550b2182ef06edba18d8e067490) added more API calls
  - 2020-01-13 21:34:33 -0800 [eb6b260](https://github.com/cloudflare/python-cloudflare/commit/eb6b26043f19e32ba76dfe53883905067b1f5442) CHANGELOG.ms pushed to github
