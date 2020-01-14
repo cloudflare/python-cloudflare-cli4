@@ -1,5 +1,10 @@
 # Change Log
 
+ - 2020-01-13 21:34:00 -0800 [67fdfcb](https://github.com/cloudflare/python-cloudflare/commit/67fdfcb5e3480a1c99624c71e3a798d5698685cf) 2.4.2
+ - 2020-01-13 21:32:35 -0800 [b7311a3](https://github.com/cloudflare/python-cloudflare/commit/b7311a368f4822134c6a7576bb9e9e9433b157a7) --quite options yields TypeError - fixed!
+ - 2020-01-13 21:31:33 -0800 [9b31b51](https://github.com/cloudflare/python-cloudflare/commit/9b31b514a566c1b102d5960bf9be3d2a387426e2) --quite options yields TypeError - fixed!
+ - 2020-01-13 20:22:30 -0800 [1e356dc](https://github.com/cloudflare/python-cloudflare/commit/1e356dc30a2a4b7218b41e33f458711bae961791) typo
+ - 2020-01-13 20:19:46 -0800 [6347e64](https://github.com/cloudflare/python-cloudflare/commit/6347e64ea023143698da3793d9bc1f56092bf3bc) CHANGELOG.ms pushed to github
  - 2020-01-13 20:17:20 -0800 [b5cd481](https://github.com/cloudflare/python-cloudflare/commit/b5cd4811925aa1aa14241b3cc34e35c19bad2c0e) Python 3.8 needed SyntaxWarning fixes - as annoying as that was!
  - 2020-01-08 14:52:33 -0800 [d76dd70](https://github.com/cloudflare/python-cloudflare/commit/d76dd70ba7c8e07f8ef2e465e35e40fa74bd6949) CHANGELOG.md pushed to github
  - 2020-01-08 14:51:45 -0800 [0eb6d73](https://github.com/cloudflare/python-cloudflare/commit/0eb6d735393a8b371bae5916fb14faf9262b41cb) 2.4.0 release
