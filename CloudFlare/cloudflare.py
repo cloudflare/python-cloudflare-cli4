@@ -461,8 +461,8 @@ class CloudFlare(object):
                     message = errors['error']
                 else:
                     message = ''
-                if 'messages' in response_data:
-                    errors['error_chain'] = response_data['messages']
+                ##if 'messages' in response_data:
+                ##    errors['error_chain'] = response_data['messages']
                 if 'error_chain' in errors:
                     error_chain = errors['error_chain']
                     for error in error_chain:
