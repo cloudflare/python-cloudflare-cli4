@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2020-01-15 11:52:53 -0800 [9cc8427](https://github.com/cloudflare/python-cloudflare/commit/9cc8427c3076760d90af536062508beb8822c9d8) 2.5.0 release
+ - 2020-01-15 11:51:49 -0800 [d3ffa85](https://github.com/cloudflare/python-cloudflare/commit/d3ffa853bc2d00fad854b2f334a7c0eb6854d0ca) Added support for profiles - see README
+ - 2020-01-14 14:39:03 -0800 [12836e3](https://github.com/cloudflare/python-cloudflare/commit/12836e3d442886cc4c2423757eab874eb2114e9c) CHANGELOG.md pushed to github
  - 2020-01-14 14:38:09 -0800 [7e9c358](https://github.com/cloudflare/python-cloudflare/commit/7e9c358e116674252965a9ca3a58eedef94d3491) 2.4.5 release
  - 2020-01-14 14:37:45 -0800 [ddbd10d](https://github.com/cloudflare/python-cloudflare/commit/ddbd10dac23deefaf42056eb0420ad00e7db536c) added /accounts/ and other api calls
  - 2020-01-14 13:42:51 -0800 [d79c539](https://github.com/cloudflare/python-cloudflare/commit/d79c53986dfe85ceaf833f6b004d4662562ae89b) CHANGELOG.ms pushed to github
