@@ -194,6 +194,9 @@ import CloudFlare
 
     # An authenticated call using an API Key and CA-Origin info
     cf = CloudFlare.CloudFlare(email='user@example.com', token='00000000000000000000000000000000', certtoken='v1.0-...')
+
+    # An authenticated call using using a stored profile (see below)
+    cf = CloudFlare.CloudFlare(profile="CompanyX"))
 ```
 
 If the account email and API key are not passed when you create the class, then they are retrieved from either the users exported shell environment variables or the .cloudflare.cfg or ~/.cloudflare.cfg or ~/.cloudflare/cloudflare.cfg files, in that order.
@@ -203,6 +206,7 @@ If you're using an API Token, any `cloudflare.cfg` file must either not contain 
 There is one call that presently doesn't need any email or token certification (the */ips* call); hence you can test without any values saved away.
 
 ### Using shell environment variables
+
 ```bash
 $ export CF_API_EMAIL='user@example.com' # Do not set if using an API Token
 $ export CF_API_KEY='00000000000000000000000000000000'
@@ -223,6 +227,45 @@ certtoken = v1.0-...
 extras =
 $
 ```
+
+More than one profile can be stored within that file.
+Here's an example for a work and home setup (in this example work has an API Token and home uses email/token).
+
+```bash
+$ cat ~/.cloudflare/cloudflare.cfg
+[Work]
+token = 00000000000000000000000000000000
+[Home]
+email = home@example.com
+token = 00000000000000000000000000000000
+$
+```
+
+To select a profile, use the `--profile profile-name` option for `cli4` command or use `profile="profile-name"` in the library call.
+
+```bash
+$ cli4 --profile Work /zones | jq '.[]|.name' | wc -l
+      13
+$
+
+$ cli4 --profile Home /zones | jq '.[]|.name' | wc -l
+       1
+$
+```
+
+Here is the same in code.
+
+```python
+#!/usr/bin/env python
+
+import CloudFlare
+
+def main():
+    cf = CloudFlare.CloudFlare(profile="Work")
+    ...
+```
+
+### About /certificates and certtoken
 
 The *CF_API_CERTKEY* or *certtoken* values are used for the Origin-CA */certificates* API calls.
 You can leave *certtoken* in the configuration with a blank value (or omit the option variable fully).

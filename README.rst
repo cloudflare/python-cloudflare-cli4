@@ -220,6 +220,9 @@ parameters.
         # An authenticated call using an API Key and CA-Origin info
         cf = CloudFlare.CloudFlare(email='user@example.com', token='00000000000000000000000000000000', certtoken='v1.0-...')
 
+        # An authenticated call using using a stored profile (see below)
+        cf = CloudFlare.CloudFlare(profile="CompanyX"))
+
 If the account email and API key are not passed when you create the
 class, then they are retrieved from either the users exported shell
 environment variables or the .cloudflare.cfg or ~/.cloudflare.cfg or
@@ -260,6 +263,48 @@ Using configuration file to store email and keys
     certtoken = v1.0-...
     extras =
     $
+
+More than one profile can be stored within that file. Here's an example
+for a work and home setup (in this example work has an API Token and
+home uses email/token).
+
+.. code:: bash
+
+    $ cat ~/.cloudflare/cloudflare.cfg
+    [Work]
+    token = 00000000000000000000000000000000
+    [Home]
+    email = home@example.com
+    token = 00000000000000000000000000000000
+    $
+
+To select a profile, use the ``--profile profile-name`` option for
+``cli4`` command or use ``profile="profile-name"`` in the library call.
+
+.. code:: bash
+
+    $ cli4 --profile Work /zones | jq '.[]|.name' | wc -l
+          13
+    $
+
+    $ cli4 --profile Home /zones | jq '.[]|.name' | wc -l
+           1
+    $
+
+Here is the same in code.
+
+.. code:: python
+
+    #!/usr/bin/env python
+
+    import CloudFlare
+
+    def main():
+        cf = CloudFlare.CloudFlare(profile="Work")
+        ...
+
+About /certificates and certtoken
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The *CF\_API\_CERTKEY* or *certtoken* values are used for the Origin-CA
 */certificates* API calls. You can leave *certtoken* in the

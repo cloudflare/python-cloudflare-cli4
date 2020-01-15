@@ -19,7 +19,7 @@ class CloudFlare(object):
     class _v4base(object):
         """ Cloudflare v4 API"""
 
-        def __init__(self, email, token, certtoken, base_url, debug, raw, use_sessions):
+        def __init__(self, email, token, certtoken, base_url, debug, raw, use_sessions, profile):
             """ Cloudflare v4 API"""
 
             self.email = email
@@ -28,6 +28,7 @@ class CloudFlare(object):
             self.base_url = base_url
             self.raw = raw
             self.use_sessions = use_sessions
+            self.profile = profile
             self.session = None
             self.user_agent = user_agent()
 
@@ -821,13 +822,16 @@ class CloudFlare(object):
                 w = w + self.api_list(a, s + '/' + n)
         return w
 
-    def __init__(self, email=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True):
+    def __init__(self, email=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None):
         """ Cloudflare v4 API"""
 
         base_url = BASE_URL
 
         # class creation values override configuration values
-        [conf_email, conf_token, conf_certtoken, extras] = read_configs()
+        try:
+            [conf_email, conf_token, conf_certtoken, extras] = read_configs(profile)
+        except:
+            raise CloudFlareAPIError(0, 'profile/configuration read error')
 
         if email is None:
             email = conf_email
@@ -842,7 +846,7 @@ class CloudFlare(object):
             token = None
         if certtoken == '':
             certtoken = None
-        self._base = self._v4base(email, token, certtoken, base_url, debug, raw, use_sessions)
+        self._base = self._v4base(email, token, certtoken, base_url, debug, raw, use_sessions, profile)
 
         # add the API calls
         api_v4(self)
@@ -871,21 +875,21 @@ class CloudFlare(object):
         if self._base.email is None:
             return '["%s"]' % ('REDACTED')
         else:
-            return '["%s","%s"]' % (self._base.email, 'REDACTED')
+            return '["%s","%s","%s"]' % (self._base.profile, self._base.email, 'REDACTED')
 
     def __repr__(self):
         """ Cloudflare v4 API"""
 
         if self._base.email is None:
-            return '%s,%s(%s,"%s","%s",%s,"%s")' % (
+            return '%s,%s(%s,"%s","%s","%s",%s,"%s")' % (
                 self.__module__, type(self).__name__,
-                'REDACTED', 'REDACTED',
+                self._base.profile, 'REDACTED', 'REDACTED',
                 self._base.base_url, self._base.raw, self._base.user_agent
             )
         else:
-            return '%s,%s(%s,"%s","%s","%s",%s,"%s")' % (
+            return '%s,%s(%s,"%s","%s","%s","%s",%s,"%s")' % (
                 self.__module__, type(self).__name__,
-                self._base.email, 'REDACTED', 'REDACTED',
+                self._base.profile, self._base.email, 'REDACTED', 'REDACTED',
                 self._base.base_url, self._base.raw, self._base.user_agent
             )
 

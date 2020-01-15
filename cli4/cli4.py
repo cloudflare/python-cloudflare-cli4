@@ -213,6 +213,7 @@ def do_it(args):
     output = 'json'
     raw = False
     dump = False
+    profile = None
     method = 'GET'
 
     usage = ('usage: cli4 '
@@ -220,18 +221,20 @@ def do_it(args):
              + '[-j|--json] [-y|--yaml] [-n|ndjson]'
              + '[-r|--raw] '
              + '[-d|--dump] '
+             + '[-p|--profile profile-name] '
              + '[--get|--patch|--post|--put|--delete] '
              + '[item=value|item=@filename|@filename ...] '
              + '/command...')
 
     try:
         opts, args = getopt.getopt(args,
-                                   'VhvqjyrdGPOUD',
+                                   'Vhvqjyrdp:GPOUD',
                                    [
                                        'version',
                                        'help', 'verbose', 'quiet', 'json', 'yaml', 'ndjson',
                                        'raw',
                                        'dump',
+                                       'profile=',
                                        'get', 'patch', 'post', 'put', 'delete'
                                    ])
     except getopt.GetoptError:
@@ -257,6 +260,8 @@ def do_it(args):
             output = 'ndjson'
         elif opt in ('-r', '--raw'):
             raw = True
+        elif opt in ('-p', '--profile'):
+            profile = arg;
         elif opt in ('-d', '--dump'):
             dump = True
         elif opt in ('-G', '--get'):
@@ -363,7 +368,10 @@ def do_it(args):
         exit(usage)
     command = args[0]
 
-    cf = CloudFlare.CloudFlare(debug=verbose, raw=raw)
+    try:
+        cf = CloudFlare.CloudFlare(debug=verbose, raw=raw, profile=profile)
+    except Exception as e:
+        exit(e)
     results = run_command(cf, method, command, params, content, files)
     write_results(results, output)
 
