@@ -56,23 +56,29 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 elif element[0] == ':':
                     # raw string - used for workers script_name - use ::script_name
                     identifier1 = element[1:]
-                elif cmd[0] == 'certificates':
-                    # identifier1 = convert_certificates_to_identifier(cf, element)
-                    identifier1 = converters.convert_zones_to_identifier(cf, element)
-                elif cmd[0] == 'zones':
-                    identifier1 = converters.convert_zones_to_identifier(cf, element)
-                elif cmd[0] == 'organizations':
-                    identifier1 = converters.convert_organizations_to_identifier(cf, element)
-                elif (cmd[0] == 'user') and (cmd[1] == 'organizations'):
-                    identifier1 = converters.convert_organizations_to_identifier(cf, element)
-                elif (cmd[0] == 'user') and (cmd[1] == 'invites'):
-                    identifier1 = converters.convert_invites_to_identifier(cf, element)
-                elif (cmd[0] == 'user') and (cmd[1] == 'virtual_dns'):
-                    identifier1 = converters.convert_virtual_dns_to_identifier(cf, element)
-                elif (cmd[0] == 'user') and (cmd[1] == 'load_balancers') and (cmd[2] == 'pools'):
-                    identifier1 = converters.convert_load_balancers_pool_to_identifier(cf, element)
                 else:
-                    exit("/%s/%s :NOT CODED YET 1" % ('/'.join(cmd), element))
+                    try:
+                        if cmd[0] == 'certificates':
+                            # identifier1 = convert_certificates_to_identifier(cf, element)
+                            identifier1 = converters.convert_zones_to_identifier(cf, element)
+                        elif cmd[0] == 'zones':
+                            identifier1 = converters.convert_zones_to_identifier(cf, element)
+                        elif cmd[0] == 'accounts':
+                            identifier1 = converters.convert_accounts_to_identifier(cf, element)
+                        elif cmd[0] == 'organizations':
+                            identifier1 = converters.convert_organizations_to_identifier(cf, element)
+                        elif (cmd[0] == 'user') and (cmd[1] == 'organizations'):
+                            identifier1 = converters.convert_organizations_to_identifier(cf, element)
+                        elif (cmd[0] == 'user') and (cmd[1] == 'invites'):
+                            identifier1 = converters.convert_invites_to_identifier(cf, element)
+                        elif (cmd[0] == 'user') and (cmd[1] == 'virtual_dns'):
+                            identifier1 = converters.convert_virtual_dns_to_identifier(cf, element)
+                        elif (cmd[0] == 'user') and (cmd[1] == 'load_balancers') and (cmd[2] == 'pools'):
+                            identifier1 = converters.convert_load_balancers_pool_to_identifier(cf, element)
+                        else:
+                            raise Exception("/%s/%s :NOT CODED YET" % ('/'.join(cmd), element))
+                    except Exception as e:
+                        exit('cli4: /%s - %s' % (command, e))
                 cmd.append(':' + identifier1)
             elif identifier2 is None:
                 if len(element) in [32, 40, 48] and hex_only.match(element):
@@ -81,12 +87,16 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 elif element[0] == ':':
                     # raw string - used for workers script_names
                     identifier2 = element[1:]
-                elif (cmd[0] and cmd[0] == 'zones') and (cmd[2] and cmd[2] == 'dns_records'):
-                    identifier2 = converters.convert_dns_record_to_identifier(cf,
-                                                                              identifier1,
-                                                                              element)
                 else:
-                    exit("/%s/%s :NOT CODED YET 2" % ('/'.join(cmd), element))
+                    try:
+                        if (cmd[0] and cmd[0] == 'zones') and (cmd[2] and cmd[2] == 'dns_records'):
+                            identifier2 = converters.convert_dns_record_to_identifier(cf,
+                                                                                      identifier1,
+                                                                                      element)
+                        else:
+                            raise Exception("/%s/%s :NOT CODED YET" % ('/'.join(cmd), element))
+                    except Exception as e:
+                        exit('cli4: /%s - %s' % (command, e))
                 # identifier2 may be an array - this needs to be dealt with later
                 if isinstance(identifier2, list):
                     cmd.append(':' + '[' + ','.join(identifier2) + ']')
