@@ -1,5 +1,10 @@
 # Change Log
 
+ - 2020-01-15 15:41:34 -0800 [4acc9a3](https://github.com/cloudflare/python-cloudflare/commit/4acc9a33d9f9d9a676c08ec713b3a56b723e6800) 2.5.1 release
+ - 2020-01-15 15:17:51 -0800 [1efa5e9](https://github.com/cloudflare/python-cloudflare/commit/1efa5e92d9e243750d1fe36cb5414558d1ee4207) made sure error chain would correctly be passed with an exception
+ - 2020-01-15 15:16:55 -0800 [734a814](https://github.com/cloudflare/python-cloudflare/commit/734a814553a1769c4c12474e1cf8005c663a47ff) changed converters to have more meaningful error handlers
+ - 2020-01-15 15:15:30 -0800 [5cc639a](https://github.com/cloudflare/python-cloudflare/commit/5cc639a9dc8282dbd497ef35793f744fa3cd0aea) pylint cleanup
+ - 2020-01-15 11:53:20 -0800 [dbd874f](https://github.com/cloudflare/python-cloudflare/commit/dbd874f3ef2b0df53792cd5370b750a2fb0d5e9f) CHANGELOG.md pushed to github
  - 2020-01-15 11:52:53 -0800 [9cc8427](https://github.com/cloudflare/python-cloudflare/commit/9cc8427c3076760d90af536062508beb8822c9d8) 2.5.0 release
  - 2020-01-15 11:51:49 -0800 [d3ffa85](https://github.com/cloudflare/python-cloudflare/commit/d3ffa853bc2d00fad854b2f334a7c0eb6854d0ca) Added support for profiles - see README
  - 2020-01-14 14:39:03 -0800 [12836e3](https://github.com/cloudflare/python-cloudflare/commit/12836e3d442886cc4c2423757eab874eb2114e9c) CHANGELOG.md pushed to github
