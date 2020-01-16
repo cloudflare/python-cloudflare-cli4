@@ -529,7 +529,9 @@ CLI
 ---
 
 All API calls can be called from the command line. The command will
-convert domain names on-the-fly into zone\_identifier's.
+convert domain names prefixed with a colon (``:``) into
+zone\_identifiers: e.g. to view ``example.com`` you must use
+``cli4 /zones/:example.com`` (the zone ID cannot be used).
 
 .. code:: bash
 
