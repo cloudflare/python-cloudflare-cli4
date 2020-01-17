@@ -14,9 +14,8 @@ try:
 except ImportError:
     jsonlines = None
 
-from . import converters
-
 import CloudFlare
+from . import converters
 
 def dump_commands():
     """dump a tree of all the known API commands"""
@@ -78,7 +77,7 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                         else:
                             raise Exception("/%s/%s :NOT CODED YET" % ('/'.join(cmd), element))
                     except Exception as e:
-                        exit('cli4: /%s - %s' % (command, e))
+                        sys.exit('cli4: /%s - %s' % (command, e))
                 cmd.append(':' + identifier1)
             elif identifier2 is None:
                 if len(element) in [32, 40, 48] and hex_only.match(element):
@@ -96,7 +95,7 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                         else:
                             raise Exception("/%s/%s :NOT CODED YET" % ('/'.join(cmd), element))
                     except Exception as e:
-                        exit('cli4: /%s - %s' % (command, e))
+                        sys.exit('cli4: /%s - %s' % (command, e))
                 # identifier2 may be an array - this needs to be dealt with later
                 if isinstance(identifier2, list):
                     cmd.append(':' + '[' + ','.join(identifier2) + ']')
@@ -110,7 +109,7 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 elif waf_rules.match(element):
                     identifier3 = element
                 else:
-                    exit("/%s/%s :NOT CODED YET 3" % ('/'.join(cmd), element))
+                    sys.exit("/%s/%s :NOT CODED YET 3" % ('/'.join(cmd), element))
         else:
             try:
                 m = getattr(m, element)
@@ -118,12 +117,12 @@ def run_command(cf, method, command, params=None, content=None, files=None):
             except AttributeError:
                 # the verb/element was not found
                 if len(cmd) == 0:
-                    exit('cli4: /%s - not found' % (element))
+                    sys.exit('cli4: /%s - not found' % (element))
                 else:
-                    exit('cli4: /%s/%s - not found' % ('/'.join(cmd), element))
+                    sys.exit('cli4: /%s/%s - not found' % ('/'.join(cmd), element))
 
     if content and params:
-        exit('cli4: /%s - content and params not allowed together' % (command))
+        sys.exit('cli4: /%s - content and params not allowed together' % (command))
     if content:
         params = content
 
@@ -164,11 +163,11 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 # more than one error returned by the API
                 for x in e:
                     sys.stderr.write('cli4: /%s - %d %s\n' % (command, x, x))
-            exit('cli4: /%s - %d %s' % (command, e, e))
+            sys.exit('cli4: /%s - %d %s' % (command, e, e))
         except CloudFlare.exceptions.CloudFlareInternalError as e:
-            exit('cli4: InternalError: /%s - %d %s' % (command, e, e))
+            sys.exit('cli4: InternalError: /%s - %d %s' % (command, e, e))
         except Exception as e:
-            exit('cli4: /%s - %s - api error' % (command, e))
+            sys.exit('cli4: /%s - %s - api error' % (command, e))
 
         results.append(r)
     return results
@@ -248,12 +247,12 @@ def do_it(args):
                                        'get', 'patch', 'post', 'put', 'delete'
                                    ])
     except getopt.GetoptError:
-        exit(usage)
+        sys.exit(usage)
     for opt, arg in opts:
         if opt in ('-V', '--version'):
-            exit('Cloudflare library version: %s' % (CloudFlare.__version__))
+            sys.exit('Cloudflare library version: %s' % (CloudFlare.__version__))
         if opt in ('-h', '--help'):
-            exit(usage)
+            sys.exit(usage)
         elif opt in ('-v', '--verbose'):
             verbose = True
         elif opt in ('-q', '--quiet'):
@@ -262,16 +261,16 @@ def do_it(args):
             output = 'json'
         elif opt in ('-y', '--yaml'):
             if yaml is None:
-                exit('cli4: install yaml support')
+                sys.exit('cli4: install yaml support')
             output = 'yaml'
         elif opt in ('-n', '--ndjson'):
             if jsonlines is None:
-                exit('cli4: install jsonlines support')
+                sys.exit('cli4: install jsonlines support')
             output = 'ndjson'
         elif opt in ('-r', '--raw'):
             raw = True
         elif opt in ('-p', '--profile'):
-            profile = arg;
+            profile = arg
         elif opt in ('-d', '--dump'):
             dump = True
         elif opt in ('-G', '--get'):
@@ -287,7 +286,7 @@ def do_it(args):
 
     if dump:
         dump_commands()
-        exit(0)
+        sys.exit(0)
 
     digits_only = re.compile('^-?[0-9]+$')
     floats_only = re.compile('^-?[0-9.]+$')
@@ -302,7 +301,7 @@ def do_it(args):
             # a file to be uploaded - used in workers/script - only via PUT
             filename = arg[1:]
             if method != 'PUT':
-                exit('cli4: %s - raw file upload only with PUT' % (filename))
+                sys.exit('cli4: %s - raw file upload only with PUT' % (filename))
             try:
                 if filename == '-':
                     content = sys.stdin.read()
@@ -310,7 +309,7 @@ def do_it(args):
                     with open(filename, 'r') as f:
                         content = f.read()
             except IOError:
-                exit('cli4: %s - file open failure' % (filename))
+                sys.exit('cli4: %s - file open failure' % (filename))
             continue
         tag_string, value_string = arg.split('=', 1)
         if value_string.lower() == 'true':
@@ -320,27 +319,27 @@ def do_it(args):
         elif value_string == '' or value_string.lower() == 'none':
             value = None
         elif value_string[0] == '=' and value_string[1:] == '':
-            exit('cli4: %s== - no number value passed' % (tag_string))
+            sys.exit('cli4: %s== - no number value passed' % (tag_string))
         elif value_string[0] == '=' and digits_only.match(value_string[1:]):
             value = int(value_string[1:])
         elif value_string[0] == '=' and floats_only.match(value_string[1:]):
             value = float(value_string[1:])
         elif value_string[0] == '=':
-            exit('cli4: %s== - invalid number value passed' % (tag_string))
+            sys.exit('cli4: %s== - invalid number value passed' % (tag_string))
         elif value_string[0] in '[{' and value_string[-1] in '}]':
             # a json structure - used in pagerules
             try:
                 #value = json.loads(value) - changed to yaml code to remove unicode string issues
                 if yaml is None:
-                    exit('cli4: install yaml support')
+                    sys.exit('cli4: install yaml support')
                 value = yaml.safe_load(value_string)
             except ValueError:
-                exit('cli4: %s="%s" - can\'t parse json value' % (tag_string, value_string))
+                sys.exit('cli4: %s="%s" - can\'t parse json value' % (tag_string, value_string))
         elif value_string[0] == '@':
             # a file to be uploaded - used in dns_records/import - only via POST
             filename = value_string[1:]
             if method != 'POST':
-                exit('cli4: %s=%s - file upload only with POST' % (tag_string, filename))
+                sys.exit('cli4: %s=%s - file upload only with POST' % (tag_string, filename))
             files = {}
             try:
                 if filename == '-':
@@ -348,7 +347,7 @@ def do_it(args):
                 else:
                     files[tag_string] = open(filename, 'rb')
             except IOError:
-                exit('cli4: %s=%s - file open failure' % (tag_string, filename))
+                sys.exit('cli4: %s=%s - file open failure' % (tag_string, filename))
             # no need for param code below
             continue
         else:
@@ -361,8 +360,8 @@ def do_it(args):
             try:
                 params.append(value)
             except AttributeError:
-                exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' %
-                     (tag_string, value_string))
+                sys.exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' %
+                         (tag_string, value_string))
         else:
             if params is None:
                 params = {}
@@ -370,18 +369,18 @@ def do_it(args):
             try:
                 params[tag] = value
             except TypeError:
-                exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' %
-                     (tag_string, value_string))
+                sys.exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' %
+                         (tag_string, value_string))
 
     # what's left is the command itself
     if len(args) != 1:
-        exit(usage)
+        sys.exit(usage)
     command = args[0]
 
     try:
         cf = CloudFlare.CloudFlare(debug=verbose, raw=raw, profile=profile)
     except Exception as e:
-        exit(e)
+        sys.exit(e)
     results = run_command(cf, method, command, params, content, files)
     write_results(results, output)
 
@@ -389,5 +388,4 @@ def cli4(args):
     """Cloudflare API via command line"""
 
     do_it(args)
-    exit(0)
-
+    sys.exit(0)

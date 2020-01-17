@@ -47,5 +47,4 @@ class CFlogger(object):
         """ Logging for Cloudflare API"""
         if level is True:
             return logging.DEBUG
-        else:
-            return logging.INFO
+        return logging.INFO

@@ -8,6 +8,7 @@ def api_v4(self):
     user_audit_logs(self)
     user_load_balancers(self)
     user_load_balancing_analytics(self)
+    user_tokens_verify(self)
     user_virtual_dns(self)
     user_workers(self)
 
@@ -315,7 +316,6 @@ def user_virtual_dns(self):
     self.add('VOID', "user/virtual_dns", "dns_analytics")
     self.add('AUTH', "user/virtual_dns", "dns_analytics/report")
     self.add('AUTH', "user/virtual_dns", "dns_analytics/report/bytime")
-    return
 
 def user_workers(self):
     """ API core commands for Cloudflare API"""
@@ -330,7 +330,6 @@ def organizations_virtual_dns(self):
     self.add('VOID', "organizations", "virtual_dns", "dns_analytics")
     self.add('AUTH', "organizations", "virtual_dns", "dns_analytics/report")
     self.add('AUTH', "organizations", "virtual_dns", "dns_analytics/report/bytime")
-    return
 
 def user_audit_logs(self):
     """ API core commands for Cloudflare API"""
@@ -343,6 +342,12 @@ def user_load_balancing_analytics(self):
     self.add('VOID', "user", "load_balancing_analytics")
     self.add('AUTH', "user", "load_balancing_analytics/events")
     self.add('AUTH', "user", "load_balancing_analytics/entities")
+
+def user_tokens_verify(self):
+    """ API core commands for Cloudflare API"""
+
+    self.add('VOID', "user/tokens")
+    self.add('AUTH', "user/tokens/verify")
 
 def organizations_audit_logs(self):
     """ API core commands for Cloudflare API"""
@@ -416,4 +421,3 @@ def memberships(self):
     """ API core commands for Cloudflare API"""
 
     self.add('AUTH', "memberships")
-

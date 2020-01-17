@@ -79,7 +79,7 @@ class CloudFlare(object):
             headers = {}
             self._add_headers(headers)
             self._add_auth_headers(headers)
-            if type(data) == str:
+            if isinstance(data, str):
                 # passing javascript vs JSON
                 headers['Content-Type'] = 'application/javascript'
             if files:
@@ -99,7 +99,7 @@ class CloudFlare(object):
             headers = {}
             self._add_headers(headers)
             self._add_auth_headers(headers)
-            if type(data) == str:
+            if isinstance(data, str):
                 # passing javascript vs JSON
                 headers['Content-Type'] = 'application/javascript'
             if files:
@@ -195,7 +195,7 @@ class CloudFlare(object):
                                                 params=params,
                                                 data=data)
                 elif method == 'POST':
-                    if type(data) == str:
+                    if isinstance(data, str):
                         response = self.session.post(url,
                                                      headers=headers,
                                                      params=params,
@@ -208,7 +208,7 @@ class CloudFlare(object):
                                                      json=data,
                                                      files=files)
                 elif method == 'PUT':
-                    if type(data) == str:
+                    if isinstance(data, str):
                         response = self.session.put(url,
                                                     headers=headers,
                                                     params=params,
@@ -219,7 +219,7 @@ class CloudFlare(object):
                                                     params=params,
                                                     json=data)
                 elif method == 'DELETE':
-                    if type(data) == str:
+                    if isinstance(data, str):
                         response = self.session.delete(url,
                                                        headers=headers,
                                                        params=params,
@@ -230,7 +230,7 @@ class CloudFlare(object):
                                                        params=params,
                                                        json=data)
                 elif method == 'PATCH':
-                    if type(data) == str:
+                    if isinstance(data, str):
                         response = self.session.request('PATCH', url,
                                                         headers=headers,
                                                         params=params,
@@ -265,7 +265,7 @@ class CloudFlare(object):
                 response_type = 'application/octet-stream'
             response_code = response.status_code
             response_data = response.content
-            if type(response_data) != str:
+            if not isinstance(response_data, str):
                 response_data = response_data.decode("utf-8")
 
             if self.logger:
@@ -829,7 +829,7 @@ class CloudFlare(object):
 
         # class creation values override configuration values
         try:
-            [conf_email, conf_token, conf_certtoken, extras] = read_configs(profile)
+            [conf_email, conf_token, conf_certtoken, extras, profile] = read_configs(profile)
         except:
             raise CloudFlareAPIError(0, 'profile/configuration read error')
 
@@ -873,23 +873,24 @@ class CloudFlare(object):
         """ Cloudflare v4 API"""
 
         if self._base.email is None:
-            return '["%s"]' % ('REDACTED')
+            s = '["%s","%s"]' % (self._base.profile, 'REDACTED')
         else:
-            return '["%s","%s","%s"]' % (self._base.profile, self._base.email, 'REDACTED')
+            s = '["%s","%s","%s"]' % (self._base.profile, self._base.email, 'REDACTED')
+        return s
 
     def __repr__(self):
         """ Cloudflare v4 API"""
 
         if self._base.email is None:
-            return '%s,%s(%s,"%s","%s","%s",%s,"%s")' % (
+            s = '%s,%s("%s","%s","%s","%s",%s,"%s")' % (
                 self.__module__, type(self).__name__,
                 self._base.profile, 'REDACTED', 'REDACTED',
                 self._base.base_url, self._base.raw, self._base.user_agent
             )
         else:
-            return '%s,%s(%s,"%s","%s","%s","%s",%s,"%s")' % (
+            s = '%s,%s("%s","%s","%s","%s","%s",%s,"%s")' % (
                 self.__module__, type(self).__name__,
                 self._base.profile, self._base.email, 'REDACTED', 'REDACTED',
                 self._base.base_url, self._base.raw, self._base.user_agent
             )
-
+        return s

@@ -30,7 +30,7 @@ def read_configs(profile=None):
     if len(config.sections()) == 0:
         ## no config file found - so env values (even if empty) should be returned
         ## this isn't an error
-        return [email, token, certtoken, extras]
+        return [email, token, certtoken, extras, profile]
 
     if profile not in config.sections():
         ## section is missing - this is an error
@@ -63,5 +63,4 @@ def read_configs(profile=None):
         if extras:
             extras = extras.split(' ')
 
-    return [email, token, certtoken, extras]
-
+    return [email, token, certtoken, extras, profile]

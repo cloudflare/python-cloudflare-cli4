@@ -19,7 +19,7 @@ class CloudFlareError(Exception):
 
         self.evalue = self.CodeMessage(int(code), str(message))
         self.error_chain = None
-        if error_chain != None:
+        if error_chain is not None:
             self.error_chain = []
             for evalue in error_chain:
                 self.error_chain.append(
@@ -41,8 +41,7 @@ class CloudFlareError(Exception):
 
         if self.error_chain is None:
             return 0
-        else:
-            return len(self.error_chain)
+        return len(self.error_chain)
 
     def __getitem__(self, ii):
         """ Cloudflare API errors can contain a chain of errors"""
@@ -53,7 +52,7 @@ class CloudFlareError(Exception):
         """ Cloudflare API errors can contain a chain of errors"""
 
         if self.error_chain is None:
-            raise StopIteration
+            return
         for evalue in self.error_chain:
             yield evalue
 
@@ -61,15 +60,10 @@ class CloudFlareError(Exception):
         """ Cloudflare API errors can contain a chain of errors"""
 
         if self.error_chain is None:
-            raise StopIteration()
+            raise StopIteration
 
 class CloudFlareAPIError(CloudFlareError):
     """ errors for Cloudflare API"""
 
-    pass
-
 class CloudFlareInternalError(CloudFlareError):
     """ errors for Cloudflare API"""
-
-    pass
-
