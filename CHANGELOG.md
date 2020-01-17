@@ -1,5 +1,10 @@
 # Change Log
 
+ - 2020-01-16 19:53:11 -0800 [99e8eeb](https://github.com/cloudflare/python-cloudflare/commit/99e8eeb992012fce2debec4a5d5397615143aa25) pylint made me do this! - yet there is still more to do
+ - 2020-01-16 10:12:44 -0800 [25cd7b9](https://github.com/cloudflare/python-cloudflare/commit/25cd7b902ffb737dc3688e183683f0273c590de3) Merge pull request #80 from acdha/patch-1
+ - 2020-01-15 21:43:24 -0800 [a3b4538](https://github.com/cloudflare/python-cloudflare/commit/a3b4538de8ac18c3c3011804f6b51cc7aef631cb) Merge pull request #80 from acdha/patch-1
+ - 2020-01-15 21:41:21 -0800 [f3ad952](https://github.com/cloudflare/python-cloudflare/commit/f3ad952fd2f06c90ada22d7e86bd17048161359e) Merge pull request #59 from mnordhoff/patch-1
+ - 2020-01-15 15:42:25 -0800 [77abe67](https://github.com/cloudflare/python-cloudflare/commit/77abe673a3001c1c07b7b2a6f305e1e52cafd518) CHANGELOG.md pushed to github
  - 2020-01-15 15:41:34 -0800 [4acc9a3](https://github.com/cloudflare/python-cloudflare/commit/4acc9a33d9f9d9a676c08ec713b3a56b723e6800) 2.5.1 release
  - 2020-01-15 15:17:51 -0800 [1efa5e9](https://github.com/cloudflare/python-cloudflare/commit/1efa5e92d9e243750d1fe36cb5414558d1ee4207) made sure error chain would correctly be passed with an exception
  - 2020-01-15 15:16:55 -0800 [734a814](https://github.com/cloudflare/python-cloudflare/commit/734a814553a1769c4c12474e1cf8005c663a47ff) changed converters to have more meaningful error handlers
@@ -29,6 +34,7 @@
  - 2020-01-08 14:40:56 -0800 [ca5cb96](https://github.com/cloudflare/python-cloudflare/commit/ca5cb961d772bc6b7b962bf33e25929960a18566) auth methods cleaned up to allow empty/null strings in values plus confirmed all authentication code is consistent. Updated README.
  - 2019-11-20 10:37:17 -0800 [f71c3e2](https://github.com/cloudflare/python-cloudflare/commit/f71c3e221735ad50230918f3c9bee6d34471ae58) CHANGELOG.md pushed to github
  - 2019-11-20 10:36:15 -0800 [b80a4dc](https://github.com/cloudflare/python-cloudflare/commit/b80a4dc6d516d1737f16be3c7c4f13a83be905bb) 2.3.1 release
+ - 2019-11-12 09:39:39 -0500 [2a5f24c](https://github.com/cloudflare/python-cloudflare/commit/2a5f24c5515d76bc7bedcd3e90a6e4c578303046) Explain zone lookup behaviour in cli4
  - 2019-10-08 14:32:36 +0100 [ce30a10](https://github.com/cloudflare/python-cloudflare/commit/ce30a10d9dabe8dff3ff3941aff9568ffaaa0704) Merge pull request #78 from Tugzrida/patch-1
  - 2019-10-08 14:10:33 +0100 [6e63048](https://github.com/cloudflare/python-cloudflare/commit/6e63048956493726414cc478d9234769d037c67e) Merge pull request #76 from nijel/patch-1
  - 2019-09-20 11:03:08 +0200 [09d0605](https://github.com/cloudflare/python-cloudflare/commit/09d06054111cbc8f6454a3ae5568e240432dd22a) Clarify token use with env variables and config files (#2)
@@ -43,6 +49,7 @@
  - 2019-04-12 13:21:28 +0100 [2255073](https://github.com/cloudflare/python-cloudflare/commit/22550738c9680779dcdc5152eda8c355e0924f8c) Merge pull request #53 from weisi/master
  - 2019-04-12 13:20:13 +0100 [f48ab53](https://github.com/cloudflare/python-cloudflare/commit/f48ab53cb7c1e5b7d69ce1cc86b84d5cafaed4a7) Merge pull request #58 from dargor/fix_typos
  - 2019-04-12 10:06:58 +0100 [019393a](https://github.com/cloudflare/python-cloudflare/commit/019393a88f2e36730bb1efed45580cc9b756a8d3) DNS-3431: Support Secondary DNS Endpoints
+ - 2018-10-13 18:31:10 +0000 [6726add](https://github.com/cloudflare/python-cloudflare/commit/6726add5d35ee8bb5644e78506c2fe97743f8b6b) Remove logger from requirements.txt.
  - 2018-10-09 17:02:00 +0200 [63a4159](https://github.com/cloudflare/python-cloudflare/commit/63a4159eb331b11e2a8c29641d101a08da9f4290) Fix some typos.
  - 2018-10-02 22:48:39 +0800 [a8e47cd](https://github.com/cloudflare/python-cloudflare/commit/a8e47cd4b6759f255dc49377ab221d521ecc2904) Fix a minor bug in examples\example_update_dynamic_dns.py
  - 2018-08-05 18:33:00 -0400 [f4eb124](https://github.com/cloudflare/python-cloudflare/commit/f4eb124be4c9817e826deb81bd7a0040c347ef30) README: Fix typo of kwarg "params" in sample code.
