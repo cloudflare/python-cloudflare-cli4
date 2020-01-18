@@ -265,6 +265,35 @@ def main():
     ...
 ```
 
+### Advanced use of configuration file for authentication based on method
+
+The configuration file can have values that are both generic and specific to the method.
+Here's an example where a project has a different API Token for reading and writing values.
+
+```bash
+$ cat ~/.cloudflare/cloudflare.cfg
+[Work]
+token = 0000000000000000000000000000000000000000
+token.get = 0123456789012345678901234567890123456789
+$
+```
+
+When a GET call is processed then the second token is used. For all other calls the first token is used.
+Here's a more explict verion of that config:
+
+```bash
+$ cat ~/.cloudflare/cloudflare.cfg
+[Work]
+token.delete = 0000000000000000000000000000000000000000
+token.get = 0123456789012345678901234567890123456789
+token.patch = 0000000000000000000000000000000000000000
+token.post = 0000000000000000000000000000000000000000
+token.put = 0000000000000000000000000000000000000000
+$
+```
+
+This can be used with email values also.
+
 ### About /certificates and certtoken
 
 The *CF_API_CERTKEY* or *certtoken* values are used for the Origin-CA */certificates* API calls.
