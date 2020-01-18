@@ -205,15 +205,21 @@ def write_results(results, output):
             results = yaml.safe_dump(results)
         if output == 'ndjson':
             # NDJSON support seems like a hack. There has to be a better way
-            writer = jsonlines.Writer(sys.stdout)
-            writer.write_all(results)
-            writer.close()
+            try:
+                writer = jsonlines.Writer(sys.stdout)
+                writer.write_all(results)
+                writer.close()
+            except (BrokenPipeError, IOError):
+                pass
             return
 
     if results:
-        sys.stdout.write(results)
-        if not results.endswith('\n'):
-            sys.stdout.write('\n')
+        try:
+            sys.stdout.write(results)
+            if not results.endswith('\n'):
+                sys.stdout.write('\n')
+        except (BrokenPipeError, IOError):
+            pass
 
 def do_it(args):
     """Cloudflare API via command line"""
