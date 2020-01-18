@@ -3,64 +3,77 @@
 import os
 import re
 try:
-    import ConfigParser  # py2
+    import configparser # py3
 except ImportError:
-    import configparser as ConfigParser  # py3
+    import ConfigParser as configparser # py2
 
 def read_configs(profile=None):
     """ reading the config file for Cloudflare API"""
 
-    # envioronment variables override config files
-    email = os.getenv('CF_API_EMAIL')
-    token = os.getenv('CF_API_KEY')
-    certtoken = os.getenv('CF_API_CERTKEY')
-    extras = os.getenv('CF_API_EXTRAS')
+    # We return all these values
+    config = {'email': None, 'token': None, 'certtoken': None, 'extras': None, 'profile': None}
 
-    # grab values from config files
-    config = ConfigParser.RawConfigParser()
-    config.read([
-        '.cloudflare.cfg',
-        os.path.expanduser('~/.cloudflare.cfg'),
-        os.path.expanduser('~/.cloudflare/cloudflare.cfg')
-    ])
-
+    # envioronment variables override config files - so setup first
+    config['email'] = os.getenv('CF_API_EMAIL')
+    config['token'] = os.getenv('CF_API_KEY')
+    config['certtoken'] = os.getenv('CF_API_CERTKEY')
+    config['extras'] = os.getenv('CF_API_EXTRAS')
     if profile is None:
         profile = 'CloudFlare'
+    config['profile'] = profile
 
-    if len(config.sections()) == 0:
-        ## no config file found - so env values (even if empty) should be returned
-        ## this isn't an error
-        return [email, token, certtoken, extras, profile]
+    # grab values from config files
+    cp = configparser.ConfigParser()
+    try:
+        cp.read([
+            '.cloudflare.cfg',
+            os.path.expanduser('~/.cloudflare.cfg'),
+            os.path.expanduser('~/.cloudflare/cloudflare.cfg')
+        ])
+    except Exception as e:
+        raise Exception("%s: configuration file error" % (profile))
 
-    if profile not in config.sections():
-        ## section is missing - this is an error
-        raise
-
-    if email is None:
+    if len(cp.sections()) > 0:
+        # we have a configuration file - lets use it
         try:
-            email = re.sub(r"\s+", '', config.get(profile, 'email'))
-        except (ConfigParser.NoOptionError, ConfigParser.NoSectionError):
-            email = None
+            # grab the section - as we will use it for all values
+            section = cp[profile]
+        except Exception as e:
+            # however section name is missing - this is an error
+            raise Exception("%s: configuration section missing" % (profile))
 
-    if token is None:
-        try:
-            token = re.sub(r"\s+", '', config.get(profile, 'token'))
-        except (ConfigParser.NoOptionError, ConfigParser.NoSectionError):
-            token = None
+        for option in ['email', 'token', 'certtoken', 'extras']:
+            if option not in config or config[option] is None:
+                try:
+                    config[option] = re.sub(r"\s+", '', section.get(option))
+                    if config[option] == '':
+                        config.pop(option)
+                except (configparser.NoOptionError, configparser.NoSectionError):
+                    pass
+                except Exception as e:
+                    pass
+            # do we have an override for specific calls? (i.e. token.post or email.get etc)
+            for method in ['get', 'patch', 'post', 'put', 'delete']:
+                option_for_method = option + '.' + method
+                try:
+                    config[option_for_method] = re.sub(r"\s+", '', section.get(option_for_method))
+                    if config[option_for_method] == '':
+                        config.pop(option_for_method)
+                except (configparser.NoOptionError, configparser.NoSectionError) as e:
+                    pass
+                except Exception as e:
+                    pass
 
-    if certtoken is None:
-        try:
-            certtoken = re.sub(r"\s+", '', config.get(profile, 'certtoken'))
-        except (ConfigParser.NoOptionError, ConfigParser.NoSectionError):
-            certtoken = None
+    # do any final cleanup - only needed for extras (which are multiline)
+    if 'extras' in config and config['extras'] is not None:
+        config['extras'] = config['extras'].split(' ')
 
-    if extras is None:
-        try:
-            extras = re.sub(r"\s+", ' ', config.get(profile, 'extras'))
-        except (ConfigParser.NoOptionError, ConfigParser.NoSectionError):
-            extras = None
+    # remove blank entries
+    for x in sorted(config.keys()):
+        if config[x] is None or config[x] == '':
+            try:
+                config.pop(x)
+            except:
+                pass
 
-        if extras:
-            extras = extras.split(' ')
-
-    return [email, token, certtoken, extras, profile]
+    return config

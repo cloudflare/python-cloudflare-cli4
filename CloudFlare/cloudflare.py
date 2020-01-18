@@ -19,21 +19,32 @@ class CloudFlare(object):
     class _v4base(object):
         """ Cloudflare v4 API"""
 
-        def __init__(self, email, token, certtoken, base_url, debug, raw, use_sessions, profile):
+        def __init__(self, config):
             """ Cloudflare v4 API"""
 
-            self.email = email
-            self.token = token
-            self.certtoken = certtoken
-            self.base_url = base_url
-            self.raw = raw
-            self.use_sessions = use_sessions
-            self.profile = profile
+            self.config = config
+            if 'email' in config:
+                self.email = config['email']
+            else:
+                self.email = None
+            if 'token' in config:
+                self.token = config['token']
+            else:
+                self.token = None
+            if 'certtoken' in config:
+                self.certtoken = config['certtoken']
+            else:
+                self.certtoken = None
+
+            self.base_url = config['base_url']
+            self.raw = config['raw']
+            self.use_sessions = config['use_sessions']
+            self.profile = config['profile']
             self.session = None
             self.user_agent = user_agent()
 
-            if debug:
-                self.logger = CFlogger(debug).getLogger()
+            if 'debug' in config and config['debug']:
+                self.logger = CFlogger(config['debug']).getLogger()
             else:
                 self.logger = None
 
@@ -43,33 +54,53 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             headers = {}
-            self._add_headers(headers)
+            self._AddHeaders(headers)
             return self._call(method, headers, parts,
                               identifier1, identifier2, identifier3,
                               params, data, files)
 
-        def _add_headers(self, headers):
+        def _AddHeaders(self, headers):
             """ Add default headers """
             headers['User-Agent'] = self.user_agent
             headers['Content-Type'] = 'application/json'
 
-        def _add_auth_headers(self, headers):
+        def _AddAuthHeaders(self, headers, method):
             """ Add authentication headers """
-            if self.email is None and self.token is None:
-                raise CloudFlareAPIError(0, 'no email and no token defined')
-            if self.token is None:
-                raise CloudFlareAPIError(0, 'no token defined')
-            if self.email is None:
-                headers['Authorization'] = 'Bearer %s' % (self.token)
-            else:
-                headers['X-Auth-Email'] = self.email
-                headers['X-Auth-Key'] = self.token
 
-        def _add_certtoken_headers(self, headers):
+            v = 'email' + '.' + method.lower()
+            if v in self.config:
+                email = self.config[v] # use specific value for this method
+            else:
+                email = self.email     # use generic value for all methods
+
+            v = 'token' + '.' + method.lower()
+            if v in self.config:
+                token = self.config[v] # use specific value for this method
+            else:
+                token = self.token     # use generic value for all methods
+
+            if email is None and token is None:
+                raise CloudFlareAPIError(0, 'no email and no token defined')
+            if token is None:
+                raise CloudFlareAPIError(0, 'no token defined')
+            if email is None:
+                headers['Authorization'] = 'Bearer %s' % (token)
+            else:
+                headers['X-Auth-Email'] = email
+                headers['X-Auth-Key'] = token
+
+        def _AddCerttokenHeaders(self, headers, method):
             """ Add authentication headers """
-            if self.certtoken is None:
+
+            v = 'certtoken' + '.' + method.lower()
+            if v in self.config:
+                certtoken = self.config[v] # use specific value for this method
+            else:
+                certtoken = self.certtoken # use generic value for all methods
+
+            if certtoken is None:
                 raise CloudFlareAPIError(0, 'no cert token defined')
-            headers['X-Auth-User-Service-Key'] = self.certtoken
+            headers['X-Auth-User-Service-Key'] = certtoken
 
         def call_with_auth(self, method, parts,
                            identifier1=None, identifier2=None, identifier3=None,
@@ -77,8 +108,8 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             headers = {}
-            self._add_headers(headers)
-            self._add_auth_headers(headers)
+            self._AddHeaders(headers)
+            self._AddAuthHeaders(headers, method)
             if isinstance(data, str):
                 # passing javascript vs JSON
                 headers['Content-Type'] = 'application/javascript'
@@ -97,8 +128,8 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             headers = {}
-            self._add_headers(headers)
-            self._add_auth_headers(headers)
+            self._AddHeaders(headers)
+            self._AddAuthHeaders(headers, method)
             if isinstance(data, str):
                 # passing javascript vs JSON
                 headers['Content-Type'] = 'application/javascript'
@@ -117,8 +148,8 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             headers = {}
-            self._add_headers(headers)
-            self._add_certtoken_headers(headers)
+            self._AddHeaders(headers)
+            self._AddCerttokenHeaders(headers, method)
             return self._call(method, headers, parts,
                               identifier1, identifier2, identifier3,
                               params, data, files)
@@ -506,7 +537,7 @@ class CloudFlare(object):
             result = response_data
             return result
 
-    class _add_unused(object):
+    class _AddUnused(object):
         """ Cloudflare v4 API"""
 
         def __init__(self, base, p1, p2=None, p3=None):
@@ -551,7 +582,7 @@ class CloudFlare(object):
 
             raise CloudFlareAPIError(0, 'delete() call not available for this endpoint')
 
-    class _add_noauth(object):
+    class _AddNoAuth(object):
         """ Cloudflare v4 API"""
 
         def __init__(self, base, p1, p2=None, p3=None):
@@ -598,7 +629,7 @@ class CloudFlare(object):
 
             raise CloudFlareAPIError(0, 'delete() call not available for this endpoint')
 
-    class _add_with_auth(object):
+    class _AddWithAuth(object):
         """ Cloudflare v4 API"""
 
         def __init__(self, base, p1, p2=None, p3=None):
@@ -653,7 +684,7 @@ class CloudFlare(object):
                                              identifier1, identifier2, identifier3,
                                              params, data)
 
-    class _add_with_auth_unwrapped(object):
+    class _AddWithAuthUnwrapped(object):
         """ Cloudflare v4 API"""
 
         def __init__(self, base, p1, p2=None, p3=None):
@@ -708,7 +739,7 @@ class CloudFlare(object):
                                                        identifier1, identifier2, identifier3,
                                                        params, data)
 
-    class _add_with_cert_auth(object):
+    class _AddWithCertAuth(object):
         """ Cloudflare v4 API"""
 
         def __init__(self, base, p1, p2=None, p3=None):
@@ -784,15 +815,15 @@ class CloudFlare(object):
         name = a[-1]
 
         if t == 'VOID':
-            f = self._add_unused(self._base, p1, p2, p3)
+            f = self._AddUnused(self._base, p1, p2, p3)
         elif t == 'OPEN':
-            f = self._add_noauth(self._base, p1, p2, p3)
+            f = self._AddNoAuth(self._base, p1, p2, p3)
         elif t == 'AUTH':
-            f = self._add_with_auth(self._base, p1, p2, p3)
+            f = self._AddWithAuth(self._base, p1, p2, p3)
         elif t == 'CERT':
-            f = self._add_with_cert_auth(self._base, p1, p2, p3)
+            f = self._AddWithCertAuth(self._base, p1, p2, p3)
         elif t == 'AUTH_UNWRAPPED':
-            f = self._add_with_auth_unwrapped(self._base, p1, p2, p3)
+            f = self._AddWithAuthUnwrapped(self._base, p1, p2, p3)
         else:
             # should never happen
             raise CloudFlareAPIError(0, 'api load type mismatch')
@@ -827,31 +858,41 @@ class CloudFlare(object):
 
         base_url = BASE_URL
 
-        # class creation values override configuration values
         try:
-            [conf_email, conf_token, conf_certtoken, extras, profile] = read_configs(profile)
+            config = read_configs(profile)
         except:
             raise CloudFlareAPIError(0, 'profile/configuration read error')
 
-        if email is None:
-            email = conf_email
-        if token is None:
-            token = conf_token
-        if certtoken is None:
-            certtoken = conf_certtoken
+        # class creation values override all configuration values
+        if email is not None:
+            config['email'] = email
+        if token is not None:
+            config['token'] = token
+        if certtoken is not None:
+            config['certtoken'] = certtoken
+        if base_url is not None:
+            config['base_url'] = base_url
+        if debug is not None:
+            config['debug'] = debug
+        if raw is not None:
+            config['raw'] = raw
+        if use_sessions is not None:
+            config['use_sessions'] = use_sessions
+        if profile is not None:
+            config['profile'] = profile
 
-        if email == '':
-            email = None
-        if token == '':
-            token = None
-        if certtoken == '':
-            certtoken = None
-        self._base = self._v4base(email, token, certtoken, base_url, debug, raw, use_sessions, profile)
+        # we do not need to handle item.call values - they pass straight thru
+
+        for x in config:
+            if config[x] == '':
+                config[x] = None
+
+        self._base = self._v4base(config)
 
         # add the API calls
         api_v4(self)
-        if extras:
-            api_extras(self, extras)
+        if 'extras' in config and config['extras']:
+            api_extras(self, config['extras'])
 
     def __call__(self):
         """ Cloudflare v4 API"""

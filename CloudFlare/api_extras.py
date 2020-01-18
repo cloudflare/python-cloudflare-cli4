@@ -37,7 +37,7 @@ def api_extras(self, extras=None):
                     api_call_part1 = '/'.join(element_path)
                     api_call_part2 = '/'.join(parts[1])
                     setattr(m, parts[1][0],
-                            self._add_with_auth(self._base, api_call_part1, api_call_part2))
+                            self._AddWithAuth(self._base, api_call_part1, api_call_part2))
                 current = m
                 continue
             except:
@@ -48,9 +48,9 @@ def api_extras(self, extras=None):
                 api_call_part1 = '/'.join(element_path)
                 api_call_part2 = '/'.join(parts[1])
                 setattr(current, element,
-                        self._add_with_auth(self._base, api_call_part1, api_call_part2))
+                        self._AddWithAuth(self._base, api_call_part1, api_call_part2))
             else:
                 api_call_part1 = '/'.join(element_path)
                 setattr(current, element,
-                        self._add_with_auth(self._base, api_call_part1))
+                        self._AddWithAuth(self._base, api_call_part1))
             current = getattr(current, element)
