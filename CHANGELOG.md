@@ -1,5 +1,10 @@
 # Change Log
 
+ - 2020-01-17 22:01:02 -0800 [d3d96c9](https://github.com/cloudflare/python-cloudflare/commit/d3d96c9d9f7838bc50d6293bfe668344baad32ed) 2.6.0 release
+ - 2020-01-17 21:59:50 -0800 [5f06e8a](https://github.com/cloudflare/python-cloudflare/commit/5f06e8a111258f2a8b08f267ed5193e61a5fbe2e) config file allows a per-method values
+ - 2020-01-17 21:50:54 -0800 [1a684ae](https://github.com/cloudflare/python-cloudflare/commit/1a684ae5e66cb2463288ff482ea99a3e2981c56a) rewrite of config file to bring up to spec and to allow for per-method auth values
+ - 2020-01-17 21:49:45 -0800 [8981db6](https://github.com/cloudflare/python-cloudflare/commit/8981db6cbb6eb80a045bcde13c28d2177c839307) started to handle pipe errors - not quite working yet
+ - 2020-01-16 19:53:50 -0800 [4905fcf](https://github.com/cloudflare/python-cloudflare/commit/4905fcf5d175ac4403d893b4e32e1243148f4de9) CHANGELOG.md pushed to github
  - 2020-01-16 19:53:11 -0800 [99e8eeb](https://github.com/cloudflare/python-cloudflare/commit/99e8eeb992012fce2debec4a5d5397615143aa25) pylint made me do this! - yet there is still more to do
  - 2020-01-16 10:12:44 -0800 [25cd7b9](https://github.com/cloudflare/python-cloudflare/commit/25cd7b902ffb737dc3688e183683f0273c590de3) Merge pull request #80 from acdha/patch-1
  - 2020-01-15 21:43:24 -0800 [a3b4538](https://github.com/cloudflare/python-cloudflare/commit/a3b4538de8ac18c3c3011804f6b51cc7aef631cb) Merge pull request #80 from acdha/patch-1
