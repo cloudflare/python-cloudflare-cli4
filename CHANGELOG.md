@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2020-02-05 18:17:40 -0800 [ebabedc](https://github.com/cloudflare/python-cloudflare/commit/ebabedcbd3baaf7f9a9c34bb5a06ff5a71baee8d) 2.6.1 release
+ - 2020-02-05 18:17:00 -0800 [e0eb323](https://github.com/cloudflare/python-cloudflare/commit/e0eb323a713698be0e10f1d5066e982eace511f0) restored extras= config file functions
+ - 2020-01-17 22:01:20 -0800 [2ec542b](https://github.com/cloudflare/python-cloudflare/commit/2ec542b8274e2b6ae1a9a888922aafae8d5f5e0e) CHANGELOG.md pushed to github
  - 2020-01-17 22:01:02 -0800 [d3d96c9](https://github.com/cloudflare/python-cloudflare/commit/d3d96c9d9f7838bc50d6293bfe668344baad32ed) 2.6.0 release
  - 2020-01-17 21:59:50 -0800 [5f06e8a](https://github.com/cloudflare/python-cloudflare/commit/5f06e8a111258f2a8b08f267ed5193e61a5fbe2e) config file allows a per-method values
  - 2020-01-17 21:50:54 -0800 [1a684ae](https://github.com/cloudflare/python-cloudflare/commit/1a684ae5e66cb2463288ff482ea99a3e2981c56a) rewrite of config file to bring up to spec and to allow for per-method auth values
