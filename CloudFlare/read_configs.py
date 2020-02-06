@@ -45,7 +45,10 @@ def read_configs(profile=None):
         for option in ['email', 'token', 'certtoken', 'extras']:
             if option not in config or config[option] is None:
                 try:
-                    config[option] = re.sub(r"\s+", '', section.get(option))
+                    if option == 'extras':
+                        config[option] = re.sub(r"\s+", ' ', section.get(option))
+                    else:
+                        config[option] = re.sub(r"\s+", '', section.get(option))
                     if config[option] == '':
                         config.pop(option)
                 except (configparser.NoOptionError, configparser.NoSectionError):
@@ -66,7 +69,7 @@ def read_configs(profile=None):
 
     # do any final cleanup - only needed for extras (which are multiline)
     if 'extras' in config and config['extras'] is not None:
-        config['extras'] = config['extras'].split(' ')
+        config['extras'] = config['extras'].strip().split(' ')
 
     # remove blank entries
     for x in sorted(config.keys()):

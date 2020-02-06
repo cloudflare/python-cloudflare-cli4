@@ -2,55 +2,61 @@
 
 import re
 
+from .exceptions import CloudFlareAPIError
+
 def api_extras(self, extras=None):
     """ API extras for Cloudflare API"""
 
+    count = 0;
     for extra in extras:
-        if extra == '':
-            continue
         extra = re.sub(r"^.*/client/v4/", '/', extra)
         extra = re.sub(r"^.*/v4/", '/', extra)
         extra = re.sub(r"^/", '', extra)
+        if extra == '':
+            continue
 
         # build parts of the extra command
         parts = []
-        nn = 0
+        part = None
         for element in extra.split('/'):
             if element[0] == ':':
-                nn += 1
+                parts.append(part)
+                part = None
                 continue
-            try:
-                parts[nn]
-            except IndexError:
-                parts.append([])
-            parts[nn].append(element)
-
-        # insert extra command into class
-        element_path = []
-        current = self
-        for element in parts[0]:
-            element_path.append(element)
-            try:
-                m = getattr(current, element)
-                # exists - but still add it there's a second part
-                if element == parts[0][-1] and len(parts) > 1:
-                    api_call_part1 = '/'.join(element_path)
-                    api_call_part2 = '/'.join(parts[1])
-                    setattr(m, parts[1][0],
-                            self._AddWithAuth(self._base, api_call_part1, api_call_part2))
-                current = m
-                continue
-            except:
-                pass
-            # does not exist
-            if element == parts[0][-1] and len(parts) > 1:
-                # last element
-                api_call_part1 = '/'.join(element_path)
-                api_call_part2 = '/'.join(parts[1])
-                setattr(current, element,
-                        self._AddWithAuth(self._base, api_call_part1, api_call_part2))
+            if part:
+                part += '/' + element
             else:
-                api_call_part1 = '/'.join(element_path)
-                setattr(current, element,
-                        self._AddWithAuth(self._base, api_call_part1))
-            current = getattr(current, element)
+                part = element
+        if part:
+            parts.append(part)
+
+        if len(parts) > 1:
+            p = parts[1].split('/')
+            for nn in range(0, len(p)):
+                try:
+                    self.add('VOID', parts[0], '/'.join(p[0:nn]))
+                except CloudFlareAPIError:
+                    # already exists - this is ok
+                    pass
+
+        if len(parts) > 2:
+            p = parts[2].split('/')
+            for nn in range(0, len(p)):
+                try:
+                    self.add('VOID', parts[0], parts[1], '/'.join(p[0:nn]))
+                except CloudFlareAPIError:
+                    # already exists - this is ok
+                    pass
+
+        while len(parts) < 3:
+            parts.append(None)
+
+        # we can only add AUTH elements presently
+        try:
+            self.add('AUTH', parts[0], parts[1], parts[2])
+            count += 1
+        except CloudFlareAPIError:
+            # this is silently dropped - however, that could change
+            pass
+
+    return count

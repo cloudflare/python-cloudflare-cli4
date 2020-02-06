@@ -814,6 +814,14 @@ class CloudFlare(object):
                 raise CloudFlareAPIError(0, 'api load name failed')
         name = a[-1]
 
+        try:
+            f = getattr(branch, name)
+            # already exists - don't let it overwrite
+            raise CloudFlareAPIError(0, 'api duplicate name found: %s/**%s**' % ('/'.join(a[0:-1]), name))
+        except AttributeError:
+            # this is the required behavior - i.e. it's a new node to create
+            pass
+
         if t == 'VOID':
             f = self._AddUnused(self._base, p1, p2, p3)
         elif t == 'OPEN':
