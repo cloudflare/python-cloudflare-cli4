@@ -47,6 +47,7 @@ def api_v4(self):
 
     # The API commands for /accounts/
     accounts(self)
+    accounts_addressing(self)
     accounts_firewall(self)
     accounts_secondary_dns(self)
 
@@ -211,6 +212,9 @@ def zones_logs(self):
     """ API core commands for Cloudflare API"""
 
     self.add('VOID', "zones", "logs")
+    self.add('AUTH', "zones", "logs/control")
+    self.add('VOID', "zones", "logs/control/retention")
+    self.add('AUTH', "zones", "logs/control/retention/flag")
     self.add('AUTH_UNWRAPPED', "zones", "logs/received")
     self.add('AUTH_UNWRAPPED', "zones", "logs/received/fields")
     self.add('AUTH_UNWRAPPED', "zones", "logs/rayids")
@@ -300,6 +304,7 @@ def zones_secondary_dns(self):
     """ API core commands for Cloudflare API"""
 
     self.add('AUTH', "zones", "secondary_dns")
+    self.add('AUTH', "zones", "secondary_dns/force_axfr")
 
 def user_load_balancers(self):
     """ API core commands for Cloudflare API"""
@@ -395,6 +400,14 @@ def accounts(self):
     self.add('AUTH', "accounts", "virtual_dns/dns_analytics/report/bytime")
     self.add('VOID', "accounts", "workers")
     self.add('AUTH', "accounts", "workers/scripts")
+
+def accounts_addressing(self):
+    """ API core commands for Cloudflare API"""
+
+    self.add('VOID', "accounts", "addressing")
+    self.add('AUTH', "accounts", "addressing/prefixes")
+    self.add('VOID', "accounts", "addressing/prefixes", "bgp")
+    self.add('AUTH', "accounts", "addressing/prefixes", "bgp/status")
 
 def accounts_firewall(self):
     """ API core commands for Cloudflare API"""
