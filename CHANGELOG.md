@@ -1,5 +1,7 @@
 # Change Log
 
+ - 2020-02-09 12:22:46 -0800 [1d7ca2f](https://github.com/cloudflare/python-cloudflare/commit/1d7ca2fde4db9d4d5cf90ae598ae8336fcb85630) added /accounts/addressing/... & /zones/secondary_dns/force_axfr & /zones/logs/control/retention/...
+ - 2020-02-05 18:19:32 -0800 [365eed7](https://github.com/cloudflare/python-cloudflare/commit/365eed731d80cc48f07f4efc6b1b65f70b01303f) CHANGELOG.md pushed to github
  - 2020-02-05 18:17:40 -0800 [ebabedc](https://github.com/cloudflare/python-cloudflare/commit/ebabedcbd3baaf7f9a9c34bb5a06ff5a71baee8d) 2.6.1 release
  - 2020-02-05 18:17:00 -0800 [e0eb323](https://github.com/cloudflare/python-cloudflare/commit/e0eb323a713698be0e10f1d5066e982eace511f0) restored extras= config file functions
  - 2020-01-17 22:01:20 -0800 [2ec542b](https://github.com/cloudflare/python-cloudflare/commit/2ec542b8274e2b6ae1a9a888922aafae8d5f5e0e) CHANGELOG.md pushed to github
