@@ -1,5 +1,9 @@
 # Change Log
 
+ - 2020-02-09 12:38:06 -0800 [017c240](https://github.com/cloudflare/python-cloudflare/commit/017c240d9d9c410352d94e1422249dce7234032b) 2.6.3 release
+ - 2020-02-09 12:27:51 -0800 [adfc471](https://github.com/cloudflare/python-cloudflare/commit/adfc471ca872faf1610444e0c52f3d689c28d549) Merge pull request #65 from xens/keep_proxied_state
+ - 2020-02-09 12:24:53 -0800 [b3809fe](https://github.com/cloudflare/python-cloudflare/commit/b3809fe7941a6461e2651cbf44f949f252ee5222) CHANGELOG.md pushed to github
+ - 2020-02-09 12:24:41 -0800 [c30609b](https://github.com/cloudflare/python-cloudflare/commit/c30609bfa4869718ecdbfdc45ba626bb527b6fba) 2.6.2 release
  - 2020-02-09 12:22:46 -0800 [1d7ca2f](https://github.com/cloudflare/python-cloudflare/commit/1d7ca2fde4db9d4d5cf90ae598ae8336fcb85630) added /accounts/addressing/... & /zones/secondary_dns/force_axfr & /zones/logs/control/retention/...
  - 2020-02-05 18:19:32 -0800 [365eed7](https://github.com/cloudflare/python-cloudflare/commit/365eed731d80cc48f07f4efc6b1b65f70b01303f) CHANGELOG.md pushed to github
  - 2020-02-05 18:17:40 -0800 [ebabedc](https://github.com/cloudflare/python-cloudflare/commit/ebabedcbd3baaf7f9a9c34bb5a06ff5a71baee8d) 2.6.1 release
@@ -54,6 +58,7 @@
  - 2019-05-20 08:24:29 -0700 [cf084ee](https://github.com/cloudflare/python-cloudflare/commit/cf084ee22b454cbb50804c748ee969cab9c451a2) 2.2.0 release
  - 2019-05-20 08:23:52 -0700 [b024609](https://github.com/cloudflare/python-cloudflare/commit/b0246091fc0d367e7e36bb422ebe7e55a93bf6c0) 2.2.0 release
  - 2019-05-14 09:25:39 -0700 [630612a](https://github.com/cloudflare/python-cloudflare/commit/630612a52adad05fc9fc1ec05c52a9c08eacaa80) Add Python 3.7
+ - 2019-04-17 23:23:22 +0200 [a47bfcb](https://github.com/cloudflare/python-cloudflare/commit/a47bfcbe78f1d06412354540199832fbf19cca2d) Keep proxied state during IP-address update
  - 2019-04-12 13:53:41 +0100 [286cb0f](https://github.com/cloudflare/python-cloudflare/commit/286cb0f25e5bf13adacdf9ce7956bd514e508214) Merge pull request #64 from aaranmcguire/support-secondary-dns
  - 2019-04-12 13:52:50 +0100 [11cc361](https://github.com/cloudflare/python-cloudflare/commit/11cc361b17e39ebf4ff3c4ab21a9d9e1bacaa578) Merge pull request #57 from sulf1ron/master
  - 2019-04-12 13:21:28 +0100 [2255073](https://github.com/cloudflare/python-cloudflare/commit/22550738c9680779dcdc5152eda8c355e0924f8c) Merge pull request #53 from weisi/master
