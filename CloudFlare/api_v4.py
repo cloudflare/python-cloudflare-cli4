@@ -50,7 +50,9 @@ def api_v4(self):
     accounts_addressing(self)
     accounts_audit_logs(self)
     accounts_firewall(self)
+    accounts_load_balancers(self)
     accounts_secondary_dns(self)
+    accounts_stream(self)
 
     # The API commands for /memberships/
     memberships(self)
@@ -87,12 +89,14 @@ def zones(self):
     self.add('AUTH', "zones", "custom_certificates")
     self.add('AUTH', "zones", "custom_certificates/prioritize")
     self.add('AUTH', "zones", "custom_hostnames")
+    self.add('AUTH', "zones", "custom_hostnames/fallback_origin")
     self.add('AUTH', "zones", "custom_pages")
     self.add('AUTH', "zones", "dns_records")
     self.add('AUTH', "zones", "dns_records/export")
     self.add('AUTH', "zones", "dns_records/import")
     self.add('AUTH', "zones", "filters")
     self.add('AUTH', "zones", "healthchecks")
+    self.add('AUTH', "zones", "healthchecks/preview")
     self.add('AUTH', "zones", "keyless_certificates")
     self.add('AUTH', "zones", "pagerules")
     self.add('AUTH', "zones", "pagerules/settings")
@@ -312,8 +316,11 @@ def user_load_balancers(self):
 
     self.add('VOID', "user/load_balancers")
     self.add('AUTH', "user/load_balancers/monitors")
+    self.add('AUTH', "user/load_balancers/monitors", "preview")
+    self.add('AUTH', "user/load_balancers/preview")
     self.add('AUTH', "user/load_balancers/pools")
     self.add('AUTH', "user/load_balancers/pools", "health")
+    self.add('AUTH', "user/load_balancers/pools", "preview")
 
 def user_virtual_dns(self):
     """ API core commands for Cloudflare API"""
@@ -352,8 +359,10 @@ def user_load_balancing_analytics(self):
 def user_tokens_verify(self):
     """ API core commands for Cloudflare API"""
 
-    self.add('VOID', "user/tokens")
+    self.add('AUTH', "user/tokens")
+    self.add('AUTH', "user/tokens/permission_groups")
     self.add('AUTH', "user/tokens/verify")
+    self.add('AUTH', "user/tokens", "value")
 
 def organizations_audit_logs(self):
     """ API core commands for Cloudflare API"""
@@ -373,10 +382,6 @@ def accounts(self):
     self.add('VOID', "accounts", "billing")
     self.add('AUTH', "accounts", "billing/profile")
     self.add('AUTH', "accounts", "custom_pages")
-    self.add('VOID', "accounts", "load_balancers")
-    self.add('AUTH', "accounts", "load_balancers/monitors")
-    self.add('AUTH', "accounts", "load_balancers/pools")
-    self.add('AUTH', "accounts", "load_balancers/pools", "health")
     self.add('AUTH', "accounts", "members")
     self.add('AUTH', "accounts", "railguns")
     self.add('AUTH', "accounts", "railguns/connections")
@@ -391,9 +396,6 @@ def accounts(self):
     self.add('AUTH', "accounts", "storage/kv/namespaces", "bulk")
     self.add('AUTH', "accounts", "storage/kv/namespaces", "keys")
     self.add('AUTH', "accounts", "storage/kv/namespaces", "values")
-    self.add('AUTH', "accounts", "stream")
-    self.add('AUTH', "accounts", "stream/embed")
-    self.add('AUTH', "accounts", "stream/preview")
     self.add('AUTH', "accounts", "subscriptions")
     self.add('AUTH', "accounts", "virtual_dns")
     self.add('VOID', "accounts", "virtual_dns/dns_analytics")
@@ -415,6 +417,18 @@ def accounts_audit_logs(self):
 
     self.add('AUTH', "accounts", "audit_logs")
 
+def accounts_load_balancers(self):
+    """ API core commands for Cloudflare API"""
+
+    self.add('VOID', "accounts", "load_balancers")
+    self.add('AUTH', 'accounts', 'load_balancers/preview')
+    self.add('AUTH', "accounts", "load_balancers/monitors")
+    self.add('AUTH', 'accounts', 'load_balancers/monitors', 'preview')
+    self.add('AUTH', "accounts", "load_balancers/pools")
+    self.add('AUTH', "accounts", "load_balancers/pools", "health")
+    self.add('AUTH', 'accounts', 'load_balancers/pools', 'preview')
+    self.add('AUTH', 'accounts', 'load_balancers/search')
+
 def accounts_firewall(self):
     """ API core commands for Cloudflare API"""
 
@@ -428,6 +442,17 @@ def accounts_secondary_dns(self):
     self.add('VOID', "accounts", "secondary_dns")
     self.add('AUTH', "accounts", "secondary_dns/masters")
     self.add('AUTH', "accounts", "secondary_dns/tsigs")
+
+def accounts_stream(self):
+    """ API core commands for Cloudflare API"""
+
+    self.add('AUTH', "accounts", "stream")
+    self.add('AUTH', "accounts", "stream/copy")
+    self.add('AUTH', "accounts", "stream/direct_upload")
+    self.add('AUTH', "accounts", "stream/embed")
+    self.add('AUTH', "accounts", "stream/keys")
+    self.add('AUTH', "accounts", "stream/preview")
+    self.add('AUTH', "accounts", "stream", "captions")
 
 def zones_media(self):
     """ API core commands for Cloudflare API"""
