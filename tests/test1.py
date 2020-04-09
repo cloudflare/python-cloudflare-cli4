@@ -12,3 +12,5 @@ def test_ips():
     ips = cf.ips.get()
     assert ips
 
+if __name__ == '__main__':
+    pytest.main([__file__])
