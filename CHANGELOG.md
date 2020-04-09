@@ -1,10 +1,16 @@
 # Change Log
 
+ - 2020-04-08 18:13:30 -0700 [1da709c](https://github.com/cloudflare/python-cloudflare/commit/1da709c2138491dc8316fad04d0221236f97439e) 2.6.5 release
+ - 2020-04-08 18:12:48 -0700 [450dd7d](https://github.com/cloudflare/python-cloudflare/commit/450dd7d721b5be7b257571018a6d49af2d90db13) updated api command list
+ - 2020-04-09 08:57:24 +0800 [c5d4890](https://github.com/cloudflare/python-cloudflare/commit/c5d489032c29e2d84d7611518a68a637ccf89b0d) Merge pull request #90 from pygrigori/master
+ - 2020-04-08 17:55:33 -0700 [513b92c](https://github.com/cloudflare/python-cloudflare/commit/513b92c0f7340d5e49ee134d7ca025d5b1d534d6) typo
+ - 2020-04-08 17:51:20 -0700 [d0ed19e](https://github.com/cloudflare/python-cloudflare/commit/d0ed19e619e95bcefc4cc09a28acb48886cd89f5) CHANGELOG.md pushed to github
  - 2020-04-08 17:51:05 -0700 [d478bb3](https://github.com/cloudflare/python-cloudflare/commit/d478bb3cf8b36749ff2aeeb1d197550b2ccecf08) 2.6.4 release
  - 2020-04-08 17:49:59 -0700 [fceb488](https://github.com/cloudflare/python-cloudflare/commit/fceb48839e4eab2da0a76f04a003ecfab2b74945) cli4 now accepts more than one call on the command line
  - 2020-04-08 17:49:39 -0700 [4e67548](https://github.com/cloudflare/python-cloudflare/commit/4e6754846eb48edfd5d297c04b685fcfffd65683) cli4 now accepts more than one call on the command line
  - 2020-04-08 17:42:21 -0700 [1c70a8e](https://github.com/cloudflare/python-cloudflare/commit/1c70a8e9b4b2e531d0e61a26f4cd729b86e2c51e) still not got tests done - but housekeeping moving along
  - 2020-04-08 17:41:12 -0700 [5b28101](https://github.com/cloudflare/python-cloudflare/commit/5b28101c6d01ec7f4fec6cf2be64ba23181fbdea) an example of a more complex zone name search
+ - 2020-03-13 17:06:50 +0300 [d7cdb0c](https://github.com/cloudflare/python-cloudflare/commit/d7cdb0cd5b0408b30c403d4d83915466a1e3d558) added support for account audit logs
  - 2020-02-09 12:40:13 -0800 [102286e](https://github.com/cloudflare/python-cloudflare/commit/102286ed5bb6f920d4f6270fd28f7b2d19e9b7bc) CHANGELOG.md pushed to github
  - 2020-02-09 12:38:06 -0800 [017c240](https://github.com/cloudflare/python-cloudflare/commit/017c240d9d9c410352d94e1422249dce7234032b) 2.6.3 release
  - 2020-02-09 12:27:51 -0800 [adfc471](https://github.com/cloudflare/python-cloudflare/commit/adfc471ca872faf1610444e0c52f3d689c28d549) Merge pull request #65 from xens/keep_proxied_state
