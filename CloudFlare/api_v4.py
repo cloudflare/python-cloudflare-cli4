@@ -48,6 +48,7 @@ def api_v4(self):
     # The API commands for /accounts/
     accounts(self)
     accounts_addressing(self)
+    accounts_audit_logs(self)
     accounts_firewall(self)
     accounts_secondary_dns(self)
 
@@ -408,6 +409,11 @@ def accounts_addressing(self):
     self.add('AUTH', "accounts", "addressing/prefixes")
     self.add('VOID', "accounts", "addressing/prefixes", "bgp")
     self.add('AUTH', "accounts", "addressing/prefixes", "bgp/status")
+
+def accounts_audit_logs(self):
+    """ API core commands for Cloudflare API"""
+
+    self.add('AUTH', "accounts", "audit_logs")
 
 def accounts_firewall(self):
     """ API core commands for Cloudflare API"""
