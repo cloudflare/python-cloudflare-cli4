@@ -905,7 +905,7 @@ $
 The following call checks that the script is associated with the zone. In this case, it's the only script added by this user.
 
 ```
-$ python3 -m cli4 /user/workers/scripts
+$ cli4 /user/workers/scripts
 [
     {
         "created_on": "2018-02-15T00:00:00.000000Z",
