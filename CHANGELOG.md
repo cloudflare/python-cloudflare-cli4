@@ -1,5 +1,11 @@
 # Change Log
 
+ - 2020-04-08 17:51:05 -0700 [d478bb3](https://github.com/cloudflare/python-cloudflare/commit/d478bb3cf8b36749ff2aeeb1d197550b2ccecf08) 2.6.4 release
+ - 2020-04-08 17:49:59 -0700 [fceb488](https://github.com/cloudflare/python-cloudflare/commit/fceb48839e4eab2da0a76f04a003ecfab2b74945) cli4 now accepts more than one call on the command line
+ - 2020-04-08 17:49:39 -0700 [4e67548](https://github.com/cloudflare/python-cloudflare/commit/4e6754846eb48edfd5d297c04b685fcfffd65683) cli4 now accepts more than one call on the command line
+ - 2020-04-08 17:42:21 -0700 [1c70a8e](https://github.com/cloudflare/python-cloudflare/commit/1c70a8e9b4b2e531d0e61a26f4cd729b86e2c51e) still not got tests done - but housekeeping moving along
+ - 2020-04-08 17:41:12 -0700 [5b28101](https://github.com/cloudflare/python-cloudflare/commit/5b28101c6d01ec7f4fec6cf2be64ba23181fbdea) an example of a more complex zone name search
+ - 2020-02-09 12:40:13 -0800 [102286e](https://github.com/cloudflare/python-cloudflare/commit/102286ed5bb6f920d4f6270fd28f7b2d19e9b7bc) CHANGELOG.md pushed to github
  - 2020-02-09 12:38:06 -0800 [017c240](https://github.com/cloudflare/python-cloudflare/commit/017c240d9d9c410352d94e1422249dce7234032b) 2.6.3 release
  - 2020-02-09 12:27:51 -0800 [adfc471](https://github.com/cloudflare/python-cloudflare/commit/adfc471ca872faf1610444e0c52f3d689c28d549) Merge pull request #65 from xens/keep_proxied_state
  - 2020-02-09 12:24:53 -0800 [b3809fe](https://github.com/cloudflare/python-cloudflare/commit/b3809fe7941a6461e2651cbf44f949f252ee5222) CHANGELOG.md pushed to github
