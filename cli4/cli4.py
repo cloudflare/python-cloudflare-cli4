@@ -77,7 +77,8 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                         else:
                             raise Exception("/%s/%s :NOT CODED YET" % ('/'.join(cmd), element))
                     except Exception as e:
-                        sys.exit('cli4: /%s - %s' % (command, e))
+                        sys.stderr.write('cli4: /%s - %s\n' % (command, e))
+                        raise e
                 cmd.append(':' + identifier1)
             elif identifier2 is None:
                 if len(element) in [32, 40, 48] and hex_only.match(element):
@@ -95,7 +96,8 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                         else:
                             raise Exception("/%s/%s :NOT CODED YET" % ('/'.join(cmd), element))
                     except Exception as e:
-                        sys.exit('cli4: /%s - %s' % (command, e))
+                        sys.stderr.write('cli4: /%s - %s\n' % (command, e))
+                        raise e
                 # identifier2 may be an array - this needs to be dealt with later
                 if isinstance(identifier2, list):
                     cmd.append(':' + '[' + ','.join(identifier2) + ']')
@@ -109,7 +111,8 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 elif waf_rules.match(element):
                     identifier3 = element
                 else:
-                    sys.exit("/%s/%s :NOT CODED YET 3" % ('/'.join(cmd), element))
+                    sys.stderr.write('/%s/%s :NOT CODED YET 3\n' % ('/'.join(cmd), element))
+                    raise e
         else:
             try:
                 m = getattr(m, element)
@@ -117,12 +120,14 @@ def run_command(cf, method, command, params=None, content=None, files=None):
             except AttributeError:
                 # the verb/element was not found
                 if len(cmd) == 0:
-                    sys.exit('cli4: /%s - not found' % (element))
+                    sys.stderr.write('cli4: /%s - not found\n' % (element))
                 else:
-                    sys.exit('cli4: /%s/%s - not found' % ('/'.join(cmd), element))
+                    sys.stderr.write('cli4: /%s/%s - not found\n' % ('/'.join(cmd), element))
+                raise e
 
     if content and params:
-        sys.exit('cli4: /%s - content and params not allowed together' % (command))
+        sys.stderr.write('cli4: /%s - content and params not allowed together\n' % (command))
+        raise Exception
     if content:
         params = content
 
@@ -163,11 +168,14 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 # more than one error returned by the API
                 for x in e:
                     sys.stderr.write('cli4: /%s - %d %s\n' % (command, x, x))
-            sys.exit('cli4: /%s - %d %s' % (command, e, e))
+            sys.stderr.write('cli4: /%s - %d %s\n' % (command, e, e))
+            raise e
         except CloudFlare.exceptions.CloudFlareInternalError as e:
-            sys.exit('cli4: InternalError: /%s - %d %s' % (command, e, e))
+            sys.stderr.write('cli4: InternalError: /%s - %d %s\n' % (command, e, e))
+            raise e
         except Exception as e:
-            sys.exit('cli4: /%s - %s - api error' % (command, e))
+            sys.stderr.write('cli4: /%s - %s - api error\n' % (command, e))
+            raise e
 
         results.append(r)
     return results
@@ -379,16 +387,22 @@ def do_it(args):
                          (tag_string, value_string))
 
     # what's left is the command itself
-    if len(args) != 1:
+    if len(args) < 1:
         sys.exit(usage)
-    command = args[0]
+    commands = args
 
     try:
         cf = CloudFlare.CloudFlare(debug=verbose, raw=raw, profile=profile)
     except Exception as e:
         sys.exit(e)
-    results = run_command(cf, method, command, params, content, files)
-    write_results(results, output)
+
+    for command in commands:
+        try:
+            results = run_command(cf, method, command, params, content, files)
+            write_results(results, output)
+        except Exception as e:
+            if len(commands) > 1:
+                continue
 
 def cli4(args):
     """Cloudflare API via command line"""

@@ -430,6 +430,14 @@ cli4: /zones - 9103 Unknown X-Auth-Key or X-Auth-Email
 $
 ```
 
+More than one call can be done on the same command line. In this mode, the connection is preserved between calls.
+```
+$ cli4 /user/organizations /user/invites
+...
+$
+```
+Note that the output is presently two JSON structures one after the other - so less useful that you may think.
+
 Finally, a command that provides more than one error response.
 This is simulated by passing an invalid IPv4 address to a DNS record creation.
 
