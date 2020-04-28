@@ -465,9 +465,29 @@ class CloudFlare(object):
             # Sanatize the returned results - just in case API is messed up
             if 'success' not in response_data:
                 if 'errors' in response_data:
-                    if self.logger:
-                        self.logger.debug('Response: assuming success = "False"')
-                    response_data['success'] = False
+                    if response_data['errors'] == None:
+                        # Only happens on /graphql call
+                        if self.logger:
+                            self.logger.debug('Response: assuming success = "True"')
+                        response_data['success'] = True
+                    else:
+                        if self.logger:
+                            self.logger.debug('Response: assuming success = "False"')
+                        # The following only happens on /graphql call
+                        try:
+                            message = response_data['errors'][0]['message']
+                        except:
+                            message = ''
+                        try:
+                            location = str(response_data['errors'][0]['location'])
+                        except:
+                            location = ''
+                        try:
+                            path = '>'.join(response_data['errors'][0]['path'])
+                        except:
+                            path = ''
+                        response_data['errors'] = [{'code': 99999, 'message': message + ' - ' + location + ' - ' + path}]
+                        response_data['success'] = False
                 else:
                     if 'result' not in response_data:
                         # Only happens on /certificates call
@@ -485,7 +505,10 @@ class CloudFlare(object):
 
             if response_data['success'] is False:
                 errors = response_data['errors'][0]
-                code = errors['code']
+                if 'code' in errors:
+                    code = errors['code']
+                else:
+                    code = 99998
                 if 'message' in errors:
                     message = errors['message']
                 elif 'error' in errors:
@@ -509,19 +532,25 @@ class CloudFlare(object):
                         self.logger.debug('Response: error %d %s', code, message)
                     raise CloudFlareAPIError(code, message)
 
-            if self.logger:
-                self.logger.debug('Response: %s', response_data['result'])
             if self.raw:
                 result = {}
-                # theres always a result value
-                result['result'] = response_data['result']
+                # theres always a result value - unless it's a graphql query
+                try:
+                    result['result'] = response_data['result']
+                except:
+                    result['result'] = response_data
                 # theres may not be a result_info on every call
                 if 'result_info' in response_data:
                     result['result_info'] = response_data['result_info']
                 # no need to return success, errors, or messages as they return via an exception
             else:
-                # theres always a result value
-                result = response_data['result']
+                # theres always a result value - unless it's a graphql query
+                try:
+                    result = response_data['result']
+                except:
+                    result = response_data
+            if self.logger:
+                self.logger.debug('Response: %s', result)
             return result
 
         def _call_unwrapped(self, method, headers, parts,
