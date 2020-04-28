@@ -57,6 +57,9 @@ def api_v4(self):
     # The API commands for /memberships/
     memberships(self)
 
+    # The API commands for /graphql
+    graphql(self)
+
 def user(self):
     """ API core commands for Cloudflare API"""
 
@@ -465,3 +468,8 @@ def memberships(self):
     """ API core commands for Cloudflare API"""
 
     self.add('AUTH', "memberships")
+
+def graphql(self):
+    """ API core commands for Cloudflare API"""
+
+    self.add('AUTH', "graphql")
