@@ -241,13 +241,13 @@ def do_it(args):
 
     usage = ('usage: cli4 '
              + '[-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] '
-             + '[-j|--json] [-y|--yaml] [-n|ndjson]'
+             + '[-j|--json] [-y|--yaml] [-n|ndjson] '
              + '[-r|--raw] '
              + '[-d|--dump] '
              + '[-p|--profile profile-name] '
              + '[--get|--patch|--post|--put|--delete] '
              + '[item=value|item=@filename|@filename ...] '
-             + '/command...')
+             + '/command ...')
 
     try:
         opts, args = getopt.getopt(args,
@@ -314,8 +314,8 @@ def do_it(args):
         if arg[0] == '@':
             # a file to be uploaded - used in workers/script - only via PUT
             filename = arg[1:]
-            if method != 'PUT':
-                sys.exit('cli4: %s - raw file upload only with PUT' % (filename))
+            if method not in ['PUT','POST']:
+                sys.exit('cli4: %s - raw file upload only with PUT or POST' % (filename))
             try:
                 if filename == '-':
                     content = sys.stdin.read()
