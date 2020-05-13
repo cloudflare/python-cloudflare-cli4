@@ -1,5 +1,13 @@
 # Change Log
 
+ - 2020-05-12 18:25:52 -0700 [1c05b7b](https://github.com/cloudflare/python-cloudflare/commit/1c05b7bb1f5a05e9fcfebdfaa2d12bec0e8547f8) 2.7.0 release
+ - 2020-05-12 18:25:10 -0700 [c1d9295](https://github.com/cloudflare/python-cloudflare/commit/c1d92955051e180dc4132d520830b5ba795097d2) added man page to dist
+ - 2020-05-12 18:24:20 -0700 [5a8844e](https://github.com/cloudflare/python-cloudflare/commit/5a8844e651925bea01f12f38cdfb1ba52bdd4907) added github signing commands to Makefile
+ - 2020-04-28 14:12:16 -0700 [82b5cb7](https://github.com/cloudflare/python-cloudflare/commit/82b5cb7565c0fdb6e4de81dbbea12b74801b753f) added graphql handling with no results in response, corrected handling when error code is missing
+ - 2020-04-28 14:09:49 -0700 [4c90fa8](https://github.com/cloudflare/python-cloudflare/commit/4c90fa8a0f8a88ff0a3962611a18b2eb8eaed47b) added graphql API endpoint
+ - 2020-04-28 14:09:04 -0700 [1e949db](https://github.com/cloudflare/python-cloudflare/commit/1e949db4ad705d1fd0ec6387d77f99cd08ca0198) fixed usage string - missing spaces, allowed PUT & POST for file uploading to handle graphql API call
+ - 2020-04-28 14:08:04 -0700 [65f3cba](https://github.com/cloudflare/python-cloudflare/commit/65f3cba24823e858f019ea4c3d0b528a93251f1c) updated man page - back in sync with code
+ - 2020-04-08 18:14:15 -0700 [13901c1](https://github.com/cloudflare/python-cloudflare/commit/13901c17dc42b00516275955c3d1e009c3fe0ac2) CHANGELOG.md pushed to github
  - 2020-04-08 18:13:30 -0700 [1da709c](https://github.com/cloudflare/python-cloudflare/commit/1da709c2138491dc8316fad04d0221236f97439e) 2.6.5 release
  - 2020-04-08 18:12:48 -0700 [450dd7d](https://github.com/cloudflare/python-cloudflare/commit/450dd7d721b5be7b257571018a6d49af2d90db13) updated api command list
  - 2020-04-09 08:57:24 +0800 [c5d4890](https://github.com/cloudflare/python-cloudflare/commit/c5d489032c29e2d84d7611518a68a637ccf89b0d) Merge pull request #90 from pygrigori/master
