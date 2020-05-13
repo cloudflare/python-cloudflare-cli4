@@ -24,6 +24,7 @@ def api_v4(self):
     zones_logpush(self)
     zones_logs(self)
     zones_media(self)
+    zones_origin_tls_client_auth(self)
     zones_rate_limits(self)
     zones_secondary_dns(self)
     zones_settings(self)
@@ -290,9 +291,19 @@ def zones_ssl(self):
     self.add('VOID', "zones", "ssl")
     self.add('AUTH', "zones", "ssl/analyze")
     self.add('AUTH', "zones", "ssl/certificate_packs")
+    self.add('AUTH', 'zones', 'ssl/certificate_packs/order')
+    self.add('AUTH', 'zones', 'ssl/certificate_packs/quota')
     self.add('AUTH', "zones", "ssl/verification")
     self.add('VOID', "zones", "ssl/universal")
     self.add('AUTH', "zones", "ssl/universal/settings")
+
+def zones_origin_tls_client_auth(self):
+    """ API core commands for Cloudflare API"""
+
+    self.add('AUTH', 'zones', 'origin_tls_client_auth')
+    self.add('AUTH', 'zones', 'origin_tls_client_auth/hostnames')
+    self.add('AUTH', 'zones', 'origin_tls_client_auth/hostnames/certificates')
+    self.add('AUTH', 'zones', 'origin_tls_client_auth/settings')
 
 def zones_workers(self):
     """ API core commands for Cloudflare API"""
