@@ -1,5 +1,9 @@
 # Change Log
 
+ - 2020-05-12 18:43:44 -0700 [8280ec9](https://github.com/cloudflare/python-cloudflare/commit/8280ec96a9387f685fa3bf4e7ec1779406fcd90c) cleaned up upload commands
+ - 2020-05-12 18:40:51 -0700 [916aa5b](https://github.com/cloudflare/python-cloudflare/commit/916aa5beb77481e6b891be75f91da404da07df99) 2.7.1 release
+ - 2020-05-12 18:34:25 -0700 [ddf442e](https://github.com/cloudflare/python-cloudflare/commit/ddf442eae8a8d29fe71d052669f5867ae0d62d4f) added zones/ssl/certificate_packs and zones/origin_tls_client_auth
+ - 2020-05-12 18:26:20 -0700 [0a5ec5b](https://github.com/cloudflare/python-cloudflare/commit/0a5ec5b39d8cdc1f20b9a57951d08304a839cb38) CHANGELOG.md pushed to github
  - 2020-05-12 18:25:52 -0700 [1c05b7b](https://github.com/cloudflare/python-cloudflare/commit/1c05b7bb1f5a05e9fcfebdfaa2d12bec0e8547f8) 2.7.0 release
  - 2020-05-12 18:25:10 -0700 [c1d9295](https://github.com/cloudflare/python-cloudflare/commit/c1d92955051e180dc4132d520830b5ba795097d2) added man page to dist
  - 2020-05-12 18:24:20 -0700 [5a8844e](https://github.com/cloudflare/python-cloudflare/commit/5a8844e651925bea01f12f38cdfb1ba52bdd4907) added github signing commands to Makefile
