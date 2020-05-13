@@ -47,13 +47,14 @@ bdist: all
 	$(PYTHON) setup.py -q bdist
 	@rm -rf ${NAME}.egg-info
 
-upload: clean all tag upload-pypi upload-github
+upload: clean all tag upload-github upload-pypi
+
+upload-github:
+	git push
+	git push origin --tags
 
 upload-pypi:
 	$(PYTHON) setup.py -q sdist upload --sign --identity="$(EMAIL)"
-
-upload-github:
-	git push origin --tags
 
 showtag: sdist
 	@ v=`ls -r dist | head -1 | sed -e 's/cloudflare-\([0-9.]*\)\.tar.*/\1/'` ; echo "\tDIST VERSION =" $$v ; (git tag | fgrep -q "$$v") && echo "\tGIT TAG EXISTS"
@@ -63,7 +64,6 @@ tag: sdist
 
 sign:
 	v=`ls -r dist | head -1 | sed -e 's/cloudflare-\([0-9.]*\)\.tar.*/\1/'` ; echo "\tDIST VERSION =" $$v ; \
-	v="2.6.5" ; \
 	mkdir -p tarball ; \
 	rm -f tarball/$$v.tar.gz.asc tarball/$$v.zip.asc ; \
 	curl -sS -o tarball/$$v.tar.gz https://codeload.github.com/cloudflare/python-cloudflare/tar.gz/$$v ; \
@@ -82,5 +82,4 @@ clean:
 	mkdir build dist
 	$(PYTHON) setup.py -q clean
 	rm -rf ${NAME}.egg-info
-	rm -rf tarball
 
