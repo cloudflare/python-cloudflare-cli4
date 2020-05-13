@@ -4,6 +4,7 @@ PANDOC = pandoc
 PYLINT = pylint
 
 EMAIL = "mahtin@mahtin.com"
+EMAIL = "martin@cloudflare.com"
 NAME = "cloudflare"
 
 all:	README.rst CHANGELOG.md build
@@ -60,6 +61,18 @@ showtag: sdist
 tag: sdist
 	@ v=`ls -r dist | head -1 | sed -e 's/cloudflare-\([0-9.]*\)\.tar.*/\1/'` ; echo "\tDIST VERSION =" $$v ; (git tag | fgrep -q "$$v") || git tag "$$v"
 
+sign:
+	v=`ls -r dist | head -1 | sed -e 's/cloudflare-\([0-9.]*\)\.tar.*/\1/'` ; echo "\tDIST VERSION =" $$v ; \
+	v="2.6.5" ; \
+	mkdir -p tarball ; \
+	rm -f tarball/$$v.tar.gz.asc tarball/$$v.zip.asc ; \
+	curl -sS -o tarball/$$v.tar.gz https://codeload.github.com/cloudflare/python-cloudflare/tar.gz/$$v ; \
+	curl -sS -o tarball/$$v.zip https://codeload.github.com/cloudflare/python-cloudflare/zip/$$v ; \
+	gpg --default-key ${EMAIL} --armor --detach-sign tarball/$$v.tar.gz ; \
+	gpg --default-key ${EMAIL} --armor --detach-sign tarball/$$v.zip ; \
+	ls -l tarball/$$v.tar.gz tarball/$$v.zip ; \
+	ls -l tarball/$$v.tar.gz.asc tarball/$$v.zip.asc ;
+
 lint:
 	$(PYLINT) CloudFlare cli4
 
@@ -69,4 +82,5 @@ clean:
 	mkdir build dist
 	$(PYTHON) setup.py -q clean
 	rm -rf ${NAME}.egg-info
+	rm -rf tarball
 
