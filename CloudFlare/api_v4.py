@@ -425,6 +425,7 @@ def accounts_addressing(self):
     self.add('AUTH', "accounts", "addressing/prefixes")
     self.add('VOID', "accounts", "addressing/prefixes", "bgp")
     self.add('AUTH', "accounts", "addressing/prefixes", "bgp/status")
+    self.add('AUTH', 'accounts', 'addressing/prefixes', 'delegations')
 
 def accounts_audit_logs(self):
     """ API core commands for Cloudflare API"""
