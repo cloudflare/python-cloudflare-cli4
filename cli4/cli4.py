@@ -111,8 +111,11 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 elif waf_rules.match(element):
                     identifier3 = element
                 else:
-                    sys.stderr.write('/%s/%s :NOT CODED YET 3\n' % ('/'.join(cmd), element))
-                    raise e
+                    if len(cmd) >= 6 and cmd[0] == 'accounts' and cmd[2] == 'storage' and cmd[3] == 'kv' and cmd[4] == 'namespaces' and cmd[6] == 'values':
+                        identifier3 = element
+                    else:
+                        sys.stderr.write('/%s/%s :NOT CODED YET 3\n' % ('/'.join(cmd), element))
+                        raise e
         else:
             try:
                 m = getattr(m, element)
