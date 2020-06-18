@@ -296,7 +296,7 @@ class CloudFlare(object):
                 response_type = 'application/octet-stream'
             response_code = response.status_code
             response_data = response.content
-            if not isinstance(response_data, str):
+            if not isinstance(response_data, (str, bytes, bytearray)):
                 response_data = response_data.decode("utf-8")
 
             if self.logger:
@@ -364,6 +364,9 @@ class CloudFlare(object):
                     response_data = response_data.decode('utf-8')
                 try:
                     response_data = json.loads(response_data)
+                    if not isinstance(response_data, (dict)):
+                        response_data = {'success': True,
+                                         'result': response_data}
                 except ValueError:
                     if response_data == '':
                         # This should really be 'null' but it isn't. Even then, it's wrong!
@@ -397,23 +400,64 @@ class CloudFlare(object):
                     # 3xx & 4xx errors - we should report that somehow - but not quite yet
                     # response_data['code'] = response_code
                     pass
+            elif response_type == 'application/octet-stream' and isinstance(response_data, (int, float)):
+               # It's binary data
+               if response_code == requests.codes.ok:
+                    # 200 ok
+                    response_data = {'success': True,
+                                    'result': response_data}
+               else:
+                   # 3xx & 4xx errors
+                   response_data = {'success': False,
+                                    'code': response_code,
+                                    'result': response_data}
+            elif response_type == 'application/octet-stream' and isinstance(response_data, (bytes, bytearray)):
+                # API says it's text; but maybe it's actually JSON? - should be fixed in API
+                if hasattr(response_data, 'decode'):
+                    response_data = response_data.decode('utf-8')
+                try:
+                    response_data = json.loads(response_data)
+                    if not isinstance(response_data, (dict)) or 'success' not in response_data:
+                        if response_code == requests.codes.ok:
+                            # 200 ok
+                            response_data = {'success': True,
+                                             'result': response_data}
+                        else:
+                            # 3xx & 4xx errors
+                            response_data = {'success': False,
+                                             'code': response_code,
+                                             'result': response_data}
+                except ValueError:
+                    # So it wasn't JSON - moving on as if it's text!
+                    # A single value is returned (vs an array or object)
+                    if response_code == requests.codes.ok:
+                        # 200 ok
+                        response_data = {'success': True, 'result': response_data}
+                    else:
+                        # 3xx & 4xx errors
+                        response_data = {'success': False,
+                                         'code': response_code,
+                                         'result': response_data}
             elif response_type == 'text/plain' or response_type == 'application/octet-stream':
                 # API says it's text; but maybe it's actually JSON? - should be fixed in API
                 if hasattr(response_data, 'decode'):
                     response_data = response_data.decode('utf-8')
                 try:
                     response_data = json.loads(response_data)
+                    if not isinstance(response_data, (dict)):
+                        response_data = {'success': True,
+                                         'result': response_data}
                 except ValueError:
                     # So it wasn't JSON - moving on as if it's text!
                     # A single value is returned (vs an array or object)
                     if response_code == requests.codes.ok:
                         # 200 ok
-                        response_data = {'success': True, 'result': str(response_data)}
+                        response_data = {'success': True, 'result': response_data}
                     else:
                         # 3xx & 4xx errors
                         response_data = {'success': False,
                                          'code': response_code,
-                                         'result': str(response_data)}
+                                         'result': response_data}
             elif response_type == 'text/javascript' or response_type == 'application/javascript':
                 # used by Cloudflare workers
                 if response_code == requests.codes.ok:
