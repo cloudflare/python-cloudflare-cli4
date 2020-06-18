@@ -154,6 +154,43 @@ class CloudFlare(object):
                               identifier1, identifier2, identifier3,
                               params, data, files)
 
+        def _connection(self, method, url, headers, params, data, files):
+            """ Cloudflare v4 API"""
+
+            if self.use_sessions:
+                if self.session is None:
+                    self.session = requests.Session()
+            else:
+                self.session = requests
+
+            method = method.upper()
+
+            if method == 'GET':
+                return self.session.get(url, headers=headers, params=params, data=data)
+            if method == 'POST':
+                if isinstance(data, str):
+                    return self.session.post(url, headers=headers, params=params, data=data, files=files)
+                else:
+                    return self.session.post(url, headers=headers, params=params, json=data, files=files)
+            if method == 'PUT':
+                if isinstance(data, str):
+                    return self.session.put(url, headers=headers, params=params, data=data)
+                else:
+                    return self.session.put(url, headers=headers, params=params, json=data)
+            if method == 'DELETE':
+                if isinstance(data, str):
+                    return self.session.delete(url, headers=headers, params=params, data=data)
+                else:
+                    return self.session.delete(url, headers=headers, params=params, json=data)
+            if method == 'PATCH':
+                if isinstance(data, str):
+                    return self.session.request('PATCH', url, headers=headers, params=params, data=data)
+                else:
+                    return self.session.request('PATCH', url, headers=headers, params=params, json=data)
+
+            # should never happen
+            raise CloudFlareAPIError(0, 'method not supported')
+
         def _network(self, method, headers, parts,
                      identifier1=None, identifier2=None, identifier3=None,
                      params=None, data=None, files=None):
@@ -208,72 +245,11 @@ class CloudFlare(object):
                 self.logger.debug('Call: method and url %s %s', str(method), str(url))
                 self.logger.debug('Call: headers %s', str(sanitize_secrets(headers)))
 
-            method = method.upper()
-
             if self.logger:
                 self.logger.debug('Call: doit!')
 
-            if self.use_sessions:
-                if self.session is None:
-                    self.session = requests.Session()
-            else:
-                self.session = requests
-
             try:
-                if method == 'GET':
-                    response = self.session.get(url,
-                                                headers=headers,
-                                                params=params,
-                                                data=data)
-                elif method == 'POST':
-                    if isinstance(data, str):
-                        response = self.session.post(url,
-                                                     headers=headers,
-                                                     params=params,
-                                                     data=data,
-                                                     files=files)
-                    else:
-                        response = self.session.post(url,
-                                                     headers=headers,
-                                                     params=params,
-                                                     json=data,
-                                                     files=files)
-                elif method == 'PUT':
-                    if isinstance(data, str):
-                        response = self.session.put(url,
-                                                    headers=headers,
-                                                    params=params,
-                                                    data=data)
-                    else:
-                        response = self.session.put(url,
-                                                    headers=headers,
-                                                    params=params,
-                                                    json=data)
-                elif method == 'DELETE':
-                    if isinstance(data, str):
-                        response = self.session.delete(url,
-                                                       headers=headers,
-                                                       params=params,
-                                                       data=data)
-                    else:
-                        response = self.session.delete(url,
-                                                       headers=headers,
-                                                       params=params,
-                                                       json=data)
-                elif method == 'PATCH':
-                    if isinstance(data, str):
-                        response = self.session.request('PATCH', url,
-                                                        headers=headers,
-                                                        params=params,
-                                                        data=data)
-                    else:
-                        response = self.session.request('PATCH', url,
-                                                        headers=headers,
-                                                        params=params,
-                                                        json=data)
-                else:
-                    # should never happen
-                    raise CloudFlareAPIError(0, 'method not supported')
+                response = self._connection(method, url, headers, params, data, files)
                 if self.logger:
                     self.logger.debug('Call: done!')
             except Exception as e:
