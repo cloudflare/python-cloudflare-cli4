@@ -76,6 +76,16 @@ sign:
 lint:
 	$(PYLINT) CloudFlare cli4
 
+api:
+	@tmp=/tmp/_$$$$_ ; \
+	python -m cli4 --dump | sort > $$tmp.1 ; \
+	python -m cli4 --api | sed -e 's/?.*//' -e 's/.* //' -e 's/\/:[^:\/]*//g' | sort | uniq > $$tmp.2 ; \
+	echo "In code:" ; \
+	diff $$tmp.1 $$tmp.2 | egrep '< ' | sed -e 's/< /         /' | sort ; \
+	echo "In docs:" ; \
+	diff $$tmp.1 $$tmp.2 | egrep '> ' | sed -e 's/< /         /' | sort ; \
+	rm $$tmp.?
+
 clean:
 	rm -rf build
 	rm -rf dist
