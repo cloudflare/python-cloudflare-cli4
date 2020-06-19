@@ -9,6 +9,7 @@ from .utils import user_agent, sanitize_secrets
 from .read_configs import read_configs
 from .api_v4 import api_v4
 from .api_extras import api_extras
+from .api_decode_from_web import api_decode_from_web
 from .exceptions import CloudFlareError, CloudFlareAPIError, CloudFlareInternalError
 
 BASE_URL = 'https://api.cloudflare.com/client/v4'
@@ -154,7 +155,7 @@ class CloudFlare(object):
                               identifier1, identifier2, identifier3,
                               params, data, files)
 
-        def _connection(self, method, url, headers, params, data, files):
+        def _connection(self, method, url, headers=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
             if self.use_sessions:
@@ -254,10 +255,9 @@ class CloudFlare(object):
                 self.logger.debug('Call: method and url %s %s', str(method), str(url))
                 self.logger.debug('Call: headers %s', str(sanitize_secrets(headers)))
 
-            if self.logger:
-                self.logger.debug('Call: doit!')
-
             try:
+                if self.logger:
+                    self.logger.debug('Call: doit!')
                 response = self._connection(method, url, headers, params, data, files)
                 if self.logger:
                     self.logger.debug('Call: done!')
@@ -595,6 +595,25 @@ class CloudFlare(object):
             result = response_data
             return result
 
+        def _api_from_web(self):
+            """ Cloudflare v4 API"""
+
+            # base url isn't enough; we need less
+            url = '/'.join(self.base_url.split('/')[0:3])
+
+            try:
+                if self.logger:
+                    self.logger.debug('Call: doit!')
+                response = self._connection("GET", url)
+                if self.logger:
+                    self.logger.debug('Call: done!')
+            except Exception as e:
+                if self.logger:
+                    self.logger.debug('Call: exception! "%s"' % (e))
+                raise CloudFlareAPIError(0, 'connection failed.')
+
+            return response.text
+
     class _AddUnused(object):
         """ Cloudflare v4 API"""
 
@@ -918,6 +937,11 @@ class CloudFlare(object):
                         w.append(s + '/' + n)
                 w = w + self.api_list(a, s + '/' + n)
         return w
+
+    def api_from_web(self):
+        """ Cloudflare v4 API"""
+
+        return api_decode_from_web(self._base._api_from_web())
 
     def __init__(self, email=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None):
         """ Cloudflare v4 API"""

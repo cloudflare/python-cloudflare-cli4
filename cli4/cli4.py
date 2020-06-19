@@ -23,6 +23,15 @@ def dump_commands():
     w = cf.api_list()
     sys.stdout.write('\n'.join(w) + '\n')
 
+def dump_commands_from_web():
+    """dump a tree of all the known API commands - from web"""
+    cf = CloudFlare.CloudFlare()
+    w = cf.api_from_web()
+    for r in w:
+        if r['deprecated']:
+            continue
+        sys.stdout.write('%-6s %s\n' % (r['action'], r['cmd']))
+
 def run_command(cf, method, command, params=None, content=None, files=None):
     """run the command line"""
     # remove leading and trailing /'s
@@ -239,6 +248,7 @@ def do_it(args):
     output = 'json'
     raw = False
     dump = False
+    dump_from_web = False
     profile = None
     method = 'GET'
 
@@ -247,6 +257,7 @@ def do_it(args):
              + '[-j|--json] [-y|--yaml] [-n|ndjson] '
              + '[-r|--raw] '
              + '[-d|--dump] '
+             + '[-a|--api] '
              + '[-p|--profile profile-name] '
              + '[--get|--patch|--post|--put|--delete] '
              + '[item=value|item=@filename|@filename ...] '
@@ -254,12 +265,12 @@ def do_it(args):
 
     try:
         opts, args = getopt.getopt(args,
-                                   'Vhvqjyrdp:GPOUD',
+                                   'Vhvqjyrdap:GPOUD',
                                    [
                                        'version',
                                        'help', 'verbose', 'quiet', 'json', 'yaml', 'ndjson',
                                        'raw',
-                                       'dump',
+                                       'dump', 'api',
                                        'profile=',
                                        'get', 'patch', 'post', 'put', 'delete'
                                    ])
@@ -290,6 +301,8 @@ def do_it(args):
             profile = arg
         elif opt in ('-d', '--dump'):
             dump = True
+        elif opt in ('-a', '--api'):
+            dump_from_web = True
         elif opt in ('-G', '--get'):
             method = 'GET'
         elif opt in ('-P', '--patch'):
@@ -303,6 +316,10 @@ def do_it(args):
 
     if dump:
         dump_commands()
+        sys.exit(0)
+
+    if dump_from_web:
+        dump_commands_from_web()
         sys.exit(0)
 
     digits_only = re.compile('^-?[0-9]+$')
