@@ -1,5 +1,14 @@
 # Change Log
 
+ - 2020-06-19 15:31:01 -0700 [23784a4](https://github.com/cloudflare/python-cloudflare/commit/23784a40db8b92c76447f7bf212938eb4605e2ae) 2.8.1 release
+ - 2020-06-19 15:28:48 -0700 [f8cc4a7](https://github.com/cloudflare/python-cloudflare/commit/f8cc4a73afef1329821884added6a792874dcdb4) now able to check and confirm API is up to date
+ - 2020-06-19 15:08:48 -0700 [f266fb5](https://github.com/cloudflare/python-cloudflare/commit/f266fb50e30d93ae1c32553703c9c514f2888903) added code to query api documentation (via beautifulsoup4) to build a current api listing
+ - 2020-06-18 17:03:24 -0700 [f25bdfa](https://github.com/cloudflare/python-cloudflare/commit/f25bdfaf59ad4d25948482b3fe98099912168898) pylint stuff
+ - 2020-06-18 16:56:59 -0700 [9c2424e](https://github.com/cloudflare/python-cloudflare/commit/9c2424e57e719c5e5a0e561d5b187e57dbf39610) moved connection to _connection() to accomodate additional call types
+ - 2020-06-18 16:42:43 -0700 [84f57b4](https://github.com/cloudflare/python-cloudflare/commit/84f57b4240acecc20eeb1e5aef2bd047e3eb77ca) handled  accounts/:account_identifier/storage/kv/namespaces/:namespace_identifier/values/:key_name return as binary data
+ - 2020-06-17 13:05:01 -0700 [355ae5d](https://github.com/cloudflare/python-cloudflare/commit/355ae5defff5c02880f553c5a16c84662c1571ca) handled any key_name for accounts/:account_identifier/storage/kv/namespaces/:namespace_identifier/values/:key_name
+ - 2020-06-17 12:28:09 -0700 [dc07708](https://github.com/cloudflare/python-cloudflare/commit/dc0770861e8fd7d45f431ee0bf38d87c6aeb4223) addressing/prefixes/delegations added
+ - 2020-05-12 18:44:20 -0700 [1906a68](https://github.com/cloudflare/python-cloudflare/commit/1906a680fca36f525610422ff7914afe0491f6e6) CHANGELOG.md pushed to github
  - 2020-05-12 18:43:44 -0700 [8280ec9](https://github.com/cloudflare/python-cloudflare/commit/8280ec96a9387f685fa3bf4e7ec1779406fcd90c) cleaned up upload commands
  - 2020-05-12 18:40:51 -0700 [916aa5b](https://github.com/cloudflare/python-cloudflare/commit/916aa5beb77481e6b891be75f91da404da07df99) 2.7.1 release
  - 2020-05-12 18:34:25 -0700 [ddf442e](https://github.com/cloudflare/python-cloudflare/commit/ddf442eae8a8d29fe71d052669f5867ae0d62d4f) added zones/ssl/certificate_packs and zones/origin_tls_client_auth
