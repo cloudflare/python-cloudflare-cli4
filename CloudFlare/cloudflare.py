@@ -166,27 +166,36 @@ class CloudFlare(object):
             method = method.upper()
 
             if method == 'GET':
-                return self.session.get(url, headers=headers, params=params, data=data)
+                return self.session.get(url,
+                                        headers=headers, params=params, data=data)
             if method == 'POST':
                 if isinstance(data, str):
-                    return self.session.post(url, headers=headers, params=params, data=data, files=files)
+                    return self.session.post(url,
+                                             headers=headers, params=params, data=data, files=files)
                 else:
-                    return self.session.post(url, headers=headers, params=params, json=data, files=files)
+                    return self.session.post(url,
+                                             headers=headers, params=params, json=data, files=files)
             if method == 'PUT':
                 if isinstance(data, str):
-                    return self.session.put(url, headers=headers, params=params, data=data)
+                    return self.session.put(url,
+                                            headers=headers, params=params, data=data)
                 else:
-                    return self.session.put(url, headers=headers, params=params, json=data)
+                    return self.session.put(url,
+                                            headers=headers, params=params, json=data)
             if method == 'DELETE':
                 if isinstance(data, str):
-                    return self.session.delete(url, headers=headers, params=params, data=data)
+                    return self.session.delete(url,
+                                               headers=headers, params=params, data=data)
                 else:
-                    return self.session.delete(url, headers=headers, params=params, json=data)
+                    return self.session.delete(url,
+                                               headers=headers, params=params, json=data)
             if method == 'PATCH':
                 if isinstance(data, str):
-                    return self.session.request('PATCH', url, headers=headers, params=params, data=data)
+                    return self.session.request('PATCH', url,
+                                                headers=headers, params=params, data=data)
                 else:
-                    return self.session.request('PATCH', url, headers=headers, params=params, json=data)
+                    return self.session.request('PATCH', url,
+                                                headers=headers, params=params, json=data)
 
             # should never happen
             raise CloudFlareAPIError(0, 'method not supported')
@@ -377,16 +386,16 @@ class CloudFlare(object):
                     # response_data['code'] = response_code
                     pass
             elif response_type == 'application/octet-stream' and isinstance(response_data, (int, float)):
-               # It's binary data
-               if response_code == requests.codes.ok:
+                # It's binary data
+                if response_code == requests.codes.ok:
                     # 200 ok
                     response_data = {'success': True,
-                                    'result': response_data}
-               else:
-                   # 3xx & 4xx errors
-                   response_data = {'success': False,
-                                    'code': response_code,
-                                    'result': response_data}
+                                     'result': response_data}
+                else:
+                    # 3xx & 4xx errors
+                    response_data = {'success': False,
+                                     'code': response_code,
+                                     'result': response_data}
             elif response_type == 'application/octet-stream' and isinstance(response_data, (bytes, bytearray)):
                 # API says it's text; but maybe it's actually JSON? - should be fixed in API
                 if hasattr(response_data, 'decode'):
