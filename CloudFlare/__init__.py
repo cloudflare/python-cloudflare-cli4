@@ -1,7 +1,7 @@
 """ Cloudflare v4 API"""
 from __future__ import absolute_import
 
-__version__ = '2.7.1'
+__version__ = '2.8.1'
 
 from .cloudflare import CloudFlare
 
