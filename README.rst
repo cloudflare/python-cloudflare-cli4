@@ -1291,6 +1291,12 @@ This is based on work by `Felix Wong
 `here <https://github.com/cloudflare-api/python-cloudflare-v4>`__. It
 has been seriously expanded upon.
 
+Changelog
+---------
+
+An automatically generated CHANGELOG is provided
+`here <CHANGELOG.md>`__.
+
 Copyright
 ---------
 

@@ -1100,6 +1100,10 @@ As of January 2020 the code is Python3.8 clean. The new `SyntaxWarning` messages
 This is based on work by [Felix Wong (gnowxilef)](https://github.com/gnowxilef) found [here](https://github.com/cloudflare-api/python-cloudflare-v4).
 It has been seriously expanded upon.
 
+## Changelog
+
+An automatically generated CHANGELOG is provided [here](CHANGELOG.md).
+
 ## Copyright
 
 Portions copyright [Felix Wong (gnowxilef)](https://github.com/gnowxilef) 2015 and Cloudflare 2016.
