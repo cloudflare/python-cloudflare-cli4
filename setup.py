@@ -32,7 +32,7 @@ def main():
         #package_data={'cloudflare-examples': ["examples/*"]},
         include_package_data=True,
         data_files = [('man/man1', ['cli4/cli4.man'])],
-        install_requires=['requests', 'future', 'pyyaml', 'jsonlines', 'beautifulsoup4'],
+        install_requires=['requests', 'pyyaml', 'jsonlines', 'beautifulsoup4'],
         keywords='cloudflare',
         entry_points={
             'console_scripts': [
