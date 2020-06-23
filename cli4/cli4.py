@@ -52,6 +52,7 @@ def run_command(cf, method, command, params=None, content=None, files=None):
 
     hex_only = re.compile('^[0-9a-fA-F]+$')
     waf_rules = re.compile('^[0-9]+[A-Z]*$')
+    uuid_value = re.compile('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')	# 8-4-4-4-12
 
     m = cf
     for element in parts:
@@ -60,6 +61,9 @@ def run_command(cf, method, command, params=None, content=None, files=None):
             if identifier1 is None:
                 if len(element) in [32, 40, 48] and hex_only.match(element):
                     # raw identifier - lets just use it as-is
+                    identifier1 = element
+                if len(element) == 36  and uuid_value.match(element):
+                    # uuid identifier - lets just use it as-is
                     identifier1 = element
                 elif element[0] == ':':
                     # raw string - used for workers script_name - use ::script_name
@@ -93,6 +97,9 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 if len(element) in [32, 40, 48] and hex_only.match(element):
                     # raw identifier - lets just use it as-is
                     identifier2 = element
+                if len(element) == 36  and uuid_value.match(element):
+                    # uuid identifier - lets just use it as-is
+                    identifier2 = element
                 elif element[0] == ':':
                     # raw string - used for workers script_names
                     identifier2 = element[1:]
@@ -100,6 +107,10 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                     try:
                         if (cmd[0] and cmd[0] == 'zones') and (cmd[2] and cmd[2] == 'dns_records'):
                             identifier2 = converters.convert_dns_record_to_identifier(cf,
+                                                                                      identifier1,
+                                                                                      element)
+                        elif (cmd[0] and cmd[0] == 'zones') and (cmd[2] and cmd[2] == 'custom_hostnames'):
+                            identifier2 = converters.convert_custom_hostnames_to_identifier(cf,
                                                                                       identifier1,
                                                                                       element)
                         else:
@@ -116,6 +127,9 @@ def run_command(cf, method, command, params=None, content=None, files=None):
             else:
                 if len(element) in [32, 40, 48] and hex_only.match(element):
                     # raw identifier - lets just use it as-is
+                    identifier3 = element
+                if len(element) == 36  and uuid_value.match(element):
+                    # uuid identifier - lets just use it as-is
                     identifier3 = element
                 elif waf_rules.match(element):
                     identifier3 = element

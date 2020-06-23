@@ -130,3 +130,23 @@ def convert_load_balancers_pool_to_identifier(cf, pool_name):
             return p['id']
 
     raise ConverterError('%s: not found' % (pool_name))
+
+def convert_custom_hostnames_to_identifier(cf, zone_id, custom_hostname):
+    """custom_hostnames to numbers"""
+    # this can return an array of results
+    params = {'name':custom_hostname}
+    try:
+        custom_hostnames_records = cf.zones.custom_hostnames.get(zone_id, params=params)
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        raise ConverterError(int(e), '%s - %d %s' % (dns_name, e, e))
+    except Exception as e:
+        raise ConverterError(0, '%s - %s' % (dns_name, e))
+
+    r = []
+    for custom_hostnames_record in custom_hostnames_records:
+        if custom_hostname == custom_hostnames_record['hostname']:
+            r.append(custom_hostnames_record['id'])
+    if len(r) > 0:
+        return r
+
+    raise ConverterError('%s: not found' % (custom_hostname))
