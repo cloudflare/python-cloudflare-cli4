@@ -1,5 +1,11 @@
 # Change Log
 
+ - 2020-06-22 18:45:09 -0700 [f617736](../../commit/f617736837ca83056cbfb6e4aedb201c4a14a2de) 2.8.3 release
+ - 2020-06-22 18:44:22 -0700 [1a3eb2a](../../commit/1a3eb2ad44ed66e575d50da80d4ab04e96be840f) added example code for custom_hostnames
+ - 2020-06-22 18:38:19 -0700 [806b626](../../commit/806b62626c373e9f269d63c355d22e4977dfa59e) added uuid support and converter for custom_hostnames
+ - 2020-06-22 18:36:49 -0700 [9dcb55f](../../commit/9dcb55f083ca2dc95facbd72f43a7ed5fb50d207) one more place where a missing error response could do harm
+ - 2020-06-22 18:36:14 -0700 [4262a2b](../../commit/4262a2b07e25c07980c164966d48eb3ce870bd22) added zone type and more dns info in dump - mainly for documentation reasons
+ - 2020-06-22 12:42:28 -0700 [b74a781](../../commit/b74a78115db17a31b65b1e4a7c5b8bb6d31033ad) CHANGELOG.md pushed to github
  - 2020-06-22 12:42:03 -0700 [d82318f](../../commit/d82318fcb14d458b771805ef758abe9e5951dc78) 2.8.2 release
  - 2020-06-22 12:41:17 -0700 [40ab439](../../commit/40ab4396b6cbf25df52f6ad44498b94222e3af01) removed excess imports including both __future__ and others
  - 2020-06-22 12:29:07 -0700 [ff91110](../../commit/ff9111072169bc4849964e294c2d4fcf572f5ec9) Merge branch 'master' of github.com:cloudflare/python-cloudflare
