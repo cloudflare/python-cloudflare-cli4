@@ -4,6 +4,7 @@ from __future__ import absolute_import
 import json
 import requests
 
+from .network import CFnetwork
 from .logging_helper import CFlogger
 from .utils import user_agent, sanitize_secrets
 from .read_configs import read_configs
@@ -41,7 +42,7 @@ class CloudFlare(object):
             self.raw = config['raw']
             self.use_sessions = config['use_sessions']
             self.profile = config['profile']
-            self.session = None
+            self.network = CFnetwork(use_sessions=self.use_sessions)
             self.user_agent = user_agent()
 
             if 'debug' in config and config['debug']:
@@ -155,53 +156,7 @@ class CloudFlare(object):
                               identifier1, identifier2, identifier3,
                               params, data, files)
 
-        def _connection(self, method, url, headers=None, params=None, data=None, files=None):
-            """ Cloudflare v4 API"""
-
-            if self.use_sessions:
-                if self.session is None:
-                    self.session = requests.Session()
-            else:
-                self.session = requests
-
-            method = method.upper()
-
-            if method == 'GET':
-                return self.session.get(url,
-                                        headers=headers, params=params, data=data)
-            if method == 'POST':
-                if isinstance(data, str):
-                    return self.session.post(url,
-                                             headers=headers, params=params, data=data, files=files)
-                else:
-                    return self.session.post(url,
-                                             headers=headers, params=params, json=data, files=files)
-            if method == 'PUT':
-                if isinstance(data, str):
-                    return self.session.put(url,
-                                            headers=headers, params=params, data=data)
-                else:
-                    return self.session.put(url,
-                                            headers=headers, params=params, json=data)
-            if method == 'DELETE':
-                if isinstance(data, str):
-                    return self.session.delete(url,
-                                               headers=headers, params=params, data=data)
-                else:
-                    return self.session.delete(url,
-                                               headers=headers, params=params, json=data)
-            if method == 'PATCH':
-                if isinstance(data, str):
-                    return self.session.request('PATCH', url,
-                                                headers=headers, params=params, data=data)
-                else:
-                    return self.session.request('PATCH', url,
-                                                headers=headers, params=params, json=data)
-
-            # should never happen
-            raise CloudFlareAPIError(0, 'method not supported')
-
-        def _network(self, method, headers, parts,
+        def _call_network(self, method, headers, parts,
                      identifier1=None, identifier2=None, identifier3=None,
                      params=None, data=None, files=None):
             """ Cloudflare v4 API"""
@@ -258,7 +213,7 @@ class CloudFlare(object):
             try:
                 if self.logger:
                     self.logger.debug('Call: doit!')
-                response = self._connection(method, url, headers, params, data, files)
+                response = self.network(method, url, headers, params, data, files)
                 if self.logger:
                     self.logger.debug('Call: done!')
             except Exception as e:
@@ -335,13 +290,13 @@ class CloudFlare(object):
                  params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            [response_type, response_code, response_data] = self._network(method,
-                                                                          headers, parts,
-                                                                          identifier1,
-                                                                          identifier2,
-                                                                          identifier3,
-                                                                          params, data, files)
-
+            [response_type, response_code, response_data] = self._call_network(method,
+                                                                               headers, parts,
+                                                                               identifier1,
+                                                                               identifier2,
+                                                                               identifier3,
+                                                                               params, data, files)
+     
             if response_type == 'application/json':
                 # API says it's JSON; so it better be parsable as JSON
                 # NDJSON is returned by Enterprise Log Share i.e. /zones/:id/logs/received
@@ -607,7 +562,7 @@ class CloudFlare(object):
             try:
                 if self.logger:
                     self.logger.debug('Call: doit!')
-                response = self._connection("GET", url)
+                response = self.network.do__connection("GET", url)
                 if self.logger:
                     self.logger.debug('Call: done!')
             except Exception as e:
