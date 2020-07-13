@@ -1,5 +1,11 @@
 # Change Log
 
+ - 2020-07-13 13:00:16 -0700 [a1ec29f](../../commit/a1ec29f9566e8e0c9bba7f2a9defbea987c6b214) 2.8.4 release
+ - 2020-07-13 12:57:06 -0700 [ae96ed4](../../commit/ae96ed4c2edc087ae06c50202765026d7bb8139a) rules,access/logs,access/apps,etc added
+ - 2020-07-13 12:56:06 -0700 [ccc96f1](../../commit/ccc96f1040da92db6b04a36de7883b6d61830b0e) api decode and Makefile now consistent - no leading slash
+ - 2020-07-13 12:46:35 -0700 [b5c1f60](../../commit/b5c1f60b42a6b48fc11faa8a69cfa8ce1a5a2609) moved network functions - but forgot one call - now fixed
+ - 2020-06-23 17:37:09 -0700 [5f3a974](../../commit/5f3a97494f9d3582a2be0b3baaf59f3d24c2b549) moved network functions into their own file - part of splitting up a large file
+ - 2020-06-22 18:45:20 -0700 [dd5e51f](../../commit/dd5e51fb4a6cab05f5bd8a678da1dce02d1846f2) CHANGELOG.md pushed to github
  - 2020-06-22 18:45:09 -0700 [f617736](../../commit/f617736837ca83056cbfb6e4aedb201c4a14a2de) 2.8.3 release
  - 2020-06-22 18:44:22 -0700 [1a3eb2a](../../commit/1a3eb2ad44ed66e575d50da80d4ab04e96be840f) added example code for custom_hostnames
  - 2020-06-22 18:38:19 -0700 [806b626](../../commit/806b62626c373e9f269d63c355d22e4977dfa59e) added uuid support and converter for custom_hostnames
