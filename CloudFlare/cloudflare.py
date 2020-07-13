@@ -562,7 +562,7 @@ class CloudFlare(object):
             try:
                 if self.logger:
                     self.logger.debug('Call: doit!')
-                response = self.network.do__connection("GET", url)
+                response = self.network('GET', url)
                 if self.logger:
                     self.logger.debug('Call: done!')
             except Exception as e:
