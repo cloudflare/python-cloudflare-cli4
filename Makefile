@@ -78,12 +78,12 @@ lint:
 
 api:
 	@tmp=/tmp/_$$$$_ ; \
-	python -m cli4 --dump | sort > $$tmp.1 ; \
-	python -m cli4 --api | sed -e 's/?.*//' -e 's/.* //' -e 's/\/:[^:\/]*//g' | sort | uniq > $$tmp.2 ; \
+	python -m cli4 --dump | sed -e 's/^\///' | sort > $$tmp.1 ; \
+	python -m cli4 --api | sed -e 's/.* //' -e 's/\/:[^:\/]*//g' -e 's/^\///' | sort | uniq > $$tmp.2 ; \
 	echo "In code:" ; \
 	diff $$tmp.1 $$tmp.2 | egrep '< ' | sed -e 's/< /         /' | sort ; \
 	echo "In docs:" ; \
-	diff $$tmp.1 $$tmp.2 | egrep '> ' | sed -e 's/< /         /' | sort ; \
+	diff $$tmp.1 $$tmp.2 | egrep '> ' | sed -e 's/> /         /' | sort ; \
 	rm $$tmp.?
 
 clean:
