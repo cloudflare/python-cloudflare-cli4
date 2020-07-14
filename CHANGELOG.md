@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2020-07-14 15:35:33 -0700 [ec0a1cc](../../commit/ec0a1cc492b14e2cd0d901c6034dbcfcf6c0828f) 2.8.5 release
+ - 2020-07-14 14:58:41 -0700 [a3bd103](../../commit/a3bd1032e9c4f4a56578af2011e0fc369841cc0f) improved debug for jSON based data/params
+ - 2020-07-13 13:00:32 -0700 [fdb3dc1](../../commit/fdb3dc13604885541ec8dbac20e0b6b87c4a1e0d) CHANGELOG.md pushed to github
  - 2020-07-13 13:00:16 -0700 [a1ec29f](../../commit/a1ec29f9566e8e0c9bba7f2a9defbea987c6b214) 2.8.4 release
  - 2020-07-13 12:57:06 -0700 [ae96ed4](../../commit/ae96ed4c2edc087ae06c50202765026d7bb8139a) rules,access/logs,access/apps,etc added
  - 2020-07-13 12:56:06 -0700 [ccc96f1](../../commit/ccc96f1040da92db6b04a36de7883b6d61830b0e) api decode and Makefile now consistent - no leading slash
