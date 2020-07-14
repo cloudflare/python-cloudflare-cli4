@@ -169,10 +169,19 @@ class CloudFlare(object):
                                   str(identifier2),
                                   str(parts[2]),
                                   str(identifier3))
-                self.logger.debug('Call: optional params and data %s %s',
-                                  str(params),
-                                  str(data))
-                if files:
+                if params is not None:
+                    try:
+                        str_params = json.dumps(params)
+                    except:
+                        str_params = str(params)
+                    self.logger.debug('Call: params=%s', str_params)
+                if data is not None:
+                    try:
+                        str_data = json.dumps(data)
+                    except:
+                        str_data = str(data)
+                    self.logger.debug('Call: data=%s', str_data)
+                if files is not None:
                     self.logger.debug('Call: upload file %r', files)
 
             if (method is None) or (parts[0] is None):
@@ -207,8 +216,8 @@ class CloudFlare(object):
                 url += '/' + identifier3
 
             if self.logger:
-                self.logger.debug('Call: method and url %s %s', str(method), str(url))
-                self.logger.debug('Call: headers %s', str(sanitize_secrets(headers)))
+                self.logger.debug('Call: method=%s url=%s', str(method), str(url))
+                self.logger.debug('Call: headers=%s', str(sanitize_secrets(headers)))
 
             try:
                 if self.logger:
@@ -222,7 +231,7 @@ class CloudFlare(object):
                 raise CloudFlareAPIError(0, 'connection failed.')
 
             if self.logger:
-                self.logger.debug('Response: url %s', response.url)
+                self.logger.debug('Response: url=%s', response.url)
 
             # Create response_{type|code|data}
             try:
