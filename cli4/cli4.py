@@ -380,7 +380,10 @@ def do_it(args):
                 #value = json.loads(value) - changed to yaml code to remove unicode string issues
                 if yaml is None:
                     sys.exit('cli4: install yaml support')
-                value = yaml.safe_load(value_string)
+                try:
+                    value = yaml.safe_load(value_string)
+                except yaml.parser.ParserError as e:
+                    raise ValueError
             except ValueError:
                 sys.exit('cli4: %s="%s" - can\'t parse json value' % (tag_string, value_string))
         elif value_string[0] == '@':
@@ -404,10 +407,8 @@ def do_it(args):
         if tag_string == '':
             # There's no tag; it's just an unnamed list
             if params is None:
-                params = []
-            try:
-                params.append(value)
-            except AttributeError:
+                params = value
+            else:
                 sys.exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' %
                          (tag_string, value_string))
         else:
