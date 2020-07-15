@@ -961,6 +961,59 @@ $
 
 Refer to the Cloudflare Workers API documentation for more information.
 
+## Cloudflare GraphQL
+
+The GraphQL interface can be accessed via the command line or via Python.
+
+```
+    query="""
+      query {
+        viewer {
+            zones(filter: {zoneTag: "%s"} ) {
+            httpRequests1dGroups(limit:40, filter:{date_lt: "%s", date_gt: "%s"}) {
+              sum { countryMap { bytes, requests, clientCountryName } }
+              dimensions { date }
+            }
+          }
+        }
+      }
+    """ % (zone_id, date_before[0:10], date_after[0:10])
+
+    r = cf.graphql.post(data={'query':query})
+
+    httpRequests1dGroups = zone_info = r['data']['viewer']['zones'][0]['httpRequests1dGroups']
+```
+
+See the [examples/example_graphql.sh](examples/example_graphql.sh) and [examples/example_graphql.py](examples/example_graphql.py) files for working examples.
+Here is the working example of the shell version:
+
+```
+$ examples/example_graphql.sh example.com
+2020-07-14T02:00:00Z	34880
+2020-07-14T03:00:00Z	18953
+2020-07-14T04:00:00Z	28700
+2020-07-14T05:00:00Z	2358
+2020-07-14T06:00:00Z	34905
+2020-07-14T07:00:00Z	779
+2020-07-14T08:00:00Z	35450
+2020-07-14T10:00:00Z	17803
+2020-07-14T11:00:00Z	32678
+2020-07-14T12:00:00Z	19947
+2020-07-14T13:00:00Z	4956
+2020-07-14T14:00:00Z	34585
+2020-07-14T15:00:00Z	3022
+2020-07-14T16:00:00Z	5224
+2020-07-14T18:00:00Z	79482
+2020-07-14T21:00:00Z	10609
+2020-07-14T22:00:00Z	5740
+2020-07-14T23:00:00Z	2545
+2020-07-15T01:00:00Z	10777
+$
+```
+
+For more information on how to use GraphQL at Cloudflare, refer to the [Cloudflare GraphQL Analytics API](https://developers.cloudflare.com/analytics/graphql-api).
+It contains a full overview of Cloudflare's GraphQL features and keywords.
+
 ## Implemented API calls
 
 The **--dump** argument to cli4 will produce a list of all the call implemented within the library.
