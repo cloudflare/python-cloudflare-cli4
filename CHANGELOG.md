@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2020-07-14 19:00:30 -0700 [3ce15c1](../../commit/3ce15c1bd3e79f8deeef4eff1c184ac7f407fa75) 2.8.6 release
+ - 2020-07-14 18:59:59 -0700 [4aa1148](../../commit/4aa1148b3e9389b9654df64e255ed353947bd47f) Added working GraphQL examples
+ - 2020-07-14 15:35:50 -0700 [5c25aa8](../../commit/5c25aa80b15a78aee574724b115ce172d6ca2401) CHANGELOG.md pushed to github
  - 2020-07-14 15:35:33 -0700 [ec0a1cc](../../commit/ec0a1cc492b14e2cd0d901c6034dbcfcf6c0828f) 2.8.5 release
  - 2020-07-14 14:58:41 -0700 [a3bd103](../../commit/a3bd1032e9c4f4a56578af2011e0fc369841cc0f) improved debug for jSON based data/params
  - 2020-07-13 13:00:32 -0700 [fdb3dc1](../../commit/fdb3dc13604885541ec8dbac20e0b6b87c4a1e0d) CHANGELOG.md pushed to github
