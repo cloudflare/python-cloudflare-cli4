@@ -37,8 +37,11 @@ class CloudFlare(object):
                 self.certtoken = config['certtoken']
             else:
                 self.certtoken = None
-
-            self.base_url = config['base_url']
+            if 'base_url' in config:
+                self.base_url = config['base_url']
+            else:
+                # We must have a base_url value
+                self.base_url = BASE_URL
             self.raw = config['raw']
             self.use_sessions = config['use_sessions']
             self.profile = config['profile']
@@ -910,10 +913,8 @@ class CloudFlare(object):
 
         return api_decode_from_web(self._base._api_from_web())
 
-    def __init__(self, email=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None):
+    def __init__(self, email=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None):
         """ Cloudflare v4 API"""
-
-        base_url = BASE_URL
 
         try:
             config = read_configs(profile)

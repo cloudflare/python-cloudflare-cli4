@@ -11,13 +11,14 @@ def read_configs(profile=None):
     """ reading the config file for Cloudflare API"""
 
     # We return all these values
-    config = {'email': None, 'token': None, 'certtoken': None, 'extras': None, 'profile': None}
+    config = {'email': None, 'token': None, 'certtoken': None, 'extras': None, 'base_url': None, 'profile': None}
 
     # envioronment variables override config files - so setup first
     config['email'] = os.getenv('CF_API_EMAIL')
     config['token'] = os.getenv('CF_API_KEY')
     config['certtoken'] = os.getenv('CF_API_CERTKEY')
     config['extras'] = os.getenv('CF_API_EXTRAS')
+    config['base_url'] = os.getenv('CF_API_URL')
     if profile is None:
         profile = 'CloudFlare'
     config['profile'] = profile
@@ -42,7 +43,7 @@ def read_configs(profile=None):
             # however section name is missing - this is an error
             raise Exception("%s: configuration section missing" % (profile))
 
-        for option in ['email', 'token', 'certtoken', 'extras']:
+        for option in ['email', 'token', 'certtoken', 'extras', 'base_url']:
             if option not in config or config[option] is None:
                 try:
                     if option == 'extras':
