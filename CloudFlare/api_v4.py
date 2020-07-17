@@ -412,7 +412,7 @@ def accounts(self):
     self.add('VOID', 'accounts', 'rules')
     self.add('AUTH', 'accounts', 'rules/lists')
     self.add('AUTH', 'accounts', 'rules/lists', 'items')
-    self.add('AUTH', 'accounts', 'rules/lists/bulk-operations')
+    self.add('AUTH', 'accounts', 'rules/lists/bulk_operations')
     self.add('VOID', "accounts", "storage")
     self.add('AUTH', "accounts", "storage/analytics")
     self.add('AUTH', "accounts", "storage/analytics/stored")
