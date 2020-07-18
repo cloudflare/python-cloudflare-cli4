@@ -62,7 +62,7 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 if len(element) in [32, 40, 48] and hex_only.match(element):
                     # raw identifier - lets just use it as-is
                     identifier1 = element
-                if len(element) == 36  and uuid_value.match(element):
+                elif len(element) == 36  and uuid_value.match(element):
                     # uuid identifier - lets just use it as-is
                     identifier1 = element
                 elif element[0] == ':':
@@ -97,7 +97,7 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 if len(element) in [32, 40, 48] and hex_only.match(element):
                     # raw identifier - lets just use it as-is
                     identifier2 = element
-                if len(element) == 36  and uuid_value.match(element):
+                elif len(element) == 36  and uuid_value.match(element):
                     # uuid identifier - lets just use it as-is
                     identifier2 = element
                 elif element[0] == ':':
@@ -128,11 +128,14 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 if len(element) in [32, 40, 48] and hex_only.match(element):
                     # raw identifier - lets just use it as-is
                     identifier3 = element
-                if len(element) == 36  and uuid_value.match(element):
+                elif len(element) == 36  and uuid_value.match(element):
                     # uuid identifier - lets just use it as-is
                     identifier3 = element
                 elif waf_rules.match(element):
                     identifier3 = element
+                elif element[0] == ':':
+                    # raw string - used for workers script_names
+                    identifier3 = element[1:]
                 else:
                     if len(cmd) >= 6 and cmd[0] == 'accounts' and cmd[2] == 'storage' and cmd[3] == 'kv' and cmd[4] == 'namespaces' and cmd[6] == 'values':
                         identifier3 = element
@@ -141,7 +144,11 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                         raise e
         else:
             try:
-                m = getattr(m, element)
+                # dashes (vs underscores) cause issues in Python and other languages
+                if '-' in element:
+                    m = getattr(m, element.replace('-','_'))
+                else:
+                    m = getattr(m, element)
                 cmd.append(element)
             except AttributeError:
                 # the verb/element was not found
