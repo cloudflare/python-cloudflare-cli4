@@ -883,6 +883,9 @@ class CloudFlare(object):
             # should never happen
             raise CloudFlareAPIError(0, 'api load type mismatch')
 
+        if '-' in name:
+            # dashes (vs underscores) cause issues in Python and other languages
+            setattr(branch, name.replace('-','_'), f)
         setattr(branch, name, f)
 
     def api_list(self, m=None, s=''):
