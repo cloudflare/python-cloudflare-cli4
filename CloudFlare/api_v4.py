@@ -9,7 +9,6 @@ def api_v4(self):
     user_load_balancers(self)
     user_load_balancing_analytics(self)
     user_tokens_verify(self)
-    user_virtual_dns(self)
     user_workers(self)
 
     # The API commands for /zones/
@@ -34,11 +33,6 @@ def api_v4(self):
 
     # The API commands for /railguns/
     railguns(self)
-
-    # The API commands for /organizations/
-    organizations(self)
-    organizations_audit_logs(self)
-    organizations_virtual_dns(self)
 
     # The API commands for /certificates/
     certificates(self)
@@ -234,23 +228,6 @@ def railguns(self):
     self.add('AUTH', "railguns")
     self.add('AUTH', "railguns", "zones")
 
-def organizations(self):
-    """ API core commands for Cloudflare API"""
-
-    self.add('AUTH', "organizations")
-    self.add('AUTH', "organizations", "members")
-    self.add('AUTH', "organizations", "invites")
-    self.add('AUTH', "organizations", "railguns")
-    self.add('AUTH', "organizations", "railguns", "zones")
-    self.add('AUTH', "organizations", "roles")
-    self.add('VOID', "organizations", "firewall")
-    self.add('VOID', "organizations", "firewall/access_rules")
-    self.add('AUTH', "organizations", "firewall/access_rules/rules")
-    self.add('VOID', "organizations", "load_balancers")
-    self.add('AUTH', "organizations", "load_balancers/monitors")
-    self.add('AUTH', "organizations", "load_balancers/pools")
-    self.add('AUTH', "organizations", "load_balancers/pools", "health")
-
 def certificates(self):
     """ API core commands for Cloudflare API"""
 
@@ -336,27 +313,11 @@ def user_load_balancers(self):
     self.add('AUTH', "user/load_balancers/pools", "health")
     self.add('AUTH', "user/load_balancers/pools", "preview")
 
-def user_virtual_dns(self):
-    """ API core commands for Cloudflare API"""
-
-    self.add('AUTH', "user/virtual_dns")
-    self.add('VOID', "user/virtual_dns", "dns_analytics")
-    self.add('AUTH', "user/virtual_dns", "dns_analytics/report")
-    self.add('AUTH', "user/virtual_dns", "dns_analytics/report/bytime")
-
 def user_workers(self):
     """ API core commands for Cloudflare API"""
 
     self.add('VOID', "user/workers")
     self.add('AUTH', "user/workers/scripts")
-
-def organizations_virtual_dns(self):
-    """ API core commands for Cloudflare API"""
-
-    self.add('AUTH', "organizations", "virtual_dns")
-    self.add('VOID', "organizations", "virtual_dns", "dns_analytics")
-    self.add('AUTH', "organizations", "virtual_dns", "dns_analytics/report")
-    self.add('AUTH', "organizations", "virtual_dns", "dns_analytics/report/bytime")
 
 def user_audit_logs(self):
     """ API core commands for Cloudflare API"""
@@ -377,11 +338,6 @@ def user_tokens_verify(self):
     self.add('AUTH', "user/tokens/permission_groups")
     self.add('AUTH', "user/tokens/verify")
     self.add('AUTH', "user/tokens", "value")
-
-def organizations_audit_logs(self):
-    """ API core commands for Cloudflare API"""
-
-    self.add('AUTH', "organizations", "audit_logs")
 
 def accounts(self):
     """ API core commands for Cloudflare API"""
