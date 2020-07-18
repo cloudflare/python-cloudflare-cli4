@@ -79,7 +79,6 @@ def zones(self):
     self.add('VOID', "zones", "access")
     self.add('AUTH', "zones", "access/apps")
     self.add('AUTH', "zones", "access/apps/policies")
-    self.add('AUTH', "zones", "access/apps/revoke-tokens")
     self.add('AUTH', "zones", "access/certificates")
     self.add('AUTH', "zones", "activation_check")
     self.add('AUTH', "zones", "available_plans")
