@@ -855,14 +855,20 @@ class CloudFlare(object):
         branch = self
         for element in a[0:-1]:
             try:
-                branch = getattr(branch, element)
+                if '-' in element:
+                    branch = getattr(element, element.replace('-','_'))
+                else:
+                    branch = getattr(branch, element)
             except:
                 # should never happen
                 raise CloudFlareAPIError(0, 'api load name failed')
         name = a[-1]
 
         try:
-            f = getattr(branch, name)
+            if '-' in name:
+                f = getattr(element, name.replace('-','_'))
+            else:
+                f = getattr(branch, name)
             # already exists - don't let it overwrite
             raise CloudFlareAPIError(0, 'api duplicate name found: %s/**%s**' % ('/'.join(a[0:-1]), name))
         except AttributeError:
@@ -886,7 +892,8 @@ class CloudFlare(object):
         if '-' in name:
             # dashes (vs underscores) cause issues in Python and other languages
             setattr(branch, name.replace('-','_'), f)
-        setattr(branch, name, f)
+        else:
+            setattr(branch, name, f)
 
     def api_list(self, m=None, s=''):
         """recursive walk of the api tree returning a list of api calls"""
@@ -907,7 +914,8 @@ class CloudFlare(object):
                 if 'delete' in d or 'get' in d or 'patch' in d or 'post' in d or 'put' in d:
                     # only show the result if a call exists for this part
                     if '_parts' in d:
-                        w.append(s + '/' + n)
+                        # handle underscores by returning the actual API call vs the method name
+                        w.append(str(a)[1:-1].replace('/:id/','/'))
                 w = w + self.api_list(a, s + '/' + n)
         return w
 
