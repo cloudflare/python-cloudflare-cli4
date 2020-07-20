@@ -1,5 +1,16 @@
 # Change Log
 
+ - 2020-07-20 12:18:36 -0700 [2952f9f](../../commit/2952f9fb1d29a2f89417cc3de4328d4830f32dda) 2.8.7 release
+ - 2020-07-20 12:17:32 -0700 [f3652ad](../../commit/f3652ad8f7ca67464d0949b28de111ed7359b53a) dashes vs underscores - finally tamed!
+ - 2020-07-20 12:16:42 -0700 [25ac677](../../commit/25ac67776d471cdf7378a1f66e3c7169ef74be18) /zones/:id/access/apps/:id/revoke-tokens - added
+ - 2020-07-20 12:15:50 -0700 [5aba7f0](../../commit/5aba7f04e6e10b0a20bc452f6d79cd42969391e8) improve deprecated code - add dates, check expire, improve parse of api webpage
+ - 2020-07-18 10:59:14 -0700 [5ca2b6f](../../commit/5ca2b6fd4944014cf56fc9a24acd9b268e02bea1) added support for dashes/underscores in commands and python calls - kinda overdue
+ - 2020-07-18 10:58:33 -0700 [88db48c](../../commit/88db48c181c0387d29b0616917e3e586bf7bf8be) cleanup of logic around uuid match. added support for dashes/underscores in commands
+ - 2020-07-18 10:47:21 -0700 [ca858f6](../../commit/ca858f6286d120a953534e2eae16fc5ea5f0cc58) /zones/:id/access/apps/revoke-tokens - removed as depricated
+ - 2020-07-18 09:21:37 -0700 [94e4236](../../commit/94e4236c551e1f8f88a5709db1b072ccd0415236) removed deprecated /organizations and /user/virtual_dns api
+ - 2020-07-17 16:34:25 -0700 [7edcc96](../../commit/7edcc96d8b836624c69ec7ebf8abc6dfeb7b2542) Added base_url to config and env variables
+ - 2020-07-17 16:31:55 -0700 [f23a419](../../commit/f23a419d88fc9a84a6a8bc2e1f6be954c86be28e) accounts/:id/rules/lists/bulk_operations/:operation_id - syntax fixed
+ - 2020-07-14 19:00:41 -0700 [16fec80](../../commit/16fec8047ca97d05abf73fd9ae730681c2a0e10f) CHANGELOG.md pushed to github
  - 2020-07-14 19:00:30 -0700 [3ce15c1](../../commit/3ce15c1bd3e79f8deeef4eff1c184ac7f407fa75) 2.8.6 release
  - 2020-07-14 18:59:59 -0700 [4aa1148](../../commit/4aa1148b3e9389b9654df64e255ed353947bd47f) Added working GraphQL examples
  - 2020-07-14 15:35:50 -0700 [5c25aa8](../../commit/5c25aa80b15a78aee574724b115ce172d6ca2401) CHANGELOG.md pushed to github
