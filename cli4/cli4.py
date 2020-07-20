@@ -29,8 +29,12 @@ def dump_commands_from_web():
     w = cf.api_from_web()
     for r in w:
         if r['deprecated']:
-            continue
-        sys.stdout.write('%-6s %s\n' % (r['action'], r['cmd']))
+            if r['deprecated_already']:
+                sys.stdout.write('%-6s %s ; deprecated %s - expired!\n' % (r['action'], r['cmd'], r['deprecated_date']))
+            else:
+                sys.stdout.write('%-6s %s ; deprecated %s\n' % (r['action'], r['cmd'], r['deprecated_date']))
+        else:
+            sys.stdout.write('%-6s %s\n' % (r['action'], r['cmd']))
 
 def run_command(cf, method, command, params=None, content=None, files=None):
     """run the command line"""

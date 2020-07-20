@@ -79,11 +79,14 @@ lint:
 api:
 	@tmp=/tmp/_$$$$_ ; \
 	python -m cli4 --dump | sed -e 's/^\///' | sort > $$tmp.1 ; \
-	python -m cli4 --api | sed -e 's/.* //' -e 's/\/:[^:\/]*//g' -e 's/^\///' | sort | uniq > $$tmp.2 ; \
+	python -m cli4 --api | sed -e 's/^[A-Z][A-Z]*  *//' -e 's/\/:[a-z_]*//g' -e 's/^\///' | sort | uniq > $$tmp.2 ; \
+	egrep -v '; deprecated' < $$tmp.2 | diff $$tmp.1 - > $$tmp.3 ; \
 	echo "In code:" ; \
-	diff $$tmp.1 $$tmp.2 | egrep '< ' | sed -e 's/< /         /' | sort ; \
+	egrep '< ' < $$tmp.3 | sed -e 's/< /         /' | sort | tee $$tmp.4 ; \
 	echo "In docs:" ; \
-	diff $$tmp.1 $$tmp.2 | egrep '> ' | sed -e 's/> /         /' | sort ; \
+	egrep '> ' < $$tmp.3 | sed -e 's/> /         /' | sort ; \
+	echo "Deprecated:" ; \
+        egrep '; deprecated' < $$tmp.2 | while read cmd x depricated depricated_date ; do egrep "$$cmd" $$tmp.4 | sed -e "s/$$/ ; depricated $$depricated_date/" ; done | sort | uniq ; \
 	rm $$tmp.?
 
 clean:
