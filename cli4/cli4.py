@@ -17,15 +17,13 @@ except ImportError:
 import CloudFlare
 from . import converters
 
-def dump_commands():
+def dump_commands(cf):
     """dump a tree of all the known API commands"""
-    cf = CloudFlare.CloudFlare()
     w = cf.api_list()
     sys.stdout.write('\n'.join(w) + '\n')
 
-def dump_commands_from_web():
+def dump_commands_from_web(cf):
     """dump a tree of all the known API commands - from web"""
-    cf = CloudFlare.CloudFlare()
     w = cf.api_from_web()
     for r in w:
         if r['deprecated']:
@@ -340,11 +338,13 @@ def do_it(args):
             method = 'DELETE'
 
     if dump:
-        dump_commands()
+        cf = CloudFlare.CloudFlare(debug=verbose, raw=raw, profile=profile)
+        dump_commands(cf)
         sys.exit(0)
 
     if dump_from_web:
-        dump_commands_from_web()
+        cf = CloudFlare.CloudFlare(debug=verbose, raw=raw, profile=profile)
+        dump_commands_from_web(cf)
         sys.exit(0)
 
     digits_only = re.compile('^-?[0-9]+$')
