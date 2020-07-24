@@ -351,7 +351,7 @@ def accounts(self):
     self.add('AUTH', "accounts", "access/organizations/revoke_user")
     self.add('AUTH', "accounts", "access/service_tokens")
     self.add('VOID', "accounts", "access/logs")
-    self.add('AUTH', 'accounts', 'access/logs/access-requests')
+    self.add('AUTH', 'accounts', 'access/logs/access_requests')
     self.add('AUTH', 'accounts', 'access/apps')
     self.add('AUTH', 'accounts', 'access/apps', 'ca')
     self.add('AUTH', 'accounts', 'access/apps', 'policies')
