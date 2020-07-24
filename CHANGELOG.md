@@ -1,5 +1,11 @@
 # Change Log
 
+ - 2020-07-24 11:14:39 -0700 [c138287](../../commit/c138287ebab6d231e47214f6336c554ff659d53c) 2.8.8 release
+ - 2020-07-24 11:11:00 -0700 [80918ea](../../commit/80918ea248c5c2cf3f9013ca762eb844d898de1e) now with curl style debug - i.e. matches api information page
+ - 2020-07-24 11:10:39 -0700 [586ba80](../../commit/586ba80e664da8974c963b9a16874ce3a63904af) now with curl style debug - i.e. matches api information page
+ - 2020-07-24 11:09:13 -0700 [3cd4064](../../commit/3cd4064bb3d01006c095669fbd9b4255584cd6b3) now with access_requests as underscore
+ - 2020-07-24 11:08:38 -0700 [fbd0582](../../commit/fbd0582e359bc27b9012184c333203f3b3773d40) make sure verbose, etc is always used
+ - 2020-07-20 12:18:57 -0700 [fc69383](../../commit/fc69383990659ce47f98bd098006049feec9d18b) CHANGELOG.md pushed to github
  - 2020-07-20 12:18:36 -0700 [2952f9f](../../commit/2952f9fb1d29a2f89417cc3de4328d4830f32dda) 2.8.7 release
  - 2020-07-20 12:17:32 -0700 [f3652ad](../../commit/f3652ad8f7ca67464d0949b28de111ed7359b53a) dashes vs underscores - finally tamed!
  - 2020-07-20 12:16:42 -0700 [25ac677](../../commit/25ac67776d471cdf7378a1f66e3c7169ef74be18) /zones/:id/access/apps/:id/revoke-tokens - added
