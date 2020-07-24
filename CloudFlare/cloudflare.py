@@ -6,7 +6,7 @@ import requests
 
 from .network import CFnetwork
 from .logging_helper import CFlogger
-from .utils import user_agent, sanitize_secrets
+from .utils import user_agent, build_curl
 from .read_configs import read_configs
 from .api_v4 import api_v4
 from .api_extras import api_extras
@@ -164,29 +164,6 @@ class CloudFlare(object):
                      params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            if self.logger:
-                self.logger.debug('Call: %s,%s,%s,%s,%s,%s',
-                                  str(parts[0]),
-                                  str(identifier1),
-                                  str(parts[1]),
-                                  str(identifier2),
-                                  str(parts[2]),
-                                  str(identifier3))
-                if params is not None:
-                    try:
-                        str_params = json.dumps(params)
-                    except:
-                        str_params = str(params)
-                    self.logger.debug('Call: params=%s', str_params)
-                if data is not None:
-                    try:
-                        str_data = json.dumps(data)
-                    except:
-                        str_data = str(data)
-                    self.logger.debug('Call: data=%s', str_data)
-                if files is not None:
-                    self.logger.debug('Call: upload file %r', files)
-
             if (method is None) or (parts[0] is None):
                 # should never happen
                 raise CloudFlareInternalError(0, 'You must specify a method and endpoint')
@@ -219,22 +196,15 @@ class CloudFlare(object):
                 url += '/' + identifier3
 
             if self.logger:
-                self.logger.debug('Call: method=%s url=%s', str(method), str(url))
-                self.logger.debug('Call: headers=%s', str(sanitize_secrets(headers)))
+                msg = build_curl(method, url, headers, params, data, files)
+                self.logger.debug('Call: emulated curl command ...\n' + msg)
 
             try:
-                if self.logger:
-                    self.logger.debug('Call: doit!')
                 response = self.network(method, url, headers, params, data, files)
-                if self.logger:
-                    self.logger.debug('Call: done!')
             except Exception as e:
                 if self.logger:
                     self.logger.debug('Call: exception! "%s"' % (e))
                 raise CloudFlareAPIError(0, 'connection failed.')
-
-            if self.logger:
-                self.logger.debug('Response: url=%s', response.url)
 
             # Create response_{type|code|data}
             try:
@@ -929,8 +899,8 @@ class CloudFlare(object):
 
         try:
             config = read_configs(profile)
-        except:
-            raise CloudFlareAPIError(0, 'profile/configuration read error')
+        except Exception as e:
+            raise CloudFlareAPIError(0, str(e))
 
         # class creation values override all configuration values
         if email is not None:
