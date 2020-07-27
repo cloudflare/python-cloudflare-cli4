@@ -194,7 +194,7 @@ def zones_amp(self):
     """ API core commands for Cloudflare API"""
 
     self.add('VOID', "zones", "amp")
-    self.add('AUTH', "zones", "amp/viewer")
+    self.add('AUTH', "zones", "amp/sxg")
 
 def zones_logpush(self):
     """ API core commands for Cloudflare API"""
