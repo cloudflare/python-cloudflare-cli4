@@ -200,6 +200,7 @@ parameters.
 -  Account email (only if an API Key is being used)
 -  Optional Origin-CA Certificate Token
 -  Optional Debug flag (True/False)
+-  Optional Profile name (the default is ``Cloudflare``)
 
 .. code:: python
 

@@ -176,6 +176,7 @@ When you create a **CloudFlare** class you can pass up to four parameters.
  * Account email (only if an API Key is being used)
  * Optional Origin-CA Certificate Token
  * Optional Debug flag (True/False)
+ * Optional Profile name (the default is `Cloudflare`)
 
 ```python
 import CloudFlare
