@@ -51,8 +51,8 @@ def do_section(section):
         if action == '' or action not in API_TYPES:
             continue
         cmd = ''.join(cmd[1:])
-        if cmd[0] == '/':
-            cmd = cmd[1:]
+        if cmd[0] != '/':
+            cmd = '/' + cmd
         v = {'action': action, 'cmd': cmd, 'deprecated': deprecated, 'deprecated_date': deprecated_date, 'deprecated_already': deprecated_already}
         cmds.append(v)
     return cmds

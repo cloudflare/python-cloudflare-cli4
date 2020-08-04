@@ -78,8 +78,8 @@ lint:
 
 api:
 	@tmp=/tmp/_$$$$_ ; \
-	python -m cli4 --dump | sed -e 's/^\///' | sort > $$tmp.1 ; \
-	python -m cli4 --api | sed -e 's/^[A-Z][A-Z]*  *//' -e 's/\/:[a-z_]*//g' -e 's/^\///' | sort | uniq > $$tmp.2 ; \
+	python -m cli4 --dump | sort > $$tmp.1 ; \
+	python -m cli4 --api | sed -e 's/^[A-Z][A-Z]*  *//' -e 's/\/:[a-z_]*/\/:id/g' -e 's/\/:id$$//' -e 's/\/:id ;/ ;/' | sort | uniq > $$tmp.2 ; \
 	egrep -v '; deprecated' < $$tmp.2 | diff $$tmp.1 - > $$tmp.3 ; \
 	echo "In code:" ; \
 	egrep '< ' < $$tmp.3 | sed -e 's/< /         /' | sort | tee $$tmp.4 ; \

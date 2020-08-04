@@ -885,7 +885,8 @@ class CloudFlare(object):
                     # only show the result if a call exists for this part
                     if '_parts' in d:
                         # handle underscores by returning the actual API call vs the method name
-                        w.append(str(a)[1:-1].replace('/:id/','/'))
+                        w.append(str(a)[1:-1])
+                        ## w.append(str(a)[1:-1].replace('/:id/','/'))
                 w = w + self.api_list(a, s + '/' + n)
         return w
 
