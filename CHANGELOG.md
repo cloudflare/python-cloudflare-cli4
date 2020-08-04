@@ -1,5 +1,12 @@
 # Change Log
 
+ - 2020-08-04 14:40:02 -0700 [827242e](../../commit/827242e926c88b02c95f5fd9a9fdeb39ac9ca2b5) 2.8.9 release
+ - 2020-08-04 14:39:17 -0700 [ef9a5f3](../../commit/ef9a5f3aee7b5230047cd20ab63b7c83d78bd8e7) cleaner and easier way to find missing api calls - this changes --dump/--api for the better
+ - 2020-08-04 14:30:11 -0700 [21649a9](../../commit/21649a9e9bf6bcaac7a9160d73e7f93f496f0e09) /zones/:id/access/apps/policies - fixed along with a bunch more similar typos
+ - 2020-07-30 20:21:48 -0700 [f4c5e0f](../../commit/f4c5e0f2e888b5c6e8588e965ae366d66b5cdb13) added more profile info
+ - 2020-07-30 20:16:18 -0700 [2f0a39d](../../commit/2f0a39d00c567bbd05b5404cd6d3d6f0b6002f3f) revoke-tokens -> revoke_tokens
+ - 2020-07-27 12:51:12 -0700 [f1df7b6](../../commit/f1df7b6177d6fd6dffc692900c2b61bf4073b36d) updated and included AMP RealURL/Signed Exchange API
+ - 2020-07-24 11:15:01 -0700 [5631b35](../../commit/5631b35295fa844e4d1c43cb638ee5fbc44879b7) CHANGELOG.md pushed to github
  - 2020-07-24 11:14:39 -0700 [c138287](../../commit/c138287ebab6d231e47214f6336c554ff659d53c) 2.8.8 release
  - 2020-07-24 11:11:00 -0700 [80918ea](../../commit/80918ea248c5c2cf3f9013ca762eb844d898de1e) now with curl style debug - i.e. matches api information page
  - 2020-07-24 11:10:39 -0700 [586ba80](../../commit/586ba80e664da8974c963b9a16874ce3a63904af) now with curl style debug - i.e. matches api information page
