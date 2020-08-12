@@ -13,6 +13,7 @@ def api_v4(self):
 
     # The API commands for /zones/
     zones(self)
+    zones_access(self)
     zones_amp(self)
     zones_analytics(self)
     zones_argo(self)
@@ -42,6 +43,7 @@ def api_v4(self):
 
     # The API commands for /accounts/
     accounts(self)
+    accounts_access(self)
     accounts_addressing(self)
     accounts_audit_logs(self)
     accounts_firewall(self)
@@ -76,11 +78,6 @@ def zones(self):
     """ API core commands for Cloudflare API"""
 
     self.add('AUTH', "zones")
-    self.add('VOID', "zones", "access")
-    self.add('AUTH', "zones", "access/apps")
-    self.add('AUTH', "zones", "access/apps", "policies")
-    self.add('AUTH', "zones", "access/apps", "revoke_tokens")
-    self.add('AUTH', "zones", "access/certificates")
     self.add('AUTH', "zones", "activation_check")
     self.add('AUTH', "zones", "available_plans")
     self.add('AUTH', "zones", "available_rate_plans")
@@ -342,20 +339,6 @@ def accounts(self):
     """ API core commands for Cloudflare API"""
 
     self.add('AUTH', "accounts")
-    self.add('VOID', "accounts", "access")
-    self.add('AUTH', 'accounts', 'access/certificates')
-    self.add('AUTH', "accounts", "access/groups")
-    self.add('AUTH', "accounts", "access/identity_providers")
-    self.add('AUTH', "accounts", "access/organizations")
-    self.add('AUTH', "accounts", "access/organizations/revoke_user")
-    self.add('AUTH', "accounts", "access/service_tokens")
-    self.add('VOID', "accounts", "access/logs")
-    self.add('AUTH', 'accounts', 'access/logs/access_requests')
-    self.add('AUTH', 'accounts', 'access/apps')
-    #self.add('AUTH', 'accounts', 'access/apps/ca')
-    self.add('AUTH', 'accounts', 'access/apps', 'ca')
-    self.add('AUTH', 'accounts', 'access/apps', 'policies')
-    self.add('AUTH', 'accounts', 'access/apps', 'revoke_tokens')
     self.add('VOID', "accounts", "billing")
     self.add('AUTH', "accounts", "billing/profile")
     self.add('AUTH', "accounts", "custom_pages")
@@ -454,3 +437,38 @@ def graphql(self):
     """ API core commands for Cloudflare API"""
 
     self.add('AUTH', "graphql")
+
+def zones_access(self):
+    """ API core commands for Cloudflare API"""
+
+    self.add('VOID', "zones", "access")
+    self.add('AUTH', "zones", "access/apps")
+    self.add('AUTH', "zones", "access/apps", "policies")
+    self.add('AUTH', "zones", "access/apps", "revoke_tokens")
+    self.add('AUTH', "zones", "access/certificates")
+    #self.add('AUTH', "zones", "access/apps/ca")
+    self.add('AUTH', "zones", "access/apps", "ca")
+    self.add('AUTH', "zones", "access/groups")
+    self.add('AUTH', "zones", "access/identity_providers")
+    self.add('AUTH', "zones", "access/organizations")
+    self.add('AUTH', "zones", "access/organizations/revoke_user")
+    self.add('AUTH', "zones", "access/service_tokens")
+
+def accounts_access(self):
+    """ API core commands for Cloudflare API"""
+
+    self.add('VOID', "accounts", "access")
+    self.add('AUTH', 'accounts', 'access/certificates')
+    self.add('AUTH', "accounts", "access/groups")
+    self.add('AUTH', "accounts", "access/identity_providers")
+    self.add('AUTH', "accounts", "access/organizations")
+    self.add('AUTH', "accounts", "access/organizations/revoke_user")
+    self.add('AUTH', "accounts", "access/service_tokens")
+    self.add('VOID', "accounts", "access/logs")
+    self.add('AUTH', 'accounts', 'access/logs/access_requests')
+    self.add('AUTH', 'accounts', 'access/apps')
+    #self.add('AUTH', 'accounts', 'access/apps/ca')
+    self.add('AUTH', 'accounts', 'access/apps', 'ca')
+    self.add('AUTH', 'accounts', 'access/apps', 'policies')
+    self.add('AUTH', 'accounts', 'access/apps', 'revoke_tokens')
+
