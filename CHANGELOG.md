@@ -1,5 +1,10 @@
 # Change Log
 
+ - 2020-08-12 10:45:32 -0700 [9121e05](../../commit/9121e05bc2187ae1541df725bed7e780713c3a3f) 2.8.11 release
+ - 2020-08-12 10:45:10 -0700 [f020a0b](../../commit/f020a0b7a54f5b30fcbbc674ac18034e2d2c116f) /zones/:id/access/...
+ - 2020-08-12 10:30:56 -0700 [ff2a701](../../commit/ff2a701d4117c4291480b65a1b54a9537f297111) 2.8.10 release
+ - 2020-08-12 10:30:31 -0700 [97645f7](../../commit/97645f7167b35adba0cf10685e5a7807b1ad3e37) configparser missing - oops!
+ - 2020-08-04 14:40:24 -0700 [316a22c](../../commit/316a22c679a225bb5b967bfbd7b06ff31835db05) CHANGELOG.md pushed to github
  - 2020-08-04 14:40:02 -0700 [827242e](../../commit/827242e926c88b02c95f5fd9a9fdeb39ac9ca2b5) 2.8.9 release
  - 2020-08-04 14:39:17 -0700 [ef9a5f3](../../commit/ef9a5f3aee7b5230047cd20ab63b7c83d78bd8e7) cleaner and easier way to find missing api calls - this changes --dump/--api for the better
  - 2020-08-04 14:30:11 -0700 [21649a9](../../commit/21649a9e9bf6bcaac7a9160d73e7f93f496f0e09) /zones/:id/access/apps/policies - fixed along with a bunch more similar typos
