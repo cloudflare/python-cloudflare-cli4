@@ -1,5 +1,7 @@
 # Change Log
 
+ - 2020-08-12 18:10:43 -0700 [e817165](../../commit/e817165797af62a5a4a241f403bbb2a74ac011fd) 2.8.12 release
+ - 2020-08-12 10:46:07 -0700 [a76518f](../../commit/a76518f3d5caac7772000f6e3edb942882289c4a) CHANGELOG.md pushed to github
  - 2020-08-12 10:45:32 -0700 [9121e05](../../commit/9121e05bc2187ae1541df725bed7e780713c3a3f) 2.8.11 release
  - 2020-08-12 10:45:10 -0700 [f020a0b](../../commit/f020a0b7a54f5b30fcbbc674ac18034e2d2c116f) /zones/:id/access/...
  - 2020-08-12 10:30:56 -0700 [ff2a701](../../commit/ff2a701d4117c4291480b65a1b54a9537f297111) 2.8.10 release
