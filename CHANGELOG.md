@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2020-08-13 10:41:11 -0700 [f926130](../../commit/f926130d61bd71203b5f91f4dae947538cce669b) 2.8.13 release
+ - 2020-08-13 10:40:42 -0700 [16b7e88](../../commit/16b7e88dd302959ae8d2b8ba3f16dc21f07e0bae) configparser added it haste, but not needed - oops!
+ - 2020-08-12 18:11:09 -0700 [76475a0](../../commit/76475a09e3ae941b740f80b1c6c59b9d23e30200) CHANGELOG.md pushed to github
  - 2020-08-12 18:10:43 -0700 [e817165](../../commit/e817165797af62a5a4a241f403bbb2a74ac011fd) 2.8.12 release
  - 2020-08-12 10:46:07 -0700 [a76518f](../../commit/a76518f3d5caac7772000f6e3edb942882289c4a) CHANGELOG.md pushed to github
  - 2020-08-12 10:45:32 -0700 [9121e05](../../commit/9121e05bc2187ae1541df725bed7e780713c3a3f) 2.8.11 release
