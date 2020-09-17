@@ -30,6 +30,7 @@ def api_v4(self):
     zones_settings(self)
     zones_spectrum(self)
     zones_ssl(self)
+    zones_waiting_rooms(self)
     zones_workers(self)
 
     # The API commands for /railguns/
@@ -46,6 +47,7 @@ def api_v4(self):
     accounts_access(self)
     accounts_addressing(self)
     accounts_audit_logs(self)
+    accounts_diagnostics(self)
     accounts_firewall(self)
     accounts_load_balancers(self)
     accounts_secondary_dns(self)
@@ -392,6 +394,7 @@ def accounts_load_balancers(self):
     self.add('AUTH', "accounts", "load_balancers/pools")
     self.add('AUTH', "accounts", "load_balancers/pools", "health")
     self.add('AUTH', 'accounts', 'load_balancers/pools', 'preview')
+    self.add('AUTH', 'accounts', 'load_balancers/regions')
     self.add('AUTH', 'accounts', 'load_balancers/search')
 
 def accounts_firewall(self):
@@ -406,6 +409,7 @@ def accounts_secondary_dns(self):
 
     self.add('VOID', "accounts", "secondary_dns")
     self.add('AUTH', "accounts", "secondary_dns/masters")
+    self.add('AUTH', 'accounts', 'secondary_dns/primaries')
     self.add('AUTH', "accounts", "secondary_dns/tsigs")
 
 def accounts_stream(self):
@@ -472,3 +476,15 @@ def accounts_access(self):
     self.add('AUTH', 'accounts', 'access/apps', 'policies')
     self.add('AUTH', 'accounts', 'access/apps', 'revoke_tokens')
 
+def accounts_diagnostics(self):
+    """ API core commands for Cloudflare API"""
+
+    self.add('VOID', 'accounts', 'diagnostics')
+    self.add('AUTH', 'accounts', 'diagnostics/traceroute')
+
+def zones_waiting_rooms(self):
+    """ API core commands for Cloudflare API"""
+
+    self.add('AUTH', 'zones', 'waiting_rooms')
+    self.add('AUTH', 'zones', 'waiting_rooms', 'status')
+    self.add('AUTH', 'zones', 'waiting_rooms/preview')
