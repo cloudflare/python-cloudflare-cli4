@@ -185,7 +185,7 @@ import CloudFlare
     cf = CloudFlare.CloudFlare()
 
     # A minimal call with debug enabled
-    cf = CloudFlare.CloudFlare(debug=True))
+    cf = CloudFlare.CloudFlare(debug=True)
 
     # An authenticated call using an API Token (note the missing email)
     cf = CloudFlare.CloudFlare(token='00000000000000000000000000000000')
