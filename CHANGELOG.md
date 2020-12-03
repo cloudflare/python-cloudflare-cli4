@@ -1,5 +1,9 @@
 # Change Log
 
+ - 2020-12-03 14:22:47 -0800 [9e170eb](../../commit/9e170ebe2f9139d2b0620d7f31be2330dd532aaa) 2.8.14 release
+ - 2020-09-20 15:58:25 -0700 [b70b520](../../commit/b70b5209664dc64ae4f0e5773806aec05b799cbd) first pass at adding travis CI
+ - 2020-09-17 14:17:45 -0700 [9975223](../../commit/997522321c61f08cc91bcc61f3ee707f38179f9a) zones/waiting_rooms, accounts/diagnostics, and more
+ - 2020-08-13 10:41:22 -0700 [8ed99e4](../../commit/8ed99e4899637a7d7bc11c4bee76982537fcc45f) CHANGELOG.md pushed to github
  - 2020-08-13 10:41:11 -0700 [f926130](../../commit/f926130d61bd71203b5f91f4dae947538cce669b) 2.8.13 release
  - 2020-08-13 10:40:42 -0700 [16b7e88](../../commit/16b7e88dd302959ae8d2b8ba3f16dc21f07e0bae) configparser added it haste, but not needed - oops!
  - 2020-08-12 18:11:09 -0700 [76475a0](../../commit/76475a09e3ae941b740f80b1c6c59b9d23e30200) CHANGELOG.md pushed to github
