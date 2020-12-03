@@ -307,10 +307,12 @@ def user_load_balancers(self):
     self.add('VOID', "user/load_balancers")
     self.add('AUTH', "user/load_balancers/monitors")
     self.add('AUTH', "user/load_balancers/monitors", "preview")
+    self.add('AUTH', 'user/load_balancers/monitors', 'references')
     self.add('AUTH', "user/load_balancers/preview")
     self.add('AUTH', "user/load_balancers/pools")
     self.add('AUTH', "user/load_balancers/pools", "health")
     self.add('AUTH', "user/load_balancers/pools", "preview")
+    self.add('AUTH', 'user/load_balancers/pools', 'references')
 
 def user_workers(self):
     """ API core commands for Cloudflare API"""
@@ -354,6 +356,9 @@ def accounts(self):
     self.add('AUTH', 'accounts', 'rules/lists')
     self.add('AUTH', 'accounts', 'rules/lists', 'items')
     self.add('AUTH', 'accounts', 'rules/lists/bulk_operations')
+    self.add('AUTH', 'accounts', 'rulesets')
+    self.add('AUTH', 'accounts', 'rulesets', 'versions')
+    self.add('AUTH', 'accounts', 'rulesets/import')
     self.add('VOID', "accounts", "storage")
     self.add('AUTH', "accounts", "storage/analytics")
     self.add('AUTH', "accounts", "storage/analytics/stored")
@@ -363,12 +368,15 @@ def accounts(self):
     self.add('AUTH', "accounts", "storage/kv/namespaces", "keys")
     self.add('AUTH', "accounts", "storage/kv/namespaces", "values")
     self.add('AUTH', "accounts", "subscriptions")
+    self.add('AUTH', 'accounts', 'tunnels')
+    self.add('AUTH', 'accounts', 'tunnels', 'connections')
     self.add('AUTH', "accounts", "virtual_dns")
     self.add('VOID', "accounts", "virtual_dns", "dns_analytics")
     self.add('AUTH', "accounts", "virtual_dns", "dns_analytics/report")
     self.add('AUTH', "accounts", "virtual_dns", "dns_analytics/report/bytime")
     self.add('VOID', "accounts", "workers")
     self.add('AUTH', "accounts", "workers/scripts")
+    self.add('AUTH', 'accounts', 'workers/scripts', 'schedules')
 
 def accounts_addressing(self):
     """ API core commands for Cloudflare API"""
@@ -391,9 +399,11 @@ def accounts_load_balancers(self):
     self.add('AUTH', 'accounts', 'load_balancers/preview')
     self.add('AUTH', "accounts", "load_balancers/monitors")
     self.add('AUTH', 'accounts', 'load_balancers/monitors', 'preview')
+    self.add('AUTH', 'accounts', 'load_balancers/monitors', 'references')
     self.add('AUTH', "accounts", "load_balancers/pools")
     self.add('AUTH', "accounts", "load_balancers/pools", "health")
     self.add('AUTH', 'accounts', 'load_balancers/pools', 'preview')
+    self.add('AUTH', 'accounts', 'load_balancers/pools', 'references')
     self.add('AUTH', 'accounts', 'load_balancers/regions')
     self.add('AUTH', 'accounts', 'load_balancers/search')
 
