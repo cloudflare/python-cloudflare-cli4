@@ -100,6 +100,8 @@ def zones(self):
     self.add('AUTH', "zones", "purge_cache")
     self.add('AUTH', "zones", "railguns")
     self.add('AUTH', "zones", "railguns", "diagnose")
+    self.add('AUTH', 'zones', 'rulesets')
+    self.add('AUTH', 'zones', 'rulesets', 'versions')
     self.add('VOID', "zones", "security")
     self.add('AUTH', "zones", "security/events")
     self.add('AUTH', "zones", "subscription")
