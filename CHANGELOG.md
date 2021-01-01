@@ -1,6 +1,14 @@
 # Change Log
 
+ - 2020-12-31 16:18:47 -0800 [6ea3d2f](../../commit/6ea3d2f03dc15b3c59ce29529ce4a420a51758a4) 2.8.15 release
+ - 2020-12-31 16:17:37 -0800 [ebea9ea](../../commit/ebea9ea5ca1490e1388bfe0b8ac119ba405efb31) added cursor example
+ - 2020-12-31 16:15:51 -0800 [534fbde](../../commit/534fbde1a6a7bf1e8ced9053f1625f46aac845b5) zones/rulesets added
+ - 2020-12-31 13:52:03 -0800 [cd535c1](../../commit/cd535c1e26b6a1a6703d8ca03ee98f90fa13d364) Merge pull request #107 from Martin407/patch-1
+ - 2020-12-31 13:51:00 -0800 [c2cb66a](../../commit/c2cb66a8569d8e18d8f13be254e4e3c885778086) Merge pull request #106 from Martin407/patch-2
+ - 2020-12-03 14:24:07 -0800 [dc14687](../../commit/dc14687e4957c4ed93f65fe697b2821a0c6f4a93) CHANGELOG.md pushed to github
  - 2020-12-03 14:22:47 -0800 [9e170eb](../../commit/9e170ebe2f9139d2b0620d7f31be2330dd532aaa) 2.8.14 release
+ - 2020-11-14 12:58:07 -0500 [acc3b99](../../commit/acc3b9963581ad5b875f6f80b517822261775d62) Removing excess trailing parenthesis
+ - 2020-11-14 12:51:53 -0500 [bf583e2](../../commit/bf583e2ccce999cdeaa27ac3a6860ef425eb9343) Removing excess trailing parenthesis
  - 2020-09-20 15:58:25 -0700 [b70b520](../../commit/b70b5209664dc64ae4f0e5773806aec05b799cbd) first pass at adding travis CI
  - 2020-09-17 14:17:45 -0700 [9975223](../../commit/997522321c61f08cc91bcc61f3ee707f38179f9a) zones/waiting_rooms, accounts/diagnostics, and more
  - 2020-08-13 10:41:22 -0700 [8ed99e4](../../commit/8ed99e4899637a7d7bc11c4bee76982537fcc45f) CHANGELOG.md pushed to github
