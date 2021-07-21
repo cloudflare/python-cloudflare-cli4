@@ -50,6 +50,12 @@ bdist: all
 	$(PYTHON) setup.py -q bdist
 	@rm -rf ${NAME}.egg-info
 
+bdist_world: all
+	make clean
+	make test
+	$(PYTHON) setup.py -q bdist_world
+	@rm -rf ${NAME}.egg-info
+
 upload: clean all tag upload-github upload-pypi
 
 upload-github:
@@ -57,7 +63,7 @@ upload-github:
 	git push origin --tags
 
 upload-pypi:
-	$(PYTHON) setup.py -q sdist upload --sign --identity="$(EMAIL)"
+	$(PYTHON) setup.py -q sdist bdist_wheel upload --sign --identity="$(EMAIL)"
 
 showtag: sdist
 	@ v=`ls -r dist | head -1 | sed -e 's/cloudflare-\([0-9.]*\)\.tar.*/\1/'` ; echo "\tDIST VERSION =" $$v ; (git tag | fgrep -q "$$v") && echo "\tGIT TAG EXISTS"
