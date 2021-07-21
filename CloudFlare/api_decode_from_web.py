@@ -1,5 +1,6 @@
 """ API extras for Cloudflare API"""
 
+import sys
 import datetime
 
 from bs4 import BeautifulSoup, Comment
@@ -44,7 +45,7 @@ def do_section(section):
             if isinstance(child, Comment):
                 # remove <!-- react-text ... -> parts
                 continue
-            cmd.append(child.strip())
+            cmd.append(str(child).strip())
         if len(cmd) == 0:
             continue
         action = cmd[0]
