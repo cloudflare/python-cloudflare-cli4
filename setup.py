@@ -26,6 +26,7 @@ def main():
         # maintainer_email='martin@cloudflare.com',
         url='https://github.com/cloudflare/python-cloudflare',
         license='MIT',
+        options={"bdist_wheel": {"universal": True}},
         packages=['cli4', 'examples']+find_packages(),
         #package_dir={'CloudFlare': 'lib'}
         #package_dir={'CloudFlare/examples': 'examples'},
