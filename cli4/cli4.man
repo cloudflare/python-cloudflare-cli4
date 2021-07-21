@@ -72,6 +72,7 @@ The API command(s) to execute.
 .SH COMMAND(S)
 The command string uses slash (\fB/\fR) to seperate the verbs in the same way that the Cloudflare v4 API documentation does.
 Any verb starting with colon (\fB:\fR) is either converted to zone_id, user_id, organtization_id, or otherwise.
+Any verb starting with two colons (\fB::\fR) is passed thru raw.
 
 .SH RESULTS
 The output is either JSON or YAML formatted.
