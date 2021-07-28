@@ -3,6 +3,7 @@ from __future__ import absolute_import
 
 import json
 import requests
+import keyword
 
 from .network import CFnetwork
 from .logging_helper import CFlogger
@@ -47,6 +48,15 @@ class CloudFlare(object):
             self.profile = config['profile']
             self.network = CFnetwork(use_sessions=self.use_sessions)
             self.user_agent = user_agent()
+
+            if not isinstance(self.email, str):
+                raise ValueError('email argument not string')
+            if not isinstance(self.token, str):
+                raise ValueError('token argument not string')
+            if not isinstance(self.certtoken, str):
+                raise ValueError('certtoken argument not string')
+            if not isinstance(self.base_url, str):
+                raise ValueError('base url argument not string')
 
             if 'debug' in config and config['debug']:
                 self.logger = CFlogger(config['debug']).getLogger()
@@ -201,10 +211,22 @@ class CloudFlare(object):
 
             try:
                 response = self.network(method, url, headers, params, data, files)
+            except requests.RequestException as e:
+                if self.logger:
+                    self.logger.debug('Call: requests exception! "%s"' % (e))
+                raise CloudFlareAPIError(0, e)
+            except requests.ConnectionError as e:
+                if self.logger:
+                    self.logger.debug('Call: requests connection exception! "%s"' % (e))
+                raise CloudFlareAPIError(0, 'connection error')
+            except requests.exceptions.Timeout as e:
+                if self.logger:
+                    self.logger.debug('Call: requests timeout exception! "%s"' % (e))
+                raise CloudFlareAPIError(0, 'connection timeout')
             except Exception as e:
                 if self.logger:
                     self.logger.debug('Call: exception! "%s"' % (e))
-                raise CloudFlareAPIError(0, 'connection failed.')
+                raise
 
             # Create response_{type|code|data}
             try:
@@ -859,6 +881,9 @@ class CloudFlare(object):
             # should never happen
             raise CloudFlareAPIError(0, 'api load type mismatch')
 
+        if keyword.iskeyword(name):
+            ## add an extra keywork prefix'ed with underscore so it can used with Python code
+            setattr(branch, name + '_', f)
         if '-' in name:
             # dashes (vs underscores) cause issues in Python and other languages
             setattr(branch, name.replace('-','_'), f)
