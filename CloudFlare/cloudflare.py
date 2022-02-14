@@ -858,7 +858,7 @@ class CloudFlare(object):
 
         try:
             if '-' in name:
-                f = getattr(element, name.replace('-','_'))
+                f = getattr(branch, name.replace('-','_'))
             else:
                 f = getattr(branch, name)
             # already exists - don't let it overwrite
