@@ -579,11 +579,11 @@ class CloudFlare(object):
     class _AddUnused(object):
         """ Cloudflare v4 API"""
 
-        def __init__(self, base, p1, p2=None, p3=None):
+        def __init__(self, base, p1, p2=None, p3=None, p4=None):
             """ Cloudflare v4 API"""
 
             self._base = base
-            self._parts_unused = [p1, p2, p3]
+            self._parts_unused = [p1, p2, p3, p4]
 
         def __call__(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
@@ -624,11 +624,11 @@ class CloudFlare(object):
     class _AddNoAuth(object):
         """ Cloudflare v4 API"""
 
-        def __init__(self, base, p1, p2=None, p3=None):
+        def __init__(self, base, p1, p2=None, p3=None, p4=None):
             """ Cloudflare v4 API"""
 
             self._base = base
-            self._parts = [p1, p2, p3]
+            self._parts = [p1, p2, p3, p4]
 
         def __call__(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
@@ -671,11 +671,11 @@ class CloudFlare(object):
     class _AddWithAuth(object):
         """ Cloudflare v4 API"""
 
-        def __init__(self, base, p1, p2=None, p3=None):
+        def __init__(self, base, p1, p2=None, p3=None, p4=None):
             """ Cloudflare v4 API"""
 
             self._base = base
-            self._parts = [p1, p2, p3]
+            self._parts = [p1, p2, p3, p4]
 
         def __call__(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
@@ -726,11 +726,11 @@ class CloudFlare(object):
     class _AddWithAuthUnwrapped(object):
         """ Cloudflare v4 API"""
 
-        def __init__(self, base, p1, p2=None, p3=None):
+        def __init__(self, base, p1, p2=None, p3=None, p4=None):
             """ Cloudflare v4 API"""
 
             self._base = base
-            self._parts = [p1, p2, p3]
+            self._parts = [p1, p2, p3, p4]
 
         def __call__(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
@@ -781,11 +781,11 @@ class CloudFlare(object):
     class _AddWithCertAuth(object):
         """ Cloudflare v4 API"""
 
-        def __init__(self, base, p1, p2=None, p3=None):
+        def __init__(self, base, p1, p2=None, p3=None, p4=None):
             """ Cloudflare v4 API"""
 
             self._base = base
-            self._parts = [p1, p2, p3]
+            self._parts = [p1, p2, p3, p4]
 
         def __call__(self, identifier1=None, identifier2=None, identifier3=None, params=None, data=None):
             """ Cloudflare v4 API"""
@@ -833,7 +833,7 @@ class CloudFlare(object):
                                                  identifier1, identifier2, identifier3,
                                                  params, data)
 
-    def add(self, t, p1, p2=None, p3=None):
+    def add(self, t, p1, p2=None, p3=None, p4=None):
         """add api call to class"""
 
         a = []
@@ -843,6 +843,8 @@ class CloudFlare(object):
             a += p2.split('/')
         if p3:
             a += p3.split('/')
+        if p4:
+            a += p4.split('/')
 
         branch = self
         for element in a[0:-1]:
@@ -868,15 +870,15 @@ class CloudFlare(object):
             pass
 
         if t == 'VOID':
-            f = self._AddUnused(self._base, p1, p2, p3)
+            f = self._AddUnused(self._base, p1, p2, p3, p4)
         elif t == 'OPEN':
-            f = self._AddNoAuth(self._base, p1, p2, p3)
+            f = self._AddNoAuth(self._base, p1, p2, p3, p4)
         elif t == 'AUTH':
-            f = self._AddWithAuth(self._base, p1, p2, p3)
+            f = self._AddWithAuth(self._base, p1, p2, p3, p4)
         elif t == 'CERT':
-            f = self._AddWithCertAuth(self._base, p1, p2, p3)
+            f = self._AddWithCertAuth(self._base, p1, p2, p3, p4)
         elif t == 'AUTH_UNWRAPPED':
-            f = self._AddWithAuthUnwrapped(self._base, p1, p2, p3)
+            f = self._AddWithAuthUnwrapped(self._base, p1, p2, p3, p4)
         else:
             # should never happen
             raise CloudFlareAPIError(0, 'api load type mismatch')
