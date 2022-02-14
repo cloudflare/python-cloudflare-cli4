@@ -848,7 +848,7 @@ class CloudFlare(object):
         for element in a[0:-1]:
             try:
                 if '-' in element:
-                    branch = getattr(element, element.replace('-','_'))
+                    branch = getattr(branch, element.replace('-','_'))
                 else:
                     branch = getattr(branch, element)
             except:
