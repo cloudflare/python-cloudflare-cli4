@@ -9,7 +9,6 @@ def api_v4(self):
     user_load_balancers(self)
     user_load_balancing_analytics(self)
     user_tokens_verify(self)
-    user_workers(self)
 
     # The API commands for /zones/
     zones(self)
@@ -32,6 +31,8 @@ def api_v4(self):
     zones_ssl(self)
     zones_waiting_rooms(self)
     zones_workers(self)
+    zones_extras(self)
+    zones_email(self)
 
     # The API commands for /railguns/
     railguns(self)
@@ -52,6 +53,8 @@ def api_v4(self):
     accounts_load_balancers(self)
     accounts_secondary_dns(self)
     accounts_stream(self)
+    accounts_extras(self)
+    accounts_email(self)
 
     # The API commands for /memberships/
     memberships(self)
@@ -67,8 +70,8 @@ def user(self):
     self.add('AUTH', "user/billing/history")
     self.add('AUTH', "user/billing/profile")
     self.add('VOID', "user/billing/subscriptions")
-    self.add('AUTH', "user/billing/subscriptions/apps")
-    self.add('AUTH', "user/billing/subscriptions/zones")
+#   self.add('AUTH', "user/billing/subscriptions/apps")
+#   self.add('AUTH', "user/billing/subscriptions/zones")
     self.add('VOID', "user/firewall")
     self.add('VOID', "user/firewall/access_rules")
     self.add('AUTH', "user/firewall/access_rules/rules")
@@ -87,10 +90,12 @@ def zones(self):
     self.add('AUTH', "zones", "custom_certificates/prioritize")
     self.add('AUTH', "zones", "custom_hostnames")
     self.add('AUTH', "zones", "custom_hostnames/fallback_origin")
+    self.add('AUTH', 'zones', 'custom_ns')
     self.add('AUTH', "zones", "custom_pages")
     self.add('AUTH', "zones", "dns_records")
     self.add('AUTH', "zones", "dns_records/export")
     self.add('AUTH', "zones", "dns_records/import")
+    self.add('AUTH', 'zones', 'dns_records/scan')
     self.add('AUTH', "zones", "filters")
     self.add('AUTH', "zones", "healthchecks")
     self.add('AUTH', "zones", "healthchecks/preview")
@@ -152,13 +157,16 @@ def zones_settings(self):
     self.add('AUTH', "zones", "settings/waf")
     self.add('AUTH', "zones", "settings/webp")
     self.add('AUTH', "zones", "settings/websockets")
+    self.add('AUTH', 'zones', 'settings/early_hints')
+    self.add('AUTH', 'zones', 'settings/proxy_read_timeout')
+    self.add('AUTH', 'zones', 'settings/ssl_recommender')
 
 def zones_analytics(self):
     """ API core commands for Cloudflare API"""
 
     self.add('VOID', "zones", "analytics")
-    self.add('AUTH', "zones", "analytics/colos")
-    self.add('AUTH', "zones", "analytics/dashboard")
+#   self.add('AUTH', "zones", "analytics/colos")
+#   self.add('AUTH', "zones", "analytics/dashboard")
     self.add('AUTH', "zones", "analytics/latency")
     self.add('AUTH', "zones", "analytics/latency/colos")
 
@@ -269,6 +277,7 @@ def zones_ssl(self):
     self.add('AUTH', "zones", "ssl/certificate_packs")
     self.add('AUTH', 'zones', 'ssl/certificate_packs/order')
     self.add('AUTH', 'zones', 'ssl/certificate_packs/quota')
+    self.add('AUTH', 'zones', 'ssl/recommendation')
     self.add('AUTH', "zones", "ssl/verification")
     self.add('VOID', "zones", "ssl/universal")
     self.add('AUTH', "zones", "ssl/universal/settings")
@@ -300,6 +309,12 @@ def zones_secondary_dns(self):
 
     self.add('AUTH', "zones", "secondary_dns")
     self.add('AUTH', "zones", "secondary_dns/force_axfr")
+    self.add('AUTH', 'zones', 'secondary_dns/incoming')
+    self.add('AUTH', 'zones', 'secondary_dns/outgoing')
+    self.add('AUTH', 'zones', 'secondary_dns/outgoing/disable')
+    self.add('AUTH', 'zones', 'secondary_dns/outgoing/enable')
+    self.add('AUTH', 'zones', 'secondary_dns/outgoing/force_notify')
+    self.add('AUTH', 'zones', 'secondary_dns/outgoing/status')
 
 def user_load_balancers(self):
     """ API core commands for Cloudflare API"""
@@ -313,12 +328,6 @@ def user_load_balancers(self):
     self.add('AUTH', "user/load_balancers/pools", "health")
     self.add('AUTH', "user/load_balancers/pools", "preview")
     self.add('AUTH', 'user/load_balancers/pools', 'references')
-
-def user_workers(self):
-    """ API core commands for Cloudflare API"""
-
-    self.add('VOID', "user/workers")
-    self.add('AUTH', "user/workers/scripts")
 
 def user_audit_logs(self):
     """ API core commands for Cloudflare API"""
@@ -358,7 +367,12 @@ def accounts(self):
     self.add('AUTH', 'accounts', 'rules/lists/bulk_operations')
     self.add('AUTH', 'accounts', 'rulesets')
     self.add('AUTH', 'accounts', 'rulesets', 'versions')
-    self.add('AUTH', 'accounts', 'rulesets/import')
+    self.add('AUTH', 'accounts', 'rulesets', 'rules')
+#   self.add('AUTH', 'accounts', 'rulesets/import')
+    self.add('VOID', 'accounts', 'rulesets/phases')
+    self.add('AUTH', 'accounts', 'rulesets/phases', 'entrypoint')
+    self.add('AUTH', 'accounts', 'rulesets/phases', 'entrypoint/versions')
+
     self.add('VOID', "accounts", "storage")
     self.add('AUTH', "accounts", "storage/analytics")
     self.add('AUTH', "accounts", "storage/analytics/stored")
@@ -374,14 +388,24 @@ def accounts(self):
     self.add('VOID', "accounts", "virtual_dns", "dns_analytics")
     self.add('AUTH', "accounts", "virtual_dns", "dns_analytics/report")
     self.add('AUTH', "accounts", "virtual_dns", "dns_analytics/report/bytime")
-    self.add('VOID', "accounts", "workers")
-    self.add('AUTH', "accounts", "workers/scripts")
+
+    self.add('VOID', 'accounts', 'workers')
+    self.add('AUTH', 'accounts', 'workers/account-settings')
+    self.add('VOID', 'accounts', 'workers/durable_objects')
+    self.add('AUTH', 'accounts', 'workers/durable_objects/namespaces')
+    self.add('AUTH', 'accounts', 'workers/durable_objects/namespaces', 'objects')
+    self.add('AUTH', 'accounts', 'workers/scripts')
     self.add('AUTH', 'accounts', 'workers/scripts', 'schedules')
+    self.add('AUTH', 'accounts', 'workers/scripts', 'tails')
+    self.add('AUTH', 'accounts', 'workers/scripts', 'usage-model')
+    self.add('AUTH', 'accounts', 'workers/subdomain')
 
 def accounts_addressing(self):
     """ API core commands for Cloudflare API"""
 
     self.add('VOID', "accounts", "addressing")
+    self.add('AUTH', 'accounts', 'addressing/loa_documents')
+    self.add('AUTH', 'accounts', 'addressing/loa_documents', 'download')
     self.add('AUTH', "accounts", "addressing/prefixes")
     self.add('VOID', "accounts", "addressing/prefixes", "bgp")
     self.add('AUTH', "accounts", "addressing/prefixes", "bgp/status")
@@ -418,22 +442,29 @@ def accounts_secondary_dns(self):
     """ API core commands for Cloudflare API"""
 
     self.add('VOID', "accounts", "secondary_dns")
-    self.add('AUTH', "accounts", "secondary_dns/masters")
-    self.add('AUTH', 'accounts', 'secondary_dns/primaries')
+#   self.add('AUTH', "accounts", "secondary_dns/masters")
+#   self.add('AUTH', 'accounts', 'secondary_dns/primaries')
     self.add('AUTH', "accounts", "secondary_dns/tsigs")
+    self.add('AUTH', 'accounts', 'secondary_dns/acls')
+    self.add('AUTH', 'accounts', 'secondary_dns/peers')
 
 def accounts_stream(self):
     """ API core commands for Cloudflare API"""
 
     self.add('AUTH', "accounts", "stream")
     self.add('AUTH', "accounts", "stream", "captions")
+    self.add('AUTH', "accounts", "stream", "embed")
+    self.add('AUTH', 'accounts', 'stream', 'downloads')
+    self.add('AUTH', 'accounts', 'stream', 'token')
     self.add('AUTH', "accounts", "stream/copy")
     self.add('AUTH', "accounts", "stream/direct_upload")
-    self.add('AUTH', "accounts", "stream", "embed")
     self.add('AUTH', "accounts", "stream/keys")
-    self.add('AUTH', "accounts", "stream/preview")
+#   self.add('AUTH', "accounts", "stream/preview")
     self.add('AUTH', "accounts", "stream/watermarks")
     self.add('AUTH', "accounts", "stream/webhook")
+    self.add('AUTH', 'accounts', 'stream/live_inputs')
+    self.add('AUTH', 'accounts', 'stream/live_inputs', 'outputs')
+
 
 def zones_media(self):
     """ API core commands for Cloudflare API"""
@@ -472,19 +503,23 @@ def accounts_access(self):
     """ API core commands for Cloudflare API"""
 
     self.add('VOID', "accounts", "access")
-    self.add('AUTH', 'accounts', 'access/certificates')
     self.add('AUTH', "accounts", "access/groups")
     self.add('AUTH', "accounts", "access/identity_providers")
     self.add('AUTH', "accounts", "access/organizations")
     self.add('AUTH', "accounts", "access/organizations/revoke_user")
     self.add('AUTH', "accounts", "access/service_tokens")
-    self.add('VOID', "accounts", "access/logs")
-    self.add('AUTH', 'accounts', 'access/logs/access_requests')
     self.add('AUTH', 'accounts', 'access/apps')
     #self.add('AUTH', 'accounts', 'access/apps/ca')
     self.add('AUTH', 'accounts', 'access/apps', 'ca')
     self.add('AUTH', 'accounts', 'access/apps', 'policies')
     self.add('AUTH', 'accounts', 'access/apps', 'revoke_tokens')
+    self.add('AUTH', 'accounts', 'access/certificates')
+    self.add('AUTH', 'accounts', 'access/keys')
+    self.add('AUTH', 'accounts', 'access/keys/rotate')
+    self.add('VOID', 'accounts', 'access/logs')
+    self.add('AUTH', 'accounts', 'access/logs/access_requests')
+    self.add('AUTH', 'accounts', 'access/seats')
+    self.add('AUTH', 'accounts', 'access/users')
 
 def accounts_diagnostics(self):
     """ API core commands for Cloudflare API"""
@@ -496,5 +531,118 @@ def zones_waiting_rooms(self):
     """ API core commands for Cloudflare API"""
 
     self.add('AUTH', 'zones', 'waiting_rooms')
+    self.add('AUTH', 'zones', 'waiting_rooms', 'events')
+    self.add('AUTH', 'zones', 'waiting_rooms', 'events', 'details')
     self.add('AUTH', 'zones', 'waiting_rooms', 'status')
     self.add('AUTH', 'zones', 'waiting_rooms/preview')
+
+def accounts_extras(self):
+    """ extras """
+
+    self.add('VOID', 'accounts', 'alerting')
+    self.add('VOID', 'accounts', 'alerting/v3')
+    self.add('AUTH', 'accounts', 'alerting/v3/available_alerts')
+    self.add('VOID', 'accounts', 'alerting/v3/destinations')
+    self.add('AUTH', 'accounts', 'alerting/v3/destinations/eligible')
+    self.add('AUTH', 'accounts', 'alerting/v3/destinations/pagerduty')
+    self.add('AUTH', 'accounts', 'alerting/v3/destinations/webhooks')
+    self.add('AUTH', 'accounts', 'alerting/v3/history')
+    self.add('AUTH', 'accounts', 'alerting/v3/policies')
+
+    self.add('AUTH', 'accounts', 'custom_ns')
+    self.add('AUTH', 'accounts', 'custom_ns/availability')
+    self.add('AUTH', 'accounts', 'custom_ns/verify')
+
+    self.add('AUTH', 'accounts', 'devices')
+    self.add('VOID', 'accounts', 'devices/policy')
+    self.add('AUTH', 'accounts', 'devices/policy/exclude')
+    self.add('AUTH', 'accounts', 'devices/policy/fallback_domains')
+    self.add('AUTH', 'accounts', 'devices/policy/include')
+    self.add('AUTH', 'accounts', 'devices/posture')
+    self.add('AUTH', 'accounts', 'devices/posture/integration')
+    self.add('AUTH', 'accounts', 'devices/revoke')
+
+    self.add('AUTH', 'accounts', 'dns_firewall')
+    self.add('VOID', 'accounts', 'dns_firewall', 'dns_analytics')
+    self.add('AUTH', 'accounts', 'dns_firewall', 'dns_analytics/report')
+    self.add('AUTH', 'accounts', 'dns_firewall', 'dns_analytics/report/bytime')
+
+    self.add('VOID', 'accounts', 'gateway')
+    self.add('AUTH', 'accounts', 'gateway/lists')
+    self.add('AUTH', 'accounts', 'gateway/lists', 'items')
+    self.add('AUTH', 'accounts', 'gateway/locations')
+    self.add('AUTH', 'accounts', 'gateway/rules')
+
+    self.add('VOID', 'accounts', 'images')
+    self.add('AUTH', 'accounts', 'images/v1')
+    self.add('AUTH', 'accounts', 'images/v1', 'blob')
+    self.add('AUTH', 'accounts', 'images/v1/keys')
+    self.add('AUTH', 'accounts', 'images/v1/stats')
+    self.add('AUTH', 'accounts', 'images/v1/variants')
+    self.add('VOID', 'accounts', 'images/v2')
+    self.add('AUTH', 'accounts', 'images/v2/direct_upload')
+
+    self.add('VOID', 'accounts', 'intel')
+    self.add('VOID', 'accounts', 'intel-phishing')
+    self.add('AUTH', 'accounts', 'intel-phishing/predict')
+    self.add('AUTH', 'accounts', 'intel/dns')
+    self.add('AUTH', 'accounts', 'intel/domain')
+    self.add('AUTH', 'accounts', 'intel/domain-history')
+    self.add('AUTH', 'accounts', 'intel/domain/bulk')
+    self.add('AUTH', 'accounts', 'intel/ip')
+    self.add('AUTH', 'accounts', 'intel/ip-list')
+    self.add('AUTH', 'accounts', 'intel/whois')
+
+    self.add('VOID', 'accounts', 'magic')
+    self.add('AUTH', 'accounts', 'magic/gre_tunnels')
+    self.add('AUTH', 'accounts', 'magic/ipsec_tunnels')
+    self.add('AUTH', 'accounts', 'magic/ipsec_tunnels', 'psk_generate')
+    self.add('AUTH', 'accounts', 'magic/routes')
+
+    self.add('VOID', 'accounts', 'pages')
+    self.add('AUTH', 'accounts', 'pages/projects')
+    self.add('AUTH', 'accounts', 'pages/projects', 'deployments')
+    self.add('VOID', 'accounts', 'pages/projects', 'deployments', 'history')
+    self.add('AUTH', 'accounts', 'pages/projects', 'deployments', 'history', 'logs')
+    self.add('AUTH', 'accounts', 'pages/projects', 'deployments', 'retry')
+    self.add('AUTH', 'accounts', 'pages/projects', 'deployments', 'rollback')
+    self.add('AUTH', 'accounts', 'pages/projects', 'domains')
+
+    self.add('AUTH', 'accounts', 'pcaps')
+    self.add('AUTH', 'accounts', 'pcaps', 'download')
+
+    self.add('VOID', 'accounts', 'teamnet')
+    self.add('AUTH', 'accounts', 'teamnet/routes')
+    self.add('AUTH', 'accounts', 'teamnet/routes/ip')
+    self.add('AUTH', 'accounts', 'teamnet/routes/network')
+    self.add('AUTH', 'accounts', 'teamnet/virtual_network')
+    self.add('AUTH', 'accounts', 'teamnet/virtual_networks')
+
+def zones_extras(self):
+    """ zones extras """
+
+    self.add('VOID', 'zones', 'cache')
+    self.add('AUTH', 'zones', 'cache/variants')
+    self.add('AUTH', 'zones', 'managed_headers')
+    self.add('AUTH', 'zones', 'rulesets')
+    self.add('AUTH', 'zones', 'rulesets', 'versions')
+    self.add('VOID', 'zones', 'rulesets/phases')
+    self.add('AUTH', 'zones', 'rulesets/phases', 'entrypoint')
+    self.add('AUTH', 'zones', 'rulesets/phases', 'entrypoint/versions')
+    self.add('AUTH', 'zones', 'script_monitor')
+    self.add('AUTH', 'zones', 'script_monitor/scripts')
+    self.add('AUTH', 'zones', 'settings/automatic_platform_optimization')
+    self.add('AUTH', 'zones', 'settings/orange_to_orange')
+
+def accounts_email(self):
+    """ accounts email """
+
+    self.add('AUTH', 'accounts', 'email-fwdr')
+    self.add('AUTH', 'accounts', 'email-fwdr/addresses')
+
+def zones_email(self):
+    """ zones email """
+
+    self.add('AUTH', 'zones', 'email-fwdr')
+    self.add('AUTH', 'zones', 'email-fwdr/dns')
+    self.add('AUTH', 'zones', 'email-fwdr/rules')
