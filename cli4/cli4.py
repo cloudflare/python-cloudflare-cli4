@@ -446,6 +446,8 @@ def do_it(args):
         try:
             results = run_command(cf, method, command, params, content, files)
             write_results(results, output)
+        except KeyboardInterrupt as e:
+            sys.exit('cli4: %s - Interrupted\n' % (command))
         except Exception as e:
             if len(commands) > 1:
                 continue
