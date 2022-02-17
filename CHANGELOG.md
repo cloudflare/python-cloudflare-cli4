@@ -1,5 +1,22 @@
 # Change Log
 
+ - 2022-02-16 16:18:06 -0800 [78a7616](../../commit/78a7616cb8e903954cd7043eb0af02c17f268bdd) 2.9.1 release
+ - 2022-02-16 16:15:15 -0800 [a25605c](../../commit/a25605cdf5bdfbf318b76900f0f5c43ac1f87e2c) instance4 added - its a hack, but will do for now
+ - 2022-02-16 15:59:15 -0800 [36692f3](../../commit/36692f3d8ef6697aad50f96607e5e14073807eb5) first batch of email api calls
+ - 2022-02-13 17:44:16 -0800 [4ae2013](../../commit/4ae20130dab0a55dca8765e72974e0f7ea7e39cd) API added yet another param
+ - 2022-02-13 17:18:26 -0800 [6125b75](../../commit/6125b754c29876a64c0080f087f03dcabdcc54d9) API added yet another param
+ - 2022-02-13 16:21:26 -0800 [9128600](../../commit/912860070e45955f73249304aa70558dd7f459a1) typo
+ - 2022-02-13 16:16:26 -0800 [d868c94](../../commit/d868c94ea624a199ae0c0f3fb23e5e680b4ad835) typo
+ - 2021-07-28 11:19:50 -0700 [7a0d715](../../commit/7a0d715203b886f80b27f475ea8f35b25017613b) sanitize passed variables, handle errors from network better, first pass at keywork conflict issues
+ - 2021-07-21 12:31:50 +0200 [c6b7423](../../commit/c6b74232b329e83785c93f8abe177cde860d6bba) bdist_wheel added as universal
+ - 2021-07-21 12:24:02 +0200 [eedf7c7](../../commit/eedf7c745d2450e28893272e34e90ec27ce12b7e) account rules list example
+ - 2021-07-21 11:55:47 +0200 [ee4e774](../../commit/ee4e77446410e80d9455c39d229ff72c72f4d8a1) dns import example - showing how to get around reserved word
+ - 2021-07-21 11:52:50 +0200 [e02c380](../../commit/e02c38067f2911106fff12d1e364eea484bf9ae6) handle <pre> within description - which should be ignored
+ - 2021-07-21 11:52:02 +0200 [cde763a](../../commit/cde763aaf0f0e9769689664b77378737af01b5a7) document :: option
+ - 2021-07-21 11:51:28 +0200 [23a9366](../../commit/23a936630ef052c92b9816acb91092f17154e7de) indents - what a pain!
+ - 2021-07-21 11:48:02 +0200 [215f5b2](../../commit/215f5b2f492ace78164547850712c4a696b9672f) bdist_wheel added as universal
+ - 2021-07-21 11:47:15 +0200 [ff66435](../../commit/ff664357f9fe2b24767e909a8777864f6d8efa11) handle /pages using {} for account_id
+ - 2020-12-03 14:24:07 -0800 [dc14687](../../commit/dc14687e4957c4ed93f65fe697b2821a0c6f4a93) CHANGELOG.md pushed to github
  - 2020-12-03 14:22:47 -0800 [9e170eb](../../commit/9e170ebe2f9139d2b0620d7f31be2330dd532aaa) 2.8.14 release
  - 2020-09-20 15:58:25 -0700 [b70b520](../../commit/b70b5209664dc64ae4f0e5773806aec05b799cbd) first pass at adding travis CI
  - 2020-09-17 14:17:45 -0700 [9975223](../../commit/997522321c61f08cc91bcc61f3ee707f38179f9a) zones/waiting_rooms, accounts/diagnostics, and more
