@@ -884,7 +884,7 @@ class CloudFlare(object):
             raise CloudFlareAPIError(0, 'api load type mismatch')
 
         if keyword.iskeyword(name):
-            ## add an extra keywork prefix'ed with underscore so it can used with Python code
+            ## add an extra keyword postfix'ed with underscore so it can used with Python code
             setattr(branch, name + '_', f)
         if '-' in name:
             # dashes (vs underscores) cause issues in Python and other languages
@@ -911,9 +911,13 @@ class CloudFlare(object):
                 if 'delete' in d or 'get' in d or 'patch' in d or 'post' in d or 'put' in d:
                     # only show the result if a call exists for this part
                     if '_parts' in d:
-                        # handle underscores by returning the actual API call vs the method name
-                        w.append(str(a)[1:-1])
-                        ## w.append(str(a)[1:-1].replace('/:id/','/'))
+                        if n[-1] == '_' and keyword.iskeyword(n[:-1]):
+                            # remove the extra keyword postfix'ed with underscore
+                            pass
+                        else:
+                            # handle underscores by returning the actual API call vs the method name
+                            w.append(str(a)[1:-1])
+                            ## w.append(str(a)[1:-1].replace('/:id/','/'))
                 w = w + self.api_list(a, s + '/' + n)
         return w
 
