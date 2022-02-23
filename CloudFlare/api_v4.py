@@ -354,17 +354,29 @@ def accounts(self):
     self.add('AUTH', "accounts")
     self.add('VOID', "accounts", "billing")
     self.add('AUTH', "accounts", "billing/profile")
+
+    self.add('VOID', 'accounts', 'cfd_tunnel')
+    self.add('AUTH', 'accounts', 'cfd_tunnel/tunnels')
+    self.add('AUTH', 'accounts', 'cfd_tunnel/tunnels', 'connections')
+    self.add('AUTH', 'accounts', 'cfd_tunnel/tunnels', 'token')
+
     self.add('AUTH', "accounts", "custom_pages")
+
     self.add('AUTH', "accounts", "members")
+
     self.add('AUTH', "accounts", "railguns")
     self.add('AUTH', "accounts", "railguns", "connections")
+
     self.add('VOID', "accounts", "registrar")
     self.add('AUTH', "accounts", "registrar/domains")
+
     self.add('AUTH', "accounts", "roles")
+
     self.add('VOID', 'accounts', 'rules')
     self.add('AUTH', 'accounts', 'rules/lists')
     self.add('AUTH', 'accounts', 'rules/lists', 'items')
     self.add('AUTH', 'accounts', 'rules/lists/bulk_operations')
+
     self.add('AUTH', 'accounts', 'rulesets')
     self.add('AUTH', 'accounts', 'rulesets', 'versions')
     self.add('AUTH', 'accounts', 'rulesets', 'rules')
@@ -381,9 +393,13 @@ def accounts(self):
     self.add('AUTH', "accounts", "storage/kv/namespaces", "bulk")
     self.add('AUTH', "accounts", "storage/kv/namespaces", "keys")
     self.add('AUTH', "accounts", "storage/kv/namespaces", "values")
+    self.add('AUTH', 'accounts', 'storage/kv/namespaces', 'metadata')
+
     self.add('AUTH', "accounts", "subscriptions")
+
     self.add('AUTH', 'accounts', 'tunnels')
     self.add('AUTH', 'accounts', 'tunnels', 'connections')
+
     self.add('AUTH', "accounts", "virtual_dns")
     self.add('VOID', "accounts", "virtual_dns", "dns_analytics")
     self.add('AUTH', "accounts", "virtual_dns", "dns_analytics/report")
@@ -491,7 +507,7 @@ def zones_access(self):
     self.add('AUTH', "zones", "access/apps", "policies")
     self.add('AUTH', "zones", "access/apps", "revoke_tokens")
     self.add('AUTH', "zones", "access/certificates")
-    #self.add('AUTH', "zones", "access/apps/ca")
+#   self.add('AUTH', "zones", "access/apps/ca")
     self.add('AUTH', "zones", "access/apps", "ca")
     self.add('AUTH', "zones", "access/groups")
     self.add('AUTH', "zones", "access/identity_providers")
@@ -509,10 +525,11 @@ def accounts_access(self):
     self.add('AUTH', "accounts", "access/organizations/revoke_user")
     self.add('AUTH', "accounts", "access/service_tokens")
     self.add('AUTH', 'accounts', 'access/apps')
-    #self.add('AUTH', 'accounts', 'access/apps/ca')
+#   self.add('AUTH', 'accounts', 'access/apps/ca')
     self.add('AUTH', 'accounts', 'access/apps', 'ca')
     self.add('AUTH', 'accounts', 'access/apps', 'policies')
     self.add('AUTH', 'accounts', 'access/apps', 'revoke_tokens')
+    self.add('AUTH', 'accounts', 'access/apps', 'user_policy_checks')
     self.add('AUTH', 'accounts', 'access/certificates')
     self.add('AUTH', 'accounts', 'access/keys')
     self.add('AUTH', 'accounts', 'access/keys/rotate')
@@ -520,6 +537,7 @@ def accounts_access(self):
     self.add('AUTH', 'accounts', 'access/logs/access_requests')
     self.add('AUTH', 'accounts', 'access/seats')
     self.add('AUTH', 'accounts', 'access/users')
+    self.add('AUTH', 'accounts', 'access/users', 'failed_logins')
 
 def accounts_diagnostics(self):
     """ API core commands for Cloudflare API"""
@@ -554,6 +572,7 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'custom_ns/verify')
 
     self.add('AUTH', 'accounts', 'devices')
+    self.add('AUTH', 'accounts', 'devices', 'override_codes')
     self.add('VOID', 'accounts', 'devices/policy')
     self.add('AUTH', 'accounts', 'devices/policy/exclude')
     self.add('AUTH', 'accounts', 'devices/policy/fallback_domains')
@@ -561,6 +580,7 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'devices/posture')
     self.add('AUTH', 'accounts', 'devices/posture/integration')
     self.add('AUTH', 'accounts', 'devices/revoke')
+    self.add('AUTH', 'accounts', 'devices/unrevoke')
 
     self.add('AUTH', 'accounts', 'dns_firewall')
     self.add('VOID', 'accounts', 'dns_firewall', 'dns_analytics')
@@ -633,6 +653,7 @@ def zones_extras(self):
     self.add('AUTH', 'zones', 'script_monitor/scripts')
     self.add('AUTH', 'zones', 'settings/automatic_platform_optimization')
     self.add('AUTH', 'zones', 'settings/orange_to_orange')
+    self.add('AUTH', 'zones', 'url_normalization')
 
 def accounts_email(self):
     """ accounts email """
