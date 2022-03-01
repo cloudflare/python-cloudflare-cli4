@@ -1,5 +1,13 @@
 # Change Log
 
+ - 2022-02-28 16:44:34 -0800 [10f82a8](../../commit/10f82a8c4cc06fdca7588c51cc8bdb7fe2665896) 2.9.2 release
+ - 2022-02-28 16:43:45 -0800 [24d0991](../../commit/24d0991a34241ea8803b02c6ccfe0ffebf244919) show version number from api url
+ - 2022-02-28 16:34:41 -0800 [9be2aef](../../commit/9be2aef54016213abea93889a471f56f757000d1) handle ?params in API - which should not be there
+ - 2022-02-28 16:32:29 -0800 [1378ad8](../../commit/1378ad8311912d5244fbd6c40c307bbc2b172b85) api moved from accounts/cfd_tunnel/tunnels to accounts/cfd_tunnel
+ - 2022-02-23 12:09:30 -0800 [3d8740e](../../commit/3d8740ed4b7d49bbfd36c0f7c398b54097abf50d) more api calls
+ - 2022-02-23 12:07:41 -0800 [f1e3531](../../commit/f1e3531229d694ee0401b35163b2756dc22f9de8) keyword handling still needed fixes
+ - 2022-02-17 09:33:51 -0800 [1ca59e8](../../commit/1ca59e870751822c354f96b57bb8194e336f846b) finally handle KeyboardInterrupt cleanly - it was easy
+ - 2022-02-16 16:18:54 -0800 [4bb7894](../../commit/4bb78946aa0fc7a0d733a0cfebbaeaa0744b6825) CHANGELOG.md pushed to github
  - 2022-02-16 16:18:06 -0800 [78a7616](../../commit/78a7616cb8e903954cd7043eb0af02c17f268bdd) 2.9.1 release
  - 2022-02-16 16:15:15 -0800 [a25605c](../../commit/a25605cdf5bdfbf318b76900f0f5c43ac1f87e2c) instance4 added - its a hack, but will do for now
  - 2022-02-16 15:59:15 -0800 [36692f3](../../commit/36692f3d8ef6697aad50f96607e5e14073807eb5) first batch of email api calls
