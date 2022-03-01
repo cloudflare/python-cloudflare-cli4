@@ -355,10 +355,9 @@ def accounts(self):
     self.add('VOID', "accounts", "billing")
     self.add('AUTH', "accounts", "billing/profile")
 
-    self.add('VOID', 'accounts', 'cfd_tunnel')
-    self.add('AUTH', 'accounts', 'cfd_tunnel/tunnels')
-    self.add('AUTH', 'accounts', 'cfd_tunnel/tunnels', 'connections')
-    self.add('AUTH', 'accounts', 'cfd_tunnel/tunnels', 'token')
+    self.add('AUTH', 'accounts', 'cfd_tunnel')
+    self.add('AUTH', 'accounts', 'cfd_tunnel', 'connections')
+    self.add('AUTH', 'accounts', 'cfd_tunnel', 'token')
 
     self.add('AUTH', "accounts", "custom_pages")
 
