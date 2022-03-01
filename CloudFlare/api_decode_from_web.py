@@ -63,6 +63,12 @@ def api_decode_from_web(content):
 
     soup = BeautifulSoup(content, 'html.parser')
 
+    for child in soup.find_all('p'):
+        t = child.get_text()
+        if 'Last modified' in t:
+            sys.stderr.write("Retrieved API: %s\n" % (t.strip().replace('\n', ' ')))
+            break
+
     all_cmds = []
     for section in soup.find_all('section'):
         all_cmds += do_section(section)
