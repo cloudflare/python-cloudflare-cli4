@@ -470,7 +470,7 @@ class CloudFlare(object):
                         response_data['success'] = True
 
             if response_data['success'] is False:
-                if 'errors' in response_data:
+                if 'errors' in response_data and response_data['errors'] != None:
                     errors = response_data['errors'][0]
                 else:
                     errors = {}

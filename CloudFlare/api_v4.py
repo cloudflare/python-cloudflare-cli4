@@ -83,6 +83,7 @@ def zones(self):
     self.add('AUTH', "zones", "activation_check")
     self.add('AUTH', "zones", "available_plans")
     self.add('AUTH', "zones", "available_rate_plans")
+    self.add('AUTH', "zones", "bot_management")
     self.add('AUTH', "zones", "custom_certificates")
     self.add('AUTH', "zones", "custom_certificates/prioritize")
     self.add('AUTH', "zones", "custom_hostnames")
