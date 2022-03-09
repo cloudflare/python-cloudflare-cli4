@@ -202,16 +202,16 @@ import CloudFlare
 
 If the account email and API key are not passed when you create the class, then they are retrieved from either the users exported shell environment variables or the .cloudflare.cfg or ~/.cloudflare.cfg or ~/.cloudflare/cloudflare.cfg files, in that order.
 
-If you're using an API Token, any `cloudflare.cfg` file must either not contain an `email` attribute or be a zero length string and the `CF_API_EMAIL` environment variable must be unset or be a zero length string, otherwise the token will be treated as a key and will throw an error.
+If you're using an API Token, any `cloudflare.cfg` file must either not contain an `email` attribute or be a zero length string and the `CLOUDFLARE_EMAIL` environment variable must be unset or be a zero length string, otherwise the token will be treated as a key and will throw an error.
 
 There is one call that presently doesn't need any email or token certification (the */ips* call); hence you can test without any values saved away.
 
 ### Using shell environment variables
 
 ```bash
-$ export CF_API_EMAIL='user@example.com' # Do not set if using an API Token
-$ export CF_API_KEY='00000000000000000000000000000000'
-$ export CF_API_CERTKEY='v1.0-...'
+$ export CLOUDFLARE_EMAIL='user@example.com' # Do not set if using an API Token
+$ export CLOUDFLARE_API_KEY='00000000000000000000000000000000'
+$ export CLOUDFLARE_API_CERTKEY='v1.0-...'
 $
 ```
 
@@ -297,7 +297,7 @@ This can be used with email values also.
 
 ### About /certificates and certtoken
 
-The *CF_API_CERTKEY* or *certtoken* values are used for the Origin-CA */certificates* API calls.
+The *CLOUDFLARE_API_CERTKEY* or *certtoken* values are used for the Origin-CA */certificates* API calls.
 You can leave *certtoken* in the configuration with a blank value (or omit the option variable fully).
 
 The *extras* values are used when adding API calls outside of the core codebase.
@@ -426,7 +426,7 @@ Next a simple/single error response.
 This is simulated by providing incorrect authentication information.
 
 ```
-$ CF_API_EMAIL='someone@example.com' cli4 /zones/
+$ CLOUDFLARE_EMAIL='someone@example.com' cli4 /zones/
 cli4: /zones - 9103 Unknown X-Auth-Key or X-Auth-Email
 $
 ```
