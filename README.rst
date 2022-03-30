@@ -214,6 +214,19 @@ There is one call that presently doesn’t need any email or token certification
 Using shell environment variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Note (for latest vewrsion of code):
+
+-  ``CLOUDFLARE_EMAIL`` has replaced ``CF_API_EMAIL``.
+-  ``CLOUDFLARE_API_KEY`` has replaced ``CF_API_KEY``.
+-  ``CLOUDFLARE_API_CERTKEY`` has replaced ``CF_API_CERTKEY``.
+
+Additionally, these two variables are available for testing purposes:
+
+-  ``CLOUDFLARE_API_EXTRAS`` has replaced ``CF_API_EXTRAS``.
+-  ``CLOUDFLARE_API_URL`` has replaced ``CF_API_URL``.
+
+The older environment variable names can still be used.
+
 .. code:: bash
 
    $ export CLOUDFLARE_EMAIL='user@example.com' # Do not set if using an API Token
