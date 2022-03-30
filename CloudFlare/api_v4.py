@@ -89,6 +89,7 @@ def zones(self):
     self.add('AUTH', "zones", "bot_management")
     self.add('AUTH', "zones", "custom_certificates")
     self.add('AUTH', "zones", "custom_certificates/prioritize")
+    self.add("AUTH", "zones", "custom_csrs")
     self.add('AUTH', "zones", "custom_hostnames")
     self.add('AUTH', "zones", "custom_hostnames/fallback_origin")
     self.add('AUTH', 'zones', 'custom_ns')
