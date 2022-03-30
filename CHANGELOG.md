@@ -1,5 +1,9 @@
 # Change Log
 
+ - 2022-03-30 09:11:40 -0700 [b01d16e](../../commit/b01d16ea503c5de00f168d2d6fe2b0a08576fd5a) 2.9.3 release
+ - 2022-03-30 09:07:21 -0700 [657772b](../../commit/657772be05cf8c6036fc66ee78686fa258962884) trailing slashes are not needed in API
+ - 2022-03-30 09:06:57 -0700 [2e4d26f](../../commit/2e4d26f3d03638ff4a6c1ebe0acbf12f763d04e2) API added yet another param
+ - 2022-02-28 16:44:57 -0800 [6c0e470](../../commit/6c0e470dac2241e5a24e51a38b5da46d982a7751) CHANGELOG.md pushed to github
  - 2022-02-28 16:44:34 -0800 [10f82a8](../../commit/10f82a8c4cc06fdca7588c51cc8bdb7fe2665896) 2.9.2 release
  - 2022-02-28 16:43:45 -0800 [24d0991](../../commit/24d0991a34241ea8803b02c6ccfe0ffebf244919) show version number from api url
  - 2022-02-28 16:34:41 -0800 [9be2aef](../../commit/9be2aef54016213abea93889a471f56f757000d1) handle ?params in API - which should not be there
