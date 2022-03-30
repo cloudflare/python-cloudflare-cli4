@@ -16,7 +16,7 @@ def read_configs(profile=None):
     # envioronment variables override config files - so setup first
     config['email'] = os.getenv('CLOUDFLARE_EMAIL') if os.getenv('CLOUDFLARE_EMAIL') != None else os.getenv('CF_API_EMAIL')
     config['token'] = os.getenv('CLOUDFLARE_API_KEY') if os.getenv('CLOUDFLARE_API_KEY') != None else os.getenv('CF_API_KEY')
-    config['certtoken'] = os.getenv('CLOUDFLARE_API_CERTKEY') if os.getenv('CLOUDFLARE_API_CERTKEY') != None else  os.getenv('CF_API_CERTKEY')
+    config['certtoken'] = os.getenv('CLOUDFLARE_API_CERTKEY') if os.getenv('CLOUDFLARE_API_CERTKEY') != None else os.getenv('CF_API_CERTKEY')
     config['extras'] = os.getenv('CLOUDFLARE_API_EXTRAS') if os.getenv('CLOUDFLARE_API_EXTRAS') != None else os.getenv('CF_API_EXTRAS')
     config['base_url'] = os.getenv('CLOUDFLARE_API_URL') if os.getenv('CLOUDFLARE_API_URL') != None else os.getenv('CF_API_URL')
     if profile is None:

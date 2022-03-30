@@ -49,14 +49,17 @@ class CloudFlare(object):
             self.network = CFnetwork(use_sessions=self.use_sessions)
             self.user_agent = user_agent()
 
-            if not isinstance(self.email, str):
-                raise ValueError('email argument not string')
-            if not isinstance(self.token, str):
-                raise ValueError('token argument not string')
-            if not isinstance(self.certtoken, str):
-                raise ValueError('certtoken argument not string')
-            if not isinstance(self.base_url, str):
-                raise ValueError('base url argument not string')
+            ## We don't need to check this here as we test for
+            ## this when building the authentication headers
+            ##
+            ##if not isinstance(self.email, str):
+            ##    raise ValueError('email argument not string')
+            ##if not isinstance(self.token, str):
+            ##    raise ValueError('token argument not string')
+            ##if not isinstance(self.certtoken, str):
+            ##    raise ValueError('certtoken argument not string')
+            ##if not isinstance(self.base_url, str):
+            ##    raise ValueError('base url argument not string')
 
             if 'debug' in config and config['debug']:
                 self.logger = CFlogger(config['debug']).getLogger()
