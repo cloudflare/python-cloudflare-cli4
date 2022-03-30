@@ -185,7 +185,7 @@ import CloudFlare
     cf = CloudFlare.CloudFlare()
 
     # A minimal call with debug enabled
-    cf = CloudFlare.CloudFlare(debug=True))
+    cf = CloudFlare.CloudFlare(debug=True)
 
     # An authenticated call using an API Token (note the missing email)
     cf = CloudFlare.CloudFlare(token='00000000000000000000000000000000')
@@ -202,16 +202,16 @@ import CloudFlare
 
 If the account email and API key are not passed when you create the class, then they are retrieved from either the users exported shell environment variables or the .cloudflare.cfg or ~/.cloudflare.cfg or ~/.cloudflare/cloudflare.cfg files, in that order.
 
-If you're using an API Token, any `cloudflare.cfg` file must either not contain an `email` attribute or be a zero length string and the `CF_API_EMAIL` environment variable must be unset or be a zero length string, otherwise the token will be treated as a key and will throw an error.
+If you're using an API Token, any `cloudflare.cfg` file must either not contain an `email` attribute or be a zero length string and the `CLOUDFLARE_EMAIL` environment variable must be unset or be a zero length string, otherwise the token will be treated as a key and will throw an error.
 
 There is one call that presently doesn't need any email or token certification (the */ips* call); hence you can test without any values saved away.
 
 ### Using shell environment variables
 
 ```bash
-$ export CF_API_EMAIL='user@example.com' # Do not set if using an API Token
-$ export CF_API_KEY='00000000000000000000000000000000'
-$ export CF_API_CERTKEY='v1.0-...'
+$ export CLOUDFLARE_EMAIL='user@example.com' # Do not set if using an API Token
+$ export CLOUDFLARE_API_KEY='00000000000000000000000000000000'
+$ export CLOUDFLARE_API_CERTKEY='v1.0-...'
 $
 ```
 
@@ -297,7 +297,7 @@ This can be used with email values also.
 
 ### About /certificates and certtoken
 
-The *CF_API_CERTKEY* or *certtoken* values are used for the Origin-CA */certificates* API calls.
+The *CLOUDFLARE_API_CERTKEY* or *certtoken* values are used for the Origin-CA */certificates* API calls.
 You can leave *certtoken* in the configuration with a blank value (or omit the option variable fully).
 
 The *extras* values are used when adding API calls outside of the core codebase.
@@ -426,7 +426,7 @@ Next a simple/single error response.
 This is simulated by providing incorrect authentication information.
 
 ```
-$ CF_API_EMAIL='someone@example.com' cli4 /zones/
+$ CLOUDFLARE_EMAIL='someone@example.com' cli4 /zones/
 cli4: /zones - 9103 Unknown X-Auth-Key or X-Auth-Email
 $
 ```
@@ -740,6 +740,79 @@ COUNT=1 PAGE=7 PER_PAGE=5 TOTAL_COUNT=31 TOTAL_PAGES=7 -- varius.example vehicul
 COUNT=5 PAGE=6 PER_PAGE=5 TOTAL_COUNT=31 TOTAL_PAGES=7 -- vivamus.example
 ```
 
+### Paging thru lists (using cursors)
+
+Some API calls use cursors to read beyond the initally returned values. See the API page in order to see which API calls do this.
+
+```
+$ ACCOUNT_ID="00000000000000000000000000000000"
+$ LIST_ID="00000000000000000000000000000000"
+$
+$ cli4 --raw /accounts/::${ACCOUNT_ID}/rules/lists/::${LIST_ID}/items > /tmp/page1.json
+$ after=`jq -r '.result_info.cursors.after' < /tmp/page1.json`
+$ echo "after=$after"
+after=Mxm4GVmKjYbFjy2VxMPipnJigm1M_s6lCS9ABR9wx-RM2A
+$
+```
+
+Once we have the ```after``` value, we can pass it along in order to read the next hunk of values. We finish when ```after``` returns as null (or isn't present).
+
+```
+$ cli4 --raw cursor="$after" /accounts/::${ACCOUNT_ID}/rules/lists/::${LIST_ID}/items > /tmp/page2.json
+$ after=`jq -r '.result_info.cursors.after' < /tmp/page2.json`
+$ echo "after=$after"
+after=null
+$
+```
+
+We can see the results now in two files.
+
+```
+$ jq -c '.result[]' < /tmp/page1.json | wc -l
+      25
+$
+
+$ jq -c '.result[]' < /tmp/page2.json | wc -l
+       5
+$
+
+$ for f in /tmp/page?.json ; do jq -r '.result[]|.id,.ip,.comment' < $f | paste - - - ; done | column -s'   ' -t
+0fe44928258549feb47126a966fbf4a0  0.0.0.0           all zero
+2e1e02120f5e466f8c0e26375e4cf4c8  1.0.0.1           Cloudflare DNS a
+9ca5fd0ac6f54fdbb9dedd3fb72ce2da  1.1.1.1           Cloudflare DNS b
+b3654987446743738c782f36ebe074f5  10.0.0.0/8        RFC1918 space
+90bec8ce37d242faa2e27d1e78c1d8e2  103.21.244.0/22   Cloudflare IP
+970a3c810cda41af9bef2c36a1892f7e  103.22.200.0/22   Cloudflare IP
+3ec8516158bf4f3cac18210f611ee541  103.31.4.0/22     Cloudflare IP
+ee9d268367204e6bb8e5e4c907f22de8  104.16.0.0/12     Cloudflare IP
+93ae02eda9774c45840af367a02fe529  108.162.192.0/18  Cloudflare IP
+62891ebf6db44aa494d79a6401af185e  131.0.72.0/22     Cloudflare IP
+cac40cd940cc470582b8c912a8a12bea  141.101.64.0/18   Cloudflare IP
+f6d5eacd81a2407f8e0d81caee21e7f8  162.158.0.0/15    Cloudflare IP
+3d538dfc38ab471d9d3fe78332acfa4e  172.16.0.0/12     RFC1918 space
+f353cb8f98424837ad35382a22b9debe  172.64.0.0/13     Cloudflare IP
+78f3e1a0bafc41f88d4d40ad49a642e0  173.245.48.0/20   Cloudflare IP
+c23a545475c54c32a7681c6b508d3e80  188.114.96.0/20   Cloudflare IP
+f693237c9e294fe481221cbc2d7c20ef  190.93.240.0/20   Cloudflare IP
+6d465ab3a0994c07827ebdcf8f34d977  192.168.0.0/16    RFC1918 space
+1ad1e634b3664bac939086185c62faf7  197.234.240.0/22  Cloudflare IP
+5d2968e7b3114d8e869a379d71c8ba86  198.41.128.0/17   Cloudflare IP
+6a69de60b31448fa864f0a3ac5abe8d0  224.0.0.0/24      Multicast
+30749cce89af4ab3a80e308294f46a46  240.0.0.0/4       Class E
+2b32c67ea4d044628abe39f28662d8f0  255.255.255.255   all ones
+cc7cd828b2fb4bcfb9391c2d3ef8d068  2400:cb00::/32    Cloudflare IP
+b30d4cbd7dcd48729e8ebeda552e48a8  2405:8100::/32    Cloudflare IP
+49db60758c8344959c338a74afc9748a  2405:b500::/32    Cloudflare IP
+96e9eca1923c40d5a84865145f5a5d6a  2606:4700::/32    Cloudflare IP
+21bc52a26e10405d89b7180ddcf49302  2803:f800::/32    Cloudflare IP
+ff78f842188e4b869eb5389ae9ab8f41  2a06:98c0::/29    Cloudflare IP
+0880cdfc40b14f6fa0639522a728859d  2c0f:f248::/32    Cloudflare IP
+$
+```
+
+The ```result_info.cursors``` area also contains a ```before``` value for reverse scrolling.
+
+As with ```per_page``` scrolling, raw mode is used.
 
 ### DNSSEC CLI examples
 

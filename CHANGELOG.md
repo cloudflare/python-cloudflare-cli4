@@ -30,6 +30,8 @@
  - 2021-07-21 11:47:15 +0200 [ff66435](../../commit/ff664357f9fe2b24767e909a8777864f6d8efa11) handle /pages using {} for account_id
  - 2020-12-03 14:24:07 -0800 [dc14687](../../commit/dc14687e4957c4ed93f65fe697b2821a0c6f4a93) CHANGELOG.md pushed to github
  - 2020-12-03 14:22:47 -0800 [9e170eb](../../commit/9e170ebe2f9139d2b0620d7f31be2330dd532aaa) 2.8.14 release
+ - 2020-11-14 12:58:07 -0500 [acc3b99](../../commit/acc3b9963581ad5b875f6f80b517822261775d62) Removing excess trailing parenthesis
+ - 2020-11-14 12:51:53 -0500 [bf583e2](../../commit/bf583e2ccce999cdeaa27ac3a6860ef425eb9343) Removing excess trailing parenthesis
  - 2020-09-20 15:58:25 -0700 [b70b520](../../commit/b70b5209664dc64ae4f0e5773806aec05b799cbd) first pass at adding travis CI
  - 2020-09-17 14:17:45 -0700 [9975223](../../commit/997522321c61f08cc91bcc61f3ee707f38179f9a) zones/waiting_rooms, accounts/diagnostics, and more
  - 2020-08-13 10:41:22 -0700 [8ed99e4](../../commit/8ed99e4899637a7d7bc11c4bee76982537fcc45f) CHANGELOG.md pushed to github
