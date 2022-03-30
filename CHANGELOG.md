@@ -1,5 +1,9 @@
 # Change Log
 
+ - 2022-03-30 12:29:39 -0700 [9c1198c](../../commit/9c1198c40b0d6b37117fbefcfb1e0a0de377f447) 2.9.6 release
+ - 2022-03-30 12:28:05 -0700 [d486194](../../commit/d4861943f9f669e9a3f6d62d57d19a15c5042448) two missing else statements
+ - 2022-03-30 12:20:12 -0700 [2d89fc7](../../commit/2d89fc7c249377aeafc956176625cc872649bc16) Move the somewhat out of date table of commands into its own file - which then needs to be created automatically in the Makefile
+ - 2022-03-30 12:06:36 -0700 [388ba06](../../commit/388ba06159415847a9976bd3404ac21a1210aab6) CHANGELOG.md pushed to github
  - 2022-03-30 12:06:05 -0700 [0de3fa2](../../commit/0de3fa20a5023c2703eeb73cf3ce3e31f47cd02f) 2.9.5 release
  - 2022-03-30 12:02:46 -0700 [88822c4](../../commit/88822c49c45fe645bc51177be6ddde46618bc8b2) Upgrade pandoc setup and remove tabs from README
  - 2022-03-30 09:50:40 -0700 [0535bb4](../../commit/0535bb41c0a1c47c44af95d3d15b6b879f169de1) 2.9.4 release
