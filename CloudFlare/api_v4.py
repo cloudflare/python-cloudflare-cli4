@@ -579,6 +579,7 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'devices/posture')
     self.add('AUTH', 'accounts', 'devices/posture/integration')
     self.add('AUTH', 'accounts', 'devices/revoke')
+    self.add('AUTH', 'accounts', 'devices/settings')
     self.add('AUTH', 'accounts', 'devices/unrevoke')
 
     self.add('AUTH', 'accounts', 'dns_firewall')
@@ -586,10 +587,14 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'dns_firewall', 'dns_analytics/report')
     self.add('AUTH', 'accounts', 'dns_firewall', 'dns_analytics/report/bytime')
 
-    self.add('VOID', 'accounts', 'gateway')
+    self.add('AUTH', 'accounts', 'gateway')
+    self.add('AUTH', 'accounts', 'gateway/app_types')
+    self.add('AUTH', 'accounts', 'gateway/configuration')
     self.add('AUTH', 'accounts', 'gateway/lists')
     self.add('AUTH', 'accounts', 'gateway/lists', 'items')
     self.add('AUTH', 'accounts', 'gateway/locations')
+    self.add('AUTH', 'accounts', 'gateway/logging')
+    self.add('AUTH', 'accounts', 'gateway/proxy_endpoints')
     self.add('AUTH', 'accounts', 'gateway/rules')
 
     self.add('VOID', 'accounts', 'images')
@@ -666,3 +671,4 @@ def zones_email(self):
     self.add('AUTH', 'zones', 'email-fwdr')
     self.add('AUTH', 'zones', 'email-fwdr/dns')
     self.add('AUTH', 'zones', 'email-fwdr/rules')
+
