@@ -103,7 +103,7 @@ def main():
     cf = CloudFlare.CloudFlare(raw=True)
     page_number = 0
     while True:
-    	page_number += 1
+        page_number += 1
         raw_results = cf.zones.get(params={'per_page':5,'page':page_number})
         zones = raw_results['result']
 
@@ -709,22 +709,22 @@ trap "rm ${tmp}; exit 0" 0 1 2 15
 PAGE=0
 while true
 do
-	cli4 --raw per_page=5 page=${PAGE} /zones > ${tmp}
-	domains=`jq -c '.|.result|.[]|.name' < ${tmp} | tr -d '"'`
-	result_info=`jq -c '.|.result_info' < ${tmp}`
-	COUNT=`      echo "${result_info}" | jq .count`
-	PAGE=`       echo "${result_info}" | jq .page`
-	PER_PAGE=`   echo "${result_info}" | jq .per_page`
-	TOTAL_COUNT=`echo "${result_info}" | jq .total_count`
-	TOTAL_PAGES=`echo "${result_info}" | jq .total_pages`
-	echo COUNT=${COUNT} PAGE=${PAGE} PER_PAGE=${PER_PAGE} TOTAL_COUNT=${TOTAL_COUNT} TOTAL_PAGES=${TOTAL_PAGES} -- ${domains}
-	if [ "${PAGE}" == "${TOTAL_PAGES}" ]
-	then
-		## last section
-		break
-	fi
-	# grab the next page
-	PAGE=`expr ${PAGE} + 1`
+        cli4 --raw per_page=5 page=${PAGE} /zones > ${tmp}
+        domains=`jq -c '.|.result|.[]|.name' < ${tmp} | tr -d '"'`
+        result_info=`jq -c '.|.result_info' < ${tmp}`
+        COUNT=`      echo "${result_info}" | jq .count`
+        PAGE=`       echo "${result_info}" | jq .page`
+        PER_PAGE=`   echo "${result_info}" | jq .per_page`
+        TOTAL_COUNT=`echo "${result_info}" | jq .total_count`
+        TOTAL_PAGES=`echo "${result_info}" | jq .total_pages`
+        echo COUNT=${COUNT} PAGE=${PAGE} PER_PAGE=${PER_PAGE} TOTAL_COUNT=${TOTAL_COUNT} TOTAL_PAGES=${TOTAL_PAGES} -- ${domains}
+        if [ "${PAGE}" == "${TOTAL_PAGES}" ]
+        then
+                ## last section
+                break
+        fi
+        # grab the next page
+        PAGE=`expr ${PAGE} + 1`
 done
 ```
 
@@ -875,17 +875,17 @@ The following is documented within the **Advanced** option of the DNS page withi
 ```
 $ cli4 /zones/:example.com/dns_records/export | egrep -v '^;;|^$'
 $ORIGIN .
-@	3600	IN	SOA	example.com.	root.example.com.	(
-		2025552311	; serial
-		7200		; refresh
-		3600		; retry
-		86400		; expire
-		3600)		; minimum
-example.com.	300	IN	NS	REPLACE&ME$WITH^YOUR@NAMESERVER.
-record4.example.com.	300	IN	TXT	"some text"
-record3.example.com.	300	IN	CNAME	record1.example.com.
-record1.example.com.	300	IN	A	10.0.0.1
-record2.example.com.	300	IN	AAAA	2001:d8b::2
+@       3600    IN      SOA     example.com.    root.example.com.       (
+                2025552311      ; serial
+                7200            ; refresh
+                3600            ; retry
+                86400           ; expire
+                3600)           ; minimum
+example.com.    300     IN      NS      REPLACE&ME$WITH^YOUR@NAMESERVER.
+record4.example.com.    300     IN      TXT     "some text"
+record3.example.com.    300     IN      CNAME   record1.example.com.
+record1.example.com.    300     IN      A       10.0.0.1
+record2.example.com.    300     IN      AAAA    2001:d8b::2
 $
 ```
 
@@ -1063,25 +1063,25 @@ Here is the working example of the shell version:
 
 ```
 $ examples/example_graphql.sh example.com
-2020-07-14T02:00:00Z	34880
-2020-07-14T03:00:00Z	18953
-2020-07-14T04:00:00Z	28700
-2020-07-14T05:00:00Z	2358
-2020-07-14T06:00:00Z	34905
-2020-07-14T07:00:00Z	779
-2020-07-14T08:00:00Z	35450
-2020-07-14T10:00:00Z	17803
-2020-07-14T11:00:00Z	32678
-2020-07-14T12:00:00Z	19947
-2020-07-14T13:00:00Z	4956
-2020-07-14T14:00:00Z	34585
-2020-07-14T15:00:00Z	3022
-2020-07-14T16:00:00Z	5224
-2020-07-14T18:00:00Z	79482
-2020-07-14T21:00:00Z	10609
-2020-07-14T22:00:00Z	5740
-2020-07-14T23:00:00Z	2545
-2020-07-15T01:00:00Z	10777
+2020-07-14T02:00:00Z    34880
+2020-07-14T03:00:00Z    18953
+2020-07-14T04:00:00Z    28700
+2020-07-14T05:00:00Z    2358
+2020-07-14T06:00:00Z    34905
+2020-07-14T07:00:00Z    779
+2020-07-14T08:00:00Z    35450
+2020-07-14T10:00:00Z    17803
+2020-07-14T11:00:00Z    32678
+2020-07-14T12:00:00Z    19947
+2020-07-14T13:00:00Z    4956
+2020-07-14T14:00:00Z    34585
+2020-07-14T15:00:00Z    3022
+2020-07-14T16:00:00Z    5224
+2020-07-14T18:00:00Z    79482
+2020-07-14T21:00:00Z    10609
+2020-07-14T22:00:00Z    5740
+2020-07-14T23:00:00Z    2545
+2020-07-15T01:00:00Z    10777
 $
 ```
 

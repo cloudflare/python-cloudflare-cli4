@@ -10,7 +10,7 @@ NAME = "cloudflare"
 all:	README.rst CHANGELOG.md build
 
 README.rst: README.md
-	$(PANDOC) --from=markdown --to=rst < README.md > README.rst 
+	$(PANDOC) --wrap=none --from=markdown --to=rst < README.md > README.rst 
 
 CHANGELOG.md: FORCE
 	@ tmp=/tmp/_$$$$.md ; \
