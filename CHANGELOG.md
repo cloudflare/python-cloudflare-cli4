@@ -1,5 +1,16 @@
 # Change Log
 
+ - 2022-03-30 15:40:52 -0700 [38886f9](../../commit/38886f94b9e30abed1c09e66514b25011c100d4d) 2.9.7 release
+ - 2022-03-30 15:40:34 -0700 [f9486e6](../../commit/f9486e61e7e9bae4133e2b46436969969fbcedf7) Described the change to the enviornment variables
+ - 2022-03-30 15:29:45 -0700 [2c4ee60](../../commit/2c4ee603f53aab555aba764ad95b65bf2da012f1) config file processing was messed up
+ - 2022-03-30 15:28:39 -0700 [456ab7f](../../commit/456ab7ff528d1d3af9e5ecb09e14c136d51d634e) more api calls
+ - 2022-03-30 13:48:59 -0700 [c01370b](../../commit/c01370bd95772806a6445f28c4fa3af88c4e99ef) Merge branch 'Changaco-patch-1' Changaco patch-1
+ - 2022-03-30 13:48:19 -0700 [9c73821](../../commit/9c73821e68dddaf78585f5c8963ee0869bd0619d) Merge branch 'patch-1' of https://github.com/Changaco/python-cloudflare into Changaco-patch-1 Changaco patch-1
+ - 2022-03-30 13:45:11 -0700 [b5e7356](../../commit/b5e7356b9168958e9b3017210ef42a999b887506) print() was outdate - from pull #120
+ - 2022-03-30 13:35:48 -0700 [955430c](../../commit/955430c0c9b980a806fe9492ddef24c362a03524) example for email commands - shows the use of underscore vs dash
+ - 2022-03-30 13:23:03 -0700 [6f8ef61](../../commit/6f8ef6133d85c572d58eccf0dc134289e3a1b66c) Merge pull request #132 from phntom/master
+ - 2022-03-30 13:16:48 -0700 [f3dd7ae](../../commit/f3dd7ae3d1a1dbde554cdcde5c48bfa416eefc98) Merge pull request #133 from JaredPage/add-bot-management-handle-null-errors
+ - 2022-03-30 12:30:05 -0700 [5f444bc](../../commit/5f444bcde8014249d84aafe56a484dc8d917259b) CHANGELOG.md pushed to github
  - 2022-03-30 12:29:39 -0700 [9c1198c](../../commit/9c1198c40b0d6b37117fbefcfb1e0a0de377f447) 2.9.6 release
  - 2022-03-30 12:28:05 -0700 [d486194](../../commit/d4861943f9f669e9a3f6d62d57d19a15c5042448) two missing else statements
  - 2022-03-30 12:20:12 -0700 [2d89fc7](../../commit/2d89fc7c249377aeafc956176625cc872649bc16) Move the somewhat out of date table of commands into its own file - which then needs to be created automatically in the Makefile
@@ -12,6 +23,10 @@
  - 2022-03-30 09:07:21 -0700 [657772b](../../commit/657772be05cf8c6036fc66ee78686fa258962884) trailing slashes are not needed in API
  - 2022-03-30 09:06:57 -0700 [2e4d26f](../../commit/2e4d26f3d03638ff4a6c1ebe0acbf12f763d04e2) API added yet another param
  - 2022-03-10 06:02:12 +1100 [44d7d65](../../commit/44d7d65ea96a1dbe4577a164bb223abd5160c2d7) update environment variables to be prefixed with `CLOUDFLARE_`
+ - 2022-03-04 00:24:31 +1000 [a2640a0](../../commit/a2640a0403429bf5f8ed61a7c11888359a2d0d39) Added python example for pagerules
+ - 2022-03-04 00:07:22 +1000 [8b0d26c](../../commit/8b0d26c2ede79205048429397a4d9c3495e7b7fb) Added Bot Management ability and fixed an edge case for the API return
+ - 2022-03-02 14:52:13 +0200 [578a26b](../../commit/578a26bf9614fe82de8d936acbe174fb4fa7019c) Merge pull request #1 from phntom/phntom-patch-dash-typo-cloudflare-py
+ - 2022-03-02 14:51:03 +0200 [dd6d802](../../commit/dd6d8029a52cccf56923b370687be63aff4c0786) typo in cloudflare.py
  - 2022-02-28 16:44:57 -0800 [6c0e470](../../commit/6c0e470dac2241e5a24e51a38b5da46d982a7751) CHANGELOG.md pushed to github
  - 2022-02-28 16:44:34 -0800 [10f82a8](../../commit/10f82a8c4cc06fdca7588c51cc8bdb7fe2665896) 2.9.2 release
  - 2022-02-28 16:43:45 -0800 [24d0991](../../commit/24d0991a34241ea8803b02c6ccfe0ffebf244919) show version number from api url
@@ -37,6 +52,7 @@
  - 2021-07-21 11:51:28 +0200 [23a9366](../../commit/23a936630ef052c92b9816acb91092f17154e7de) indents - what a pain!
  - 2021-07-21 11:48:02 +0200 [215f5b2](../../commit/215f5b2f492ace78164547850712c4a696b9672f) bdist_wheel added as universal
  - 2021-07-21 11:47:15 +0200 [ff66435](../../commit/ff664357f9fe2b24767e909a8777864f6d8efa11) handle /pages using {} for account_id
+ - 2021-04-01 12:02:16 +0200 [eb42047](../../commit/eb42047e2576ca7ec7b9b8b0edaa4e78f9138374) fix the installation path of the cli4 man page
  - 2020-12-31 16:19:30 -0800 [4c80399](../../commit/4c80399ad27e67b88138058e76b12002db8e7829) CHANGELOG.md pushed to github
  - 2020-12-31 16:18:47 -0800 [6ea3d2f](../../commit/6ea3d2f03dc15b3c59ce29529ce4a420a51758a4) 2.8.15 release
  - 2020-12-31 16:17:37 -0800 [ebea9ea](../../commit/ebea9ea5ca1490e1388bfe0b8ac119ba405efb31) added cursor example
