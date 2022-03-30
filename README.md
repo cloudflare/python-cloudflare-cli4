@@ -233,9 +233,11 @@ These are optional environment variables; however, they do override the values s
 
 ### Using configuration file to store email and keys
 
+The default profile name is `Cloudflare` for obvious reasons.
+
 ```bash
 $ cat ~/.cloudflare/cloudflare.cfg
-[CloudFlare]
+[Cloudflare]
 email = user@example.com # Do not set if using an API Token
 token = 00000000000000000000000000000000
 certtoken = v1.0-...
@@ -1127,7 +1129,7 @@ An automatically generated table of commands is provided [here](TABLE-OF-COMMAND
 Extra API calls can be added via the configuration file
 ```bash
 $ cat ~/.cloudflare/cloudflare.cfg
-[CloudFlare]
+[Cloudflare]
 extras =
     /client/v4/command
     /client/v4/command/:command_identifier

@@ -19,9 +19,6 @@ def read_configs(profile=None):
     config['certtoken'] = os.getenv('CLOUDFLARE_API_CERTKEY') if os.getenv('CLOUDFLARE_API_CERTKEY') != None else os.getenv('CF_API_CERTKEY')
     config['extras'] = os.getenv('CLOUDFLARE_API_EXTRAS') if os.getenv('CLOUDFLARE_API_EXTRAS') != None else os.getenv('CF_API_EXTRAS')
     config['base_url'] = os.getenv('CLOUDFLARE_API_URL') if os.getenv('CLOUDFLARE_API_URL') != None else os.getenv('CF_API_URL')
-    if profile is None:
-        profile = 'CloudFlare'
-    config['profile'] = profile
 
     # grab values from config files
     cp = configparser.ConfigParser()
@@ -33,6 +30,19 @@ def read_configs(profile=None):
         ])
     except Exception as e:
         raise Exception("%s: configuration file error" % (profile))
+
+    # Is it CloudFlare or Cloudflare? (A legacy issue)
+    if profile is None:
+        if len(cp.sections()) > 0:
+            if 'CloudFlare' in cp:
+                profile = 'CloudFlare'
+            if 'Cloudflare' in cp:
+                profile = 'Cloudflare'
+
+    ## still not found - then set to to CloudFlare for legacy reasons
+    if profile == None:
+        profile = "CloudFlare"
+    config['profile'] = profile
 
     if len(cp.sections()) > 0:
         # we have a configuration file - lets use it
