@@ -369,6 +369,7 @@ def accounts(self):
 
     self.add('VOID', "accounts", "registrar")
     self.add('AUTH', "accounts", "registrar/domains")
+    self.add('AUTH', "accounts", "registrar/contacts")
 
     self.add('AUTH', "accounts", "roles")
 
