@@ -1,8 +1,13 @@
 # Change Log
 
+ - 2022-03-30 12:06:05 -0700 [0de3fa2](../../commit/0de3fa20a5023c2703eeb73cf3ce3e31f47cd02f) 2.9.5 release
+ - 2022-03-30 12:02:46 -0700 [88822c4](../../commit/88822c49c45fe645bc51177be6ddde46618bc8b2) Upgrade pandoc setup and remove tabs from README
+ - 2022-03-30 09:50:40 -0700 [0535bb4](../../commit/0535bb41c0a1c47c44af95d3d15b6b879f169de1) 2.9.4 release
+ - 2022-03-30 09:12:13 -0700 [d2622ed](../../commit/d2622ed0e7723f5a3e39f92d750cd41a9c44f2ca) CHANGELOG.md pushed to github
  - 2022-03-30 09:11:40 -0700 [b01d16e](../../commit/b01d16ea503c5de00f168d2d6fe2b0a08576fd5a) 2.9.3 release
  - 2022-03-30 09:07:21 -0700 [657772b](../../commit/657772be05cf8c6036fc66ee78686fa258962884) trailing slashes are not needed in API
  - 2022-03-30 09:06:57 -0700 [2e4d26f](../../commit/2e4d26f3d03638ff4a6c1ebe0acbf12f763d04e2) API added yet another param
+ - 2022-03-10 06:02:12 +1100 [44d7d65](../../commit/44d7d65ea96a1dbe4577a164bb223abd5160c2d7) update environment variables to be prefixed with `CLOUDFLARE_`
  - 2022-02-28 16:44:57 -0800 [6c0e470](../../commit/6c0e470dac2241e5a24e51a38b5da46d982a7751) CHANGELOG.md pushed to github
  - 2022-02-28 16:44:34 -0800 [10f82a8](../../commit/10f82a8c4cc06fdca7588c51cc8bdb7fe2665896) 2.9.2 release
  - 2022-02-28 16:43:45 -0800 [24d0991](../../commit/24d0991a34241ea8803b02c6ccfe0ffebf244919) show version number from api url
@@ -28,6 +33,12 @@
  - 2021-07-21 11:51:28 +0200 [23a9366](../../commit/23a936630ef052c92b9816acb91092f17154e7de) indents - what a pain!
  - 2021-07-21 11:48:02 +0200 [215f5b2](../../commit/215f5b2f492ace78164547850712c4a696b9672f) bdist_wheel added as universal
  - 2021-07-21 11:47:15 +0200 [ff66435](../../commit/ff664357f9fe2b24767e909a8777864f6d8efa11) handle /pages using {} for account_id
+ - 2020-12-31 16:19:30 -0800 [4c80399](../../commit/4c80399ad27e67b88138058e76b12002db8e7829) CHANGELOG.md pushed to github
+ - 2020-12-31 16:18:47 -0800 [6ea3d2f](../../commit/6ea3d2f03dc15b3c59ce29529ce4a420a51758a4) 2.8.15 release
+ - 2020-12-31 16:17:37 -0800 [ebea9ea](../../commit/ebea9ea5ca1490e1388bfe0b8ac119ba405efb31) added cursor example
+ - 2020-12-31 16:15:51 -0800 [534fbde](../../commit/534fbde1a6a7bf1e8ced9053f1625f46aac845b5) zones/rulesets added
+ - 2020-12-31 13:52:03 -0800 [cd535c1](../../commit/cd535c1e26b6a1a6703d8ca03ee98f90fa13d364) Merge pull request #107 from Martin407/patch-1
+ - 2020-12-31 13:51:00 -0800 [c2cb66a](../../commit/c2cb66a8569d8e18d8f13be254e4e3c885778086) Merge pull request #106 from Martin407/patch-2
  - 2020-12-03 14:24:07 -0800 [dc14687](../../commit/dc14687e4957c4ed93f65fe697b2821a0c6f4a93) CHANGELOG.md pushed to github
  - 2020-12-03 14:22:47 -0800 [9e170eb](../../commit/9e170ebe2f9139d2b0620d7f31be2330dd532aaa) 2.8.14 release
  - 2020-11-14 12:58:07 -0500 [acc3b99](../../commit/acc3b9963581ad5b875f6f80b517822261775d62) Removing excess trailing parenthesis
