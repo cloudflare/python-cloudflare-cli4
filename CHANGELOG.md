@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2022-03-30 16:17:41 -0700 [7b763f1](../../commit/7b763f1b57b076fcafce90664f919149ad4280f0) custom_csrs added
+ - 2022-03-30 16:04:28 -0700 [cbeee2c](../../commit/cbeee2c8c4bf0996ee28b4bb0c80707775e6a84b) #136 pointed out that the config file profile name has a capital F in it. Now it takes lower case "f" value
+ - 2022-03-30 15:41:14 -0700 [da1645c](../../commit/da1645c8aca27544b579029b3767369a94611d36) CHANGELOG.md pushed to github
  - 2022-03-30 15:40:52 -0700 [38886f9](../../commit/38886f94b9e30abed1c09e66514b25011c100d4d) 2.9.7 release
  - 2022-03-30 15:40:34 -0700 [f9486e6](../../commit/f9486e61e7e9bae4133e2b46436969969fbcedf7) Described the change to the enviornment variables
  - 2022-03-30 15:29:45 -0700 [2c4ee60](../../commit/2c4ee603f53aab555aba764ad95b65bf2da012f1) config file processing was messed up
