@@ -1,5 +1,7 @@
 # Change Log
 
+ - 2022-03-30 20:59:28 -0700 [e748c42](../../commit/e748c422da389ef831435a168cc85bad7603ec9e) CHANGELOG.md pushed to github
+ - 2022-03-30 20:59:25 -0700 [fe751a9](../../commit/fe751a9e80684d2095c3baac624d52f9bd606430) 2.9.8 release
  - 2022-03-30 16:17:41 -0700 [7b763f1](../../commit/7b763f1b57b076fcafce90664f919149ad4280f0) custom_csrs added
  - 2022-03-30 16:04:28 -0700 [cbeee2c](../../commit/cbeee2c8c4bf0996ee28b4bb0c80707775e6a84b) #136 pointed out that the config file profile name has a capital F in it. Now it takes lower case "f" value
  - 2022-03-30 15:41:14 -0700 [da1645c](../../commit/da1645c8aca27544b579029b3767369a94611d36) CHANGELOG.md pushed to github
