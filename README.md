@@ -858,7 +858,7 @@ $ cli4 /zones/:example.com/dnssec
 $
 ```
 
-### Zone file upload and download CLI examples (uses BIND format files)
+### Zone file upload (i.e. import) CLI examples (uses BIND format files)
 
 Refer to [Import DNS records](https://api.cloudflare.com/#dns-records-for-a-zone-import-dns-records) on API documentation for this feature.
 
@@ -885,6 +885,22 @@ $ cli4 --post file=@zone.txt /zones/:example.com/dns_records/import
 }
 $
 ```
+ 
+### Zone file upload (i.e. import) Python examples (uses BIND format files)
+
+Because `import` is a reserved word in Python there needs to be a slight workaround to calling this within code.
+
+```
+    #
+    # "import" is a reserved word and hence this code - it's ugly; but correct.
+    #
+    dns_records_import = getattr(cf.zones.dns_records, 'import')
+    r = dns_records_import.post(zone_id, files={'file':fd})
+```
+
+See (examples/example_dns_import.py)[examples/example_dns_import.py] for working code.
+
+### Zone file download (i.e. export) CLI examples (uses BIND format files)
 
 The following is documented within the **Advanced** option of the DNS page within the Cloudflare portal.
 
