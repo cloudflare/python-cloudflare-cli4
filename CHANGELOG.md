@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2022-04-01 10:34:32 -0700 [756fb08](../../commit/756fb08b211c248f60d5d83bc20e0c6fa7897afe) documented the "import" keywork issue for dns_records.import calls
+ - 2022-04-01 10:33:52 -0700 [3dcf29e](../../commit/3dcf29e53c9088969cee9e1139120c3bd82bb8a1) moved to newer authentication on PyPI
+ - 2022-03-30 20:59:46 -0700 [4365b80](../../commit/4365b804ec92a8625bd4ddcdd0fb436fcab5387a) CHANGELOG.md pushed to github
  - 2022-03-30 20:59:28 -0700 [e748c42](../../commit/e748c422da389ef831435a168cc85bad7603ec9e) CHANGELOG.md pushed to github
  - 2022-03-30 20:59:25 -0700 [fe751a9](../../commit/fe751a9e80684d2095c3baac624d52f9bd606430) 2.9.8 release
  - 2022-03-30 16:17:41 -0700 [7b763f1](../../commit/7b763f1b57b076fcafce90664f919149ad4280f0) custom_csrs added
