@@ -31,47 +31,50 @@ def read_configs(profile=None):
     except Exception as e:
         raise Exception("%s: configuration file error" % (profile))
 
+    if len(cp.sections()) == 0 and profile != None:
+        # no config file and yet a config name provided - not acceptable!
+        raise Exception("%s: configuration section provided however config file missing" % (profile))
+
     # Is it CloudFlare or Cloudflare? (A legacy issue)
     if profile is None:
-        if len(cp.sections()) > 0:
-            if 'CloudFlare' in cp:
-                profile = 'CloudFlare'
-            if 'Cloudflare' in cp:
-                profile = 'Cloudflare'
+        if cp.has_section('CloudFlare'):
+            profile = 'CloudFlare'
+        if cp.has_section('Cloudflare'):
+            profile = 'Cloudflare'
 
     ## still not found - then set to to CloudFlare for legacy reasons
     if profile == None:
         profile = "CloudFlare"
+
     config['profile'] = profile
 
     if len(cp.sections()) > 0:
         # we have a configuration file - lets use it
-        try:
-            # grab the section - as we will use it for all values
-            section = cp[profile]
-        except Exception as e:
-            # however section name is missing - this is an error
-            raise Exception("%s: configuration section missing" % (profile))
+
+        if not cp.has_section(profile):
+            raise Exception("%s: configuration section missing - configuration file only has these sections: %s" % (profile, ','.join(cp.sections())))
 
         for option in ['email', 'token', 'certtoken', 'extras', 'base_url']:
-            if option not in config or config[option] is None:
-                try:
-                    if option == 'extras':
-                        config[option] = re.sub(r"\s+", ' ', section.get(option))
-                    else:
-                        config[option] = re.sub(r"\s+", '', section.get(option))
-                    if config[option] == '':
-                        config.pop(option)
-                except (configparser.NoOptionError, configparser.NoSectionError):
-                    pass
-                except Exception as e:
-                    pass
+            try:
+                config_value = cp.get(profile, option)
+                if option == 'extras':
+                    config[option] = re.sub(r"\s+", ' ', config_value)
+                else:
+                    config[option] = re.sub(r"\s+", '', config_value)
+                if config[option] == None or config[option] == '':
+                    config.pop(option)
+            except (configparser.NoOptionError, configparser.NoSectionError):
+                pass
+            except Exception as e:
+                pass
+
             # do we have an override for specific calls? (i.e. token.post or email.get etc)
             for method in ['get', 'patch', 'post', 'put', 'delete']:
                 option_for_method = option + '.' + method
                 try:
-                    config[option_for_method] = re.sub(r"\s+", '', section.get(option_for_method))
-                    if config[option_for_method] == '':
+                    config_value = cp.get(profile, option_for_method)
+                    config[option_for_method] = re.sub(r"\s+", '', config_value)
+                    if config[option] == None or config[option] == '':
                         config.pop(option_for_method)
                 except (configparser.NoOptionError, configparser.NoSectionError) as e:
                     pass
