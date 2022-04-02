@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2022-04-01 21:26:53 -0700 [efa53f2](../../commit/efa53f27bd34a8ec7c84afb11363850b17e5a2d4) 2.9.9 release
+ - 2022-04-01 21:25:23 -0700 [0bc445a](../../commit/0bc445a3b09ed84bbca8998eaad73219150a9bbf) read_config() now compatible with older and newer ConfigParser usage
+ - 2022-04-01 10:44:55 -0700 [38ec20c](../../commit/38ec20c1be595549c03cee1f28460fc0e058d47b) CHANGELOG.md pushed to github
  - 2022-04-01 10:34:32 -0700 [756fb08](../../commit/756fb08b211c248f60d5d83bc20e0c6fa7897afe) documented the "import" keywork issue for dns_records.import calls
  - 2022-04-01 10:33:52 -0700 [3dcf29e](../../commit/3dcf29e53c9088969cee9e1139120c3bd82bb8a1) moved to newer authentication on PyPI
  - 2022-03-30 20:59:46 -0700 [4365b80](../../commit/4365b804ec92a8625bd4ddcdd0fb436fcab5387a) CHANGELOG.md pushed to github
