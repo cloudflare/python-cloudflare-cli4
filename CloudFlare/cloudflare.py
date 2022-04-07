@@ -590,7 +590,7 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             # This is the same as a get()
-            return self.get(identifier1, identifier2, identifier3, params, data)
+            return self.get(identifier1, identifier2, identifier3, identifier4, params=params, data=data)
 
         def __str__(self):
             """ Cloudflare v4 API"""
@@ -635,7 +635,7 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             # This is the same as a get()
-            return self.get(identifier1, identifier2, identifier3, params, data)
+            return self.get(identifier1, identifier2, identifier3, identifier4, params=params, data=data)
 
         def __str__(self):
             """ Cloudflare v4 API"""
@@ -682,7 +682,7 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             # This is the same as a get()
-            return self.get(identifier1, identifier2, identifier3, params, data)
+            return self.get(identifier1, identifier2, identifier3, identifier4, params=params, data=data)
 
         def __str__(self):
             """ Cloudflare v4 API"""
@@ -737,7 +737,7 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             # This is the same as a get()
-            return self.get(identifier1, identifier2, identifier3, params, data)
+            return self.get(identifier1, identifier2, identifier3, identifier4, params=params, data=data)
 
         def __str__(self):
             """ Cloudflare v4 API"""
@@ -792,7 +792,7 @@ class CloudFlare(object):
             """ Cloudflare v4 API"""
 
             # This is the same as a get()
-            return self.get(identifier1, identifier2, identifier3, params, data)
+            return self.get(identifier1, identifier2, identifier3, identifier4, params=params, data=data)
 
         def __str__(self):
             """ Cloudflare v4 API"""
