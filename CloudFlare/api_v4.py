@@ -358,6 +358,7 @@ def accounts(self):
     self.add('AUTH', "accounts", "billing/profile")
 
     self.add('AUTH', 'accounts', 'cfd_tunnel')
+    self.add('AUTH', 'accounts', 'cfd_tunnel', 'configurations')
     self.add('AUTH', 'accounts', 'cfd_tunnel', 'connections')
     self.add('AUTH', 'accounts', 'cfd_tunnel', 'token')
 
@@ -508,6 +509,7 @@ def zones_access(self):
     self.add('AUTH', "zones", "access/apps")
     self.add('AUTH', "zones", "access/apps", "policies")
     self.add('AUTH', "zones", "access/apps", "revoke_tokens")
+    self.add('AUTH', 'zones', 'access/bookmarks')
     self.add('AUTH', "zones", "access/certificates")
 #   self.add('AUTH', "zones", "access/apps/ca")
     self.add('AUTH', "zones", "access/apps", "ca")
@@ -521,6 +523,7 @@ def accounts_access(self):
     """ API core commands for Cloudflare API"""
 
     self.add('VOID', "accounts", "access")
+    self.add('AUTH', 'accounts', 'access/bookmarks')
     self.add('AUTH', "accounts", "access/groups")
     self.add('AUTH', "accounts", "access/identity_providers")
     self.add('AUTH', "accounts", "access/organizations")
@@ -612,6 +615,8 @@ def accounts_extras(self):
     self.add('VOID', 'accounts', 'intel')
     self.add('VOID', 'accounts', 'intel-phishing')
     self.add('AUTH', 'accounts', 'intel-phishing/predict')
+    self.add('AUTH', 'accounts', 'intel/asn')
+    self.add('AUTH', 'accounts', 'intel/asn', 'subnets')
     self.add('AUTH', 'accounts', 'intel/dns')
     self.add('AUTH', 'accounts', 'intel/domain')
     self.add('AUTH', 'accounts', 'intel/domain-history')
