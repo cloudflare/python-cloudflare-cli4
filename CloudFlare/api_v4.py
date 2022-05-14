@@ -595,6 +595,7 @@ def accounts_extras(self):
 
     self.add('AUTH', 'accounts', 'gateway')
     self.add('AUTH', 'accounts', 'gateway/app_types')
+    self.add('AUTH', 'accounts', 'gateway/categories')
     self.add('AUTH', 'accounts', 'gateway/configuration')
     self.add('AUTH', 'accounts', 'gateway/lists')
     self.add('AUTH', 'accounts', 'gateway/lists', 'items')
@@ -642,6 +643,8 @@ def accounts_extras(self):
 
     self.add('AUTH', 'accounts', 'pcaps')
     self.add('AUTH', 'accounts', 'pcaps', 'download')
+    self.add('AUTH', 'accounts', 'pcaps/ownership')
+    self.add('AUTH', 'accounts', 'pcaps/ownership/validate')
 
     self.add('VOID', 'accounts', 'teamnet')
     self.add('AUTH', 'accounts', 'teamnet/routes')
@@ -657,6 +660,7 @@ def zones_extras(self):
     self.add('AUTH', 'zones', 'cache/variants')
     self.add('AUTH', 'zones', 'managed_headers')
     self.add('AUTH', 'zones', 'rulesets')
+    self.add('AUTH', 'zones', 'rulesets', 'rules')
     self.add('AUTH', 'zones', 'rulesets', 'versions')
     self.add('VOID', 'zones', 'rulesets/phases')
     self.add('AUTH', 'zones', 'rulesets/phases', 'entrypoint')
@@ -666,6 +670,8 @@ def zones_extras(self):
     self.add('AUTH', 'zones', 'settings/automatic_platform_optimization')
     self.add('AUTH', 'zones', 'settings/orange_to_orange')
     self.add('AUTH', 'zones', 'url_normalization')
+    self.add('VOID', 'zones', 'web3')
+    self.add('AUTH', 'zones', 'web3/hostnames')
 
 def accounts_email(self):
     """ accounts email """
