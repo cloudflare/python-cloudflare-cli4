@@ -913,6 +913,10 @@ class CloudFlare(object):
                 # it's a known api call - lets show the result and continue down the tree
                 if 'delete' in d or 'get' in d or 'patch' in d or 'post' in d or 'put' in d:
                     # only show the result if a call exists for this part
+                    if '_parts_unused' in d:
+                            # This is an uncallable endpoint - presently no way to return this info
+                            # w.append(str(a)[1:-1] + ' ; UNUSED')
+                            pass
                     if '_parts' in d:
                         if n[-1] == '_' and keyword.iskeyword(n[:-1]):
                             # remove the extra keyword postfix'ed with underscore
