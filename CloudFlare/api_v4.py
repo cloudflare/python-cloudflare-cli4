@@ -410,6 +410,7 @@ def accounts(self):
 
     self.add('VOID', 'accounts', 'workers')
     self.add('AUTH', 'accounts', 'workers/account-settings')
+    self.add('AUTH', 'accounts', 'workers/domains')
     self.add('VOID', 'accounts', 'workers/durable_objects')
     self.add('AUTH', 'accounts', 'workers/durable_objects/namespaces')
     self.add('AUTH', 'accounts', 'workers/durable_objects/namespaces', 'objects')
