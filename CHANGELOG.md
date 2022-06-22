@@ -1,5 +1,15 @@
 # Change Log
 
+ - 2022-06-21 18:15:01 -0700 [edc7b0b](../../commit/edc7b0b23043ae8955c94000c0b037b89232d786) 2.9.11 release
+ - 2022-06-21 18:14:13 -0700 [ec9970d](../../commit/ec9970dd381e083f95c38075a93a6ecd8aa45704) user token checking example added
+ - 2022-06-21 10:10:14 -0700 [fafa4e4](../../commit/fafa4e442d3614b8f56db04217172257e0c10d97) more api calls
+ - 2022-05-19 11:04:21 -0700 [c1347aa](../../commit/c1347aa583b659290a56398eccda4e2558b4ce77) more api calls
+ - 2022-05-14 12:44:20 -0700 [ac3e2cc](../../commit/ac3e2cc4153393af3e739a77d510c8adbddb5e3e) more api call
+ - 2022-05-14 12:43:54 -0700 [97eb933](../../commit/97eb9331a8c9b1282268b7ff438d32ff1b97f8c6) started uncallable endpoint reporting - but not finished yet
+ - 2022-04-19 15:30:14 -0700 [b9b91b6](../../commit/b9b91b612d3ac8818565cc2d3aee1c00c4cea0e9) more api calls
+ - 2022-04-07 12:16:45 -0700 [9168ee7](../../commit/9168ee7b40be8b6ddbf9a4a8394ce0d5ad6bb796) 2.9.10 release
+ - 2022-04-07 12:16:01 -0700 [c9a170c](../../commit/c9a170cc5f172fd3a0d05d6ce8274391cdced4e7) fixed getless calls failing
+ - 2022-04-01 21:27:13 -0700 [966fec9](../../commit/966fec9cd1201310254bb572126414bd81f7e3c3) CHANGELOG.md pushed to github
  - 2022-04-01 21:26:53 -0700 [efa53f2](../../commit/efa53f27bd34a8ec7c84afb11363850b17e5a2d4) 2.9.9 release
  - 2022-04-01 21:25:23 -0700 [0bc445a](../../commit/0bc445a3b09ed84bbca8998eaad73219150a9bbf) read_config() now compatible with older and newer ConfigParser usage
  - 2022-04-01 10:44:55 -0700 [38ec20c](../../commit/38ec20c1be595549c03cee1f28460fc0e058d47b) CHANGELOG.md pushed to github
