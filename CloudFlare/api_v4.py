@@ -639,7 +639,7 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'pages/projects')
     self.add('AUTH', 'accounts', 'pages/projects', 'deployments')
     self.add('VOID', 'accounts', 'pages/projects', 'deployments', 'history')
-    self.add('AUTH', 'accounts', 'pages/projects', 'deployments', 'history', 'logs')
+    self.add('AUTH', 'accounts', 'pages/projects', 'deployments', 'history/logs')
     self.add('AUTH', 'accounts', 'pages/projects', 'deployments', 'retry')
     self.add('AUTH', 'accounts', 'pages/projects', 'deployments', 'rollback')
     self.add('AUTH', 'accounts', 'pages/projects', 'domains')
