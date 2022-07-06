@@ -627,6 +627,7 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'intel/domain/bulk')
     self.add('AUTH', 'accounts', 'intel/ip')
     self.add('AUTH', 'accounts', 'intel/ip-list')
+    self.add('AUTH', 'accounts', 'intel/miscategorization')
     self.add('AUTH', 'accounts', 'intel/whois')
 
     self.add('VOID', 'accounts', 'magic')
