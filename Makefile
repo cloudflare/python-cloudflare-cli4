@@ -50,10 +50,10 @@ bdist: all
 	$(PYTHON) setup.py -q bdist
 	@rm -rf ${NAME}.egg-info
 
-bdist_world: all
+bdist_wheel: all
 	make clean
 	make test
-	$(PYTHON) setup.py -q bdist_world
+	$(PYTHON) setup.py -q bdist_wheel
 	@rm -rf ${NAME}.egg-info
 
 upload: clean all tag upload-github upload-pypi
@@ -63,7 +63,8 @@ upload-github:
 	git push origin --tags
 
 upload-pypi:
-	$(PYTHON) setup.py -q sdist bdist_wheel upload # --sign --identity="$(EMAIL)"
+	## $(PYTHON) setup.py -q sdist bdist_wheel upload # --sign --identity="$(EMAIL)"
+	twine upload -r pypi dist/*
 
 showtag: sdist
 	@ v=`ls -r dist | head -1 | sed -e 's/cloudflare-\([0-9.]*\)\.tar.*/\1/'` ; echo "\tDIST VERSION =" $$v ; (git tag | fgrep -q "$$v") && echo "\tGIT TAG EXISTS"
@@ -88,7 +89,7 @@ lint:
 api:
 	@tmp=/tmp/_$$$$_ ; \
 	$(PYTHON) -m cli4 --dump | sort > $$tmp.1 ; \
-	$(PYTHON) -m cli4 --api | sed -e 's/^[A-Z][A-Z]*  *//' -e 's/?.*//' -e 's/\/:[a-z_]*/\/:id/g' -e 's/\/:[a-z_]*}/\/:id/g' -e 's/\/:id$$//' -e 's/\/:id ;/ ;/' -e 's/\/$$//' | sort | uniq > $$tmp.2 ; \
+	$(PYTHON) -m cli4 --api | sed -e 's/^[A-Z][A-Z]*  *//' -e 's/?.*//' -e 's/\/:[a-z_]*/\/:id/g' -e 's/\/:[a-z_]*}/\/:id/g' -e 's/\/:id$$//' -e 's/\/:id ;/ ;/' -e 's/\/$$//' | sort -u > $$tmp.2 ; \
 	egrep -v '; deprecated' < $$tmp.2 | diff $$tmp.1 - > $$tmp.3 ; \
 	echo "In code:" ; \
 	egrep '< ' < $$tmp.3 | sed -e 's/< /         /' | sort | tee $$tmp.4 ; \
