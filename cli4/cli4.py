@@ -272,6 +272,7 @@ def do_it(args):
     raw = False
     dump = False
     dump_from_web = False
+    binary_file = False
     profile = None
     method = 'GET'
 
@@ -281,6 +282,7 @@ def do_it(args):
              + '[-r|--raw] '
              + '[-d|--dump] '
              + '[-a|--api] '
+             + '[-b|--binary] '
              + '[-p|--profile profile-name] '
              + '[--get|--patch|--post|--put|--delete] '
              + '[item=value|item=@filename|@filename ...] '
@@ -288,12 +290,13 @@ def do_it(args):
 
     try:
         opts, args = getopt.getopt(args,
-                                   'Vhvqjyrdap:GPOUD',
+                                   'Vhvqjyrdabp:GPOUD',
                                    [
                                        'version',
                                        'help', 'verbose', 'quiet', 'json', 'yaml', 'ndjson',
                                        'raw',
                                        'dump', 'api',
+                                       'binary',
                                        'profile=',
                                        'get', 'patch', 'post', 'put', 'delete'
                                    ])
@@ -326,6 +329,8 @@ def do_it(args):
             dump = True
         elif opt in ('-a', '--api'):
             dump_from_web = True
+        elif opt in ('-b', '--binary'):
+            binary_file = True
         elif opt in ('-G', '--get'):
             method = 'GET'
         elif opt in ('-P', '--patch'):
@@ -363,10 +368,17 @@ def do_it(args):
                 sys.exit('cli4: %s - raw file upload only with PUT or POST' % (filename))
             try:
                 if filename == '-':
-                    content = sys.stdin.read()
+                    if binary_file:
+                        content = sys.stdin.buffer.read()
+                    else:
+                        content = sys.stdin.read()
                 else:
-                    with open(filename, 'r') as f:
-                        content = f.read()
+                    if binary_file:
+                        with open(filename, 'rb') as f:
+                            content = f.read()
+                    else:
+                        with open(filename, 'r') as f:
+                            content = f.read()
             except IOError:
                 sys.exit('cli4: %s - file open failure' % (filename))
             continue
