@@ -55,6 +55,7 @@ def api_v4(self):
     accounts_stream(self)
     accounts_extras(self)
     accounts_email(self)
+    accounts_r2(self)
 
     # The API commands for /memberships/
     memberships(self)
@@ -388,6 +389,7 @@ def accounts(self):
     self.add('VOID', 'accounts', 'rulesets/phases')
     self.add('AUTH', 'accounts', 'rulesets/phases', 'entrypoint')
     self.add('AUTH', 'accounts', 'rulesets/phases', 'entrypoint/versions')
+#   self.add('AUTH', 'accounts', 'rulesets/phases/http_custom_errors/entrypoint')
 
     self.add('VOID', "accounts", "storage")
     self.add('AUTH', "accounts", "storage/analytics")
@@ -682,6 +684,14 @@ def accounts_email(self):
 
     self.add('AUTH', 'accounts', 'email-fwdr')
     self.add('AUTH', 'accounts', 'email-fwdr/addresses')
+
+def accounts_r2(self):
+    """ accounts r2 """
+
+    self.add('AUTH', 'accounts', 'r2')
+    self.add('AUTH', 'accounts', 'r2/buckets')
+    self.add('AUTH', 'accounts', 'r2/buckets', 'usage')
+    self.add('AUTH', 'accounts', 'r2/buckets', 'objects')
 
 def zones_email(self):
     """ zones email """
