@@ -682,8 +682,9 @@ def zones_extras(self):
 def accounts_email(self):
     """ accounts email """
 
-    self.add('AUTH', 'accounts', 'email-fwdr')
-    self.add('AUTH', 'accounts', 'email-fwdr/addresses')
+    self.add('VOID', 'accounts', 'email')
+    self.add('VOID', 'accounts', 'email/routing')
+    self.add('AUTH', 'accounts', 'email/routing/addresses')
 
 def accounts_r2(self):
     """ accounts r2 """
@@ -696,7 +697,11 @@ def accounts_r2(self):
 def zones_email(self):
     """ zones email """
 
-    self.add('AUTH', 'zones', 'email-fwdr')
-    self.add('AUTH', 'zones', 'email-fwdr/dns')
-    self.add('AUTH', 'zones', 'email-fwdr/rules')
+    self.add('VOID', 'zones', 'email')
+    self.add('AUTH', 'zones', 'email/routing')
+    self.add('AUTH', 'zones', 'email/routing/disable')
+    self.add('AUTH', 'zones', 'email/routing/dns')
+    self.add('AUTH', 'zones', 'email/routing/enabled')
+    self.add('AUTH', 'zones', 'email/routing/rules')
+    self.add('AUTH', 'zones', 'email/routing/rules/catch_all')
 
