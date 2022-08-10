@@ -857,17 +857,21 @@ class CloudFlare(object):
                 else:
                     branch = getattr(branch, element)
             except:
-                # should never happen
-                raise CloudFlareAPIError(0, 'api load name failed')
-        name = a[-1]
+                # missing path - should never happen unless api_v4 is a busted file
+                branch = None
+                break
 
+        if not branch:
+                raise CloudFlareAPIError(0, 'api load: element **%s** missing when adding path /%s' % (element, '/'.join(a)))
+
+        name = a[-1]
         try:
             if '-' in name:
                 f = getattr(branch, name.replace('-','_'))
             else:
                 f = getattr(branch, name)
-            # already exists - don't let it overwrite
-            raise CloudFlareAPIError(0, 'api duplicate name found: %s/**%s**' % ('/'.join(a[0:-1]), name))
+            # already exists - don't let it overwrite - should never happen unless api_v4 is a busted file
+            raise CloudFlareAPIError(0, 'api load: duplicate name found: %s/**%s**' % ('/'.join(a[0:-1]), name))
         except AttributeError:
             # this is the required behavior - i.e. it's a new node to create
             pass
@@ -968,9 +972,12 @@ class CloudFlare(object):
         self._base = self._v4base(config)
 
         # add the API calls
-        api_v4(self)
-        if 'extras' in config and config['extras']:
-            api_extras(self, config['extras'])
+        try:
+            api_v4(self)
+            if 'extras' in config and config['extras']:
+                api_extras(self, config['extras'])
+        except Exception as e:
+            raise CloudFlareAPIError(0, str(e))
 
     def __call__(self):
         """ Cloudflare v4 API"""
