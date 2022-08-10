@@ -1,5 +1,7 @@
 """ API core commands for Cloudflare API"""
 
+import time
+
 def api_v4(self):
     """ API core commands for Cloudflare API"""
 
@@ -689,7 +691,7 @@ def accounts_email(self):
 def accounts_r2(self):
     """ accounts r2 """
 
-    self.add('AUTH', 'accounts', 'r2')
+    self.add('VOID', 'accounts', 'r2')
     self.add('AUTH', 'accounts', 'r2/buckets')
     self.add('AUTH', 'accounts', 'r2/buckets', 'usage')
     self.add('AUTH', 'accounts', 'r2/buckets', 'objects')
