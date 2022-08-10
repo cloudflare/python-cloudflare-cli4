@@ -66,6 +66,11 @@ class CloudFlare(object):
             else:
                 self.logger = None
 
+        def __del__(self):
+            if self.network:
+                del self.network
+                self.network = None
+
         def call_with_no_auth(self, method, parts,
                               identifier1=None, identifier2=None, identifier3=None, identifier4=None,
                               params=None, data=None, files=None):
@@ -978,6 +983,13 @@ class CloudFlare(object):
                 api_extras(self, config['extras'])
         except Exception as e:
             raise CloudFlareAPIError(0, str(e))
+
+    def __del__(self):
+        """ Network for Cloudflare API"""
+
+        if self._base:
+            del self._base
+            self._base = None
 
     def __call__(self):
         """ Cloudflare v4 API"""

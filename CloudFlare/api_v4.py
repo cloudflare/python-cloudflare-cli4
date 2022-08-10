@@ -1,7 +1,5 @@
 """ API core commands for Cloudflare API"""
 
-import time
-
 def api_v4(self):
     """ API core commands for Cloudflare API"""
 
