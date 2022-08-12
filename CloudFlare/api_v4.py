@@ -33,6 +33,7 @@ def api_v4(self):
     zones_workers(self)
     zones_extras(self)
     zones_email(self)
+    zones_api_gateway(self)
 
     # The API commands for /railguns/
     railguns(self)
@@ -112,6 +113,7 @@ def zones(self):
     self.add('VOID', 'zones', 'security')
     self.add('AUTH', 'zones', 'security/events')
     self.add('AUTH', 'zones', 'subscription')
+
 
 def zones_settings(self):
     """ zones settings """
@@ -479,6 +481,7 @@ def accounts_stream(self):
     self.add('AUTH', 'accounts', 'stream', 'embed')
     self.add('AUTH', 'accounts', 'stream', 'downloads')
     self.add('AUTH', 'accounts', 'stream', 'token')
+    self.add('AUTH', 'accounts', 'stream/clip')
     self.add('AUTH', 'accounts', 'stream/copy')
     self.add('AUTH', 'accounts', 'stream/direct_upload')
     self.add('AUTH', 'accounts', 'stream/keys')
@@ -705,3 +708,9 @@ def zones_email(self):
     self.add('AUTH', 'zones', 'email/routing/rules')
     self.add('AUTH', 'zones', 'email/routing/rules/catch_all')
 
+def zones_api_gateway(self):
+    """ zones api_gateway """
+
+    self.add('VOID', 'zones', 'api_gateway')
+    self.add('AUTH', 'zones', 'api_gateway/configuration')
+    self.add('AUTH', 'zones', 'api_gateway/discovery')
