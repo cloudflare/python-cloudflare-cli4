@@ -1,5 +1,7 @@
 # Change Log
 
+ - 2022-08-13 09:02:34 -0700 [bdaa1c5](../../commit/bdaa1c5d51742399a332eca8a15dfc24fa93ec4e) 2.9.12 release
+ - 2022-08-13 09:01:39 -0700 [3f0801d](../../commit/3f0801d2889aa6ca4fda171b478b9d1e576c79b9) CHANGELOG.md pushed to github
  - 2022-08-11 18:10:41 -0700 [184ecd5](../../commit/184ecd55e3af6cdb22b78bf10fcc4fec97a0c23f) make api cleanup - not used in production
  - 2022-08-11 18:10:10 -0700 [49a34bd](../../commit/49a34bd2ef5cf20b4fb49fe6eb1cfda6d7dcb513) stream/clip & api_gateway added
  - 2022-08-10 15:12:59 -0700 [9334b13](../../commit/9334b13e2046108626b87756e286ffc67ab1c0dc) examples/example_time_calls.py - just a simple timer
