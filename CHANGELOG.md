@@ -1,5 +1,20 @@
 # Change Log
 
+ - 2022-08-11 18:10:41 -0700 [184ecd5](../../commit/184ecd55e3af6cdb22b78bf10fcc4fec97a0c23f) make api cleanup - not used in production
+ - 2022-08-11 18:10:10 -0700 [49a34bd](../../commit/49a34bd2ef5cf20b4fb49fe6eb1cfda6d7dcb513) stream/clip & api_gateway added
+ - 2022-08-10 15:12:59 -0700 [9334b13](../../commit/9334b13e2046108626b87756e286ffc67ab1c0dc) examples/example_time_calls.py - just a simple timer
+ - 2022-08-10 15:09:53 -0700 [bd220aa](../../commit/bd220aacaf5aeb2e85ca22069a96f89b2cd8a9db) __del__() added - not very fancy; but cleaner network close now
+ - 2022-08-10 14:29:13 -0700 [4a5da8b](../../commit/4a5da8b8b1d47b59f636dc78799e91de587097b8) finally fixed the quotes to make consistent
+ - 2022-08-10 14:20:19 -0700 [c22db3e](../../commit/c22db3e34977451c87e92b9de581888e191d42c8) cleanup of error handling for adding api calls
+ - 2022-08-10 13:03:59 -0700 [0db4961](../../commit/0db49616ffca6a3920780a7639567cd75672106c) typo in r2 calls
+ - 2022-08-09 16:42:55 -0700 [a44aaa3](../../commit/a44aaa348952910d95f33fd1b7eb51915ecf553e) updated email api call end points
+ - 2022-08-07 14:33:10 -0700 [2ba207a](../../commit/2ba207a10f9635ea587cf1bd24d7d14f67673ecc) allow binary files for file upload via --binary flag
+ - 2022-08-07 14:11:44 -0700 [10b30c9](../../commit/10b30c9ca57fd0e937fd7b9e224d352b4864924b) some R2 calls added - there is still some calls that are not yet documented
+ - 2022-08-02 16:39:17 -0500 [85d1404](../../commit/85d1404d04c77a9187646a530b588212118bac9b) .pypirc needed for twine
+ - 2022-08-02 16:37:42 -0500 [78e9c3b](../../commit/78e9c3b361c2065778371ab2c7dc73b578abebe9) wheel typo,setup to twine for pypi,api cleanup
+ - 2022-07-06 12:43:49 -0700 [aeaec3d](../../commit/aeaec3d943a2f544280909f1ea7749a784b939cb) added .../intel/miscategorization
+ - 2022-07-03 09:28:04 -0700 [a860114](../../commit/a86011497471b4fa1698295b44eb1a9db3bc79e1) edit of "Get deployment stage logs" call
+ - 2022-06-21 18:15:15 -0700 [b0d2335](../../commit/b0d2335e20f257a5f6280fa18562912c6e6123a8) CHANGELOG.md pushed to github
  - 2022-06-21 18:15:01 -0700 [edc7b0b](../../commit/edc7b0b23043ae8955c94000c0b037b89232d786) 2.9.11 release
  - 2022-06-21 18:14:13 -0700 [ec9970d](../../commit/ec9970dd381e083f95c38075a93a6ecd8aa45704) user token checking example added
  - 2022-06-21 10:10:14 -0700 [fafa4e4](../../commit/fafa4e442d3614b8f56db04217172257e0c10d97) more api calls
