@@ -391,7 +391,6 @@ def accounts(self):
     self.add('VOID', 'accounts', 'rulesets/phases')
     self.add('AUTH', 'accounts', 'rulesets/phases', 'entrypoint')
     self.add('AUTH', 'accounts', 'rulesets/phases', 'entrypoint/versions')
-#   self.add('AUTH', 'accounts', 'rulesets/phases/http_custom_errors/entrypoint')
 
     self.add('VOID', 'accounts', 'storage')
     self.add('AUTH', 'accounts', 'storage/analytics')
@@ -659,7 +658,6 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'teamnet/routes')
     self.add('AUTH', 'accounts', 'teamnet/routes/ip')
     self.add('AUTH', 'accounts', 'teamnet/routes/network')
-    self.add('AUTH', 'accounts', 'teamnet/virtual_network')
     self.add('AUTH', 'accounts', 'teamnet/virtual_networks')
 
 def zones_extras(self):
@@ -674,6 +672,8 @@ def zones_extras(self):
     self.add('VOID', 'zones', 'rulesets/phases')
     self.add('AUTH', 'zones', 'rulesets/phases', 'entrypoint')
     self.add('AUTH', 'zones', 'rulesets/phases', 'entrypoint/versions')
+    self.add('VOID', 'zones', 'rulesets/phases/http_custom_errors')
+    self.add('AUTH', 'zones', 'rulesets/phases/http_custom_errors/entrypoint')
     self.add('AUTH', 'zones', 'script_monitor')
     self.add('AUTH', 'zones', 'script_monitor/scripts')
     self.add('AUTH', 'zones', 'settings/automatic_platform_optimization')
