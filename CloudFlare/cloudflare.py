@@ -861,7 +861,7 @@ class CloudFlare(object):
                     branch = getattr(branch, element.replace('-','_'))
                 else:
                     branch = getattr(branch, element)
-            except:
+            except AttributeError:
                 # missing path - should never happen unless api_v4 is a busted file
                 branch = None
                 break
@@ -916,7 +916,11 @@ class CloudFlare(object):
             if n in ['delete', 'get', 'patch', 'post', 'put']:
                 # gone too far
                 continue
-            a = getattr(m, n)
+            try:
+                a = getattr(m, n)
+            except AttributeError:
+                # really should not happen!
+                raise CloudFlareAPIError(0, '%s: not found - should not happen' % (n))
             d = dir(a)
             if '_base' in d:
                 # it's a known api call - lets show the result and continue down the tree
@@ -934,6 +938,7 @@ class CloudFlare(object):
                             # handle underscores by returning the actual API call vs the method name
                             w.append(str(a)[1:-1])
                             ## w.append(str(a)[1:-1].replace('/:id/','/'))
+                # now recurse downwards into the tree
                 w = w + self.api_list(a, s + '/' + n)
         return w
 
@@ -1032,3 +1037,12 @@ class CloudFlare(object):
                 self._base.base_url, self._base.raw, self._base.user_agent
             )
         return s
+
+    def __getattr__(self, key):
+        """ __getattr__ """
+
+        # this code will expand later
+        if key in dir(self):
+            return self[key]
+        # this is call to a non-existent endpoint
+        raise AttributeError(key)
