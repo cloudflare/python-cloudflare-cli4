@@ -884,13 +884,15 @@ class CloudFlare():
                             # w.append(str(a)[1:-1] + ' ; UNUSED')
                             pass
                     if '_parts' in d:
-                        if n[-1] == '_' and keyword.iskeyword(n[:-1]):
+                        if n[-1] == '_':
+                            if  keyword.iskeyword(n[:-1]):
+                                # should always be a keyword - but now nothing needs to be done
+                                pass
                             # remove the extra keyword postfix'ed with underscore
-                            pass
+                            w.append(str(a)[1:-1])
                         else:
                             # handle underscores by returning the actual API call vs the method name
                             w.append(str(a)[1:-1])
-                            ## w.append(str(a)[1:-1].replace('/:id/','/'))
                 # now recurse downwards into the tree
                 w = w + self.api_list(a, s + '/' + n)
         return w
