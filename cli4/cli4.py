@@ -203,10 +203,10 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 # more than one error returned by the API
                 for x in e:
                     sys.stderr.write('cli4: /%s - %d %s\n' % (command, x, x))
-            sys.stderr.write('cli4: /%s - %d %s\n' % (command, e, e))
+            sys.stderr.write('cli4: /%s - %d %s\n' % (command, int(e), e))
             raise e
         except CloudFlare.exceptions.CloudFlareInternalError as e:
-            sys.stderr.write('cli4: InternalError: /%s - %d %s\n' % (command, e, e))
+            sys.stderr.write('cli4: InternalError: /%s - %d %s\n' % (command, int(e), e))
             raise e
         except Exception as e:
             sys.stderr.write('cli4: /%s - %s - api error\n' % (command, e))
@@ -239,7 +239,7 @@ def write_results(results, output):
                                      sort_keys=True,
                                      ensure_ascii=False,
                                      encoding='utf8')
-            except TypeError as e:
+            except TypeError:
                 results = json.dumps(results,
                                      indent=4,
                                      sort_keys=True,

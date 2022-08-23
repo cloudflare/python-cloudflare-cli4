@@ -25,6 +25,8 @@ class CloudFlareError(Exception):
                 self.error_chain.append(
                     self.CodeMessage(int(evalue['code']), str(evalue['message'])))
             # self.error_chain.append({'code': self.code, 'message': str(self.message)})
+        # As we are built off Exception, we need to get our superclass all squared away
+        # super().__init__(message)
 
     def __int__(self):
         """ integer value for Cloudflare API errors"""

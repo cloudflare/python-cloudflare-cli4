@@ -5,7 +5,7 @@ import requests
 
 from .exceptions import CloudFlareAPIError
 
-class CFnetwork(object):
+class CFnetwork():
     """ Network for Cloudflare API"""
 
     def __init__(self, use_sessions=True):
@@ -26,39 +26,32 @@ class CFnetwork(object):
         method = method.upper()
 
         if method == 'GET':
-            return self.session.get(url,
-                                    headers=headers, params=params, data=data)
-        if method == 'POST':
+            r = self.session.get(url, headers=headers, params=params, data=data)
+        elif method == 'POST':
             if isinstance(data, str):
-                return self.session.post(url,
-                                         headers=headers, params=params, data=data, files=files)
+                r = self.session.post(url, headers=headers, params=params, data=data, files=files)
             else:
-                return self.session.post(url,
-                                         headers=headers, params=params, json=data, files=files)
-        if method == 'PUT':
+                r = self.session.post(url, headers=headers, params=params, json=data, files=files)
+        elif method == 'PUT':
             if isinstance(data, str):
-                return self.session.put(url,
-                                        headers=headers, params=params, data=data)
+                r = self.session.put(url, headers=headers, params=params, data=data)
             else:
-                return self.session.put(url,
-                                        headers=headers, params=params, json=data)
-        if method == 'DELETE':
+                r = self.session.put(url, headers=headers, params=params, json=data)
+        elif method == 'DELETE':
             if isinstance(data, str):
-                return self.session.delete(url,
-                                           headers=headers, params=params, data=data)
+                r = self.session.delete(url, headers=headers, params=params, data=data)
             else:
-                return self.session.delete(url,
-                                           headers=headers, params=params, json=data)
-        if method == 'PATCH':
+                r = self.session.delete(url, headers=headers, params=params, json=data)
+        elif method == 'PATCH':
             if isinstance(data, str):
-                return self.session.request('PATCH', url,
-                                            headers=headers, params=params, data=data)
+                r = self.session.request('PATCH', url, headers=headers, params=params, data=data)
             else:
-                return self.session.request('PATCH', url,
-                                            headers=headers, params=params, json=data)
+                r = self.session.request('PATCH', url, headers=headers, params=params, json=data)
+        else:
+            # should never happen
+            raise CloudFlareAPIError(0, 'method not supported')
 
-        # should never happen
-        raise CloudFlareAPIError(0, 'method not supported')
+        return r
 
     def __del__(self):
         """ Network for Cloudflare API"""

@@ -12,7 +12,7 @@ def convert_zones_to_identifier(cf, zone_name):
     try:
         zones = cf.zones.get(params=params)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
-        raise ConverterError(int(e), '%s - %d %s' % (zone_name, e, e))
+        raise ConverterError(int(e), '%s - %d %s' % (zone_name, int(e), e))
     except Exception as e:
         raise ConverterError(0, '%s - %s' % (zone_name, e))
 
@@ -27,7 +27,7 @@ def convert_accounts_to_identifier(cf, account_name):
     try:
         accounts = cf.accounts.get(params=params)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
-        raise ConverterError(int(e), '%s - %d %s' % (account_name, e, e))
+        raise ConverterError(int(e), '%s - %d %s' % (account_name, int(e), e))
     except Exception as e:
         raise ConverterError(0, '%s - %s' % (account_name, e))
 
@@ -43,7 +43,7 @@ def convert_dns_record_to_identifier(cf, zone_id, dns_name):
     try:
         dns_records = cf.zones.dns_records.get(zone_id, params=params)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
-        raise ConverterError(int(e), '%s - %d %s' % (dns_name, e, e))
+        raise ConverterError(int(e), '%s - %d %s' % (dns_name, int(e), e))
     except Exception as e:
         raise ConverterError(0, '%s - %s' % (dns_name, e))
 
@@ -61,7 +61,7 @@ def convert_certificates_to_identifier(cf, certificate_name):
     try:
         certificates = cf.certificates.get()
     except CloudFlare.exceptions.CloudFlareAPIError as e:
-        raise ConverterError(int(e), '%s - %d %s' % (certificate_name, e, e))
+        raise ConverterError(int(e), '%s - %d %s' % (certificate_name, int(e), e))
     except Exception as e:
         raise ConverterError(0, '%s - %s' % (certificate_name, e))
 
@@ -76,7 +76,7 @@ def convert_organizations_to_identifier(cf, organization_name):
     try:
         organizations = cf.user.organizations.get()
     except CloudFlare.exceptions.CloudFlareAPIError as e:
-        raise ConverterError(int(e), '%s - %d %s' % (organization_name, e, e))
+        raise ConverterError(int(e), '%s - %d %s' % (organization_name, int(e), e))
     except Exception as e:
         raise ConverterError(0, '%s - %s' % (organization_name, e))
 
@@ -91,7 +91,7 @@ def convert_invites_to_identifier(cf, invite_name):
     try:
         invites = cf.user.invites.get()
     except CloudFlare.exceptions.CloudFlareAPIError as e:
-        raise ConverterError(int(e), '%s - %d %s' % (invite_name, e, e))
+        raise ConverterError(int(e), '%s - %d %s' % (invite_name, int(e), e))
     except Exception as e:
         raise ConverterError(0, '%s - %s' % (invite_name, e))
 
@@ -106,7 +106,7 @@ def convert_virtual_dns_to_identifier(cf, virtual_dns_name):
     try:
         virtual_dnss = cf.user.virtual_dns.get()
     except CloudFlare.exceptions.CloudFlareAPIError as e:
-        raise ConverterError(int(e), '%s - %d %s' % (virtual_dns_name, e, e))
+        raise ConverterError(int(e), '%s - %d %s' % (virtual_dns_name, int(e), e))
     except Exception as e:
         raise ConverterError(0, '%s - %s' % (virtual_dns_name, e))
 
@@ -121,7 +121,7 @@ def convert_load_balancers_pool_to_identifier(cf, pool_name):
     try:
         pools = cf.user.load_balancers.pools.get()
     except CloudFlare.exceptions.CloudFlareAPIError as e:
-        raise ConverterError(int(e), '%s - %d %s' % (pool_name, e, e))
+        raise ConverterError(int(e), '%s - %d %s' % (pool_name, int(e), e))
     except Exception as e:
         raise ConverterError(0, '%s - %s' % (pool_name, e))
 
@@ -138,9 +138,9 @@ def convert_custom_hostnames_to_identifier(cf, zone_id, custom_hostname):
     try:
         custom_hostnames_records = cf.zones.custom_hostnames.get(zone_id, params=params)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
-        raise ConverterError(int(e), '%s - %d %s' % (dns_name, e, e))
+        raise ConverterError(int(e), '%s - %d %s' % (custom_hostname, int(e), e))
     except Exception as e:
-        raise ConverterError(0, '%s - %s' % (dns_name, e))
+        raise ConverterError(0, '%s - %s' % (custom_hostname, e))
 
     r = []
     for custom_hostnames_record in custom_hostnames_records:

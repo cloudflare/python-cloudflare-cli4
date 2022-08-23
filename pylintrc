@@ -35,6 +35,7 @@ max-args=12
 max-statements=160
 max-branches=70
 max-locals=40
+max-nested-blocks=10
 
 [FORMAT]
 max-line-length=200
