@@ -7,7 +7,7 @@ from .exceptions import CloudFlareAPIError
 def api_extras(self, extras=None):
     """ API extras for Cloudflare API"""
 
-    count = 0;
+    count = 0
     for extra in extras:
         extra = re.sub(r"^.*/client/v4/", '/', extra)
         extra = re.sub(r"^.*/v4/", '/', extra)
