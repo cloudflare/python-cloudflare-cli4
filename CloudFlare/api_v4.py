@@ -489,6 +489,7 @@ def accounts_stream(self):
     self.add('AUTH', 'accounts', 'stream/webhook')
     self.add('AUTH', 'accounts', 'stream/live_inputs')
     self.add('AUTH', 'accounts', 'stream/live_inputs', 'outputs')
+    self.add('AUTH', 'accounts', 'stream/live_inputs', 'outputs', 'enabled')
 
 
 def zones_media(self):
@@ -635,6 +636,7 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'intel/whois')
 
     self.add('VOID', 'accounts', 'magic')
+    self.add('AUTH', 'accounts', 'magic/cf_interconnects')
     self.add('AUTH', 'accounts', 'magic/gre_tunnels')
     self.add('AUTH', 'accounts', 'magic/ipsec_tunnels')
     self.add('AUTH', 'accounts', 'magic/ipsec_tunnels', 'psk_generate')
@@ -714,3 +716,5 @@ def zones_api_gateway(self):
     self.add('VOID', 'zones', 'api_gateway')
     self.add('AUTH', 'zones', 'api_gateway/configuration')
     self.add('AUTH', 'zones', 'api_gateway/discovery')
+
+
