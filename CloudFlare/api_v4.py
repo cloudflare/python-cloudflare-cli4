@@ -706,7 +706,7 @@ def zones_email(self):
     self.add('AUTH', 'zones', 'email/routing')
     self.add('AUTH', 'zones', 'email/routing/disable')
     self.add('AUTH', 'zones', 'email/routing/dns')
-    self.add('AUTH', 'zones', 'email/routing/enabled')
+    self.add('AUTH', 'zones', 'email/routing/enable')
     self.add('AUTH', 'zones', 'email/routing/rules')
     self.add('AUTH', 'zones', 'email/routing/rules/catch_all')
 
