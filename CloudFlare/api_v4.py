@@ -527,6 +527,7 @@ def zones_access(self):
     self.add('AUTH', 'zones', 'access/organizations/revoke_user')
     self.add('AUTH', 'zones', 'access/service_tokens')
 
+
 def accounts_access(self):
     """ accounts access """
 
@@ -537,6 +538,7 @@ def accounts_access(self):
     self.add('AUTH', 'accounts', 'access/organizations')
     self.add('AUTH', 'accounts', 'access/organizations/revoke_user')
     self.add('AUTH', 'accounts', 'access/service_tokens')
+    self.add('AUTH', 'accounts', 'access/service_tokens', 'refresh')
     self.add('AUTH', 'accounts', 'access/apps')
 #   self.add('AUTH', 'accounts', 'access/apps/ca')
     self.add('AUTH', 'accounts', 'access/apps', 'ca')
