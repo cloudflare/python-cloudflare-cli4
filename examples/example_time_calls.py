@@ -16,15 +16,26 @@ def main():
 
     print('Create')
     tic = time.process_time_ns()
-    cf = CloudFlare.CloudFlare()
+    try:
+        cf = CloudFlare.CloudFlare()
+    except Exception as e:
+        print('\tError: %s' % (e))
+        cf = None
     toc = time.process_time_ns()
     print('\t%7.3f ms' % ((toc-tic)/1000000.0))
     print('')
 
+    if not cf:
+        return
+
     print('Call')
     for ii in range(0,10):
         tic = time.process_time_ns()
-        r = cf.ips()
+        try:
+            r = cf.ips()
+        except Exception as e:
+            print('\tError: %s' % (e))
+            break
         toc = time.process_time_ns()
         print('\t%7.3f ms' % ((toc-tic)/1000000.0))
     print('')
