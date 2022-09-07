@@ -463,6 +463,7 @@ def do_it(args):
         except Exception as e:
             if len(commands) > 1:
                 continue
+            sys.exit(e)
 
 def cli4(args):
     """Cloudflare API via command line"""
