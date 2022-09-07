@@ -26,45 +26,22 @@ class CloudFlare():
             """ Cloudflare v4 API"""
 
             self.config = config
-            if 'email' in config:
-                self.email = config['email']
-            else:
-                self.email = None
-            if 'token' in config:
-                self.token = config['token']
-            else:
-                self.token = None
-            if 'certtoken' in config:
-                self.certtoken = config['certtoken']
-            else:
-                self.certtoken = None
-            if 'base_url' in config:
-                self.base_url = config['base_url']
-            else:
-                # We must have a base_url value
-                self.base_url = BASE_URL
+
+            self.api_email = config['email'] if 'email' in config else None
+            self.api_key = config['key'] if 'key' in config else None
+            self.api_token = config['token'] if 'token' in config else None
+            self.api_certtoken = config['certtoken'] if 'certtoken' in config else None
+
+            # We must have a base_url value
+            self.base_url = config['base_url'] if 'base_url' in config else BASE_URL
+
             self.raw = config['raw']
             self.use_sessions = config['use_sessions']
             self.profile = config['profile']
             self.network = CFnetwork(use_sessions=self.use_sessions)
             self.user_agent = user_agent()
 
-            ## We don't need to check this here as we test for
-            ## this when building the authentication headers
-            ##
-            ##if not isinstance(self.email, str):
-            ##    raise ValueError('email argument not string')
-            ##if not isinstance(self.token, str):
-            ##    raise ValueError('token argument not string')
-            ##if not isinstance(self.certtoken, str):
-            ##    raise ValueError('certtoken argument not string')
-            ##if not isinstance(self.base_url, str):
-            ##    raise ValueError('base url argument not string')
-
-            if 'debug' in config and config['debug']:
-                self.logger = CFlogger(config['debug']).getLogger()
-            else:
-                self.logger = None
+            self.logger = CFlogger(config['debug']).getLogger() if 'debug' in config and config['debug'] else None
 
         def __del__(self):
             if self.network:
@@ -80,39 +57,52 @@ class CloudFlare():
             """ Add authentication headers """
 
             v = 'email' + '.' + method.lower()
-            if v in self.config:
-                email = self.config[v] # use specific value for this method
-            else:
-                email = self.email     # use generic value for all methods
-
+            api_email = self.config[v] if v in self.config else self.api_email
+            v = 'key' + '.' + method.lower()
+            api_key = self.config[v] if v in self.config else self.api_key
             v = 'token' + '.' + method.lower()
-            if v in self.config:
-                token = self.config[v] # use specific value for this method
-            else:
-                token = self.token     # use generic value for all methods
+            api_token = self.config[v] if v in self.config else self.api_token
 
-            if email is None and token is None:
-                raise CloudFlareAPIError(0, 'no email and no token defined')
-            if token is None:
-                raise CloudFlareAPIError(0, 'no token defined')
-            if email is None:
-                headers['Authorization'] = 'Bearer %s' % (token)
+            if api_email is None and api_key is None and api_token is None:
+                raise CloudFlareAPIError(0, 'neither email/key or token defined')
+
+            if api_key is not None and api_token is not None:
+                raise CloudFlareAPIError(0, 'confused info - both key and token defined')
+
+            if api_email is not None and api_key is None and api_token is None:
+                raise CloudFlareAPIError(0, 'email defined however neither key or token defined')
+
+            # We know at this point that at-least one api_* is set and no confusion!
+
+            if api_email is None and api_token is not None:
+                # post issue-114 - token is used
+                headers['Authorization'] = 'Bearer %s' % (api_token)
+            elif api_email is None and api_key is not None:
+                # pre issue-114 - key is used vs token - backward compat
+                headers['Authorization'] = 'Bearer %s' % (api_key)
+            elif api_email is not None and api_key is not None:
+                # boring old school email/key methodology (token ignored)
+                headers['X-Auth-Email'] = api_email
+                headers['X-Auth-Key'] = api_key
+            elif api_email is not None and api_token is not None:
+                # boring old school email/key methodology (token ignored)
+                headers['X-Auth-Email'] = api_email
+                headers['X-Auth-Key'] = api_token
             else:
-                headers['X-Auth-Email'] = email
-                headers['X-Auth-Key'] = token
+                raise CloudFlareInternalError(0, 'coding issue!')
 
         def _add_certtoken_headers(self, headers, method):
             """ Add authentication headers """
 
             v = 'certtoken' + '.' + method.lower()
             if v in self.config:
-                certtoken = self.config[v] # use specific value for this method
+                api_certtoken = self.config[v] # use specific value for this method
             else:
-                certtoken = self.certtoken # use generic value for all methods
+                api_certtoken = self.api_certtoken # use generic value for all methods
 
-            if certtoken is None:
+            if api_certtoken is None:
                 raise CloudFlareAPIError(0, 'no cert token defined')
-            headers['X-Auth-User-Service-Key'] = certtoken
+            headers['X-Auth-User-Service-Key'] = api_certtoken
 
         def do_no_auth(self, method, parts, identifiers, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
@@ -857,10 +847,12 @@ class CloudFlare():
             else:
                 setattr(branch, name, f)
 
-    def api_list(self, m=None, s=''):
+    def api_list(self):
         """recursive walk of the api tree returning a list of api calls"""
-        if m is None:
-            m = self
+        return self._api_list(m=self)
+
+    def _api_list(self, m=None, s=''):
+        """recursive walk of the api tree returning a list of api calls"""
         w = []
         for n in sorted(dir(m)):
             if n[0] == '_':
@@ -894,7 +886,7 @@ class CloudFlare():
                             # handle underscores by returning the actual API call vs the method name
                             w.append(str(a)[1:-1])
                 # now recurse downwards into the tree
-                w = w + self.api_list(a, s + '/' + n)
+                w = w + self._api_list(a, s + '/' + n)
         return w
 
     def api_from_web(self):
@@ -902,23 +894,25 @@ class CloudFlare():
 
         return api_decode_from_web(self._base.api_from_web())
 
-    def __init__(self, email=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None):
+    def __init__(self, email=None, key=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None):
         """ Cloudflare v4 API"""
+
+        self._base = None
 
         try:
             config = read_configs(profile)
         except Exception as e:
-            raise CloudFlareAPIError(0, str(e))
+            raise e
 
         # class creation values override all configuration values
         if email is not None:
             config['email'] = email
+        if key is not None:
+            config['key'] = key
         if token is not None:
             config['token'] = token
         if certtoken is not None:
             config['certtoken'] = certtoken
-        if base_url is not None:
-            config['base_url'] = base_url
         if debug is not None:
             config['debug'] = debug
         if raw is not None:
@@ -927,6 +921,8 @@ class CloudFlare():
             config['use_sessions'] = use_sessions
         if profile is not None:
             config['profile'] = profile
+        if base_url is not None:
+            config['base_url'] = base_url
 
         # we do not need to handle item.call values - they pass straight thru
 
@@ -942,7 +938,7 @@ class CloudFlare():
             if 'extras' in config and config['extras']:
                 api_extras(self, config['extras'])
         except Exception as e:
-            raise CloudFlareAPIError(0, str(e))
+            raise e
 
     def __del__(self):
         """ Network for Cloudflare API"""
@@ -970,16 +966,16 @@ class CloudFlare():
     def __str__(self):
         """ Cloudflare v4 API"""
 
-        if self._base.email is None:
+        if self._base.api_email is None:
             s = '["%s","%s"]' % (self._base.profile, 'REDACTED')
         else:
-            s = '["%s","%s","%s"]' % (self._base.profile, self._base.email, 'REDACTED')
+            s = '["%s","%s","%s"]' % (self._base.profile, self._base.api_email, 'REDACTED')
         return s
 
     def __repr__(self):
         """ Cloudflare v4 API"""
 
-        if self._base.email is None:
+        if self._base.api_email is None:
             s = '%s,%s("%s","%s","%s","%s",%s,"%s")' % (
                 self.__module__, type(self).__name__,
                 self._base.profile, 'REDACTED', 'REDACTED',
@@ -988,7 +984,7 @@ class CloudFlare():
         else:
             s = '%s,%s("%s","%s","%s","%s","%s",%s,"%s")' % (
                 self.__module__, type(self).__name__,
-                self._base.profile, self._base.email, 'REDACTED', 'REDACTED',
+                self._base.profile, self._base.api_email, 'REDACTED', 'REDACTED',
                 self._base.base_url, self._base.raw, self._base.user_agent
             )
         return s

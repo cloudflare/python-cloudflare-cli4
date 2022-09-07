@@ -11,11 +11,12 @@ def read_configs(profile=None):
     """ reading the config file for Cloudflare API"""
 
     # We return all these values
-    config = {'email': None, 'token': None, 'certtoken': None, 'extras': None, 'base_url': None, 'profile': None}
+    config = {'email': None, 'key': None, 'token': None, 'certtoken': None, 'extras': None, 'base_url': None, 'profile': None}
 
     # envioronment variables override config files - so setup first
     config['email'] = os.getenv('CLOUDFLARE_EMAIL') if os.getenv('CLOUDFLARE_EMAIL') is not None else os.getenv('CF_API_EMAIL')
-    config['token'] = os.getenv('CLOUDFLARE_API_KEY') if os.getenv('CLOUDFLARE_API_KEY') is not None else os.getenv('CF_API_KEY')
+    config['key'] = os.getenv('CLOUDFLARE_API_KEY') if os.getenv('CLOUDFLARE_API_KEY') is not None else os.getenv('CF_API_KEY')
+    config['token'] = os.getenv('CLOUDFLARE_API_TOKEN') if os.getenv('CLOUDFLARE_API_TOKEN') is not None else os.getenv('CF_API_TOKEN')
     config['certtoken'] = os.getenv('CLOUDFLARE_API_CERTKEY') if os.getenv('CLOUDFLARE_API_CERTKEY') is not None else os.getenv('CF_API_CERTKEY')
     config['extras'] = os.getenv('CLOUDFLARE_API_EXTRAS') if os.getenv('CLOUDFLARE_API_EXTRAS') is not None else os.getenv('CF_API_EXTRAS')
     config['base_url'] = os.getenv('CLOUDFLARE_API_URL') if os.getenv('CLOUDFLARE_API_URL') is not None else os.getenv('CF_API_URL')
@@ -29,9 +30,9 @@ def read_configs(profile=None):
             os.path.expanduser('~/.cloudflare/cloudflare.cfg')
         ])
     except:
-        raise Exception("%s: configuration file error" % (profile))
+        raise Exception("%s: configuration file error" % ('.cloudflare.cfg'))
 
-    if len(cp.sections()) == 0 and profile is not None:
+    if len(cp.sections()) == 0 and profile is not None and len(profile) > 0:
         # no config file and yet a config name provided - not acceptable!
         raise Exception("%s: configuration section provided however config file missing" % (profile))
 
@@ -48,13 +49,13 @@ def read_configs(profile=None):
 
     config['profile'] = profile
 
-    if len(cp.sections()) > 0:
+    if len(profile) > 0 and len(cp.sections()) > 0:
         # we have a configuration file - lets use it
 
         if not cp.has_section(profile):
             raise Exception("%s: configuration section missing - configuration file only has these sections: %s" % (profile, ','.join(cp.sections())))
 
-        for option in ['email', 'token', 'certtoken', 'extras', 'base_url']:
+        for option in ['email', 'key', 'token', 'certtoken', 'extras', 'base_url']:
             try:
                 config_value = cp.get(profile, option)
                 if option == 'extras':
