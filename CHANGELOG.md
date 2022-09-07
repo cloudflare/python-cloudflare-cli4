@@ -1,5 +1,22 @@
 # Change Log
 
+ - 2022-09-07 16:47:42 -0700 [475022a](../../commit/475022ab2470d29719dad0112f7b92a88ea710cf) 2.10.1 release
+ - 2022-09-07 16:40:59 -0700 [1f433ac](../../commit/1f433acee99a9128fe53e5099018e8f9baf8c3db) handle exceptions
+ - 2022-09-07 16:40:34 -0700 [a28a13e](../../commit/a28a13e8312c98c3824dc2c50c551ebacb563d25) handle email/key or token as per issue-114, plus fix some small issues with exception handling
+ - 2022-09-07 16:39:07 -0700 [0523914](../../commit/0523914fccd552d1e007d9a126fdc8b223020991) updated docs to handle key vs token becuase of issue-114
+ - 2022-09-07 16:38:33 -0700 [3ba3fe3](../../commit/3ba3fe3011702b2d8e69f915a01851d07c497a2a) exit with error if error in api call
+ - 2022-09-01 17:32:24 -0400 [7bcec22](../../commit/7bcec22b8088cf95a0afdd278c4c66dce485a53c) more api calls
+ - 2022-08-25 10:30:25 -0700 [56207f7](../../commit/56207f70401b39c8278f4e6ff7931251911a1653) email/routing/enabled -> email/routing/enable
+ - 2022-08-23 16:13:55 -0700 [aad464c](../../commit/aad464c87017ca7c6fa81d32c81e333ea1c3740b) more api calls
+ - 2022-08-23 16:13:18 -0700 [977aa24](../../commit/977aa2429ae63126f70a8486710a0a36a9c181aa) pesky python keyword handling
+ - 2022-08-23 16:01:07 -0700 [13c1681](../../commit/13c1681502ac334dae8bed4faf43a31d39a6aa36) more pylint fixes
+ - 2022-08-23 15:25:07 -0700 [68f3f2f](../../commit/68f3f2f0db4b1348c3838d3e82fde60c67570af9) python3 class object fix (finally), function name cleanup, identifiers/parts major cleanup, logger pylint corrrections, other pylint cleanup
+ - 2022-08-23 11:39:48 -0700 [5af934e](../../commit/5af934ebd29f4bff0632ab6518b2aa0a1963d746) silenced some longstanding (and won't get fixed) messages
+ - 2022-08-23 11:38:58 -0700 [06b1185](../../commit/06b1185b30bbdcfbc9a3052de755d8b9d80838b6) semicolon?
+ - 2022-08-23 08:10:20 -0700 [7c25e8b](../../commit/7c25e8b15089dcc065469cdfa3c7eeee846a6c6b) made getattr() logic more explicit - could lead the way to on-the-fly tree building later
+ - 2022-08-16 10:30:15 -0700 [f96d558](../../commit/f96d558b2b06cf064ceba8cd14335d23e703ea39) script_monitor -> page_shield
+ - 2022-08-14 08:46:44 -0700 [b3b875a](../../commit/b3b875ae2166fa7e1cc5aa557d5f96e8edc33b6b) http_custom_errors & virtual_networks
+ - 2022-08-13 09:04:24 -0700 [3a957f0](../../commit/3a957f04141eec8528cfd8750a3255d2ce9e52ce) CHANGELOG.md pushed to github
  - 2022-08-13 09:02:34 -0700 [bdaa1c5](../../commit/bdaa1c5d51742399a332eca8a15dfc24fa93ec4e) 2.9.12 release
  - 2022-08-13 09:01:39 -0700 [3f0801d](../../commit/3f0801d2889aa6ca4fda171b478b9d1e576c79b9) CHANGELOG.md pushed to github
  - 2022-08-11 18:10:41 -0700 [184ecd5](../../commit/184ecd55e3af6cdb22b78bf10fcc4fec97a0c23f) make api cleanup - not used in production
