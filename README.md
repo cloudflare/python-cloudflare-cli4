@@ -171,13 +171,33 @@ if __name__ == '__main__':
 
 ## Providing Cloudflare Username and API Key
 
-When you create a **CloudFlare** class you can pass up to four parameters.
+When you create a **CloudFlare** class you can pass some combination of these four core parameters.
 
- * API Token or API Key
- * Account email (only if an API Key is being used)
- * Optional Origin-CA Certificate Token
- * Optional Debug flag (True/False)
- * Optional Profile name (the default is `Cloudflare`)
+ * `email` - The account email (only if an API Key is being used)
+ * `api` - The API Key (if coding prior to Issue-114 being merged)
+ * `token` - The API Token (if coding after to Issue-114)
+ * `certtoken` - Optional Origin-CA Certificate Token
+
+This parameter controls how the data is returned from a successful call (see notes below).
+
+ * `raw - An optional Raw flag (True/False) - defaults to False
+
+The following paramaters are for debug and/or development usage
+
+ * `debug` - An optional Debug flag (True/False) - defaults to False
+ * `use_sessions` - An optional Use-Sessions flag (True/False) - defaults to True
+ * `profile` - An optional Profile name (the default is `Cloudflare`)
+ * `base_url` - An optional Base URL (only used for development)
+
+email=None, key=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None):
+
+### Issue-114
+
+After [Issue-114](https://github.com/cloudflare/python-cloudflare/issues/114) was coded and merged, the use of `token` and `key` changed; however, is backward compatible (amazingly!).
+
+If you are using only the API Token, then don't include the API Email. If you are coding prior to Issue-114, then the API Key can also be used as an API Token if the API Email is not used.
+
+### Python code to create class
 
 ```python
 import CloudFlare
@@ -191,11 +211,14 @@ import CloudFlare
     # An authenticated call using an API Token (note the missing email)
     cf = CloudFlare.CloudFlare(token='00000000000000000000000000000000')
 
-    # An authenticated call using an API Key
-    cf = CloudFlare.CloudFlare(email='user@example.com', token='00000000000000000000000000000000')
+    # An authenticated call using an API Email and API Key
+    cf = CloudFlare.CloudFlare(email='user@example.com', key='00000000000000000000000000000000')
 
-    # An authenticated call using an API Key and CA-Origin info
-    cf = CloudFlare.CloudFlare(email='user@example.com', token='00000000000000000000000000000000', certtoken='v1.0-...')
+    # An authenticated call using an API Token and CA-Origin info
+    cf = CloudFlare.CloudFlare(token='00000000000000000000000000000000', certtoken='v1.0-...')
+
+    # An authenticated call using an API Email, API Key, and CA-Origin info
+    cf = CloudFlare.CloudFlare(email='user@example.com', key='00000000000000000000000000000000', certtoken='v1.0-...')
 
     # An authenticated call using using a stored profile (see below)
     cf = CloudFlare.CloudFlare(profile="CompanyX"))
@@ -203,16 +226,17 @@ import CloudFlare
 
 If the account email and API key are not passed when you create the class, then they are retrieved from either the users exported shell environment variables or the .cloudflare.cfg or ~/.cloudflare.cfg or ~/.cloudflare/cloudflare.cfg files, in that order.
 
-If you're using an API Token, any `cloudflare.cfg` file must either not contain an `email` attribute or be a zero length string and the `CLOUDFLARE_EMAIL` environment variable must be unset or be a zero length string, otherwise the token will be treated as a key and will throw an error.
+If you're using an API Token, any `cloudflare.cfg` file must either not contain an `email` and `key` attribute (or they can be zero length strings) and the `CLOUDFLARE_EMAIL` `CLOUDFLARE_API_KEY` environment variable must be unset (or zero length strings), otherwise the token (`CLOUDFLARE_API_TOKEN` or `token` attribute) will not be used.
 
 There is one call that presently doesn't need any email or token certification (the */ips* call); hence you can test without any values saved away.
 
 ### Using shell environment variables
 
-Note (for latest vewrsion of code):
+Note (for latest version of code):
 
  * `CLOUDFLARE_EMAIL` has replaced `CF_API_EMAIL`.
  * `CLOUDFLARE_API_KEY` has replaced `CF_API_KEY`.
+ * `CLOUDFLARE_API_TOKEN` has replaced `CF_API_TOKEN`.
  * `CLOUDFLARE_API_CERTKEY` has replaced `CF_API_CERTKEY`.
 
 Additionally, these two variables are available for testing purposes:
@@ -223,12 +247,19 @@ Additionally, these two variables are available for testing purposes:
 The older environment variable names can still be used.
 
 ```bash
-$ export CLOUDFLARE_EMAIL='user@example.com' # Do not set if using an API Token
+$ export CLOUDFLARE_EMAIL='user@example.com'
 $ export CLOUDFLARE_API_KEY='00000000000000000000000000000000'
 $ export CLOUDFLARE_API_CERTKEY='v1.0-...'
 $
 ```
 
+Or if using API Token.
+
+```bash
+$ export CLOUDFLARE_API_TOKEN='00000000000000000000000000000000'
+$ export CLOUDFLARE_API_CERTKEY='v1.0-...'
+$
+```
 These are optional environment variables; however, they do override the values set within a configuration file.
 
 ### Using configuration file to store email and keys
@@ -239,14 +270,14 @@ The default profile name is `Cloudflare` for obvious reasons.
 $ cat ~/.cloudflare/cloudflare.cfg
 [Cloudflare]
 email = user@example.com # Do not set if using an API Token
-token = 00000000000000000000000000000000
+key = 00000000000000000000000000000000
 certtoken = v1.0-...
 extras =
 $
 ```
 
 More than one profile can be stored within that file.
-Here's an example for a work and home setup (in this example work has an API Token and home uses email/token).
+Here's an example for a work and home setup (in this example work has an API Token and home uses email/key).
 
 ```bash
 $ cat ~/.cloudflare/cloudflare.cfg
@@ -254,7 +285,7 @@ $ cat ~/.cloudflare/cloudflare.cfg
 token = 00000000000000000000000000000000
 [Home]
 email = home@example.com
-token = 00000000000000000000000000000000
+key = 00000000000000000000000000000000
 $
 ```
 
