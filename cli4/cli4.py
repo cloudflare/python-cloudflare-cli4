@@ -202,14 +202,14 @@ def run_command(cf, method, command, params=None, content=None, files=None):
             if len(e) > 0:
                 # more than one error returned by the API
                 for x in e:
-                    sys.stderr.write('cli4: /%s - %d %s\n' % (command, x, x))
-            sys.stderr.write('cli4: /%s - %d %s\n' % (command, int(e), e))
+                    sys.stderr.write('cli4: /%s - %d %s\n' % (command, int(x), str(x)))
+            sys.stderr.write('cli4: /%s - %d %s\n' % (command, int(e), str(e)))
             raise e
         except CloudFlare.exceptions.CloudFlareInternalError as e:
-            sys.stderr.write('cli4: InternalError: /%s - %d %s\n' % (command, int(e), e))
+            sys.stderr.write('cli4: InternalError: /%s - %d %s\n' % (command, int(e), str(e)))
             raise e
         except Exception as e:
-            sys.stderr.write('cli4: /%s - %s - api error\n' % (command, e))
+            sys.stderr.write('cli4: /%s - %s - api error\n' % (command, str(e)))
             raise e
 
         results.append(r)
@@ -454,6 +454,7 @@ def do_it(args):
     except Exception as e:
         sys.exit(e)
 
+    exit_with_error = False
     for command in commands:
         try:
             results = run_command(cf, method, command, params, content, files)
@@ -461,9 +462,10 @@ def do_it(args):
         except KeyboardInterrupt as e:
             sys.exit('cli4: %s - Interrupted\n' % (command))
         except Exception as e:
-            if len(commands) > 1:
-                continue
-            sys.exit(e)
+            exit_with_error = True
+
+    if exit_with_error:
+        sys.exit(1)
 
 def cli4(args):
     """Cloudflare API via command line"""
