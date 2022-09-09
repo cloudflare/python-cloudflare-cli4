@@ -32,6 +32,7 @@ def api_v4(self):
     zones_waiting_rooms(self)
     zones_workers(self)
     zones_extras(self)
+    zones_web3(self)
     zones_email(self)
     zones_api_gateway(self)
 
@@ -683,8 +684,15 @@ def zones_extras(self):
     self.add('AUTH', 'zones', 'settings/automatic_platform_optimization')
     self.add('AUTH', 'zones', 'settings/orange_to_orange')
     self.add('AUTH', 'zones', 'url_normalization')
+
+def zones_web3(self):
+    """ zones web3 """
+
     self.add('VOID', 'zones', 'web3')
     self.add('AUTH', 'zones', 'web3/hostnames')
+    self.add('VOID', 'zones', 'web3/hostnames', 'ipfs_universal_path')
+    self.add('AUTH', 'zones', 'web3/hostnames', 'ipfs_universal_path/content_list')
+    self.add('AUTH', 'zones', 'web3/hostnames', 'ipfs_universal_path/content_list/entries')
 
 def accounts_email(self):
     """ accounts email """
@@ -718,5 +726,4 @@ def zones_api_gateway(self):
     self.add('VOID', 'zones', 'api_gateway')
     self.add('AUTH', 'zones', 'api_gateway/configuration')
     self.add('AUTH', 'zones', 'api_gateway/discovery')
-
 
