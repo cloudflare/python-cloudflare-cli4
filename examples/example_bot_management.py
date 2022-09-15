@@ -50,9 +50,10 @@ def main():
         settings_bot = cf.zones.bot_management.put(zone_id, data={'enable_js': enable_value})
     except Exception as e:
         if int(e) == 99998:
+            print('Exception: 99998 ignored!', file=sys.stderr)
             pass
         else:
-            exit("Exception: %d %s" % (int(e), str(e)))
+            exit('Exception: %d %s' % (int(e), str(e)))
 
     settings_bot = cf.zones.bot_management.get(zone_id)
     print(json.dumps(settings_bot, indent=4))
