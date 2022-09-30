@@ -10,6 +10,9 @@ def api_v4(self):
     user_load_balancing_analytics(self)
     user_tokens_verify(self)
 
+    # The API commands for /radar/
+    radar(self)
+
     # The API commands for /zones/
     zones(self)
     zones_access(self)
@@ -114,7 +117,6 @@ def zones(self):
     self.add('VOID', 'zones', 'security')
     self.add('AUTH', 'zones', 'security/events')
     self.add('AUTH', 'zones', 'subscription')
-
 
 def zones_settings(self):
     """ zones settings """
@@ -361,30 +363,22 @@ def accounts(self):
     self.add('AUTH', 'accounts')
     self.add('VOID', 'accounts', 'billing')
     self.add('AUTH', 'accounts', 'billing/profile')
-
     self.add('AUTH', 'accounts', 'cfd_tunnel')
     self.add('AUTH', 'accounts', 'cfd_tunnel', 'configurations')
     self.add('AUTH', 'accounts', 'cfd_tunnel', 'connections')
     self.add('AUTH', 'accounts', 'cfd_tunnel', 'token')
-
     self.add('AUTH', 'accounts', 'custom_pages')
-
     self.add('AUTH', 'accounts', 'members')
-
     self.add('AUTH', 'accounts', 'railguns')
     self.add('AUTH', 'accounts', 'railguns', 'connections')
-
     self.add('VOID', 'accounts', 'registrar')
     self.add('AUTH', 'accounts', 'registrar/domains')
     self.add('AUTH', 'accounts', 'registrar/contacts')
-
     self.add('AUTH', 'accounts', 'roles')
-
     self.add('VOID', 'accounts', 'rules')
     self.add('AUTH', 'accounts', 'rules/lists')
     self.add('AUTH', 'accounts', 'rules/lists', 'items')
     self.add('AUTH', 'accounts', 'rules/lists/bulk_operations')
-
     self.add('AUTH', 'accounts', 'rulesets')
     self.add('AUTH', 'accounts', 'rulesets', 'versions')
     self.add('AUTH', 'accounts', 'rulesets', 'rules')
@@ -392,7 +386,6 @@ def accounts(self):
     self.add('VOID', 'accounts', 'rulesets/phases')
     self.add('AUTH', 'accounts', 'rulesets/phases', 'entrypoint')
     self.add('AUTH', 'accounts', 'rulesets/phases', 'entrypoint/versions')
-
     self.add('VOID', 'accounts', 'storage')
     self.add('AUTH', 'accounts', 'storage/analytics')
     self.add('AUTH', 'accounts', 'storage/analytics/stored')
@@ -402,17 +395,13 @@ def accounts(self):
     self.add('AUTH', 'accounts', 'storage/kv/namespaces', 'keys')
     self.add('AUTH', 'accounts', 'storage/kv/namespaces', 'values')
     self.add('AUTH', 'accounts', 'storage/kv/namespaces', 'metadata')
-
     self.add('AUTH', 'accounts', 'subscriptions')
-
     self.add('AUTH', 'accounts', 'tunnels')
     self.add('AUTH', 'accounts', 'tunnels', 'connections')
-
     self.add('AUTH', 'accounts', 'virtual_dns')
     self.add('VOID', 'accounts', 'virtual_dns', 'dns_analytics')
     self.add('AUTH', 'accounts', 'virtual_dns', 'dns_analytics/report')
     self.add('AUTH', 'accounts', 'virtual_dns', 'dns_analytics/report/bytime')
-
     self.add('VOID', 'accounts', 'workers')
     self.add('AUTH', 'accounts', 'workers/account-settings')
     self.add('AUTH', 'accounts', 'workers/domains')
@@ -492,7 +481,6 @@ def accounts_stream(self):
     self.add('AUTH', 'accounts', 'stream/live_inputs', 'outputs')
     self.add('AUTH', 'accounts', 'stream/live_inputs', 'outputs', 'enabled')
 
-
 def zones_media(self):
     """ zones media """
 
@@ -527,7 +515,6 @@ def zones_access(self):
     self.add('AUTH', 'zones', 'access/organizations')
     self.add('AUTH', 'zones', 'access/organizations/revoke_user')
     self.add('AUTH', 'zones', 'access/service_tokens')
-
 
 def accounts_access(self):
     """ accounts access """
@@ -668,6 +655,8 @@ def accounts_extras(self):
 def zones_extras(self):
     """ zones extras """
 
+    self.add('VOID', 'zones', 'acm')
+    self.add('AUTH', 'zones', 'acm/total_tls')
     self.add('VOID', 'zones', 'cache')
     self.add('AUTH', 'zones', 'cache/variants')
     self.add('AUTH', 'zones', 'managed_headers')
@@ -726,4 +715,92 @@ def zones_api_gateway(self):
     self.add('VOID', 'zones', 'api_gateway')
     self.add('AUTH', 'zones', 'api_gateway/configuration')
     self.add('AUTH', 'zones', 'api_gateway/discovery')
+    self.add('AUTH', 'zones', 'api_gateway/operations')
+    self.add('AUTH', 'zones', 'api_gateway/schemas')
+
+def radar(self):
+    """ radar """
+    self.add('VOID', 'radar')
+    self.add('VOID', 'radar/annotations')
+    self.add('AUTH', 'radar/annotations/outages')
+    self.add('AUTH', 'radar/annotations/outages/locations')
+    self.add('VOID', 'radar/attacks')
+    self.add('VOID', 'radar/attacks/layer3')
+    self.add('AUTH', 'radar/attacks/layer3/summary')
+    self.add('AUTH', 'radar/attacks/layer3/timeseries')
+    self.add('AUTH', 'radar/attacks/layer3/timeseries_groups')
+    self.add('VOID', 'radar/attacks/layer7')
+    self.add('AUTH', 'radar/attacks/layer7/summary')
+    self.add('AUTH', 'radar/attacks/layer7/timeseries')
+    self.add('AUTH', 'radar/attacks/layer7/timeseries_groups')
+    self.add('VOID', 'radar/attacks/layer7/top')
+    self.add('AUTH', 'radar/attacks/layer7/top/attacks')
+    self.add('VOID', 'radar/attacks/layer7/top/locations')
+    self.add('AUTH', 'radar/attacks/layer7/top/locations/origin')
+    self.add('AUTH', 'radar/attacks/layer7/top/locations/target')
+    self.add('VOID', 'radar/bgp')
+    self.add('AUTH', 'radar/bgp/timeseries')
+    self.add('VOID', 'radar/bgp/top')
+    self.add('AUTH', 'radar/bgp/top/ases')
+    self.add('AUTH', 'radar/bgp/top/prefixes')
+    self.add('VOID', 'radar/dns')
+    self.add('AUTH', 'radar/dns/timeseries')
+    self.add('VOID', 'radar/dns/top')
+    self.add('AUTH', 'radar/dns/top/ases')
+    self.add('AUTH', 'radar/dns/top/locations')
+    self.add('VOID', 'radar/entities')
+    self.add('AUTH', 'radar/entities/asns')
+    self.add('AUTH', 'radar/entities/asns/ip')
+    self.add('AUTH', 'radar/entities/locations')
+    self.add('VOID', 'radar/http')
+    self.add('VOID', 'radar/http/summary')
+    self.add('AUTH', 'radar/http/summary/bot_class')
+    self.add('AUTH', 'radar/http/summary/device_type')
+    self.add('AUTH', 'radar/http/summary/http_protocol')
+    self.add('AUTH', 'radar/http/summary/http_version')
+    self.add('AUTH', 'radar/http/summary/ip_version')
+    self.add('AUTH', 'radar/http/summary/tls_version')
+    self.add('VOID', 'radar/http/timeseries')
+    self.add('AUTH', 'radar/http/timeseries/bot_class')
+    self.add('AUTH', 'radar/http/timeseries/browser')
+    self.add('AUTH', 'radar/http/timeseries/browser_family')
+    self.add('AUTH', 'radar/http/timeseries/device_type')
+    self.add('AUTH', 'radar/http/timeseries/http_protocol')
+    self.add('AUTH', 'radar/http/timeseries/http_version')
+    self.add('AUTH', 'radar/http/timeseries/ip_version')
+    self.add('AUTH', 'radar/http/timeseries/tls_version')
+    self.add('VOID', 'radar/http/top')
+    self.add('AUTH', 'radar/http/top/ases')
+    self.add('AUTH', 'radar/http/top/ases/bot_class')
+    self.add('AUTH', 'radar/http/top/ases/device_type')
+    self.add('AUTH', 'radar/http/top/ases/http_protocol')
+    self.add('AUTH', 'radar/http/top/ases/http_version')
+    self.add('AUTH', 'radar/http/top/ases/ip_version')
+    self.add('AUTH', 'radar/http/top/ases/tls_version')
+    self.add('AUTH', 'radar/http/top/browsers')
+    self.add('AUTH', 'radar/http/top/browser_families')
+    self.add('AUTH', 'radar/http/top/locations')
+    self.add('AUTH', 'radar/http/top/locations/bot_class')
+    self.add('AUTH', 'radar/http/top/locations/device_type')
+    self.add('AUTH', 'radar/http/top/locations/http_protocol')
+    self.add('AUTH', 'radar/http/top/locations/http_version')
+    self.add('AUTH', 'radar/http/top/locations/ip_version')
+    self.add('AUTH', 'radar/http/top/locations/tls_version')
+    self.add('VOID', 'radar/netflows')
+    self.add('AUTH', 'radar/netflows/timeseries')
+    self.add('VOID', 'radar/netflows/top')
+    self.add('AUTH', 'radar/netflows/top/ases')
+    self.add('AUTH', 'radar/netflows/top/locations')
+    self.add('VOID', 'radar/ranking')
+    self.add('AUTH', 'radar/ranking/timeseries')
+    self.add('AUTH', 'radar/ranking/top')
+    self.add('VOID', 'radar/reports')
+    self.add('AUTH', 'radar/reports/datasets')
+    self.add('AUTH', 'radar/reports/datasets/download')
+    self.add('VOID', 'radar/search')
+    self.add('AUTH', 'radar/search/global')
+    self.add('VOID', 'radar/verified_bots')
+    self.add('VOID', 'radar/verified_bots/top')
+    self.add('AUTH', 'radar/verified_bots/top/bots')
+    self.add('AUTH', 'radar/verified_bots/top/categories')
 
