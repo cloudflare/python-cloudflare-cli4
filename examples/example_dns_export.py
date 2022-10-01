@@ -37,7 +37,7 @@ def main():
     try:
         dns_records = cf.zones.dns_records.export.get(zone_id)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
-        exit('/zones/dns_records/export %s - %d %s - api call failed' % (dns_name, e, e))
+        exit('/zones/dns_records/export %s - %d %s - api call failed' % (zone_name, e, e))
 
     for l in dns_records.splitlines():
         if len(l) == 0 or l[0] == ';':
