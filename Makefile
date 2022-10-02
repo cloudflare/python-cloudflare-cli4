@@ -3,8 +3,8 @@ PYTHON = python
 PANDOC = pandoc
 PYLINT = pylint
 
+#EMAIL = "martin@cloudflare.com"
 EMAIL = "mahtin@mahtin.com"
-EMAIL = "martin@cloudflare.com"
 NAME = "cloudflare"
 
 all:	README.rst CHANGELOG.md build

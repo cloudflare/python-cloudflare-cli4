@@ -1,5 +1,14 @@
 # Change Log
 
+ - 2022-10-02 08:33:06 -0700 [0d831d8](../../commit/0d831d814dc0c51a96ed57f38a237c71f050f096) Merge pull request #149 from huangsen365/patch-1
+ - 2022-10-01 22:06:39 +0800 [515dff2](../../commit/515dff27959331a7cc41be572006e78db83ca61b) Update example_dns_export.py
+ - 2022-09-30 10:05:42 -0700 [e5ebd91](../../commit/e5ebd91d85ac9e9dad3fa078447d64217c247941) /radar API added
+ - 2022-09-14 17:55:28 -0700 [96747e2](../../commit/96747e20f286f23c9c8fc03b893c8c9bf85b1881) better messages
+ - 2022-09-14 17:47:32 -0700 [4f63908](../../commit/4f63908cdbe722efd84ec75f682fb120656809af) do something useful with api listing
+ - 2022-09-14 12:30:03 -0700 [4d7962d](../../commit/4d7962d599142747d817b81f388d6829fd81a4e9) issue 148 example
+ - 2022-09-09 09:20:34 -0700 [75649ed](../../commit/75649edeff796c01154fba7dfa065cec7317b9f5) more api calls - web3 stuff
+ - 2022-09-09 09:14:00 -0700 [d4a3cfe](../../commit/d4a3cfe565deed150f0043ddca2e6883aa088ce4) cleaned up error exit processing - because it was not correct
+ - 2022-09-07 16:47:59 -0700 [b15d20c](../../commit/b15d20c9a590d93351415bb8bc9e0bdbfeec5dff) CHANGELOG.md pushed to github
  - 2022-09-07 16:47:42 -0700 [475022a](../../commit/475022ab2470d29719dad0112f7b92a88ea710cf) 2.10.1 release
  - 2022-09-07 16:40:59 -0700 [1f433ac](../../commit/1f433acee99a9128fe53e5099018e8f9baf8c3db) handle exceptions
  - 2022-09-07 16:40:34 -0700 [a28a13e](../../commit/a28a13e8312c98c3824dc2c50c551ebacb563d25) handle email/key or token as per issue-114, plus fix some small issues with exception handling

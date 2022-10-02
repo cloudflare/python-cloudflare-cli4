@@ -1233,6 +1233,11 @@ As of January 2020 the code is shipped up to pypi with Python2 support removed.
 
 As of January 2020 the code is Python3.8 clean. The new ``SyntaxWarning`` messages (i.e. ``SyntaxWarning: "is" with a literal. Did you mean "=="?``) meant minor edits were needed.
 
+pypi and GitHub signed releases
+-------------------------------
+
+As of October/2022, the code is signed by the maintainers personal email address: ``mahtin@mahtin.com`` ``7EA1 39C4 0C1C 842F 9D41 AAF9 4A34 925D 0517 2859``
+
 Credit
 ------
 
@@ -1246,4 +1251,4 @@ An automatically generated CHANGELOG is provided `here <CHANGELOG.md>`__.
 Copyright
 ---------
 
-Portions copyright `Felix Wong (gnowxilef) <https://github.com/gnowxilef>`__ 2015 and Cloudflare 2016.
+Portions copyright `Felix Wong (gnowxilef) <https://github.com/gnowxilef>`__ 2015 and Cloudflare 2016 & 2022.
