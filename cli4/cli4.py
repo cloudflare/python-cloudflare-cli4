@@ -54,7 +54,7 @@ def run_command(cf, method, command, params=None, content=None, files=None):
 
     hex_only = re.compile('^[0-9a-fA-F]+$')
     waf_rules = re.compile('^[0-9]+[A-Z]*$')
-    uuid_value = re.compile('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')	# 8-4-4-4-12
+    uuid_value = re.compile('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$') # 8-4-4-4-12
 
     m = cf
     for element in parts:
