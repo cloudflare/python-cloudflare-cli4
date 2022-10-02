@@ -1,16 +1,17 @@
 
 PYTHON = python
-PANDOC = pandoc
+# PANDOC = pandoc
 PYLINT = pylint
+TWINE = twine
 
-#EMAIL = "martin@cloudflare.com"
 EMAIL = "mahtin@mahtin.com"
 NAME = "cloudflare"
 
-all:	README.rst CHANGELOG.md build
+#all:	README.rst CHANGELOG.md build
+all:	CHANGELOG.md build
 
-README.rst: README.md
-	$(PANDOC) --wrap=none --from=markdown --to=rst < README.md > README.rst 
+# README.rst: README.md
+# 	$(PANDOC) --wrap=none --from=markdown --to=rst < README.md > README.rst 
 
 CHANGELOG.md: FORCE
 	@ tmp=/tmp/_$$$$.md ; \
@@ -42,18 +43,21 @@ sdist: all
 	make clean
 	make test
 	$(PYTHON) setup.py -q sdist
+	$(TWINE) check dist/*
 	@rm -rf ${NAME}.egg-info
 
 bdist: all
 	make clean
 	make test
 	$(PYTHON) setup.py -q bdist
+	$(TWINE) check dist/*
 	@rm -rf ${NAME}.egg-info
 
 bdist_wheel: all
 	make clean
 	make test
 	$(PYTHON) setup.py -q bdist_wheel
+	$(TWINE) check dist/*
 	@rm -rf ${NAME}.egg-info
 
 upload: clean all tag upload-github upload-pypi
@@ -64,7 +68,7 @@ upload-github:
 
 upload-pypi:
 	## $(PYTHON) setup.py -q sdist bdist_wheel upload # --sign --identity="$(EMAIL)"
-	twine upload -r pypi dist/*
+	$(TWINE) upload -r pypi dist/*
 
 showtag: sdist
 	@ v=`ls -r dist | head -1 | sed -e 's/cloudflare-\([0-9.]*\)\.tar.*/\1/'` ; echo "\tDIST VERSION =" $$v ; (git tag | fgrep -q "$$v") && echo "\tGIT TAG EXISTS"

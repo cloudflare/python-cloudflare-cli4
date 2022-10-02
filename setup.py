@@ -9,7 +9,7 @@ _version_re = re.compile(r"__version__\s=\s'(.*)'")
 def main():
     """Cloudflare API code - setup.py file"""
 
-    with open('README.rst') as read_me:
+    with open('README.md') as read_me:
         long_description = read_me.read()
 
     with open('CloudFlare/__init__.py', 'r') as f:
@@ -20,17 +20,13 @@ def main():
         version=version,
         description='Python wrapper for the Cloudflare v4 API',
         long_description=long_description,
+        long_description_content_type='text/markdown',
         author='Martin J. Levy',
-        author_email='martin@cloudflare.com',
-        # maintainer='Martin J. Levy',
-        # maintainer_email='martin@cloudflare.com',
+        author_email='mahtin@mahtin.com',
         url='https://github.com/cloudflare/python-cloudflare',
         license='MIT',
         options={"bdist_wheel": {"universal": True}},
         packages=['cli4', 'examples']+find_packages(),
-        #package_dir={'CloudFlare': 'lib'}
-        #package_dir={'CloudFlare/examples': 'examples'},
-        #package_data={'cloudflare-examples': ["examples/*"]},
         include_package_data=True,
         data_files = [('share/man/man1', ['cli4/cli4.1'])],
         install_requires=['requests', 'pyyaml', 'jsonlines', 'beautifulsoup4'],
@@ -45,17 +41,9 @@ def main():
             'Intended Audience :: Developers',
             'Topic :: Software Development :: Libraries :: Python Modules',
             'License :: OSI Approved :: MIT License',
-            'Programming Language :: Python :: 3',
-            'Programming Language :: Python :: 3.2',
-            'Programming Language :: Python :: 3.3',
-            'Programming Language :: Python :: 3.4',
-            'Programming Language :: Python :: 3.5',
-            'Programming Language :: Python :: 3.6',
-            'Programming Language :: Python :: 3.7',
-            'Programming Language :: Python :: 3.8'
+            'Programming Language :: Python :: 3'
         ]
     )
-
 
 if __name__ == '__main__':
     main()
