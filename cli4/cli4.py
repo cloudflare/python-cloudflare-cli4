@@ -34,6 +34,11 @@ def dump_commands_from_web(cf):
         else:
             sys.stdout.write('%-6s %s\n' % (r['action'], r['cmd']))
 
+def strip_multiline(s):
+    """ remove leading/trailing tabs/spaces on each line"""
+    # This hack is needed in order to use yaml.safe_load() on JSON text - tabs are not allowed
+    return '\n'.join([l.strip() for l in s.splitlines()])
+
 def run_command(cf, method, command, params=None, content=None, files=None):
     """run the command line"""
     # remove leading and trailing /'s
@@ -403,6 +408,9 @@ def do_it(args):
                 #value = json.loads(value) - changed to yaml code to remove unicode string issues
                 if yaml is None:
                     sys.exit('cli4: install yaml support')
+                # cleanup string before parsing so that yaml.safe.load does not complain about whitespace
+                # >>> found character '\t' that cannot start any token <<<
+                value_string = strip_multiline(value_string)
                 try:
                     value = yaml.safe_load(value_string)
                 except yaml.parser.ParserError as e:
