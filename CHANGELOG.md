@@ -1,5 +1,13 @@
 # Change Log
 
+ - 2022-11-03 15:31:25 -0700 [accb642](../../commit/accb642794ae1928be66376f0605b7fedb43a6b4) 2.10.3 release
+ - 2022-11-03 15:30:21 -0700 [da73108](../../commit/da7310880de4f1e41f31004e36a67eaeba98f064) add /logpush/edge/jobs info
+ - 2022-11-03 15:24:20 -0700 [f511729](../../commit/f51172947bad68529120980c22924003009733ae) handle tabs and spaces in passed JSON values - longstanding issue not noted till today
+ - 2022-11-03 15:23:13 -0700 [d4ac4a4](../../commit/d4ac4a48865782069d4629e966d7dae4bbe064a8) Handle /:id/:id plus camelcase id's
+ - 2022-11-03 15:22:20 -0700 [d8ec3ad](../../commit/d8ec3ad51e043fa9f593d1a64744ac386c26142b) /zones/logpush/edge plus other API endpoints
+ - 2022-10-02 12:49:28 -0700 [6dc4d7d](../../commit/6dc4d7deea58d9bef639ef308279468686b47111) more twine moves and cleanup of setup
+ - 2022-10-02 12:48:55 -0700 [145d51e](../../commit/145d51e57116cdd209d2ef857b35b2658c603e6b) tabs vs spaces
+ - 2022-10-02 09:36:34 -0700 [aa2072f](../../commit/aa2072fdcee6617021087036be13529908678cbb) CHANGELOG.md pushed to github
  - 2022-10-02 09:36:04 -0700 [5169f67](../../commit/5169f675a5030f223f0fd4d9ae75bb36944313b1) 2.10.1 release (now signed by mahtin@mahtin.com)
  - 2022-10-02 08:33:06 -0700 [0d831d8](../../commit/0d831d814dc0c51a96ed57f38a237c71f050f096) Merge pull request #149 from huangsen365/patch-1
  - 2022-10-01 22:06:39 +0800 [515dff2](../../commit/515dff27959331a7cc41be572006e78db83ca61b) Update example_dns_export.py
