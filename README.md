@@ -1098,6 +1098,55 @@ $
 
 Refer to the Cloudflare Workers API documentation for more information.
 
+
+## Cloudflare Instant Logs
+
+Please see https://developers.cloudflare.com/logs/instant-logs for all the information on how to use this feature.
+The `cli4` command along with the Python libaries can be used to control the instant logs; however, the websocket reading is outside the scope of this library.
+
+To query the states of the instant logs:
+```
+$ cli4 /zones/:███████████.com/logpush/edge/jobs | jq .
+[]
+$
+```
+
+To add monitoring:
+```
+$ cli4 --post \
+	='{
+		"fields": "ClientIP,ClientRequestHost,ClientRequestMethod,ClientRequestURI,EdgeEndTimestamp,EdgeResponseBytes,EdgeResponseStatus,EdgeStartTimestamp,RayID",
+		"sample": 1,
+		"filter": "",
+		"kind": "instant-logs"
+	}' \
+	/zones/:███████████.com/logpush/edge/jobs | jq .
+{
+  "destination_conf": "wss://logs.cloudflare.com/instant-logs/ws/sessions/████████████████████████████████",
+  "fields": "ClientIP,ClientRequestHost,ClientRequestMethod,ClientRequestURI,EdgeEndTimestamp,EdgeResponseBytes,EdgeResponseStatus,EdgeStartTimestamp,RayID",
+  "filter": "",
+  "kind": "instant-logs",
+  "sample": 1,
+  "session_id": "████████████████████████████████"
+}
+$
+```
+
+To see the results:
+```
+$ cli4 /zones/:███████████.com/logpush/edge/jobs | jq .
+[
+  {
+    "fields": "ClientIP,ClientRequestHost,ClientRequestMethod,ClientRequestURI,EdgeEndTimestamp,EdgeResponseBytes,EdgeResponseStatus,EdgeStartTimestamp,RayID",
+    "filter": "",
+    "kind": "instant-logs",
+    "sample": 1,
+    "session_id": "████████████████████████████████"
+  }
+]
+$
+```
+
 ## Cloudflare GraphQL
 
 The GraphQL interface can be accessed via the command line or via Python.
