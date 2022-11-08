@@ -572,27 +572,27 @@ class CloudFlare():
         def get(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            raise CloudFlareAPIError(0, 'get() call not available for this endpoint')
+            raise CloudFlareAPIError(0, 'not found')
 
         def patch(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            raise CloudFlareAPIError(0, 'patch() call not available for this endpoint')
+            raise CloudFlareAPIError(0, 'not found')
 
         def post(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            raise CloudFlareAPIError(0, 'post() call not available for this endpoint')
+            raise CloudFlareAPIError(0, 'not found')
 
         def put(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            raise CloudFlareAPIError(0, 'put() call not available for this endpoint')
+            raise CloudFlareAPIError(0, 'not found')
 
         def delete(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            raise CloudFlareAPIError(0, 'delete() call not available for this endpoint')
+            raise CloudFlareAPIError(0, 'not found')
 
     class _add_no_auth():
         """ Cloudflare v4 API"""
