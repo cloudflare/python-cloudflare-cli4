@@ -68,6 +68,9 @@ def api_v4(self):
     # The API commands for /graphql
     graphql(self)
 
+    # Issue 151
+    from_developers(self)
+
 def user(self):
     """ user """
 
@@ -93,6 +96,8 @@ def zones(self):
     self.add('AUTH', 'zones', 'available_plans')
     self.add('AUTH', 'zones', 'available_rate_plans')
     self.add('AUTH', 'zones', 'bot_management')
+    self.add('AUTH', 'zones', 'bot_management/feedback')
+    self.add('AUTH', 'zones', 'client_certificates')
     self.add('AUTH', 'zones', 'custom_certificates')
     self.add('AUTH', 'zones', 'custom_certificates/prioritize')
     self.add('AUTH', 'zones', 'custom_csrs')
@@ -104,7 +109,10 @@ def zones(self):
     self.add('AUTH', 'zones', 'dns_records/export')
     self.add('AUTH', 'zones', 'dns_records/import')
     self.add('AUTH', 'zones', 'dns_records/scan')
+    self.add('VOID', 'zones', 'dns_settings')
+    self.add('AUTH', 'zones', 'dns_settings/use_apex_ns')
     self.add('AUTH', 'zones', 'filters')
+    self.add('AUTH', 'zones', 'filters/validate-expr')
     self.add('AUTH', 'zones', 'healthchecks')
     self.add('AUTH', 'zones', 'healthchecks/preview')
     self.add('AUTH', 'zones', 'keyless_certificates')
@@ -177,8 +185,8 @@ def zones_analytics(self):
     """ zones analytics """
 
     self.add('VOID', 'zones', 'analytics')
-#   self.add('AUTH', 'zones', 'analytics/colos')
-#   self.add('AUTH', 'zones', 'analytics/dashboard')
+    self.add('AUTH', 'zones', 'analytics/colos')
+    self.add('AUTH', 'zones', 'analytics/dashboard')
     self.add('AUTH', 'zones', 'analytics/latency')
     self.add('AUTH', 'zones', 'analytics/latency/colos')
 
@@ -465,6 +473,7 @@ def accounts_load_balancers(self):
     self.add('AUTH', 'accounts', 'load_balancers/regions')
     self.add('AUTH', 'accounts', 'load_balancers/search')
 
+
 def accounts_firewall(self):
     """ accounts firewall """
 
@@ -477,7 +486,7 @@ def accounts_secondary_dns(self):
 
     self.add('VOID', 'accounts', 'secondary_dns')
 #   self.add('AUTH', 'accounts', 'secondary_dns/masters')
-#   self.add('AUTH', 'accounts', 'secondary_dns/primaries')
+    self.add('AUTH', 'accounts', 'secondary_dns/primaries')
     self.add('AUTH', 'accounts', 'secondary_dns/tsigs')
     self.add('AUTH', 'accounts', 'secondary_dns/acls')
     self.add('AUTH', 'accounts', 'secondary_dns/peers')
@@ -541,9 +550,11 @@ def accounts_access(self):
 
     self.add('VOID', 'accounts', 'access')
     self.add('AUTH', 'accounts', 'access/bookmarks')
+    self.add('AUTH', 'accounts', 'access/gateway_ca')
     self.add('AUTH', 'accounts', 'access/groups')
     self.add('AUTH', 'accounts', 'access/identity_providers')
     self.add('AUTH', 'accounts', 'access/organizations')
+    self.add('AUTH', 'accounts', 'access/organizations/doh')
     self.add('AUTH', 'accounts', 'access/organizations/revoke_user')
     self.add('AUTH', 'accounts', 'access/service_tokens')
     self.add('AUTH', 'accounts', 'access/service_tokens', 'refresh')
@@ -829,3 +840,79 @@ def radar(self):
     self.add('VOID', 'radar/verified_bots/top')
     self.add('AUTH', 'radar/verified_bots/top/bots')
     self.add('AUTH', 'radar/verified_bots/top/categories')
+
+def from_developers(self):
+    """ from_developers """
+    self.add('VOID', 'accounts', 'analytics_engine')
+    self.add('AUTH', 'accounts', 'analytics_engine/sql')
+
+    self.add('AUTH', 'accounts', 'images/v1/config')
+    self.add('AUTH', 'accounts', 'images/v1/direct_upload')
+
+    self.add('VOID', 'accounts', 'logpush')
+    self.add('AUTH', 'accounts', 'logpush/jobs')
+
+    self.add('VOID', 'accounts', 'logs')
+    self.add('AUTH', 'accounts', 'logs/retrieve')
+
+    self.add('VOID', 'accounts', 'magic/advanced_tcp_protection')
+    self.add('VOID', 'accounts', 'magic/advanced_tcp_protection/configs')
+    self.add('AUTH', 'accounts', 'magic/advanced_tcp_protection/configs/allowlist')
+    self.add('AUTH', 'accounts', 'magic/advanced_tcp_protection/configs/prefixes')
+    self.add('AUTH', 'accounts', 'magic/advanced_tcp_protection/configs/prefixes/bulk')
+    self.add('VOID', 'accounts', 'magic/advanced_tcp_protection/configs/syn_protection')
+    self.add('AUTH', 'accounts', 'magic/advanced_tcp_protection/configs/syn_protection/rules')
+    self.add('VOID', 'accounts', 'magic/advanced_tcp_protection/configs/tcp_flow_protection')
+    self.add('AUTH', 'accounts', 'magic/advanced_tcp_protection/configs/tcp_flow_protection/rules')
+    self.add('AUTH', 'accounts', 'magic/advanced_tcp_protection/configs/tcp_protection_status')
+
+    self.add('VOID', 'accounts', 'pubsub')
+    self.add('AUTH', 'accounts', 'pubsub/namespaces')
+    self.add('AUTH', 'accounts', 'pubsub/namespaces', 'brokers')
+    self.add('AUTH', 'accounts', 'pubsub/namespaces', 'brokers', 'credentials')
+
+    self.add('VOID', 'accounts', 'rulesets', 'versions', 'by_tag')
+    self.add('AUTH', 'accounts', 'rulesets', 'versions', 'by_tag/wordpress')
+    self.add('VOID', 'accounts', 'rulesets/phases/ddos_l4')
+    self.add('AUTH', 'accounts', 'rulesets/phases/ddos_l4/entrypoint')
+    self.add('VOID', 'accounts', 'rulesets/phases/ddos_l7')
+    self.add('AUTH', 'accounts', 'rulesets/phases/ddos_l7/entrypoint')
+    self.add('VOID', 'accounts', 'rulesets/phases/http_request_firewall_custom')
+    self.add('AUTH', 'accounts', 'rulesets/phases/http_request_firewall_custom/entrypoint')
+    self.add('VOID', 'accounts', 'rulesets/phases/http_request_firewall_managed')
+    self.add('AUTH', 'accounts', 'rulesets/phases/http_request_firewall_managed/entrypoint')
+
+    self.add('VOID', 'accounts', 'stream/analytics')
+    self.add('AUTH', 'accounts', 'stream/analytics/views')
+    self.add('AUTH', 'accounts', 'stream/live_inputs', 'videos')
+
+    self.add('VOID', 'accounts', 'workers/dispatch')
+    self.add('AUTH', 'accounts', 'workers/dispatch/namespaces')
+    self.add('AUTH', 'accounts', 'workers/dispatch/namespaces', 'scripts')
+    self.add('AUTH', 'accounts', 'workers/dispatch/namespaces', 'scripts', 'tags')
+
+#   self.add('AUTH', 'organizations', 'load_balancers/monitors')
+
+    self.add('AUTH', 'users')
+
+    self.add('VOID', 'zones', 'content-upload-scan')
+    self.add('AUTH', 'zones', 'content-upload-scan/disable')
+    self.add('AUTH', 'zones', 'content-upload-scan/enable')
+    self.add('AUTH', 'zones', 'content-upload-scan/payloads')
+    self.add('AUTH', 'zones', 'content-upload-scan/settings')
+
+    self.add('VOID', 'zones', 'phases')
+    self.add('VOID', 'zones', 'phases/http_request_firewall_managed')
+    self.add('AUTH', 'zones', 'phases/http_request_firewall_managed/entrypoint')
+
+    self.add('VOID', 'zones', 'rulesets/phases/ddos_l7')
+    self.add('AUTH', 'zones', 'rulesets/phases/ddos_l7/entrypoint')
+    self.add('VOID', 'zones', 'rulesets/phases/http_ratelimit')
+    self.add('AUTH', 'zones', 'rulesets/phases/http_ratelimit/entrypoint')
+    self.add('VOID', 'zones', 'rulesets/phases/http_request_cache_settings')
+    self.add('AUTH', 'zones', 'rulesets/phases/http_request_cache_settings/entrypoint')
+    self.add('VOID', 'zones', 'rulesets/phases/http_request_firewall_custom')
+    self.add('AUTH', 'zones', 'rulesets/phases/http_request_firewall_custom/entrypoint')
+    self.add('VOID', 'zones', 'rulesets/phases/http_request_firewall_managed')
+    self.add('AUTH', 'zones', 'rulesets/phases/http_request_firewall_managed/entrypoint')
+    self.add('AUTH', 'zones', 'rulesets/phases/http_request_firewall_managed/entrypoint/versions')
