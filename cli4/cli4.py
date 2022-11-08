@@ -159,10 +159,7 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 cmd.append(element)
             except AttributeError:
                 # the verb/element was not found
-                if len(cmd) == 0:
-                    sys.stderr.write('cli4: /%s - not found\n' % (element))
-                else:
-                    sys.stderr.write('cli4: /%s/%s - not found\n' % ('/'.join(cmd), element))
+                sys.stderr.write('cli4: /%s - not found\n' % (command))
                 raise e
 
     if content and params:
