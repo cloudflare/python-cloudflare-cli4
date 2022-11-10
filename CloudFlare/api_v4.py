@@ -186,8 +186,8 @@ def zones_analytics(self):
     """ zones analytics """
 
     self.add('VOID', 'zones', 'analytics')
-    self.add('AUTH', 'zones', 'analytics/colos')
-    self.add('AUTH', 'zones', 'analytics/dashboard')
+#   self.add('AUTH', 'zones', 'analytics/colos') # deprecated 2021-03-01 - expired!
+#   self.add('AUTH', 'zones', 'analytics/dashboard') # deprecated 2021-03-01 - expired!
     self.add('AUTH', 'zones', 'analytics/latency')
     self.add('AUTH', 'zones', 'analytics/latency/colos')
 
@@ -551,12 +551,12 @@ def accounts_access(self):
     """ accounts access """
 
     self.add('VOID', 'accounts', 'access')
-    self.add('AUTH', 'accounts', 'access/bookmarks')
+#   self.add('AUTH', 'accounts', 'access/bookmarks') # deprecated 2023-03-19
     self.add('AUTH', 'accounts', 'access/gateway_ca')
     self.add('AUTH', 'accounts', 'access/groups')
     self.add('AUTH', 'accounts', 'access/identity_providers')
     self.add('AUTH', 'accounts', 'access/organizations')
-    self.add('AUTH', 'accounts', 'access/organizations/doh')
+#   self.add('AUTH', 'accounts', 'access/organizations/doh') # deprecated 2020-02-04 - expired!
     self.add('AUTH', 'accounts', 'access/organizations/revoke_user')
     self.add('AUTH', 'accounts', 'access/service_tokens')
     self.add('AUTH', 'accounts', 'access/service_tokens', 'refresh')
@@ -849,7 +849,7 @@ def from_developers(self):
     self.add('AUTH', 'accounts', 'analytics_engine/sql')
 
     self.add('AUTH', 'accounts', 'images/v1/config')
-    self.add('AUTH', 'accounts', 'images/v1/direct_upload')
+#   self.add('AUTH', 'accounts', 'images/v1/direct_upload') # deprecated 2022-07-01 - expired!
 
     self.add('VOID', 'accounts', 'logpush')
     self.add('AUTH', 'accounts', 'logpush/jobs')
