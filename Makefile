@@ -100,7 +100,7 @@ api:
 	echo "In docs:" ; \
 	egrep '> ' < $$tmp.3 | sed -e 's/> /    /' | sort | sed -e "s/\//self.add('AUTH', '/" -e "s/$$/'\)/" -e "s/\/:id\//', '/g" ; \
 	echo "Deprecated:" ; \
-	egrep '; deprecated' < $$tmp.2 | while read cmd x depricated depricated_date ; do egrep "$$cmd" $$tmp.4 | sed -e "s/$$/ ; depricated $$depricated_date/" ; done | sort | uniq ; \
+	egrep '; deprecated' < $$tmp.2 | while read cmd x deprecated deprecated_date ; do egrep "$$cmd" $$tmp.4 | sed -e "s/$$/ ; deprecated $$deprecated_date/" ; done | sort | uniq ; \
 	rm $$tmp.?
 
 clean:
