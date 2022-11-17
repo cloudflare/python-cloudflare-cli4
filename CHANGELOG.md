@@ -1,5 +1,17 @@
 # Change Log
 
+ - 2022-11-17 20:53:06 +0000 [e68245e](../../commit/e68245ef7b4b31c5f58971b965984cc88d969f51) 2.10.5 release
+ - 2022-11-17 20:52:00 +0000 [72a7f55](../../commit/72a7f55857b70e7504daa13fd27f4b8c48f0fe3a) reverse usage of utf-8 in README introduced in commit da73108
+ - 2022-11-09 18:57:19 -0800 [28c0f26](../../commit/28c0f26c4dc82c67b05c07fb6c64b6b54a65598a) deprecated apis
+ - 2022-11-09 18:56:40 -0800 [85d2108](../../commit/85d21082b6f3ca61d8ce233b2d894b2dc695ddf7) spelling typo
+ - 2022-11-09 08:52:50 -0800 [58280fa](../../commit/58280fab5f936df1511232aa99f46e0487157e70) add more api endpoints
+ - 2022-11-08 12:05:35 -0800 [95878c5](../../commit/95878c5115e54123a834a6107f1f55fb099cfd09) 2.10.4 release
+ - 2022-11-08 12:01:47 -0800 [0d1575d](../../commit/0d1575d141d81cc965a64a91adaaed39591f1996) Merge branch 'issue151-missing-calls'
+ - 2022-11-08 12:00:58 -0800 [cb85a20](../../commit/cb85a20f7677110af15d6457f5bc4e58fa4a3c88) issue151 added the missing calls found on developers site
+ - 2022-11-08 11:44:37 -0800 [1302a55](../../commit/1302a5587aa80f046687c41b0e32f5954c31a90c) simplify not found message - it was overly complicated code
+ - 2022-11-08 11:42:44 -0800 [45270f8](../../commit/45270f8b4ffe55b166a1b5d26c3cd2a3c747dd4d) The error message from unused/void parts of the tree should be simpler
+ - 2022-11-04 17:06:35 -0700 [1f588a3](../../commit/1f588a331a67bb84509aa1e2876ad96c8112fd89) changed /zones/:id/logs/control to not callable
+ - 2022-11-03 15:31:45 -0700 [713e306](../../commit/713e30602d4e137b6832d1c0664807ba28b6b4ca) CHANGELOG.md pushed to github
  - 2022-11-03 15:31:25 -0700 [accb642](../../commit/accb642794ae1928be66376f0605b7fedb43a6b4) 2.10.3 release
  - 2022-11-03 15:30:21 -0700 [da73108](../../commit/da7310880de4f1e41f31004e36a67eaeba98f064) add /logpush/edge/jobs info
  - 2022-11-03 15:24:20 -0700 [f511729](../../commit/f51172947bad68529120980c22924003009733ae) handle tabs and spaces in passed JSON values - longstanding issue not noted till today
