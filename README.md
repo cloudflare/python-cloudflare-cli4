@@ -916,7 +916,7 @@ $ cli4 --post file=@zone.txt /zones/:example.com/dns_records/import
 }
 $
 ```
- 
+
 ### Zone file upload (i.e. import) Python examples (uses BIND format files)
 
 Because `import` is a reserved word in Python there needs to be a slight workaround to calling this within code.
@@ -1106,7 +1106,7 @@ The `cli4` command along with the Python libaries can be used to control the ins
 
 To query the states of the instant logs:
 ```
-$ cli4 /zones/:███████████.com/logpush/edge/jobs | jq .
+$ cli4 /zones/:example.com/logpush/edge/jobs | jq .
 []
 $
 ```
@@ -1114,34 +1114,34 @@ $
 To add monitoring:
 ```
 $ cli4 --post \
-	='{
-		"fields": "ClientIP,ClientRequestHost,ClientRequestMethod,ClientRequestURI,EdgeEndTimestamp,EdgeResponseBytes,EdgeResponseStatus,EdgeStartTimestamp,RayID",
-		"sample": 1,
-		"filter": "",
-		"kind": "instant-logs"
-	}' \
-	/zones/:███████████.com/logpush/edge/jobs | jq .
+        ='{
+                "fields": "ClientIP,ClientRequestHost,ClientRequestMethod,ClientRequestURI,EdgeEndTimestamp,EdgeResponseBytes,EdgeResponseStatus,EdgeStartTimestamp,RayID",
+                "sample": 1,
+                "filter": "",
+                "kind": "instant-logs"
+        }' \
+        /zones/:example.com/logpush/edge/jobs | jq .
 {
-  "destination_conf": "wss://logs.cloudflare.com/instant-logs/ws/sessions/████████████████████████████████",
+  "destination_conf": "wss://logs.cloudflare.com/instant-logs/ws/sessions/00000000000000000000000000000000",
   "fields": "ClientIP,ClientRequestHost,ClientRequestMethod,ClientRequestURI,EdgeEndTimestamp,EdgeResponseBytes,EdgeResponseStatus,EdgeStartTimestamp,RayID",
   "filter": "",
   "kind": "instant-logs",
   "sample": 1,
-  "session_id": "████████████████████████████████"
+  "session_id": "00000000000000000000000000000000"
 }
 $
 ```
 
 To see the results:
 ```
-$ cli4 /zones/:███████████.com/logpush/edge/jobs | jq .
+$ cli4 /zones/:example.com/logpush/edge/jobs | jq .
 [
   {
     "fields": "ClientIP,ClientRequestHost,ClientRequestMethod,ClientRequestURI,EdgeEndTimestamp,EdgeResponseBytes,EdgeResponseStatus,EdgeStartTimestamp,RayID",
     "filter": "",
     "kind": "instant-logs",
     "sample": 1,
-    "session_id": "████████████████████████████████"
+    "session_id": "00000000000000000000000000000000"
   }
 ]
 $
