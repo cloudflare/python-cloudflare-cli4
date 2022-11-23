@@ -2,7 +2,8 @@
 from __future__ import absolute_import
 
 import sys
-import requests
+import json
+from requests import __version__ as requests__version__
 
 from . import __version__
 
@@ -11,7 +12,7 @@ def user_agent():
     # the default User-Agent is something like 'python-requests/2.11.1'
     # this additional data helps support @ Cloudflare help customers
     return ('python-cloudflare/' + __version__ + '/' +
-            'python-requests/' + str(requests.__version__) + '/' +
+            'python-requests/' + str(requests__version__) + '/' +
             'python/' + '.'.join(map(str, sys.version_info[:3]))
            )
 
