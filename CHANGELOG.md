@@ -1,5 +1,13 @@
 # Change Log
 
+ - 2022-11-24 19:04:23 +0000 [4267ff9](../../commit/4267ff98cf90b6e5d7a3d802cf90f7c5bdc8deba) 2.11.1 release
+ - 2022-11-24 19:03:24 +0000 [7315385](../../commit/731538589ba736ffcc47be69784139850136694f) more api endpoints
+ - 2022-11-24 18:51:51 +0000 [b70509b](../../commit/b70509b5f3c788bd4159982881932a83381ec265) firewall rules example
+ - 2022-11-24 18:43:40 +0000 [afa8cc0](../../commit/afa8cc02d7bc3e490da0fe89ac1fe6c055a9c09c) add openapi support, added tuna for testing
+ - 2022-11-24 18:43:02 +0000 [3af9aa8](../../commit/3af9aa8fbd1c1f8d1734a8466e61fffa21796012) add openapi support, delay yaml and jsonlines load to speed up everything, other cleanup
+ - 2022-11-24 18:41:20 +0000 [dc2a6f8](../../commit/dc2a6f8c633a995bf79dde9638baacbe4d1a2254) add openapi support, delay bs4 load to speed up everything, improve requests imports
+ - 2022-11-23 21:11:47 +0000 [f7b4a8c](../../commit/f7b4a8cbc5b2d89d544c96f08fe4773fceeb9433) missing import json, speed up to import requests
+ - 2022-11-17 20:53:40 +0000 [e62e39c](../../commit/e62e39cd9673c06a3f61cbeda295a628d355f43f) CHANGELOG.md pushed to github
  - 2022-11-17 20:53:06 +0000 [e68245e](../../commit/e68245ef7b4b31c5f58971b965984cc88d969f51) 2.10.5 release
  - 2022-11-17 20:52:00 +0000 [72a7f55](../../commit/72a7f55857b70e7504daa13fd27f4b8c48f0fe3a) reverse usage of utf-8 in README introduced in commit da73108
  - 2022-11-09 18:57:19 -0800 [28c0f26](../../commit/28c0f26c4dc82c67b05c07fb6c64b6b54a65598a) deprecated apis
