@@ -3,7 +3,7 @@ from __future__ import absolute_import
 
 import json
 import keyword
-import requests
+from requests import RequestException as requests_RequestException, ConnectionError as requests_ConnectionError, exceptions as requests_exceptions, codes as requests_codes
 
 from .network import CFnetwork
 from .logging_helper import CFlogger
@@ -12,6 +12,7 @@ from .read_configs import read_configs
 from .api_v4 import api_v4
 from .api_extras import api_extras
 from .api_decode_from_web import api_decode_from_web
+from .api_decode_from_openapi import api_decode_from_openapi
 from .exceptions import CloudFlareError, CloudFlareAPIError, CloudFlareInternalError
 
 BASE_URL = 'https://api.cloudflare.com/client/v4'
@@ -199,15 +200,15 @@ class CloudFlare():
 
             try:
                 response = self.network(method, url, headers, params, data, files)
-            except requests.RequestException as e:
+            except requests_RequestException as e:
                 if self.logger:
                     self.logger.debug('Call: requests exception! "%s"', e)
                 raise CloudFlareAPIError(0, e)
-            except requests.ConnectionError as e:
+            except requests_ConnectionError as e:
                 if self.logger:
                     self.logger.debug('Call: requests connection exception! "%s"', e)
                 raise CloudFlareAPIError(0, 'connection error')
-            except requests.exceptions.Timeout as e:
+            except requests_exceptions.Timeout as e:
                 if self.logger:
                     self.logger.debug('Call: requests timeout exception! "%s"', e)
                 raise CloudFlareAPIError(0, 'connection timeout')
@@ -297,7 +298,7 @@ class CloudFlare():
                 except ValueError:
                     if response_data == '':
                         # This should really be 'null' but it isn't. Even then, it's wrong!
-                        if response_code == requests.codes.ok:
+                        if response_code == requests_codes.ok:
                             # 200 ok
                             response_data = {'success': True,
                                              'result': None}
@@ -320,7 +321,7 @@ class CloudFlare():
                                 self.logger.debug('Response data not JSON: %r', response_data)
                             raise CloudFlareAPIError(0, 'JSON parse failed - report to Cloudflare.')
 
-                if response_code == requests.codes.ok:
+                if response_code == requests_codes.ok:
                     # 200 ok - so nothing needs to be done
                     pass
                 else:
@@ -329,7 +330,7 @@ class CloudFlare():
                     pass
             elif response_type == 'application/octet-stream' and isinstance(response_data, (int, float)):
                 # It's binary data
-                if response_code == requests.codes.ok:
+                if response_code == requests_codes.ok:
                     # 200 ok
                     response_data = {'success': True,
                                      'result': response_data}
@@ -345,7 +346,7 @@ class CloudFlare():
                 try:
                     response_data = json.loads(response_data)
                     if not isinstance(response_data, (dict)) or 'success' not in response_data:
-                        if response_code == requests.codes.ok:
+                        if response_code == requests_codes.ok:
                             # 200 ok
                             response_data = {'success': True,
                                              'result': response_data}
@@ -357,7 +358,7 @@ class CloudFlare():
                 except ValueError:
                     # So it wasn't JSON - moving on as if it's text!
                     # A single value is returned (vs an array or object)
-                    if response_code == requests.codes.ok:
+                    if response_code == requests_codes.ok:
                         # 200 ok
                         response_data = {'success': True, 'result': response_data}
                     else:
@@ -377,7 +378,7 @@ class CloudFlare():
                 except ValueError:
                     # So it wasn't JSON - moving on as if it's text!
                     # A single value is returned (vs an array or object)
-                    if response_code == requests.codes.ok:
+                    if response_code == requests_codes.ok:
                         # 200 ok
                         response_data = {'success': True, 'result': response_data}
                     else:
@@ -387,7 +388,7 @@ class CloudFlare():
                                          'result': response_data}
             elif response_type in ['text/javascript', 'application/javascript']:
                 # used by Cloudflare workers
-                if response_code == requests.codes.ok:
+                if response_code == requests_codes.ok:
                     # 200 ok
                     response_data = {'success': True,
                                      'result': str(response_data)}
@@ -398,7 +399,7 @@ class CloudFlare():
                                      'result': str(response_data)}
             elif response_type == 'text/html':
                 # used by media for preview
-                if response_code == requests.codes.ok:
+                if response_code == requests_codes.ok:
                     # 200 ok
                     response_data = {'success': True,
                                      'result': str(response_data)}
@@ -411,7 +412,7 @@ class CloudFlare():
             else:
                 # Assuming nothing - but continuing anyway
                 # A single value is returned (vs an array or object)
-                if response_code == requests.codes.ok:
+                if response_code == requests_codes.ok:
                     # 200 ok
                     response_data = {'success': True,
                                      'result': str(response_data)}
@@ -535,7 +536,15 @@ class CloudFlare():
 
             # base url isn't enough; we need less
             url = '/'.join(self.base_url.split('/')[0:3])
+            return self._read_from_web(url)
 
+        def api_from_openapi(self, url):
+            """ Cloudflare v4 API"""
+
+            return self._read_from_web(url)
+
+        def _read_from_web(self, url):
+            """ Cloudflare v4 API"""
             try:
                 if self.logger:
                     self.logger.debug('Call: doit!')
@@ -893,6 +902,11 @@ class CloudFlare():
         """ Cloudflare v4 API"""
 
         return api_decode_from_web(self._base.api_from_web())
+
+    def api_from_openapi(self, url):
+        """ Cloudflare v4 API"""
+
+        return api_decode_from_openapi(self._base.api_from_openapi(url))
 
     def __init__(self, email=None, key=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None):
         """ Cloudflare v4 API"""

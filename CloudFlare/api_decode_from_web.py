@@ -3,9 +3,36 @@
 import sys
 import datetime
 
-from bs4 import BeautifulSoup, Comment
-
 API_TYPES = ['GET', 'POST', 'PATCH', 'PUT', 'DELETE']
+
+class mybs4():
+    """ mybs4 """
+
+    _BeautifulSoup = None
+    _Comment = None
+
+    def __init__(self):
+        """ __init__ """
+        pass
+
+    def _available(self):
+        """ _available() """
+        if not mybs4._BeautifulSoup:
+            try:
+                from bs4 import BeautifulSoup, Comment
+                mybs4._BeautifulSoup = BeautifulSoup
+                mybs4._Comment = Comment
+                self.Comment = mybs4._Comment
+            except ImportError:
+                return False
+        return True
+
+    def BeautifulSoup(self, content, parser):
+        """ BeautifulSoup() """
+        self._available()
+        return mybs4._BeautifulSoup(content, parser)
+
+my_bs4 = mybs4()
 
 def do_section(section):
     """ API extras for Cloudflare API"""
@@ -42,7 +69,7 @@ def do_section(section):
     for tag2 in section.find_all('pre'):
         cmd = []
         for child in tag2.children:
-            if isinstance(child, Comment):
+            if isinstance(child, my_bs4.Comment):
                 # remove <!-- react-text ... -> parts
                 continue
             cmd.append(str(child).strip())
@@ -61,7 +88,7 @@ def do_section(section):
 def api_decode_from_web(content):
     """ API extras for Cloudflare API"""
 
-    soup = BeautifulSoup(content, 'html.parser')
+    soup = my_bs4.BeautifulSoup(content, 'html.parser')
 
     for child in soup.find_all('p'):
         t = child.get_text()
