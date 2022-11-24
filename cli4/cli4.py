@@ -5,39 +5,125 @@ import sys
 import re
 import getopt
 import json
-try:
-    import yaml
-except ImportError:
-    yaml = None
-try:
-    import jsonlines
-except ImportError:
-    jsonlines = None
+
+my_yaml = None
+my_jsonlines = None
 
 import CloudFlare
+from .dump import dump_commands, dump_commands_from_web
 from . import converters
 
-def dump_commands(cf):
-    """dump a tree of all the known API commands"""
-    w = cf.api_list()
-    sys.stdout.write('\n'.join(w) + '\n')
-
-def dump_commands_from_web(cf):
-    """dump a tree of all the known API commands - from web"""
-    w = cf.api_from_web()
-    for r in w:
-        if r['deprecated']:
-            if r['deprecated_already']:
-                sys.stdout.write('%-6s %s ; deprecated %s - expired!\n' % (r['action'], r['cmd'], r['deprecated_date']))
-            else:
-                sys.stdout.write('%-6s %s ; deprecated %s\n' % (r['action'], r['cmd'], r['deprecated_date']))
-        else:
-            sys.stdout.write('%-6s %s\n' % (r['action'], r['cmd']))
+def load_and_check_yaml():
+    """ load_and_check_yaml() """
+    from . import myyaml
+    global my_yaml
+    my_yaml = myyaml.myyaml()
+    if not my_yaml.available():
+        sys.exit('cli4: install yaml support')
 
 def strip_multiline(s):
     """ remove leading/trailing tabs/spaces on each line"""
     # This hack is needed in order to use yaml.safe_load() on JSON text - tabs are not allowed
     return '\n'.join([l.strip() for l in s.splitlines()])
+
+def process_params_content_files(method, binary_file, args):
+    """ process_params_content_files() """
+
+    digits_only = re.compile('^-?[0-9]+$')
+    floats_only = re.compile('^-?[0-9.]+$')
+
+    params = None
+    content = None
+    files = None
+    # next grab the params. These are in the form of tag=value or =value or @filename
+    while len(args) > 0 and ('=' in args[0] or args[0][0] == '@'):
+        arg = args.pop(0)
+        if arg[0] == '@':
+            # a file to be uploaded - used in workers/script - only via PUT
+            filename = arg[1:]
+            if method not in ['PUT','POST']:
+                sys.exit('cli4: %s - raw file upload only with PUT or POST' % (filename))
+            try:
+                if filename == '-':
+                    if binary_file:
+                        content = sys.stdin.buffer.read()
+                    else:
+                        content = sys.stdin.read()
+                else:
+                    if binary_file:
+                        with open(filename, 'rb') as f:
+                            content = f.read()
+                    else:
+                        with open(filename, 'r') as f:
+                            content = f.read()
+            except IOError:
+                sys.exit('cli4: %s - file open failure' % (filename))
+            continue
+        tag_string, value_string = arg.split('=', 1)
+        if value_string.lower() == 'true':
+            value = True
+        elif value_string.lower() == 'false':
+            value = False
+        elif value_string == '' or value_string.lower() == 'none':
+            value = None
+        elif value_string[0] == '=' and value_string[1:] == '':
+            sys.exit('cli4: %s== - no number value passed' % (tag_string))
+        elif value_string[0] == '=' and digits_only.match(value_string[1:]):
+            value = int(value_string[1:])
+        elif value_string[0] == '=' and floats_only.match(value_string[1:]):
+            value = float(value_string[1:])
+        elif value_string[0] == '=':
+            sys.exit('cli4: %s== - invalid number value passed' % (tag_string))
+        elif value_string[0] in '[{' and value_string[-1] in '}]':
+            # a json structure - used in pagerules
+            try:
+                #value = json.loads(value) - changed to yaml code to remove unicode string issues
+                load_and_check_yaml()
+                # cleanup string before parsing so that yaml.safe.load does not complain about whitespace
+                # >>> found character '\t' that cannot start any token <<<
+                value_string = strip_multiline(value_string)
+                try:
+                    value = my_yaml.safe_load(value_string)
+                except my_yaml.parser.ParserError as e:
+                    raise ValueError
+            except ValueError:
+                sys.exit('cli4: %s="%s" - can\'t parse json value' % (tag_string, value_string))
+        elif value_string[0] == '@':
+            # a file to be uploaded - used in dns_records/import - only via POST
+            filename = value_string[1:]
+            if method != 'POST':
+                sys.exit('cli4: %s=%s - file upload only with POST' % (tag_string, filename))
+            files = {}
+            try:
+                if filename == '-':
+                    files[tag_string] = sys.stdin
+                else:
+                    files[tag_string] = open(filename, 'rb')
+            except IOError:
+                sys.exit('cli4: %s=%s - file open failure' % (tag_string, filename))
+            # no need for param code below
+            continue
+        else:
+            value = value_string
+
+        if tag_string == '':
+            # There's no tag; it's just an unnamed list
+            if params is None:
+                params = value
+            else:
+                sys.exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' %
+                         (tag_string, value_string))
+        else:
+            if params is None:
+                params = {}
+            tag = tag_string
+            try:
+                params[tag] = value
+            except TypeError:
+                sys.exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' %
+                         (tag_string, value_string))
+
+    return (params, content, files)
 
 def run_command(cf, method, command, params=None, content=None, files=None):
     """run the command line"""
@@ -232,8 +318,6 @@ def write_results(results, output):
         pass
     else:
         # anything more complex (dict, list, etc) should be dumped as JSON/YAML
-        if output is None:
-            results = None
         if output == 'json':
             try:
                 results = json.dumps(results,
@@ -246,17 +330,20 @@ def write_results(results, output):
                                      indent=4,
                                      sort_keys=True,
                                      ensure_ascii=False)
-        if output == 'yaml':
-            results = yaml.safe_dump(results)
-        if output == 'ndjson':
+        elif output == 'yaml':
+            results = my_yaml.safe_dump(results)
+        elif output == 'ndjson':
             # NDJSON support seems like a hack. There has to be a better way
             try:
-                writer = jsonlines.Writer(sys.stdout)
+                writer = my_jsonlines.Writer(sys.stdout)
                 writer.write_all(results)
                 writer.close()
             except (BrokenPipeError, IOError):
                 pass
             return
+        else:
+            # Internal error
+            pass
 
     if results:
         try:
@@ -274,6 +361,7 @@ def do_it(args):
     raw = False
     dump = False
     dump_from_web = False
+    openapi_url = None
     binary_file = False
     profile = None
     method = 'GET'
@@ -284,6 +372,7 @@ def do_it(args):
              + '[-r|--raw] '
              + '[-d|--dump] '
              + '[-a|--api] '
+             + '[-A|--openapi url] '
              + '[-b|--binary] '
              + '[-p|--profile profile-name] '
              + '[--get|--patch|--post|--put|--delete] '
@@ -292,12 +381,12 @@ def do_it(args):
 
     try:
         opts, args = getopt.getopt(args,
-                                   'Vhvqjyrdabp:GPOUD',
+                                   'VhvqjyrdaA:bp:GPOUD',
                                    [
                                        'version',
                                        'help', 'verbose', 'quiet', 'json', 'yaml', 'ndjson',
                                        'raw',
-                                       'dump', 'api',
+                                       'dump', 'api', 'openapi=',
                                        'binary',
                                        'profile=',
                                        'get', 'patch', 'post', 'put', 'delete'
@@ -316,11 +405,13 @@ def do_it(args):
         elif opt in ('-j', '--json'):
             output = 'json'
         elif opt in ('-y', '--yaml'):
-            if yaml is None:
-                sys.exit('cli4: install yaml support')
+            load_and_check_yaml()
             output = 'yaml'
         elif opt in ('-n', '--ndjson'):
-            if jsonlines is None:
+            from . import myjsonlines
+            global my_jsonlines
+            my_jsonlines = myjsonlines.myjsonlines()
+            if not my_jsonlines.available():
                 sys.exit('cli4: install jsonlines support')
             output = 'ndjson'
         elif opt in ('-r', '--raw'):
@@ -331,6 +422,8 @@ def do_it(args):
             dump = True
         elif opt in ('-a', '--api'):
             dump_from_web = True
+        elif opt in ('-A', '--openapi'):
+            openapi_url = arg
         elif opt in ('-b', '--binary'):
             binary_file = True
         elif opt in ('-G', '--get'):
@@ -344,120 +437,33 @@ def do_it(args):
         elif opt in ('-D', '--delete'):
             method = 'DELETE'
 
-    if dump:
+    try:
         cf = CloudFlare.CloudFlare(debug=verbose, raw=raw, profile=profile)
-        dump_commands(cf)
+    except Exception as e:
+        sys.exit(e)
+
+    if dump:
+        a = dump_commands(cf)
+        sys.stdout.write(a)
         sys.exit(0)
 
     if dump_from_web:
-        cf = CloudFlare.CloudFlare(debug=verbose, raw=raw, profile=profile)
-        dump_commands_from_web(cf)
+        a = dump_commands_from_web(cf)
+        sys.stdout.write(a)
         sys.exit(0)
 
-    digits_only = re.compile('^-?[0-9]+$')
-    floats_only = re.compile('^-?[0-9.]+$')
+    if openapi_url:
+        a = dump_commands_from_web(cf, openapi_url)
+        sys.stdout.write(a)
+        sys.exit(0)
 
     # next grab the params. These are in the form of tag=value or =value or @filename
-    params = None
-    content = None
-    files = None
-    while len(args) > 0 and ('=' in args[0] or args[0][0] == '@'):
-        arg = args.pop(0)
-        if arg[0] == '@':
-            # a file to be uploaded - used in workers/script - only via PUT
-            filename = arg[1:]
-            if method not in ['PUT','POST']:
-                sys.exit('cli4: %s - raw file upload only with PUT or POST' % (filename))
-            try:
-                if filename == '-':
-                    if binary_file:
-                        content = sys.stdin.buffer.read()
-                    else:
-                        content = sys.stdin.read()
-                else:
-                    if binary_file:
-                        with open(filename, 'rb') as f:
-                            content = f.read()
-                    else:
-                        with open(filename, 'r') as f:
-                            content = f.read()
-            except IOError:
-                sys.exit('cli4: %s - file open failure' % (filename))
-            continue
-        tag_string, value_string = arg.split('=', 1)
-        if value_string.lower() == 'true':
-            value = True
-        elif value_string.lower() == 'false':
-            value = False
-        elif value_string == '' or value_string.lower() == 'none':
-            value = None
-        elif value_string[0] == '=' and value_string[1:] == '':
-            sys.exit('cli4: %s== - no number value passed' % (tag_string))
-        elif value_string[0] == '=' and digits_only.match(value_string[1:]):
-            value = int(value_string[1:])
-        elif value_string[0] == '=' and floats_only.match(value_string[1:]):
-            value = float(value_string[1:])
-        elif value_string[0] == '=':
-            sys.exit('cli4: %s== - invalid number value passed' % (tag_string))
-        elif value_string[0] in '[{' and value_string[-1] in '}]':
-            # a json structure - used in pagerules
-            try:
-                #value = json.loads(value) - changed to yaml code to remove unicode string issues
-                if yaml is None:
-                    sys.exit('cli4: install yaml support')
-                # cleanup string before parsing so that yaml.safe.load does not complain about whitespace
-                # >>> found character '\t' that cannot start any token <<<
-                value_string = strip_multiline(value_string)
-                try:
-                    value = yaml.safe_load(value_string)
-                except yaml.parser.ParserError as e:
-                    raise ValueError
-            except ValueError:
-                sys.exit('cli4: %s="%s" - can\'t parse json value' % (tag_string, value_string))
-        elif value_string[0] == '@':
-            # a file to be uploaded - used in dns_records/import - only via POST
-            filename = value_string[1:]
-            if method != 'POST':
-                sys.exit('cli4: %s=%s - file upload only with POST' % (tag_string, filename))
-            files = {}
-            try:
-                if filename == '-':
-                    files[tag_string] = sys.stdin
-                else:
-                    files[tag_string] = open(filename, 'rb')
-            except IOError:
-                sys.exit('cli4: %s=%s - file open failure' % (tag_string, filename))
-            # no need for param code below
-            continue
-        else:
-            value = value_string
-
-        if tag_string == '':
-            # There's no tag; it's just an unnamed list
-            if params is None:
-                params = value
-            else:
-                sys.exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' %
-                         (tag_string, value_string))
-        else:
-            if params is None:
-                params = {}
-            tag = tag_string
-            try:
-                params[tag] = value
-            except TypeError:
-                sys.exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' %
-                         (tag_string, value_string))
+    (params, content, files) = process_params_content_files(method, binary_file, args)
 
     # what's left is the command itself
     if len(args) < 1:
         sys.exit(usage)
     commands = args
-
-    try:
-        cf = CloudFlare.CloudFlare(debug=verbose, raw=raw, profile=profile)
-    except Exception as e:
-        sys.exit(e)
 
     exit_with_error = False
     for command in commands:
