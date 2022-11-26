@@ -119,7 +119,6 @@ openapi:
 	rm $$tmp.?
 
 TUNA_CLI4_TEST_COMMAND = "/ips"
-TUNA_CLI4_TEST_COMMAND = "--openapi http://localhost/~martin/openapi.json"
 TUNA_CLI4_TEST_COMMAND = "--api"
 TUNA_CLI4_TEST_COMMAND = "--openapi $(OPENAPI_URL)"
 
