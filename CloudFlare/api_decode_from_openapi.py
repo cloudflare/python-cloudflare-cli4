@@ -9,7 +9,7 @@ API_TYPES = ['GET', 'POST', 'PATCH', 'PUT', 'DELETE']
 
 match_identifier = re.compile('\{[A-Za-z0-9_]*\}')
 
-def do_path(cmd, info):
+def do_path(cmd, values):
     """ do_path() """
 
     cmds = []
@@ -23,14 +23,18 @@ def do_path(cmd, info):
     if cmd[-4:] == '/:id':
         cmd = cmd[:-4]
 
-    for action in info:
-        action = action.upper()
-        if action == '' or action not in API_TYPES:
+    for action in values:
+        if action == '' or action.upper() not in API_TYPES:
             continue
-        deprecated = False
-        deprecated_date = ''
-        deprecated_already = False
-        v = {'action': action, 'cmd': cmd, 'deprecated': deprecated, 'deprecated_date': deprecated_date, 'deprecated_already': deprecated_already}
+        if 'deprecated' in values[action] and values[action]['deprecated']:
+            deprecated = True
+            deprecated_date = datetime.datetime.now().strftime('%Y-%m-%d')
+            deprecated_already = True
+        else:
+            deprecated = False
+            deprecated_date = ''
+            deprecated_already = False
+        v = {'action': action.upper(), 'cmd': cmd, 'deprecated': deprecated, 'deprecated_date': deprecated_date, 'deprecated_already': deprecated_already}
         cmds.append(v)
     return cmds
 
@@ -52,6 +56,8 @@ def api_decode_from_openapi(content):
     except Exception as e:
         sys.stderr.write("OpenAPI json format structure: %s\n" % (e))
         return None
+
+    sys.stderr.write("OpenAPI %s json file - version: %s\n" % (openapi, info['version']))
 
     all_cmds = []
     for path in paths:
