@@ -1,6 +1,4 @@
 """ Network for Cloudflare API"""
-from __future__ import absolute_import
-
 import requests
 
 from .exceptions import CloudFlareAPIError

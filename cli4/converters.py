@@ -1,6 +1,4 @@
 """Cloudflare API via command line"""
-from __future__ import absolute_import
-
 import CloudFlare
 
 class ConverterError(Exception):
