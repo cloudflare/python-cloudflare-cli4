@@ -4,6 +4,7 @@
 import sys
 import re
 import getopt
+import keyword
 import json
 
 my_yaml = None
@@ -237,13 +238,16 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                         raise e
         else:
             try:
-                # dashes (vs underscores) cause issues in Python and other languages
-                if '-' in element:
+                if keyword.iskeyword(element):
+                    # a keyword is appended with an extra underscore so it can used with Python code
+                    m = getattr(m, element + '_')
+                elif '-' in element:
+                    # dashes (vs underscores) cause issues in Python and other languages
                     m = getattr(m, element.replace('-','_'))
                 else:
                     m = getattr(m, element)
                 cmd.append(element)
-            except AttributeError:
+            except AttributeError as e:
                 # the verb/element was not found
                 sys.stderr.write('cli4: /%s - not found\n' % (command))
                 raise e
