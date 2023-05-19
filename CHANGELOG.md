@@ -1,5 +1,11 @@
 # Change Log
 
+ - 2023-05-19 10:58:08 -0700 [31f7d0b](../../commit/31f7d0b7d6b27bcc925d0d74f2899239ddcc4389) 2.11.2 release
+ - 2023-05-19 10:56:25 -0700 [0a0b492](../../commit/0a0b49298fea6a2bc5fb430a3385ee80ac9bf703) python keywords not handled correctly at command level
+ - 2022-11-26 23:37:57 +0100 [08a02ef](../../commit/08a02eff29dccdf2c6bdd1d903e8c26a05955ca8) added after openapi review
+ - 2022-11-26 23:36:42 +0100 [a67ad74](../../commit/a67ad74f3f6707b9cba1eefa8be70f7cfa82dab8) added deprecated processing, now shows version
+ - 2022-11-26 23:34:20 +0100 [47c7a3b](../../commit/47c7a3bb4bf4af554995c0b7b6a9e0f720c80aad) cleanup
+ - 2022-11-24 19:04:43 +0000 [a887285](../../commit/a8872852966b4ff4674cf3c9682adf209417d48f) CHANGELOG.md pushed to github
  - 2022-11-24 19:04:23 +0000 [4267ff9](../../commit/4267ff98cf90b6e5d7a3d802cf90f7c5bdc8deba) 2.11.1 release
  - 2022-11-24 19:03:24 +0000 [7315385](../../commit/731538589ba736ffcc47be69784139850136694f) more api endpoints
  - 2022-11-24 18:51:51 +0000 [b70509b](../../commit/b70509b5f3c788bd4159982881932a83381ec265) firewall rules example
