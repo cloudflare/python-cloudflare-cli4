@@ -104,6 +104,9 @@ def process_params_content_files(method, binary_file, args):
                 sys.exit('cli4: %s=%s - file open failure' % (tag_string, filename))
             # no need for param code below
             continue
+        elif (value_string[0] == '"' and value_string[-1] == '"') or (value_string[0] == '\'' and value_string[-1] == '\''):
+            # remove quotes
+            value = value_string[1:-1]
         else:
             value = value_string
 
