@@ -194,6 +194,14 @@ class CloudFlare():
                     if parts[4]:
                         url += '/' + parts[4]
 
+            if files and data:
+                # Can't send data and form data - so move data into files and send as multipart/form-data
+                new_files = []
+                new_files += [(f, (files[f].name, files[f])) for f in files]
+                new_files += [(d, (None, data[d])) for d in data]
+                files = tuple(new_files)
+                data = None
+
             if self.logger:
                 msg = build_curl(method, url, headers, params, data, files)
                 self.logger.debug('Call: emulated curl command ...\n%s', msg)

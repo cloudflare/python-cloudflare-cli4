@@ -63,7 +63,16 @@ def build_curl(method, url, headers, params, data, files):
         msg.append('            --data \'%s\' \\' % (str_data.replace('\n', ' ')))
     # files
     if files is not None:
-        msg.append('            --form "file=@%s" \\' % (files))
+        if isinstance(files, (list, tuple)):
+            for f in files:
+                if f[1][0] is None:
+                    # not a file
+                    msg.append('            --form "%s=%s" \\' % (f[0], f[1][1]))
+                else:
+                    # a file
+                    msg.append('            --form "%s=@%s" \\' % (f[0], f[1][0]))
+        else:
+            msg.append('            --form "file=@%s" \\' % (files))
 
     # remove the last \ from the last line.
     msg[-1] = msg[-1][:-1]
