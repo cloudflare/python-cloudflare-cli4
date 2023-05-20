@@ -1,5 +1,8 @@
 # Change Log
 
+ - 2023-05-19 17:42:40 -0700 [e644136](../../commit/e644136ab20f81743d94d3097ad7312262029ee0) 2.11.3 release
+ - 2023-05-19 17:42:07 -0700 [36c40ce](../../commit/36c40cefefe69e2c8cb5037ba59c231a8431096d) handle multipart/form-data correctly for more than one file and with params/data
+ - 2023-05-19 10:58:29 -0700 [13739c5](../../commit/13739c53ec96449924a872ee589e01b7171bcf8b) CHANGELOG.md pushed to github
  - 2023-05-19 10:58:08 -0700 [31f7d0b](../../commit/31f7d0b7d6b27bcc925d0d74f2899239ddcc4389) 2.11.2 release
  - 2023-05-19 10:56:25 -0700 [0a0b492](../../commit/0a0b49298fea6a2bc5fb430a3385ee80ac9bf703) python keywords not handled correctly at command level
  - 2022-11-26 23:37:57 +0100 [08a02ef](../../commit/08a02eff29dccdf2c6bdd1d903e8c26a05955ca8) added after openapi review
