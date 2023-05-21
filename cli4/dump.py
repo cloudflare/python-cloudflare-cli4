@@ -5,12 +5,9 @@ def dump_commands(cf):
     w = cf.api_list()
     return '\n'.join(w) + '\n'
 
-def dump_commands_from_web(cf, url=None):
+def dump_commands_from_web(cf, url):
     """dump a tree of all the known API commands - from web"""
-    if url:
-        w = cf.api_from_openapi(url)
-    else:
-        w = cf.api_from_web()
+    w = cf.api_from_openapi(url)
 
     a = []
     for r in w:

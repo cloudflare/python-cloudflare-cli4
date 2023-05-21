@@ -367,7 +367,6 @@ def do_it(args):
     output = 'json'
     raw = False
     dump = False
-    dump_from_web = False
     openapi_url = None
     binary_file = False
     profile = None
@@ -378,7 +377,6 @@ def do_it(args):
              + '[-j|--json] [-y|--yaml] [-n|ndjson] '
              + '[-r|--raw] '
              + '[-d|--dump] '
-             + '[-a|--api] '
              + '[-A|--openapi url] '
              + '[-b|--binary] '
              + '[-p|--profile profile-name] '
@@ -388,12 +386,12 @@ def do_it(args):
 
     try:
         opts, args = getopt.getopt(args,
-                                   'VhvqjyrdaA:bp:GPOUD',
+                                   'VhvqjyrdA:bp:GPOUD',
                                    [
                                        'version',
                                        'help', 'verbose', 'quiet', 'json', 'yaml', 'ndjson',
                                        'raw',
-                                       'dump', 'api', 'openapi=',
+                                       'dump', 'openapi=',
                                        'binary',
                                        'profile=',
                                        'get', 'patch', 'post', 'put', 'delete'
@@ -427,8 +425,6 @@ def do_it(args):
             profile = arg
         elif opt in ('-d', '--dump'):
             dump = True
-        elif opt in ('-a', '--api'):
-            dump_from_web = True
         elif opt in ('-A', '--openapi'):
             openapi_url = arg
         elif opt in ('-b', '--binary'):
@@ -451,11 +447,6 @@ def do_it(args):
 
     if dump:
         a = dump_commands(cf)
-        sys.stdout.write(a)
-        sys.exit(0)
-
-    if dump_from_web:
-        a = dump_commands_from_web(cf)
         sys.stdout.write(a)
         sys.exit(0)
 

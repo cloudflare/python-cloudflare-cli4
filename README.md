@@ -561,7 +561,7 @@ All API calls can be called from the command line.
 The command will convert domain names prefixed with a colon (`:`) into zone_identifiers: e.g. to view `example.com` you must use `cli4 /zones/:example.com` (the zone ID cannot be used).
 
 ```bash
-$ cli4 [-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] [-r|--raw] [-d|--dump] [--get|--patch|--post|--put|--delete] [item=value ...] /command...
+$ cli4 [-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] [-n|ndjson] [-r|--raw] [-d|--dump] [-A|--openapi url] [-b|--binary] [-p|--profile profile-name] [--get|--patch|--post|--put|--delete] [item=value|item=@filename|@filename ...] /command ...
 
 ```
 

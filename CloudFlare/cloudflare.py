@@ -539,13 +539,6 @@ class CloudFlare():
             result = response_data
             return result
 
-        def api_from_web(self):
-            """ Cloudflare v4 API"""
-
-            # base url isn't enough; we need less
-            url = '/'.join(self.base_url.split('/')[0:3])
-            return self._read_from_web(url)
-
         def api_from_openapi(self, url):
             """ Cloudflare v4 API"""
 
