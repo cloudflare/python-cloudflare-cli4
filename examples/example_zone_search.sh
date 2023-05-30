@@ -20,7 +20,7 @@ SEARCH_TYPES="
 for search_type in ${SEARCH_TYPES}
 do
 	echo TRY: "name=${search_type}:${ZONE}"
-	cli4 per_page=50 name="${search_type}:${ZONE}" ${EXTRA} /zones/ | jq -r '.[]|.id,.name' | paste - -
+	cli4 per_page==50 name="${search_type}:${ZONE}" ${EXTRA} /zones/ | jq -r '.[]|.id,.name' | paste - -
 done
 
 exit 0
