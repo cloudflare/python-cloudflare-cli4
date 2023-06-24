@@ -382,6 +382,7 @@ def accounts(self):
     self.add('AUTH', 'accounts', 'brand-protection/url-info')
     self.add('AUTH', 'accounts', 'cfd_tunnel')
     self.add('AUTH', 'accounts', 'cfd_tunnel', 'configurations')
+    self.add('AUTH', 'accounts', 'cfd_tunnel', 'connectors')
     self.add('AUTH', 'accounts', 'cfd_tunnel', 'connections')
     self.add('AUTH', 'accounts', 'cfd_tunnel', 'management')
     self.add('AUTH', 'accounts', 'cfd_tunnel', 'token')
@@ -469,6 +470,7 @@ def accounts_addressing(self):
     self.add('AUTH', 'accounts', 'addressing/loa_documents', 'download')
     self.add('AUTH', 'accounts', 'addressing/prefixes')
     self.add('VOID', 'accounts', 'addressing/prefixes', 'bgp')
+    self.add('AUTH', 'accounts', 'addressing/prefixes', 'bgp/prefixes')
     self.add('AUTH', 'accounts', 'addressing/prefixes', 'bgp/status')
     self.add('AUTH', 'accounts', 'addressing/prefixes', 'bindings')
     self.add('AUTH', 'accounts', 'addressing/prefixes', 'delegations')
@@ -516,6 +518,8 @@ def accounts_stream(self):
     """ accounts stream """
 
     self.add('AUTH', 'accounts', 'stream')
+    self.add('AUTH', 'accounts', 'stream', 'audio')
+    self.add('AUTH', 'accounts', 'stream', 'audio/copy')
     self.add('AUTH', 'accounts', 'stream', 'captions')
     self.add('AUTH', 'accounts', 'stream', 'embed')
     self.add('AUTH', 'accounts', 'stream', 'downloads')
@@ -669,10 +673,11 @@ def accounts_extras(self):
     self.add('VOID', 'accounts', 'images')
     self.add('AUTH', 'accounts', 'images/v1')
     self.add('AUTH', 'accounts', 'images/v1', 'blob')
+    self.add('AUTH', 'accounts', 'images/v1/config')
     self.add('AUTH', 'accounts', 'images/v1/keys')
     self.add('AUTH', 'accounts', 'images/v1/stats')
     self.add('AUTH', 'accounts', 'images/v1/variants')
-    self.add('VOID', 'accounts', 'images/v2')
+    self.add('AUTH', 'accounts', 'images/v2')
     self.add('AUTH', 'accounts', 'images/v2/direct_upload')
 
     self.add('VOID', 'accounts', 'intel')
@@ -856,6 +861,10 @@ def radar(self):
     self.add('AUTH', 'radar/bgp/top/prefixes')
     self.add('VOID', 'radar/bgp/hijacks')
     self.add('AUTH', 'radar/bgp/hijacks/events')
+    self.add('VOID', 'radar/bgp/routes')
+    self.add('AUTH', 'radar/bgp/routes/moas')
+    self.add('AUTH', 'radar/bgp/routes/pfx2as')
+    self.add('AUTH', 'radar/bgp/routes/stats')
 
     self.add('AUTH', 'radar/datasets')
     self.add('AUTH', 'radar/datasets/download')
@@ -954,6 +963,17 @@ def radar(self):
     self.add('AUTH', 'radar/performance/iqi/summary')
     self.add('AUTH', 'radar/performance/iqi/timeseries_groups')
 
+    self.add('VOID', 'radar/quality')
+    self.add('VOID', 'radar/quality/iqi')
+    self.add('AUTH', 'radar/quality/iqi/summary')
+    self.add('AUTH', 'radar/quality/iqi/timeseries_groups')
+    self.add('VOID', 'radar/quality/speed')
+    self.add('AUTH', 'radar/quality/speed/histogram')
+    self.add('AUTH', 'radar/quality/speed/summary')
+    self.add('VOID', 'radar/quality/speed/top')
+    self.add('AUTH', 'radar/quality/speed/top/ases')
+    self.add('AUTH', 'radar/quality/speed/top/locations')
+
     self.add('VOID', 'radar/ranking')
     self.add('AUTH', 'radar/ranking/domain')
     self.add('AUTH', 'radar/ranking/timeseries')
@@ -966,13 +986,11 @@ def radar(self):
     self.add('AUTH', 'radar/verified_bots/top/bots')
     self.add('AUTH', 'radar/verified_bots/top/categories')
 
+
 def from_developers(self):
     """ from_developers """
     self.add('VOID', 'accounts', 'analytics_engine')
     self.add('AUTH', 'accounts', 'analytics_engine/sql')
-
-    self.add('AUTH', 'accounts', 'images/v1/config')
-#   self.add('AUTH', 'accounts', 'images/v1/direct_upload') # deprecated 2022-07-01 - expired!
 
     self.add('VOID', 'accounts', 'logpush')
     self.add('AUTH', 'accounts', 'logpush/jobs')
