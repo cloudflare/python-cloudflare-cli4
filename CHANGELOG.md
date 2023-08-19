@@ -1,5 +1,16 @@
 # Change Log
 
+ - 2023-08-19 09:23:25 -0700 [3f1404b](../../commit/3f1404b4af674554657912de91804663b91d2ed6) 2.11.7
+ - 2023-08-19 09:22:52 -0700 [94f0b0b](../../commit/94f0b0b081736a36ee27dbb0b454219fe8038121) more api endpoints
+ - 2023-06-24 12:58:51 -0700 [d08af99](../../commit/d08af997389e426e7323e8daffd8d9049ac8cd74) more api endpoints
+ - 2023-05-29 20:19:27 -0700 [26a05cf](../../commit/26a05cfe6b71076393f568906356ea8602082e62) update examples and README to use == for numberic values
+ - 2023-05-21 10:54:24 -0700 [a930e2c](../../commit/a930e2c7f139e3aafbac8f13323d4e62bbf39496) 2.11.6 release
+ - 2023-05-21 10:53:52 -0700 [6c12eee](../../commit/6c12eee7f7e818e39303a52701a7828f587a8c6e) more api endpoints
+ - 2023-05-21 10:27:14 -0700 [891f120](../../commit/891f12032e7ca149835b881b51038996171307a0) 2.11.5 release
+ - 2023-05-21 10:25:41 -0700 [74f1999](../../commit/74f19994c75e08a869eca9ac7aac4e109549a5b0) remove --api option and leave --openapi in place
+ - 2023-05-20 11:49:22 -0700 [6d6dd33](../../commit/6d6dd33fcc547d0ea8083e19cb3636b7c0d5d84c) 2.11.4 release
+ - 2023-05-20 11:48:30 -0700 [eab68ba](../../commit/eab68ba03525bfc1ae7ee46769a0368f5d393d5d) handle quoted strings
+ - 2023-05-19 17:42:57 -0700 [9ae8cba](../../commit/9ae8cba9c7ccbe814cb944048eeb6dda908f7021) CHANGELOG.md pushed to github
  - 2023-05-19 17:42:40 -0700 [e644136](../../commit/e644136ab20f81743d94d3097ad7312262029ee0) 2.11.3 release
  - 2023-05-19 17:42:07 -0700 [36c40ce](../../commit/36c40cefefe69e2c8cb5037ba59c231a8431096d) handle multipart/form-data correctly for more than one file and with params/data
  - 2023-05-19 10:58:29 -0700 [13739c5](../../commit/13739c53ec96449924a872ee589e01b7171bcf8b) CHANGELOG.md pushed to github
