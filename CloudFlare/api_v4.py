@@ -387,6 +387,7 @@ def accounts(self):
     self.add('AUTH', 'accounts', 'cfd_tunnel', 'management')
     self.add('AUTH', 'accounts', 'cfd_tunnel', 'token')
     self.add('AUTH', 'accounts', 'custom_pages')
+
     self.add('VOID', 'accounts', 'dlp')
     self.add('VOID', 'accounts', 'dlp/patterns')
     self.add('AUTH', 'accounts', 'dlp/patterns/validate')
@@ -420,6 +421,14 @@ def accounts(self):
     self.add('AUTH', 'accounts', 'rulesets/phases', 'entrypoint')
     self.add('AUTH', 'accounts', 'rulesets/phases', 'entrypoint/versions')
     self.add('AUTH', 'accounts', 'rulesets/phases', 'versions')
+
+    self.add('VOID', 'accounts', 'rum')
+    self.add('AUTH', 'accounts', 'rum/site_info')
+    self.add('AUTH', 'accounts', 'rum/site_info/list')
+    self.add('VOID', 'accounts', 'rum/v2')
+    self.add('AUTH', 'accounts', 'rum/v2', 'rule')
+    self.add('AUTH', 'accounts', 'rum/v2', 'rules')
+
     self.add('VOID', 'accounts', 'storage')
     self.add('AUTH', 'accounts', 'storage/analytics')
     self.add('AUTH', 'accounts', 'storage/analytics/stored')
@@ -429,6 +438,7 @@ def accounts(self):
     self.add('AUTH', 'accounts', 'storage/kv/namespaces', 'keys')
     self.add('AUTH', 'accounts', 'storage/kv/namespaces', 'values')
     self.add('AUTH', 'accounts', 'storage/kv/namespaces', 'metadata')
+
     self.add('AUTH', 'accounts', 'subscriptions')
     self.add('AUTH', 'accounts', 'tunnels')
     self.add('AUTH', 'accounts', 'tunnels', 'connections')
@@ -445,6 +455,8 @@ def accounts(self):
     self.add('VOID', 'accounts', 'workers/dispatch')
     self.add('AUTH', 'accounts', 'workers/dispatch/namespaces')
     self.add('AUTH', 'accounts', 'workers/dispatch/namespaces', 'scripts')
+    self.add('AUTH', 'accounts', 'workers/dispatch/namespaces', 'scripts', 'content')
+    self.add('AUTH', 'accounts', 'workers/dispatch/namespaces', 'scripts', 'settings')
     self.add('AUTH', 'accounts', 'workers/dispatch/namespaces', 'scripts', 'tags')
     self.add('AUTH', 'accounts', 'workers/domains')
     self.add('VOID', 'accounts', 'workers/durable_objects')
@@ -453,9 +465,15 @@ def accounts(self):
     self.add('AUTH', 'accounts', 'workers/queues')
     self.add('AUTH', 'accounts', 'workers/queues', 'consumers')
     self.add('AUTH', 'accounts', 'workers/scripts')
+    self.add('AUTH', 'accounts', 'workers/scripts', 'content')
     self.add('AUTH', 'accounts', 'workers/scripts', 'schedules')
+    self.add('AUTH', 'accounts', 'workers/scripts', 'settings')
     self.add('AUTH', 'accounts', 'workers/scripts', 'tails')
     self.add('AUTH', 'accounts', 'workers/scripts', 'usage-model')
+    self.add('VOID', 'accounts', 'workers/services')
+    self.add('VOID', 'accounts', 'workers/services', 'environments')
+    self.add('AUTH', 'accounts', 'workers/services', 'environments', 'content')
+    self.add('AUTH', 'accounts', 'workers/services', 'environments', 'settings')
     self.add('AUTH', 'accounts', 'workers/subdomain')
 
 def accounts_addressing(self):
@@ -576,6 +594,7 @@ def accounts_access(self):
 
     self.add('VOID', 'accounts', 'access')
 #   self.add('AUTH', 'accounts', 'access/bookmarks') # deprecated 2023-03-19
+    self.add('AUTH', 'accounts', 'access/custom_pages')
     self.add('AUTH', 'accounts', 'access/gateway_ca')
     self.add('AUTH', 'accounts', 'access/groups')
     self.add('AUTH', 'accounts', 'access/identity_providers')
@@ -636,6 +655,7 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'custom_ns/verify')
 
     self.add('AUTH', 'accounts', 'devices')
+
     self.add('AUTH', 'accounts', 'devices', 'override_codes')
     self.add('AUTH', 'accounts', 'devices/dex_tests')
     self.add('AUTH', 'accounts', 'devices/networks')
@@ -653,6 +673,14 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'devices/settings')
     self.add('AUTH', 'accounts', 'devices/unrevoke')
 
+    self.add('VOID', 'accounts', 'dex')
+    self.add('AUTH', 'accounts', 'dex/http-tests')
+    self.add('AUTH', 'accounts', 'dex/tests')
+    self.add('AUTH', 'accounts', 'dex/tests/unique-devices')
+    self.add('VOID', 'accounts', 'dex/traceroute-test-results')
+    self.add('AUTH', 'accounts', 'dex/traceroute-test-results', 'network-path')
+    self.add('AUTH', 'accounts', 'dex/traceroute-tests')
+    self.add('AUTH', 'accounts', 'dex/traceroute-tests', 'network-path')
 
     self.add('AUTH', 'accounts', 'dns_firewall')
     self.add('VOID', 'accounts', 'dns_firewall', 'dns_analytics')
@@ -689,6 +717,7 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'intel/domain')
     self.add('AUTH', 'accounts', 'intel/domain-history')
     self.add('AUTH', 'accounts', 'intel/domain/bulk')
+    self.add('AUTH', 'accounts', 'intel/indicator-feeds')
     self.add('AUTH', 'accounts', 'intel/ip')
     self.add('AUTH', 'accounts', 'intel/ip-list')
     self.add('AUTH', 'accounts', 'intel/miscategorization')
@@ -721,6 +750,11 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'teamnet/routes/network')
     self.add('AUTH', 'accounts', 'teamnet/virtual_networks')
 
+    self.add('VOID', 'accounts', 'urlscanner')
+    self.add('AUTH', 'accounts', 'urlscanner/scan')
+    self.add('AUTH', 'accounts', 'urlscanner/scan', 'har')
+    self.add('AUTH', 'accounts', 'urlscanner/scan', 'screenshot')
+
 def zones_extras(self):
     """ zones extras """
 
@@ -746,6 +780,13 @@ def zones_extras(self):
     self.add('AUTH', 'zones', 'rulesets/phases/http_custom_errors/entrypoint')
     self.add('AUTH', 'zones', 'rulesets/phases', 'versions')
     self.add('AUTH', 'zones', 'url_normalization')
+
+    self.add('VOID', 'zones', 'hostnames')
+    self.add('AUTH', 'zones', 'hostnames/settings')
+    self.add('AUTH', 'zones', 'snippets')
+    self.add('AUTH', 'zones', 'snippets', 'content')
+    self.add('AUTH', 'zones', 'snippets/snippet_rules')
+
 
 def zones_web3(self):
     """ zones web3 """
@@ -793,7 +834,10 @@ def zones_api_gateway(self):
 
 def radar(self):
     """ radar """
+
     self.add('VOID', 'radar')
+    self.add('AUTH', 'radar/alerts')
+    self.add('AUTH', 'radar/alerts/locations')
     self.add('VOID', 'radar/annotations')
     self.add('AUTH', 'radar/annotations/outages')
     self.add('AUTH', 'radar/annotations/outages/locations')
@@ -806,6 +850,7 @@ def radar(self):
     self.add('AUTH', 'radar/as112/summary/protocol')
     self.add('AUTH', 'radar/as112/summary/query_type')
     self.add('AUTH', 'radar/as112/summary/response_codes')
+
     self.add('AUTH', 'radar/as112/timeseries')
     self.add('AUTH', 'radar/as112/timeseries/dnssec')
     self.add('AUTH', 'radar/as112/timeseries/edns')
@@ -813,6 +858,15 @@ def radar(self):
     self.add('AUTH', 'radar/as112/timeseries/protocol')
     self.add('AUTH', 'radar/as112/timeseries/query_type')
     self.add('AUTH', 'radar/as112/timeseries/response_codes')
+
+    self.add('VOID', 'radar/as112/timeseries_groups')
+    self.add('AUTH', 'radar/as112/timeseries_groups/dnssec')
+    self.add('AUTH', 'radar/as112/timeseries_groups/edns')
+    self.add('AUTH', 'radar/as112/timeseries_groups/ip_version')
+    self.add('AUTH', 'radar/as112/timeseries_groups/protocol')
+    self.add('AUTH', 'radar/as112/timeseries_groups/query_type')
+    self.add('AUTH', 'radar/as112/timeseries_groups/response_codes')
+
     self.add('VOID', 'radar/as112/top')
     self.add('AUTH', 'radar/as112/top/locations')
     self.add('AUTH', 'radar/as112/top/locations/dnssec')
@@ -858,6 +912,7 @@ def radar(self):
     self.add('AUTH', 'radar/bgp/timeseries')
     self.add('VOID', 'radar/bgp/top')
     self.add('AUTH', 'radar/bgp/top/ases')
+    self.add('AUTH', 'radar/bgp/top/ases/prefixes')
     self.add('AUTH', 'radar/bgp/top/prefixes')
     self.add('VOID', 'radar/bgp/hijacks')
     self.add('AUTH', 'radar/bgp/hijacks/events')
@@ -892,6 +947,16 @@ def radar(self):
     self.add('AUTH', 'radar/email/security/timeseries/spam')
     self.add('AUTH', 'radar/email/security/timeseries/spf')
     self.add('AUTH', 'radar/email/security/timeseries/threat_category')
+
+    self.add('VOID', 'radar/email/security/timeseries_groups')
+    self.add('AUTH', 'radar/email/security/timeseries_groups/arc')
+    self.add('AUTH', 'radar/email/security/timeseries_groups/dkim')
+    self.add('AUTH', 'radar/email/security/timeseries_groups/dmarc')
+    self.add('AUTH', 'radar/email/security/timeseries_groups/malicious')
+    self.add('AUTH', 'radar/email/security/timeseries_groups/spam')
+    self.add('AUTH', 'radar/email/security/timeseries_groups/spf')
+    self.add('AUTH', 'radar/email/security/timeseries_groups/threat_category')
+
     self.add('VOID', 'radar/email/security/top')
     self.add('AUTH', 'radar/email/security/top/ases')
     self.add('AUTH', 'radar/email/security/top/ases/arc')
@@ -910,7 +975,9 @@ def radar(self):
 
     self.add('VOID', 'radar/entities')
     self.add('AUTH', 'radar/entities/asns')
+    self.add('AUTH', 'radar/entities/asns', 'rel')
     self.add('AUTH', 'radar/entities/asns/ip')
+    self.add('AUTH', 'radar/entities/ip')
     self.add('AUTH', 'radar/entities/locations')
 
     self.add('VOID', 'radar/http')
@@ -977,15 +1044,29 @@ def radar(self):
     self.add('VOID', 'radar/ranking')
     self.add('AUTH', 'radar/ranking/domain')
     self.add('AUTH', 'radar/ranking/timeseries')
+    self.add('AUTH', 'radar/ranking/timeseries_groups')
     self.add('AUTH', 'radar/ranking/top')
+
     self.add('VOID', 'radar/search')
     self.add('AUTH', 'radar/search/global')
+
     self.add('AUTH', 'radar/specialevents')
+
+    self.add('VOID', 'radar/http/timeseries_groups')
+    self.add('AUTH', 'radar/http/timeseries_groups/bot_class')
+    self.add('AUTH', 'radar/http/timeseries_groups/browser')
+    self.add('AUTH', 'radar/http/timeseries_groups/browser_family')
+    self.add('AUTH', 'radar/http/timeseries_groups/device_type')
+    self.add('AUTH', 'radar/http/timeseries_groups/http_protocol')
+    self.add('AUTH', 'radar/http/timeseries_groups/http_version')
+    self.add('AUTH', 'radar/http/timeseries_groups/ip_version')
+    self.add('AUTH', 'radar/http/timeseries_groups/os')
+    self.add('AUTH', 'radar/http/timeseries_groups/tls_version')
+
     self.add('VOID', 'radar/verified_bots')
     self.add('VOID', 'radar/verified_bots/top')
     self.add('AUTH', 'radar/verified_bots/top/bots')
     self.add('AUTH', 'radar/verified_bots/top/categories')
-
 
 def from_developers(self):
     """ from_developers """
