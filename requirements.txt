@@ -3,3 +3,4 @@ future
 pyyaml
 jsonlines
 beautifulsoup4
+pytest
