@@ -70,7 +70,7 @@ upload-github:
 
 upload-pypi:
 	## $(PYTHON) setup.py -q sdist bdist_wheel upload # --sign --identity="$(EMAIL)"
-	$(TWINE) upload -r pypi dist/*
+	$(TWINE) upload -r pypi --repository cloudflare dist/*
 
 showtag: sdist
 	@ v=`ls -r dist | head -1 | sed -e 's/cloudflare-\([0-9.]*\)\.tar.*/\1/'` ; echo "\tDIST VERSION =" $$v ; (git tag | fgrep -q "$$v") && echo "\tGIT TAG EXISTS"
