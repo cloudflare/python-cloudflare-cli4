@@ -38,8 +38,14 @@ class CloudFlare():
 
             self.raw = config['raw']
             self.use_sessions = config['use_sessions']
+            self.global_request_timeout = config['global_request_timeout'] if 'global_request_timeout' in config else None
+            self.max_request_retries = config['max_request_retries'] if 'max_request_retries' in config else None
             self.profile = config['profile']
-            self.network = CFnetwork(use_sessions=self.use_sessions)
+            self.network = CFnetwork(
+                use_sessions=self.use_sessions,
+                global_request_timeout=self.global_request_timeout,
+                max_request_retries=self.max_request_retries
+            )
             self.user_agent = user_agent()
 
             self.logger = CFlogger(config['debug']).getLogger() if 'debug' in config and config['debug'] else None
@@ -909,7 +915,7 @@ class CloudFlare():
 
         return api_decode_from_openapi(self._base.api_from_openapi(url))
 
-    def __init__(self, email=None, key=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None):
+    def __init__(self, email=None, key=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None, global_request_timeout=5, max_request_retries=5):
         """ Cloudflare v4 API"""
 
         self._base = None
@@ -938,6 +944,10 @@ class CloudFlare():
             config['profile'] = profile
         if base_url is not None:
             config['base_url'] = base_url
+        if global_request_timeout is not None:
+            config['global_request_timeout'] = global_request_timeout
+        if max_request_retries is not None:
+            config['max_request_retries'] = max_request_retries
 
         # we do not need to handle item.call values - they pass straight thru
 

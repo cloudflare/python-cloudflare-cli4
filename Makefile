@@ -3,6 +3,7 @@ PYTHON = python
 # PANDOC = pandoc
 PYLINT = pylint
 TWINE = twine
+PYTEST = pytest
 
 EMAIL = "mahtin@mahtin.com"
 NAME = "cloudflare"
@@ -36,7 +37,7 @@ install: build
 	sudo rm -rf ${NAME}.egg-info
 
 test: all
-#	 to be done
+	$(PYTEST) -vv
 
 cli4test: all
 	$(PYTHON) -m cli4 /ips > /dev/null
