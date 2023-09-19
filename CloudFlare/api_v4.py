@@ -145,6 +145,7 @@ def zones_settings(self):
     self.add('AUTH', 'zones', 'settings/development_mode')
     self.add('AUTH', 'zones', 'settings/early_hints')
     self.add('AUTH', 'zones', 'settings/email_obfuscation')
+    self.add('AUTH', 'zones', 'settings/fonts')
     self.add('AUTH', 'zones', 'settings/h2_prioritization')
     self.add('AUTH', 'zones', 'settings/hotlink_protection')
     self.add('AUTH', 'zones', 'settings/http2')
@@ -442,6 +443,11 @@ def accounts(self):
     self.add('AUTH', 'accounts', 'subscriptions')
     self.add('AUTH', 'accounts', 'tunnels')
     self.add('AUTH', 'accounts', 'tunnels', 'connections')
+
+    self.add('VOID', 'accounts', 'vectorize')
+    self.add('AUTH', 'accounts', 'vectorize/index')
+    self.add('AUTH', 'accounts', 'vectorize/indexes')
+
     self.add('AUTH', 'accounts', 'virtual_dns')
     self.add('VOID', 'accounts', 'virtual_dns', 'dns_analytics')
     self.add('AUTH', 'accounts', 'virtual_dns', 'dns_analytics/report')
@@ -466,6 +472,7 @@ def accounts(self):
     self.add('AUTH', 'accounts', 'workers/queues', 'consumers')
     self.add('AUTH', 'accounts', 'workers/scripts')
     self.add('AUTH', 'accounts', 'workers/scripts', 'content')
+    self.add('AUTH', 'accounts', 'workers/scripts', 'content/v2')
     self.add('AUTH', 'accounts', 'workers/scripts', 'schedules')
     self.add('AUTH', 'accounts', 'workers/scripts', 'settings')
     self.add('AUTH', 'accounts', 'workers/scripts', 'tails')
@@ -674,6 +681,7 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'devices/unrevoke')
 
     self.add('VOID', 'accounts', 'dex')
+    self.add('AUTH', 'accounts', 'dex/colos')
     self.add('AUTH', 'accounts', 'dex/http-tests')
     self.add('AUTH', 'accounts', 'dex/tests')
     self.add('AUTH', 'accounts', 'dex/tests/unique-devices')
@@ -718,6 +726,12 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'intel/domain-history')
     self.add('AUTH', 'accounts', 'intel/domain/bulk')
     self.add('AUTH', 'accounts', 'intel/indicator-feeds')
+    self.add('AUTH', 'accounts', 'intel/indicator-feeds', 'data')
+    self.add('AUTH', 'accounts', 'intel/indicator-feeds', 'snapshot')
+    self.add('VOID', 'accounts', 'intel/indicator-feeds/permissions')
+    self.add('AUTH', 'accounts', 'intel/indicator-feeds/permissions/add')
+    self.add('AUTH', 'accounts', 'intel/indicator-feeds/permissions/remove')
+    self.add('AUTH', 'accounts', 'intel/indicator-feeds/permissions/view')
     self.add('AUTH', 'accounts', 'intel/ip')
     self.add('AUTH', 'accounts', 'intel/ip-list')
     self.add('AUTH', 'accounts', 'intel/miscategorization')
@@ -738,6 +752,7 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'pages/projects', 'deployments', 'retry')
     self.add('AUTH', 'accounts', 'pages/projects', 'deployments', 'rollback')
     self.add('AUTH', 'accounts', 'pages/projects', 'domains')
+    self.add('AUTH', 'accounts', 'pages/projects', 'purge_build_cache')
 
     self.add('AUTH', 'accounts', 'pcaps')
     self.add('AUTH', 'accounts', 'pcaps', 'download')
@@ -754,6 +769,10 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'urlscanner/scan')
     self.add('AUTH', 'accounts', 'urlscanner/scan', 'har')
     self.add('AUTH', 'accounts', 'urlscanner/scan', 'screenshot')
+
+    self.add('VOID', 'accounts', 'hyperdrive')
+    self.add('AUTH', 'accounts', 'hyperdrive/configs')
+
 
 def zones_extras(self):
     """ zones extras """
@@ -787,6 +806,15 @@ def zones_extras(self):
     self.add('AUTH', 'zones', 'snippets', 'content')
     self.add('AUTH', 'zones', 'snippets/snippet_rules')
 
+    self.add('VOID', 'zones', 'speed_api')
+    self.add('AUTH', 'zones', 'speed_api/availabilities')
+    self.add('AUTH', 'zones', 'speed_api/pages')
+    self.add('AUTH', 'zones', 'speed_api/pages', 'tests')
+    self.add('AUTH', 'zones', 'speed_api/pages', 'trend')
+    self.add('AUTH', 'zones', 'speed_api/schedule')
+
+    self.add('VOID', 'zones', 'dcv_delegation')
+    self.add('AUTH', 'zones', 'dcv_delegation/uuid')
 
 def zones_web3(self):
     """ zones web3 """
@@ -1068,6 +1096,12 @@ def radar(self):
     self.add('AUTH', 'radar/verified_bots/top/bots')
     self.add('AUTH', 'radar/verified_bots/top/categories')
 
+    self.add('VOID', 'radar/connection_tampering')
+    self.add('AUTH', 'radar/connection_tampering/summary')
+    self.add('AUTH', 'radar/connection_tampering/timeseries_groups')
+    self.add('AUTH', 'radar/traffic_anomalies')
+    self.add('AUTH', 'radar/traffic_anomalies/locations')
+
 def from_developers(self):
     """ from_developers """
     self.add('VOID', 'accounts', 'analytics_engine')
@@ -1119,6 +1153,7 @@ def from_developers(self):
     self.add('VOID', 'accounts', 'stream/analytics')
     self.add('AUTH', 'accounts', 'stream/analytics/views')
     self.add('AUTH', 'accounts', 'stream/live_inputs', 'videos')
+    self.add('AUTH', 'accounts', 'stream/storage-usage')
 
 #   self.add('AUTH', 'organizations', 'load_balancers/monitors')
 
@@ -1157,4 +1192,3 @@ def from_developers(self):
     self.add('AUTH', 'accounts', 'mtls_certificates', 'associations')
     self.add('VOID', 'accounts', 'request-tracer')
     self.add('AUTH', 'accounts', 'request-tracer/trace')
-
