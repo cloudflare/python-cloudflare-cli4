@@ -13,6 +13,7 @@ my_jsonlines = None
 import CloudFlare
 from .dump import dump_commands, dump_commands_from_web
 from . import converters
+from . import examples
 
 def load_and_check_yaml():
     """ load_and_check_yaml() """
@@ -365,6 +366,7 @@ def do_it(args):
 
     verbose = False
     output = 'json'
+    example = False
     raw = False
     dump = False
     openapi_url = None
@@ -374,6 +376,7 @@ def do_it(args):
 
     usage = ('usage: cli4 '
              + '[-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] '
+             + '[-e|--examples] '
              + '[-j|--json] [-y|--yaml] [-n|ndjson] '
              + '[-r|--raw] '
              + '[-d|--dump] '
@@ -386,10 +389,10 @@ def do_it(args):
 
     try:
         opts, args = getopt.getopt(args,
-                                   'VhvqjyrdA:bp:GPOUD',
+                                   'VhvqejyrdA:bp:GPOUD',
                                    [
                                        'version',
-                                       'help', 'verbose', 'quiet', 'json', 'yaml', 'ndjson',
+                                       'help', 'verbose', 'quiet', 'examples', 'json', 'yaml', 'ndjson',
                                        'raw',
                                        'dump', 'openapi=',
                                        'binary',
@@ -407,6 +410,8 @@ def do_it(args):
             verbose = True
         elif opt in ('-q', '--quiet'):
             output = None
+        elif opt in ('-e', '--examples'):
+            example = True
         elif opt in ('-j', '--json'):
             output = 'json'
         elif opt in ('-y', '--yaml'):
@@ -439,6 +444,13 @@ def do_it(args):
             method = 'PUT'
         elif opt in ('-D', '--delete'):
             method = 'DELETE'
+
+    if example:
+        try:
+            examples.display()
+        except ModuleNotFoundError as e:
+            sys.exit(e)
+        sys.exit(0)
 
     try:
         cf = CloudFlare.CloudFlare(debug=verbose, raw=raw, profile=profile)

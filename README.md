@@ -500,6 +500,34 @@ $
 
 The [examples](https://github.com/cloudflare/python-cloudflare/tree/master/examples) folder contains many examples in both simple and verbose formats.
 
+You can see the installed path of these files directly via `cli4 -e` command.
+
+```bash
+$ cli4 -e
+Python .py files:
+	...
+	/opt/homebrew/lib/python3.11/site-packages/examples/example_always_use_https.py
+	...
+Bash .sh files:
+	...
+	/opt/homebrew/lib/python3.11/site-packages/examples/example_paging_thru_zones.sh
+	...
+$
+```
+
+The exact path will vary depending on your system.
+The above example is MacOS and Python 3.9 hence the `/opt/homebrew/lib/python3.11/site-packages/` path.
+One Linux, the Python pip command may install the code is a system location like `/usr/lib/python3/dist-packages` or `~/.local/lib/python3.9/site-packages/` or something different.
+The `cli4 -e` command will try to decode the location and display the example files.
+
+If you are running release before Python 3.9 then you will be asked to install the following:
+
+```bash
+$ pip install importlib_resources
+...
+$
+```
+
 ## A DNS zone code example
 
 ```python
