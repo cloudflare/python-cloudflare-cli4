@@ -1,5 +1,9 @@
 # Change Log
 
+ - 2023-09-19 09:54:25 -0700 [14d734a](../../commit/14d734a1dabea2eb2689f8f14779c2238b791fab) 2.11.8
+ - 2023-09-19 09:53:33 -0700 [77c275c](../../commit/77c275cf31be71c83894a0bd87c26810dac5ed05) more twine tweaks
+ - 2023-09-19 09:51:14 -0700 [aa31bb3](../../commit/aa31bb386c9658cbe15dc25c4fd9ef4860899851) Added cli4 -e option to display example file path names
+ - 2023-08-19 09:23:43 -0700 [0ea52bc](../../commit/0ea52bca64e6c09ff4c6823321dec501e5d34e09) CHANGELOG.md pushed to github
  - 2023-08-19 09:23:25 -0700 [3f1404b](../../commit/3f1404b4af674554657912de91804663b91d2ed6) 2.11.7
  - 2023-08-19 09:22:52 -0700 [94f0b0b](../../commit/94f0b0b081736a36ee27dbb0b454219fe8038121) more api endpoints
  - 2023-06-24 12:58:51 -0700 [d08af99](../../commit/d08af997389e426e7323e8daffd8d9049ac8cd74) more api endpoints
