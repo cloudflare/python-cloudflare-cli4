@@ -180,7 +180,12 @@ When you create a **CloudFlare** class you can pass some combination of these fo
 
 This parameter controls how the data is returned from a successful call (see notes below).
 
- * `raw - An optional Raw flag (True/False) - defaults to False
+ * `raw` - An optional Raw flag (True/False) - defaults to False
+
+Timeouts (10s) and Retries (5) are configured by default. Should you wish to override them, use these settings:
+* `global_request_timeout` - How long before each API call to Cloudflare should time out (in seconds)
+* `max_requests_retries` - How many times to retry an API call when DNS lookups, socket connections, or connect timeouts occur.
+> NOTE: `max_request_retries` is only available when `use_sessions` is not disabled.
 
 The following paramaters are for debug and/or development usage
 
