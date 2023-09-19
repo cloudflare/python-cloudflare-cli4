@@ -1,8 +1,15 @@
 # Change Log
 
+ - 2023-09-19 12:24:18 -0700 [4b2254b](../../commit/4b2254bc24a2e87d937543efbfe06d54e3f4e4f2) 2.12.2
+ - 2023-09-19 12:23:45 -0700 [483a20b](../../commit/483a20bf6448a52dd5182ed0de9cead5acbc947f) more api endpoints
+ - 2023-09-19 12:13:49 -0700 [e3555cf](../../commit/e3555cf70abaa37d39c086b8d081e6859e0ed35e) 2.12.1
+ - 2023-09-19 12:12:22 -0700 [0f0a8a0](../../commit/0f0a8a04f0ce02ab8fdf42583256133e327e9e4c) Merge branch 'dkoston-requests_timeouts_and_retries' Added dkoston's network code to manage timeouts and retry's
+ - 2023-09-19 12:10:19 -0700 [ca72137](../../commit/ca72137d0a42c27f65929eac2df23b9632979881) Merge branch 'requests_timeouts_and_retries' of https://github.com/dkoston/python-cloudflare into dkoston-requests_timeouts_and_retries Pull Request 173 from dkoston - requests_timeouts_and_retries
+ - 2023-09-19 09:54:49 -0700 [8076d56](../../commit/8076d560f680731a63c94d7fd90c107ffe25b4b7) CHANGELOG.md pushed to github
  - 2023-09-19 09:54:25 -0700 [14d734a](../../commit/14d734a1dabea2eb2689f8f14779c2238b791fab) 2.11.8
  - 2023-09-19 09:53:33 -0700 [77c275c](../../commit/77c275cf31be71c83894a0bd87c26810dac5ed05) more twine tweaks
  - 2023-09-19 09:51:14 -0700 [aa31bb3](../../commit/aa31bb386c9658cbe15dc25c4fd9ef4860899851) Added cli4 -e option to display example file path names
+ - 2023-09-19 10:51:06 -0500 [28e4244](../../commit/28e4244bc93787bff0ea37b0a5c28cecbf1962cc) Add `global_request_timeout` and `max_request_retries` configuration options. Set default request timeout to 5s. Add basic tests instantiating Cloudflare.Cloudflare
  - 2023-08-19 09:23:43 -0700 [0ea52bc](../../commit/0ea52bca64e6c09ff4c6823321dec501e5d34e09) CHANGELOG.md pushed to github
  - 2023-08-19 09:23:25 -0700 [3f1404b](../../commit/3f1404b4af674554657912de91804663b91d2ed6) 2.11.7
  - 2023-08-19 09:22:52 -0700 [94f0b0b](../../commit/94f0b0b081736a36ee27dbb0b454219fe8038121) more api endpoints
