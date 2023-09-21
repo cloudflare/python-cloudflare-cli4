@@ -505,7 +505,7 @@ $
 
 The [examples](https://github.com/cloudflare/python-cloudflare/tree/master/examples) folder contains many examples in both simple and verbose formats.
 
-You can see the installed path of these files directly via `cli4 -e` command.
+You can see the installed path of these files directly via `cli4 -e` (or `cli4 --examples`) command.
 
 ```bash
 $ cli4 -e
@@ -532,6 +532,20 @@ $ pip install importlib_resources
 ...
 $
 ```
+
+It will show up if you are running on an older system. For example, this is the results from running on Win7):
+
+```bash
+U:\Users\█████>cli4 -e
+Module "importlib_resources" missing - please "pip install importlib_resources" as your Python version is lower than 3.9
+
+U:\Users\█████>python -V
+Python 3.8.3
+
+U:\Users\█████>
+```
+
+Upgrading from an older version of Python is always recommended. Upgrading from Win7 is by-default even more important!
 
 ## A DNS zone code example
 
