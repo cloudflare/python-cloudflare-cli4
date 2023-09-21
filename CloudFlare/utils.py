@@ -1,6 +1,4 @@
 """ misc utilities  for Cloudflare API"""
-from __future__ import absolute_import
-
 import sys
 import json
 from requests import __version__ as requests__version__
