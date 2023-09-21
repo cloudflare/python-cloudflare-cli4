@@ -1,6 +1,4 @@
 """ Cloudflare v4 API"""
-from __future__ import absolute_import
-
 import json
 import keyword
 from requests import RequestException as requests_RequestException, ConnectionError as requests_ConnectionError, exceptions as requests_exceptions, codes as requests_codes
