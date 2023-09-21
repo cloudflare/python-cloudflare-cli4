@@ -7,7 +7,7 @@ import json
 
 API_TYPES = ['GET', 'POST', 'PATCH', 'PUT', 'DELETE']
 
-match_identifier = re.compile('\{[A-Za-z0-9_]*\}')
+match_identifier = re.compile(r'\{[A-Za-z0-9_]*\}')
 
 def do_path(cmd, values):
     """ do_path() """
