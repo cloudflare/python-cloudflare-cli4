@@ -36,8 +36,14 @@ class CloudFlare():
 
             self.raw = config['raw']
             self.use_sessions = config['use_sessions']
+            self.global_request_timeout = config['global_request_timeout'] if 'global_request_timeout' in config else None
+            self.max_request_retries = config['max_request_retries'] if 'max_request_retries' in config else None
             self.profile = config['profile']
-            self.network = CFnetwork(use_sessions=self.use_sessions)
+            self.network = CFnetwork(
+                use_sessions=self.use_sessions,
+                global_request_timeout=self.global_request_timeout,
+                max_request_retries=self.max_request_retries
+            )
             self.user_agent = user_agent()
 
             self.logger = CFlogger(config['debug']).getLogger() if 'debug' in config and config['debug'] else None
@@ -191,6 +197,14 @@ class CloudFlare():
                         url += '/' + identifiers[3]
                     if parts[4]:
                         url += '/' + parts[4]
+
+            if files and data:
+                # Can't send data and form data - so move data into files and send as multipart/form-data
+                new_files = []
+                new_files += [(f, (files[f].name, files[f])) for f in files]
+                new_files += [(d, (None, data[d])) for d in data]
+                files = tuple(new_files)
+                data = None
 
             if self.logger:
                 msg = build_curl(method, url, headers, params, data, files)
@@ -528,13 +542,6 @@ class CloudFlare():
                 self.logger.debug('Response: %s', response_data)
             result = response_data
             return result
-
-        def api_from_web(self):
-            """ Cloudflare v4 API"""
-
-            # base url isn't enough; we need less
-            url = '/'.join(self.base_url.split('/')[0:3])
-            return self._read_from_web(url)
 
         def api_from_openapi(self, url):
             """ Cloudflare v4 API"""
@@ -906,7 +913,7 @@ class CloudFlare():
 
         return api_decode_from_openapi(self._base.api_from_openapi(url))
 
-    def __init__(self, email=None, key=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None):
+    def __init__(self, email=None, key=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None, global_request_timeout=5, max_request_retries=5):
         """ Cloudflare v4 API"""
 
         self._base = None
@@ -935,6 +942,10 @@ class CloudFlare():
             config['profile'] = profile
         if base_url is not None:
             config['base_url'] = base_url
+        if global_request_timeout is not None:
+            config['global_request_timeout'] = global_request_timeout
+        if max_request_retries is not None:
+            config['max_request_retries'] = max_request_retries
 
         # we do not need to handle item.call values - they pass straight thru
 

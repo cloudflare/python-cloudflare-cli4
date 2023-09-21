@@ -180,7 +180,12 @@ When you create a **CloudFlare** class you can pass some combination of these fo
 
 This parameter controls how the data is returned from a successful call (see notes below).
 
- * `raw - An optional Raw flag (True/False) - defaults to False
+ * `raw` - An optional Raw flag (True/False) - defaults to False
+
+Timeouts (10s) and Retries (5) are configured by default. Should you wish to override them, use these settings:
+* `global_request_timeout` - How long before each API call to Cloudflare should time out (in seconds)
+* `max_requests_retries` - How many times to retry an API call when DNS lookups, socket connections, or connect timeouts occur.
+> NOTE: `max_request_retries` is only available when `use_sessions` is not disabled.
 
 The following paramaters are for debug and/or development usage
 
@@ -490,7 +495,7 @@ Finally, a command that provides more than one error response.
 This is simulated by passing an invalid IPv4 address to a DNS record creation.
 
 ```
-$ cli4 --post name='foo' type=A content="1" /zones/:example.com/dns_records
+$ cli4 --post name='foo' type=A content="NOT-A-VALID-IP-ADDRESS" /zones/:example.com/dns_records
 cli4: /zones/:example.com/dns_records - 9005 Content for A record is invalid. Must be a valid IPv4 address
 cli4: /zones/:example.com/dns_records - 1004 DNS Validation Error
 $
@@ -499,6 +504,34 @@ $
 ## Included example code
 
 The [examples](https://github.com/cloudflare/python-cloudflare/tree/master/examples) folder contains many examples in both simple and verbose formats.
+
+You can see the installed path of these files directly via `cli4 -e` command.
+
+```bash
+$ cli4 -e
+Python .py files:
+	...
+	/opt/homebrew/lib/python3.11/site-packages/examples/example_always_use_https.py
+	...
+Bash .sh files:
+	...
+	/opt/homebrew/lib/python3.11/site-packages/examples/example_paging_thru_zones.sh
+	...
+$
+```
+
+The exact path will vary depending on your system.
+The above example is MacOS and Python 3.9 hence the `/opt/homebrew/lib/python3.11/site-packages/` path.
+One Linux, the Python pip command may install the code is a system location like `/usr/lib/python3/dist-packages` or `~/.local/lib/python3.9/site-packages/` or something different.
+The `cli4 -e` command will try to decode the location and display the example files.
+
+If you are running release before Python 3.9 then you will be asked to install the following:
+
+```bash
+$ pip install importlib_resources
+...
+$
+```
 
 ## A DNS zone code example
 
@@ -561,7 +594,7 @@ All API calls can be called from the command line.
 The command will convert domain names prefixed with a colon (`:`) into zone_identifiers: e.g. to view `example.com` you must use `cli4 /zones/:example.com` (the zone ID cannot be used).
 
 ```bash
-$ cli4 [-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] [-r|--raw] [-d|--dump] [--get|--patch|--post|--put|--delete] [item=value ...] /command...
+$ cli4 [-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] [-n|ndjson] [-r|--raw] [-d|--dump] [-A|--openapi url] [-b|--binary] [-p|--profile profile-name] [--get|--patch|--post|--put|--delete] [item=value|item=@filename|@filename ...] /command ...
 
 ```
 
@@ -748,6 +781,7 @@ $
 The **--raw** command provides access to the paging returned values.
 See the API documentation for all the info.
 Here's an example of how to page thru a list of zones (it's included in the examples folder as **example_paging_thru_zones.sh**).
+Note the use of `==` to pass a number vs a string as paramater.
 
 ```bash
 :
@@ -756,7 +790,7 @@ trap "rm ${tmp}; exit 0" 0 1 2 15
 PAGE=0
 while true
 do
-        cli4 --raw per_page=5 page=${PAGE} /zones > ${tmp}
+        cli4 --raw per_page==5 page==${PAGE} /zones > ${tmp}
         domains=`jq -c '.|.result|.[]|.name' < ${tmp} | tr -d '"'`
         result_info=`jq -c '.|.result_info' < ${tmp}`
         COUNT=`      echo "${result_info}" | jq .count`

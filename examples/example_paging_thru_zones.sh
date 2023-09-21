@@ -9,7 +9,7 @@ while true
 do
 	# grab the next page
 	PAGE_NUMBER=`expr ${PAGE_NUMBER} + 1`
-	cli4 --raw per_page=5 page=${PAGE_NUMBER} /zones > ${tmp}
+	cli4 --raw per_page==5 page==${PAGE_NUMBER} /zones > ${tmp}
 
 	domains=`jq -c '.|.result|.[]|.name' < ${tmp} | tr -d '"'`
 	result_info=`jq -c '.|.result_info' < ${tmp}`

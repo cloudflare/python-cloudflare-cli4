@@ -1,5 +1,36 @@
 # Change Log
 
+ - 2023-09-19 12:24:18 -0700 [4b2254b](../../commit/4b2254bc24a2e87d937543efbfe06d54e3f4e4f2) 2.12.2
+ - 2023-09-19 12:23:45 -0700 [483a20b](../../commit/483a20bf6448a52dd5182ed0de9cead5acbc947f) more api endpoints
+ - 2023-09-19 12:13:49 -0700 [e3555cf](../../commit/e3555cf70abaa37d39c086b8d081e6859e0ed35e) 2.12.1
+ - 2023-09-19 12:12:22 -0700 [0f0a8a0](../../commit/0f0a8a04f0ce02ab8fdf42583256133e327e9e4c) Merge branch 'dkoston-requests_timeouts_and_retries' Added dkoston's network code to manage timeouts and retry's
+ - 2023-09-19 12:10:19 -0700 [ca72137](../../commit/ca72137d0a42c27f65929eac2df23b9632979881) Merge branch 'requests_timeouts_and_retries' of https://github.com/dkoston/python-cloudflare into dkoston-requests_timeouts_and_retries Pull Request 173 from dkoston - requests_timeouts_and_retries
+ - 2023-09-19 09:54:49 -0700 [8076d56](../../commit/8076d560f680731a63c94d7fd90c107ffe25b4b7) CHANGELOG.md pushed to github
+ - 2023-09-19 09:54:25 -0700 [14d734a](../../commit/14d734a1dabea2eb2689f8f14779c2238b791fab) 2.11.8
+ - 2023-09-19 09:53:33 -0700 [77c275c](../../commit/77c275cf31be71c83894a0bd87c26810dac5ed05) more twine tweaks
+ - 2023-09-19 09:51:14 -0700 [aa31bb3](../../commit/aa31bb386c9658cbe15dc25c4fd9ef4860899851) Added cli4 -e option to display example file path names
+ - 2023-09-19 10:51:06 -0500 [28e4244](../../commit/28e4244bc93787bff0ea37b0a5c28cecbf1962cc) Add `global_request_timeout` and `max_request_retries` configuration options. Set default request timeout to 5s. Add basic tests instantiating Cloudflare.Cloudflare
+ - 2023-08-19 09:23:43 -0700 [0ea52bc](../../commit/0ea52bca64e6c09ff4c6823321dec501e5d34e09) CHANGELOG.md pushed to github
+ - 2023-08-19 09:23:25 -0700 [3f1404b](../../commit/3f1404b4af674554657912de91804663b91d2ed6) 2.11.7
+ - 2023-08-19 09:22:52 -0700 [94f0b0b](../../commit/94f0b0b081736a36ee27dbb0b454219fe8038121) more api endpoints
+ - 2023-06-24 12:58:51 -0700 [d08af99](../../commit/d08af997389e426e7323e8daffd8d9049ac8cd74) more api endpoints
+ - 2023-05-29 20:19:27 -0700 [26a05cf](../../commit/26a05cfe6b71076393f568906356ea8602082e62) update examples and README to use == for numberic values
+ - 2023-05-21 10:54:24 -0700 [a930e2c](../../commit/a930e2c7f139e3aafbac8f13323d4e62bbf39496) 2.11.6 release
+ - 2023-05-21 10:53:52 -0700 [6c12eee](../../commit/6c12eee7f7e818e39303a52701a7828f587a8c6e) more api endpoints
+ - 2023-05-21 10:27:14 -0700 [891f120](../../commit/891f12032e7ca149835b881b51038996171307a0) 2.11.5 release
+ - 2023-05-21 10:25:41 -0700 [74f1999](../../commit/74f19994c75e08a869eca9ac7aac4e109549a5b0) remove --api option and leave --openapi in place
+ - 2023-05-20 11:49:22 -0700 [6d6dd33](../../commit/6d6dd33fcc547d0ea8083e19cb3636b7c0d5d84c) 2.11.4 release
+ - 2023-05-20 11:48:30 -0700 [eab68ba](../../commit/eab68ba03525bfc1ae7ee46769a0368f5d393d5d) handle quoted strings
+ - 2023-05-19 17:42:57 -0700 [9ae8cba](../../commit/9ae8cba9c7ccbe814cb944048eeb6dda908f7021) CHANGELOG.md pushed to github
+ - 2023-05-19 17:42:40 -0700 [e644136](../../commit/e644136ab20f81743d94d3097ad7312262029ee0) 2.11.3 release
+ - 2023-05-19 17:42:07 -0700 [36c40ce](../../commit/36c40cefefe69e2c8cb5037ba59c231a8431096d) handle multipart/form-data correctly for more than one file and with params/data
+ - 2023-05-19 10:58:29 -0700 [13739c5](../../commit/13739c53ec96449924a872ee589e01b7171bcf8b) CHANGELOG.md pushed to github
+ - 2023-05-19 10:58:08 -0700 [31f7d0b](../../commit/31f7d0b7d6b27bcc925d0d74f2899239ddcc4389) 2.11.2 release
+ - 2023-05-19 10:56:25 -0700 [0a0b492](../../commit/0a0b49298fea6a2bc5fb430a3385ee80ac9bf703) python keywords not handled correctly at command level
+ - 2022-11-26 23:37:57 +0100 [08a02ef](../../commit/08a02eff29dccdf2c6bdd1d903e8c26a05955ca8) added after openapi review
+ - 2022-11-26 23:36:42 +0100 [a67ad74](../../commit/a67ad74f3f6707b9cba1eefa8be70f7cfa82dab8) added deprecated processing, now shows version
+ - 2022-11-26 23:34:20 +0100 [47c7a3b](../../commit/47c7a3bb4bf4af554995c0b7b6a9e0f720c80aad) cleanup
+ - 2022-11-24 19:04:43 +0000 [a887285](../../commit/a8872852966b4ff4674cf3c9682adf209417d48f) CHANGELOG.md pushed to github
  - 2022-11-24 19:04:23 +0000 [4267ff9](../../commit/4267ff98cf90b6e5d7a3d802cf90f7c5bdc8deba) 2.11.1 release
  - 2022-11-24 19:03:24 +0000 [7315385](../../commit/731538589ba736ffcc47be69784139850136694f) more api endpoints
  - 2022-11-24 18:51:51 +0000 [b70509b](../../commit/b70509b5f3c788bd4159982881932a83381ec265) firewall rules example

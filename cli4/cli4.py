@@ -4,6 +4,7 @@
 import sys
 import re
 import getopt
+import keyword
 import json
 
 my_yaml = None
@@ -12,6 +13,7 @@ my_jsonlines = None
 import CloudFlare
 from .dump import dump_commands, dump_commands_from_web
 from . import converters
+from . import examples
 
 def load_and_check_yaml():
     """ load_and_check_yaml() """
@@ -103,6 +105,9 @@ def process_params_content_files(method, binary_file, args):
                 sys.exit('cli4: %s=%s - file open failure' % (tag_string, filename))
             # no need for param code below
             continue
+        elif (value_string[0] == '"' and value_string[-1] == '"') or (value_string[0] == '\'' and value_string[-1] == '\''):
+            # remove quotes
+            value = value_string[1:-1]
         else:
             value = value_string
 
@@ -237,13 +242,16 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                         raise e
         else:
             try:
-                # dashes (vs underscores) cause issues in Python and other languages
-                if '-' in element:
+                if keyword.iskeyword(element):
+                    # a keyword is appended with an extra underscore so it can used with Python code
+                    m = getattr(m, element + '_')
+                elif '-' in element:
+                    # dashes (vs underscores) cause issues in Python and other languages
                     m = getattr(m, element.replace('-','_'))
                 else:
                     m = getattr(m, element)
                 cmd.append(element)
-            except AttributeError:
+            except AttributeError as e:
                 # the verb/element was not found
                 sys.stderr.write('cli4: /%s - not found\n' % (command))
                 raise e
@@ -358,9 +366,9 @@ def do_it(args):
 
     verbose = False
     output = 'json'
+    example = False
     raw = False
     dump = False
-    dump_from_web = False
     openapi_url = None
     binary_file = False
     profile = None
@@ -368,10 +376,10 @@ def do_it(args):
 
     usage = ('usage: cli4 '
              + '[-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] '
+             + '[-e|--examples] '
              + '[-j|--json] [-y|--yaml] [-n|ndjson] '
              + '[-r|--raw] '
              + '[-d|--dump] '
-             + '[-a|--api] '
              + '[-A|--openapi url] '
              + '[-b|--binary] '
              + '[-p|--profile profile-name] '
@@ -381,12 +389,12 @@ def do_it(args):
 
     try:
         opts, args = getopt.getopt(args,
-                                   'VhvqjyrdaA:bp:GPOUD',
+                                   'VhvqejyrdA:bp:GPOUD',
                                    [
                                        'version',
-                                       'help', 'verbose', 'quiet', 'json', 'yaml', 'ndjson',
+                                       'help', 'verbose', 'quiet', 'examples', 'json', 'yaml', 'ndjson',
                                        'raw',
-                                       'dump', 'api', 'openapi=',
+                                       'dump', 'openapi=',
                                        'binary',
                                        'profile=',
                                        'get', 'patch', 'post', 'put', 'delete'
@@ -402,6 +410,8 @@ def do_it(args):
             verbose = True
         elif opt in ('-q', '--quiet'):
             output = None
+        elif opt in ('-e', '--examples'):
+            example = True
         elif opt in ('-j', '--json'):
             output = 'json'
         elif opt in ('-y', '--yaml'):
@@ -420,8 +430,6 @@ def do_it(args):
             profile = arg
         elif opt in ('-d', '--dump'):
             dump = True
-        elif opt in ('-a', '--api'):
-            dump_from_web = True
         elif opt in ('-A', '--openapi'):
             openapi_url = arg
         elif opt in ('-b', '--binary'):
@@ -437,6 +445,13 @@ def do_it(args):
         elif opt in ('-D', '--delete'):
             method = 'DELETE'
 
+    if example:
+        try:
+            examples.display()
+        except ModuleNotFoundError as e:
+            sys.exit(e)
+        sys.exit(0)
+
     try:
         cf = CloudFlare.CloudFlare(debug=verbose, raw=raw, profile=profile)
     except Exception as e:
@@ -444,11 +459,6 @@ def do_it(args):
 
     if dump:
         a = dump_commands(cf)
-        sys.stdout.write(a)
-        sys.exit(0)
-
-    if dump_from_web:
-        a = dump_commands_from_web(cf)
         sys.stdout.write(a)
         sys.exit(0)
 
