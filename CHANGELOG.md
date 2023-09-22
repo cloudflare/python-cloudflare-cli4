@@ -1,5 +1,15 @@
 # Change Log
 
+ - 2023-09-21 12:18:54 -0700 [1982e4e](../../commit/1982e4ed03eac6614da51ee55de47f372551ca73) 2.12.3
+ - 2023-09-21 12:17:12 -0700 [4180462](../../commit/41804623aa6725cf677f29ccadebc2651f4aa798) added ips and issue114 tests
+ - 2023-09-21 10:33:13 -0700 [0cbfbd3](../../commit/0cbfbd3aca7ae409042d41ada8412208d87bc1d2) add importlib_resources info for older Python versions
+ - 2023-09-21 10:11:06 -0700 [b5aae7e](../../commit/b5aae7eb3ee51160e0529bd375d1c842e28a1c96) Merge pull request #156 from UsamaSadiq/remove-future-dependency
+ - 2023-09-21 10:10:57 -0700 [5b3e687](../../commit/5b3e687d80a7283dee1e8782a32c83d266ced061) Merge branch 'master' into remove-future-dependency
+ - 2023-09-21 10:03:51 -0700 [4e9eb55](../../commit/4e9eb55f7dfbc382ab07e504b4df4aa4965bc609) Merge branch 'UsamaSadiq-remove-future-dependency'
+ - 2023-09-21 10:03:38 -0700 [e715dd7](../../commit/e715dd707c086194fac85299568b934275b5df40) UsamaSadiq-remove-future-dependency - remove future
+ - 2023-09-21 09:52:22 -0700 [57fac2f](../../commit/57fac2fa1e234898aff130b55737bea38eb42d51) Merge branch 'BjoernPetersen-fix-invalid-escape-sequence'
+ - 2023-09-21 09:51:55 -0700 [2bccbb9](../../commit/2bccbb9988e9b193724bc74005e72ebdd623f726) Merge branch 'fix-invalid-escape-sequence' of https://github.com/BjoernPetersen/python-cloudflare into BjoernPetersen-fix-invalid-escape-sequence
+ - 2023-09-19 12:24:33 -0700 [65a7e3d](../../commit/65a7e3d565be62154c6990f2ae76ef2ba0e4e61b) CHANGELOG.md pushed to github
  - 2023-09-19 12:24:18 -0700 [4b2254b](../../commit/4b2254bc24a2e87d937543efbfe06d54e3f4e4f2) 2.12.2
  - 2023-09-19 12:23:45 -0700 [483a20b](../../commit/483a20bf6448a52dd5182ed0de9cead5acbc947f) more api endpoints
  - 2023-09-19 12:13:49 -0700 [e3555cf](../../commit/e3555cf70abaa37d39c086b8d081e6859e0ed35e) 2.12.1
@@ -13,6 +23,7 @@
  - 2023-08-19 09:23:43 -0700 [0ea52bc](../../commit/0ea52bca64e6c09ff4c6823321dec501e5d34e09) CHANGELOG.md pushed to github
  - 2023-08-19 09:23:25 -0700 [3f1404b](../../commit/3f1404b4af674554657912de91804663b91d2ed6) 2.11.7
  - 2023-08-19 09:22:52 -0700 [94f0b0b](../../commit/94f0b0b081736a36ee27dbb0b454219fe8038121) more api endpoints
+ - 2023-07-25 16:30:40 +0200 [77400ea](../../commit/77400ea62f181dfc07f7c32d157bb5232fefefe6) Make RegEx string a raw string literal
  - 2023-06-24 12:58:51 -0700 [d08af99](../../commit/d08af997389e426e7323e8daffd8d9049ac8cd74) more api endpoints
  - 2023-05-29 20:19:27 -0700 [26a05cf](../../commit/26a05cfe6b71076393f568906356ea8602082e62) update examples and README to use == for numberic values
  - 2023-05-21 10:54:24 -0700 [a930e2c](../../commit/a930e2c7f139e3aafbac8f13323d4e62bbf39496) 2.11.6 release
@@ -27,6 +38,7 @@
  - 2023-05-19 10:58:29 -0700 [13739c5](../../commit/13739c53ec96449924a872ee589e01b7171bcf8b) CHANGELOG.md pushed to github
  - 2023-05-19 10:58:08 -0700 [31f7d0b](../../commit/31f7d0b7d6b27bcc925d0d74f2899239ddcc4389) 2.11.2 release
  - 2023-05-19 10:56:25 -0700 [0a0b492](../../commit/0a0b49298fea6a2bc5fb430a3385ee80ac9bf703) python keywords not handled correctly at command level
+ - 2023-02-22 20:30:01 +0500 [144cc1e](../../commit/144cc1e5313f308f391ace5c18e15d3e19998cb0) fix: remove future dependency and imports
  - 2022-11-26 23:37:57 +0100 [08a02ef](../../commit/08a02eff29dccdf2c6bdd1d903e8c26a05955ca8) added after openapi review
  - 2022-11-26 23:36:42 +0100 [a67ad74](../../commit/a67ad74f3f6707b9cba1eefa8be70f7cfa82dab8) added deprecated processing, now shows version
  - 2022-11-26 23:34:20 +0100 [47c7a3b](../../commit/47c7a3bb4bf4af554995c0b7b6a9e0f720c80aad) cleanup
