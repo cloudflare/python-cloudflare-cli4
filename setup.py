@@ -9,7 +9,7 @@ _version_re = re.compile(r"__version__\s=\s'(.*)'")
 def main():
     """Cloudflare API code - setup.py file"""
 
-    with open('README.md') as read_me:
+    with open('README.md', encoding="utf-8") as read_me:
         long_description = read_me.read()
 
     with open('CloudFlare/__init__.py', 'r') as f:
