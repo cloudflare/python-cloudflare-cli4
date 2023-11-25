@@ -533,16 +533,16 @@ $ pip install importlib_resources
 $
 ```
 
-It will show up if you are running on an older system. For example, this is the results from running on Win7):
+It will show up if you are running on an older system. For example, this is the results from running on Win7:
 
 ```bash
-U:\Users\█████>cli4 -e
+U:\Users\Bobby>cli4 -e
 Module "importlib_resources" missing - please "pip install importlib_resources" as your Python version is lower than 3.9
 
-U:\Users\█████>python -V
+U:\Users\Bobby>python -V
 Python 3.8.3
 
-U:\Users\█████>
+U:\Users\Bobby>
 ```
 
 Upgrading from an older version of Python is always recommended. Upgrading from Win7 is by-default even more important!
