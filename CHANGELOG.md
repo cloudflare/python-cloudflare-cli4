@@ -1,7 +1,12 @@
 # Change Log
 
+ - 2023-11-25 10:21:56 -0800 [807f99b](../../commit/807f99bdd5e524da14b376f382622d14e77216c9) 2.13.1
+ - 2023-11-25 10:17:37 -0800 [7dd1888](../../commit/7dd1888758a88cccd8daed9fcac9867608d1d26a) Merge pull request #175 from Daic115/master
+ - 2023-11-25 10:10:15 -0800 [838ef13](../../commit/838ef13b811e1aed3ed498ee34e959fc42d2b102) remove Unicode from README - this caused issues on Windows install
+ - 2023-11-25 10:06:52 -0800 [cd6f7d1](../../commit/cd6f7d1cad868d105e5d27f0a2b4653d9ab9efdd) CHANGELOG.md pushed to github
  - 2023-11-25 10:06:36 -0800 [541c8f6](../../commit/541c8f6983463bca0de98b57af370b2150e64133) 2.12.5
  - 2023-11-25 10:06:19 -0800 [2610c98](../../commit/2610c98795703942cf7bf22b6e5cd3c278515414) more api endpoints
+ - 2023-11-15 15:58:23 +0800 [4524c50](../../commit/4524c5053c20c830093a35641f4f9a74210e997e) Update setup.py
  - 2023-09-21 18:45:16 -0700 [419c90b](../../commit/419c90b24692c9a426c0d47c01dea4358f1fe909) 2.12.4
  - 2023-09-21 12:18:54 -0700 [1982e4e](../../commit/1982e4ed03eac6614da51ee55de47f372551ca73) 2.12.3
  - 2023-09-21 12:17:12 -0700 [4180462](../../commit/41804623aa6725cf677f29ccadebc2651f4aa798) added ips and issue114 tests
