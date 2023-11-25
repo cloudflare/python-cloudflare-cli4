@@ -320,9 +320,11 @@ def write_results(results, output):
     if len(results) == 1:
         results = results[0]
 
-    if isinstance(results, str):
+    if isinstance(results, str) or isinstance(results, (bytes, bytearray)):
         # if the results are a simple string, then it should be dumped directly
         # this is only used for /zones/:id/dns_records/export presently
+        # or
+        # output is image or audio or video or something like that so we dump directly
         pass
     else:
         # anything more complex (dict, list, etc) should be dumped as JSON/YAML
@@ -350,14 +352,18 @@ def write_results(results, output):
                 pass
             return
         else:
-            # Internal error
-            pass
+            # None of the above, so pass thru results except something in byte form
+            if not isinstance(results, (bytes, bytearray)):
+                results = str(results)
 
     if results:
         try:
-            sys.stdout.write(results)
-            if not results.endswith('\n'):
-                sys.stdout.write('\n')
+            if isinstance(results, (bytes, bytearray)):
+                sys.stdout.buffer.write(results)
+            else:
+                sys.stdout.write(results)
+                if not results.endswith('\n'):
+                    sys.stdout.write('\n')
         except (BrokenPipeError, IOError):
             pass
 
@@ -377,7 +383,7 @@ def do_it(args):
     usage = ('usage: cli4 '
              + '[-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] '
              + '[-e|--examples] '
-             + '[-j|--json] [-y|--yaml] [-n|ndjson] '
+             + '[-j|--json] [-y|--yaml] [-n|--ndjson] [-i|--image]'
              + '[-r|--raw] '
              + '[-d|--dump] '
              + '[-A|--openapi url] '
@@ -389,10 +395,10 @@ def do_it(args):
 
     try:
         opts, args = getopt.getopt(args,
-                                   'VhvqejyrdA:bp:GPOUD',
+                                   'VhvqejynirdA:bp:GPOUD',
                                    [
                                        'version',
-                                       'help', 'verbose', 'quiet', 'examples', 'json', 'yaml', 'ndjson',
+                                       'help', 'verbose', 'quiet', 'examples', 'json', 'yaml', 'ndjson', 'image',
                                        'raw',
                                        'dump', 'openapi=',
                                        'binary',
@@ -424,6 +430,8 @@ def do_it(args):
             if not my_jsonlines.available():
                 sys.exit('cli4: install jsonlines support')
             output = 'ndjson'
+        elif opt in ('-i', '--image'):
+            output = 'image'
         elif opt in ('-r', '--raw'):
             raw = True
         elif opt in ('-p', '--profile'):
