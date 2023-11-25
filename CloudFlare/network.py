@@ -12,7 +12,7 @@ class CFnetwork:
     """Network for Cloudflare API"""
 
     def __init__(
-        self, max_request_retries, use_sessions=True, global_request_timeout=5,
+        self, use_sessions=True, global_request_timeout=5, max_request_retries=5
     ):
         """Network for Cloudflare API"""
 

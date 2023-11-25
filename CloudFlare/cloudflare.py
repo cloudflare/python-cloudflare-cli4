@@ -15,6 +15,9 @@ from .exceptions import CloudFlareError, CloudFlareAPIError, CloudFlareInternalE
 
 BASE_URL = 'https://api.cloudflare.com/client/v4'
 
+DEFAULT_GLOBAL_REQUEST_TIMEOUT = 5
+DEFAULT_MAX_REQUEST_RETRIES = 5
+
 class CloudFlare():
     """ Cloudflare v4 API"""
 
@@ -24,6 +27,7 @@ class CloudFlare():
         def __init__(self, config):
             """ Cloudflare v4 API"""
 
+            self.network = None
             self.config = config
 
             self.api_email = config['email'] if 'email' in config else None
@@ -36,8 +40,16 @@ class CloudFlare():
 
             self.raw = config['raw']
             self.use_sessions = config['use_sessions']
-            self.global_request_timeout = config['global_request_timeout'] if 'global_request_timeout' in config else None
-            self.max_request_retries = config['max_request_retries'] if 'max_request_retries' in config else None
+            self.global_request_timeout = config['global_request_timeout'] if 'global_request_timeout' in config else DEFAULT_GLOBAL_REQUEST_TIMEOUT
+            self.max_request_retries = config['max_request_retries'] if 'max_request_retries' in config else DEFAULT_MAX_REQUEST_RETRIES
+            try:
+                self.global_request_timeout = int(self.global_request_timeout)
+            except (TypeError, ValueError):
+                self.global_request_timeout = DEFAULT_GLOBAL_REQUEST_TIMEOUT
+            try:
+                self.max_request_retries = int(self.max_request_retries)
+            except (TypeError, ValueError):
+                self.max_request_retries = DEFAULT_MAX_REQUEST_RETRIES
             self.profile = config['profile']
             self.network = CFnetwork(
                 use_sessions=self.use_sessions,
@@ -245,7 +257,10 @@ class CloudFlare():
                 response_data = response_data.decode("utf-8")
 
             if self.logger:
-                self.logger.debug('Response: %d, %s, %s', response_code, response_type, response_data)
+                if 'text/' == response_type[0:5] or response_type in ['application/javascript', 'application/json']:
+                    self.logger.debug('Response: %d, %s, %s', response_code, response_type, response_data[0:100])
+                else:
+                    self.logger.debug('Response: %d, %s, %s', response_code, response_type, '...')
 
             if response_code >= 500 and response_code <= 599:
                 # 500 Internal Server Error
@@ -421,6 +436,14 @@ class CloudFlare():
                                      'code': response_code,
                                      'result': str(response_data)}
 
+            elif response_type[0:6] in ['audio/', 'image/', 'video/']:
+                # raw - just pass thru
+                if response_code == requests_codes.ok:
+                    response_data = {'success': True, 'result': response_data}
+                else:
+                    response_data = {'success': False,
+                                     'code': response_code,
+                                     'result': response_data}
             else:
                 # Assuming nothing - but continuing anyway
                 # A single value is returned (vs an array or object)
@@ -531,7 +554,10 @@ class CloudFlare():
                 except:
                     result = response_data
             if self.logger:
-                self.logger.debug('Response: %s', result)
+                if isinstance(result, str):
+                    self.logger.debug('Response: %s', result[0:100])
+                else:
+                    self.logger.debug('Response: %s', '...')
             return result
 
         def _call_unwrapped(self, method, headers, parts, identifiers, params, data, files):
@@ -913,7 +939,7 @@ class CloudFlare():
 
         return api_decode_from_openapi(self._base.api_from_openapi(url))
 
-    def __init__(self, email=None, key=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None, global_request_timeout=5, max_request_retries=5):
+    def __init__(self, email=None, key=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None, global_request_timeout=None, max_request_retries=None):
         """ Cloudflare v4 API"""
 
         self._base = None

@@ -21,6 +21,9 @@ def read_configs(profile=None):
     config['extras'] = os.getenv('CLOUDFLARE_API_EXTRAS') if os.getenv('CLOUDFLARE_API_EXTRAS') is not None else os.getenv('CF_API_EXTRAS')
     config['base_url'] = os.getenv('CLOUDFLARE_API_URL') if os.getenv('CLOUDFLARE_API_URL') is not None else os.getenv('CF_API_URL')
 
+    config['global_request_timeout'] = os.getenv('CLOUDFLARE_GLOBAL_REQUEST_TIMEOUT')
+    config['max_request_retries'] = os.getenv('CLOUDFLARE_MAX_REQUEST_RETRIES')
+
     # grab values from config files
     cp = configparser.ConfigParser()
     try:
@@ -55,7 +58,7 @@ def read_configs(profile=None):
         if not cp.has_section(profile):
             raise Exception("%s: configuration section missing - configuration file only has these sections: %s" % (profile, ','.join(cp.sections())))
 
-        for option in ['email', 'key', 'token', 'certtoken', 'extras', 'base_url']:
+        for option in ['email', 'key', 'token', 'certtoken', 'extras', 'base_url', 'global_request_timeout', 'max_request_retries']:
             try:
                 config_value = cp.get(profile, option)
                 if option == 'extras':
