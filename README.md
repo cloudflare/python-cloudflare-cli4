@@ -463,7 +463,7 @@ import CloudFlare
 
 ### Exception examples
 
-Here's examples using the CLI command cli4 of the responses passed back in exceptions.
+Here's examples using the CLI command `cli4` of the responses passed back in exceptions.
 
 First a simple get with a clean (non-error) response.
 
@@ -604,12 +604,23 @@ if __name__ == '__main__':
 
 ## CLI
 
-All API calls can be called from the command line.
-The command will convert domain names prefixed with a colon (`:`) into zone_identifiers: e.g. to view `example.com` you must use `cli4 /zones/:example.com` (the zone ID cannot be used).
+All API calls can be called from the command line via the `cli4` command.
+Additionally, the `cli4` command will convert domain name or account name prefixed with a colon (`:`) into the correct identifier.
+e.g. to view `example.com` you can use `cli4 /zones/:example.com`.
+You can pass the zone identifier (or account identifier or any identifier) with a colon followed by the identifier as a hex number 32 characters long.
 
 ```bash
-$ cli4 [-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] [-j|--json] [-y|--yaml] [-n|ndjson] [-r|--raw] [-d|--dump] [-A|--openapi url] [-b|--binary] [-p|--profile profile-name] [--get|--patch|--post|--put|--delete] [item=value|item=@filename|@filename ...] /command ...
-
+$ cli4 [-V|--version] [-h|--help] [-v|--verbose] \
+    [-e|--examples] \
+    [-q|--quiet] \
+    [-j|--json] [-y|--yaml] [-n|--ndjson] [-i|--image] \
+    [-r|--raw] \
+    [-d|--dump] \
+    [-A|--openapi url] \
+    [-b|--binary] \
+    [-p|--profile profile-name] \
+    [--get|--patch|--post|--put|--delete] \
+    [item=value|item=@filename|@filename ...] /command ...
 ```
 
 ### CLI parameters for POST/PUT/PATCH
@@ -645,7 +656,13 @@ Data can also be uploaded from file contents. Using the ```item=@filename``` for
 
 ### CLI output
 
-The output from the CLI command is in JSON or YAML format (and human readable). This is controled by the **--yaml** or **--json** flags (JSON is the default).
+The default output from the CLI command is in JSON.
+It can also output YAML format (i.e. human readable).
+This is controled by the `--yaml` or `--json` flags (JSON is the default).
+There is also a `--ndjson` flag for use with line based JSON data - this is mainly used for log data.
+
+Additonally the output can be plain text or binary image format depending on the results from the API call (some calls results in non JSON results).
+The `--image` flag will return the data in the same format as the API's results.
 
 ### Simple CLI examples
 
