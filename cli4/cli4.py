@@ -381,9 +381,10 @@ def do_it(args):
     method = 'GET'
 
     usage = ('usage: cli4 '
-             + '[-V|--version] [-h|--help] [-v|--verbose] [-q|--quiet] '
+             + '[-V|--version] [-h|--help] [-v|--verbose] '
              + '[-e|--examples] '
-             + '[-j|--json] [-y|--yaml] [-n|--ndjson] [-i|--image]'
+             + '[-q|--quiet] '
+             + '[-j|--json] [-y|--yaml] [-n|--ndjson] [-i|--image] '
              + '[-r|--raw] '
              + '[-d|--dump] '
              + '[-A|--openapi url] '
@@ -395,12 +396,15 @@ def do_it(args):
 
     try:
         opts, args = getopt.getopt(args,
-                                   'VhvqejynirdA:bp:GPOUD',
+                                   'VhveqjynirdA:bp:GPOUD',
                                    [
-                                       'version',
-                                       'help', 'verbose', 'quiet', 'examples', 'json', 'yaml', 'ndjson', 'image',
+                                       'version', 'help', 'verbose',
+                                       'examples',
+                                       'quiet',
+                                       'json', 'yaml', 'ndjson', 'image',
                                        'raw',
-                                       'dump', 'openapi=',
+                                       'dump',
+                                       'openapi=',
                                        'binary',
                                        'profile=',
                                        'get', 'patch', 'post', 'put', 'delete'
