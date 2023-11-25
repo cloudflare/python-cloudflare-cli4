@@ -1,5 +1,11 @@
 # Change Log
 
+ - 2023-11-25 13:05:33 -0800 [bf47169](../../commit/bf471698839dd7910480133620cfaecfe1e7c2ba) 2.14.1
+ - 2023-11-25 13:05:09 -0800 [d5f707d](../../commit/d5f707d2a9916ae8e860219a3f4dbaf8d3a2d1f8) cleanup of usage, added more flag descriptions
+ - 2023-11-25 13:04:33 -0800 [d23ed90](../../commit/d23ed909706259e8297fc5497b59cb41f32ffbb5) cleanup of usage and getops values - now consistent
+ - 2023-11-25 12:42:24 -0800 [142a01b](../../commit/142a01ba26f4600b375f0678c92226870d01368b) timeout values now work from config or api call, added support for image binary results, fixed logging if binary
+ - 2023-11-25 12:39:05 -0800 [453fed3](../../commit/453fed3e3c4d60946b5519bd236a983d9dcce272) handle raw byte output either via --image flag or if return from api is bytes
+ - 2023-11-25 10:22:15 -0800 [e08610b](../../commit/e08610bfaa5958c25f6dadb7c9a3842b7fe42793) CHANGELOG.md pushed to github
  - 2023-11-25 10:21:56 -0800 [807f99b](../../commit/807f99bdd5e524da14b376f382622d14e77216c9) 2.13.1
  - 2023-11-25 10:17:37 -0800 [7dd1888](../../commit/7dd1888758a88cccd8daed9fcac9867608d1d26a) Merge pull request #175 from Daic115/master
  - 2023-11-25 10:10:15 -0800 [838ef13](../../commit/838ef13b811e1aed3ed498ee34e959fc42d2b102) remove Unicode from README - this caused issues on Windows install
