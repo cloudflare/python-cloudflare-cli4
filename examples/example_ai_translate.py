@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import sys
 import CloudFlare
 
@@ -15,6 +16,9 @@ def translate_call(cf):
     return m
 
 def doit(account_name, english_text):
+
+    # Or place these in your cloudflare.cfg file
+    os.environ['CLOUDFLARE_API_EXTRAS'] = '/accounts/:id/ai/run/@cf/meta/m2m100-1.2b'
 
     cf = CloudFlare.CloudFlare()
 
