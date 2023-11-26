@@ -23,12 +23,18 @@ def doit(account_name, english_text):
     cf = CloudFlare.CloudFlare(global_request_timeout=120)
 
     try:
-        params = {'name': account_name, 'per_page': 1}
+        if account_name == None or account_name == '':
+            params = {'per_page': 1}
+        else:
+            params = {'name': account_name, 'per_page': 1}
         accounts = cf.accounts.get(params=params)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/accounts %d %s - api call failed' % (e, e))
 
-    account_id = accounts[0]['id']
+    try:
+        account_id = accounts[0]['id']
+    except IndexError:
+        exit('%s: account name not found' % (account_name))
 
     translate_data = {
         'text': english_text,
@@ -47,9 +53,14 @@ def doit(account_name, english_text):
     print(r['translated_text'])
 
 def main():
-    account_name = sys.argv[1]
-    if len(sys.argv) > 2:
-        english_text = ' '.join(sys.argv[2:])
+    if sys.argv[1] == '-a':
+        del sys.argv[1]
+        account_name = sys.argv[1]
+        del sys.argv[1]
+    else:
+        account_name = None
+    if len(sys.argv) > 1:
+        english_text = ' '.join(sys.argv[1:])
     else:
         english_text = "I'll have an order of the moule frites"
     doit(account_name, english_text)
