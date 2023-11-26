@@ -9,10 +9,9 @@ def translate_call(cf):
     # We also have to deal with a . in a verb - that does not work in Python. So sad.
     # Also, the - is actually an _ in this Python library. 
     # This is not normally needed for other calls
-    m = cf.accounts.ai.run
-    m = getattr(m, '@cf')
-    m = getattr(m, 'meta')
-    m = getattr(m, 'm2m100_1.2b')
+    m = cf
+    for verb in 'accounts/ai/run/@cf/meta/m2m100_1.2b'.split('/'):
+        m = getattr(m, verb)
     return m
 
 def doit(account_name, english_text):
