@@ -1265,6 +1265,63 @@ $
 For more information on how to use GraphQL at Cloudflare, refer to the [Cloudflare GraphQL Analytics API](https://developers.cloudflare.com/analytics/graphql-api).
 It contains a full overview of Cloudflare's GraphQL features and keywords.
 
+## Cloudflare AI
+
+See https://blog.cloudflare.com/workers-ai-update-stable-diffusion-code-llama-workers-ai-in-100-cities/ for the introduction,
+along with https://developers.cloudflare.com/workers-ai/models/ for the nitty gritty details.
+
+There are two examples for AI calls included with the code.
+
+```bash
+$ python examples/example_ai_images.py A happy llama running through an orange cloud > /tmp/image.png
+$
+$ file /tmp/image.png
+/tmp/image.png: PNG image data, 1024 x 1024, 8-bit/color RGB, non-interlaced
+$
+```
+
+```bash
+$ python examples/example_ai_translate.py I\'ll have an order of the moule frites
+Je vais avoir une commande des frites de moule
+$
+```
+
+This is presently work-in-progress because of the non-Python calling method. The syntax could change in the future.
+The examples will be updated.
+
+They can also be called via `cli4`.
+
+```bash
+$ cli4 --image --post text="I'll have an order of the moule frites" source_lang=english target_lang=french /accounts/:AccountID/ai/run/@cf/meta/m2m100-1.2b
+{'translated_text': 'Je vais avoir une commande des frites de moule'}
+$
+```
+
+Presently you will need the following in your `cloudflare.cfg` file.
+
+```bash
+$ cat ~/.cloudflare/cloudflare.cfg
+[CloudFlare]
+global_request_timeout = 120
+max_request_retries = 1
+extras =
+    /accounts/:id/ai/run/@cf/meta/llama-2-7b-chat-fp16
+    /accounts/:id/ai/run/@cf/meta/llama-2-7b-chat-int8
+    /accounts/:id/ai/run/@cf/mistral/mistral-7b-instruct-v0.1
+    /accounts/:id/ai/run/@cf/openai/whisper
+    /accounts/:id/ai/run/@cf/meta/m2m100-1.2b
+    /accounts/:id/ai/run/@cf/huggingface/distilbert-sst-2-int8
+    /accounts/:id/ai/run/@cf/microsoft/resnet-50
+    /accounts/:id/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0
+    /accounts/:id/ai/run/@cf/baai/bge-base-en-v1.5
+    /accounts/:id/ai/run/@cf/baai/bge-large-en-v1.5
+    /accounts/:id/ai/run/@cf/baai/bge-small-en-v1.5
+
+$
+```
+
+Along with a version of the library above `2.14.1`.
+
 ## Implemented API calls
 
 The **--dump** argument to cli4 will produce a list of all the call implemented within the library.
