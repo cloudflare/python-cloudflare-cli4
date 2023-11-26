@@ -1,5 +1,13 @@
 # Change Log
 
+ - 2023-11-25 20:04:41 -0800 [b80db60](../../commit/b80db60510874da0a268af10bd1f89cd109707f4) added AI info
+ - 2023-11-25 19:43:28 -0800 [c88bbfa](../../commit/c88bbfaec951db80130cdc3404801c29680c6c05) account name via -a flag now. should not be needed
+ - 2023-11-25 19:26:44 -0800 [3621a4d](../../commit/3621a4d18919f65a8f5b8979e76d3a0bd453fd12) clean up and more
+ - 2023-11-25 19:25:59 -0800 [282aa54](../../commit/282aa543947fe87aa16687a94a88a780a3883b1f) stable diffusion example
+ - 2023-11-25 19:25:07 -0800 [3e40a69](../../commit/3e40a69089db1c3f567117768e34e2a7247e2a01) clean up and more
+ - 2023-11-25 15:14:00 -0800 [1eeca98](../../commit/1eeca983753691186490dde261ffa69e6c731d2f) move config info into code
+ - 2023-11-25 15:00:14 -0800 [d79b0ec](../../commit/d79b0ece436b66daf210a25d90fc25333d52803b) first pass a new AI API calls
+ - 2023-11-25 13:06:07 -0800 [115fac8](../../commit/115fac8f32284e96df36ea98b0cdf5a416cdff56) CHANGELOG.md pushed to github
  - 2023-11-25 13:05:33 -0800 [bf47169](../../commit/bf471698839dd7910480133620cfaecfe1e7c2ba) 2.14.1
  - 2023-11-25 13:05:09 -0800 [d5f707d](../../commit/d5f707d2a9916ae8e860219a3f4dbaf8d3a2d1f8) cleanup of usage, added more flag descriptions
  - 2023-11-25 13:04:33 -0800 [d23ed90](../../commit/d23ed909706259e8297fc5497b59cb41f32ffbb5) cleanup of usage and getops values - now consistent
