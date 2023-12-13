@@ -48,6 +48,9 @@ def api_v4(self):
     # The API commands for /ips/
     ips(self)
 
+    # The API commands for /live/
+    live(self)
+
     # The API commands for /accounts/
     accounts(self)
     accounts_access(self)
@@ -268,6 +271,11 @@ def ips(self):
     """ ips """
 
     self.add('OPEN', 'ips')
+
+def live(self):
+    """ live """
+
+    self.add('AUTH', 'live')
 
 def zones_argo(self):
     """ zones argo """
@@ -659,6 +667,7 @@ def accounts_extras(self):
 
     self.add('VOID', 'accounts', 'ai')
     self.add('AUTH', 'accounts', 'ai/run')
+    self.add('AUTH', 'accounts', 'ai/run/proxy')
 
     self.add('VOID', 'accounts', 'alerting')
     self.add('VOID', 'accounts', 'alerting/v3')
