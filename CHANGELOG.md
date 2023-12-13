@@ -1,5 +1,9 @@
 # Change Log
 
+ - 2023-12-13 13:59:55 +0000 [9b0787e](../../commit/9b0787efa929d374392e9db4f6fcec05700de0fe) 2.14.3
+ - 2023-12-13 13:52:53 +0000 [ab6f4db](../../commit/ab6f4db695c8666489491abb503ada59f3c30f49) handle {account-identifier} with a dash vs underscore. Arggg!
+ - 2023-12-13 13:52:03 +0000 [f445051](../../commit/f445051a99a9b933e4b7ddf50ba82d477b3f74b1) /live added - but does not response yet
+ - 2023-11-25 20:05:23 -0800 [5b7b386](../../commit/5b7b386b91700d21cd24f5cefbcb90c6f08ccd45) CHANGELOG.md pushed to github
  - 2023-11-25 20:04:41 -0800 [b80db60](../../commit/b80db60510874da0a268af10bd1f89cd109707f4) added AI info
  - 2023-11-25 19:43:28 -0800 [c88bbfa](../../commit/c88bbfaec951db80130cdc3404801c29680c6c05) account name via -a flag now. should not be needed
  - 2023-11-25 19:26:44 -0800 [3621a4d](../../commit/3621a4d18919f65a8f5b8979e76d3a0bd453fd12) clean up and more
