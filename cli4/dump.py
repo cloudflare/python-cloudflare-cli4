@@ -17,7 +17,10 @@ def dump_commands_from_web(cf, url):
             else:
                 a.append('%-6s %s ; deprecated %s' % (r['action'], r['cmd'], r['deprecated_date']))
         else:
-            a.append('%-6s %s' % (r['action'], r['cmd']))
+            if 'content_type' in r and r['content_type']:
+                a.append('%-6s %s ; Content-Type: %s' % (r['action'], r['cmd'], r['content_type']))
+            else:
+                a.append('%-6s %s' % (r['action'], r['cmd']))
     return '\n'.join(a) + '\n'
 
 

@@ -34,7 +34,26 @@ def do_path(cmd, values):
             deprecated = False
             deprecated_date = ''
             deprecated_already = False
-        v = {'action': action.upper(), 'cmd': cmd, 'deprecated': deprecated, 'deprecated_date': deprecated_date, 'deprecated_already': deprecated_already}
+
+        # The requestBody/content could be one of the following:
+        # "requestBody": {
+        #   "content": {
+        #     "application/javascript" {
+        #     "application/json" {
+        #     "application/octet-stream" {
+        #     "application/x-ndjson" {
+        #     "multipart/form-data" {
+
+        content_type = None
+        if 'requestBody' in values[action] and values[action]['requestBody']:
+            request_body = values[action]['requestBody']
+            if 'content' in request_body and request_body['content']:
+                content_type = ','.join(list(request_body['content'].keys()))
+
+        if content_type:
+            v = {'action': action.upper(), 'cmd': cmd, 'deprecated': deprecated, 'deprecated_date': deprecated_date, 'deprecated_already': deprecated_already, 'content_type': content_type}
+        else:
+            v = {'action': action.upper(), 'cmd': cmd, 'deprecated': deprecated, 'deprecated_date': deprecated_date, 'deprecated_already': deprecated_already}
         cmds.append(v)
     return cmds
 

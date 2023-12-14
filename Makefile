@@ -96,8 +96,8 @@ lint:
 openapi:
 	@tmp=/tmp/_$$$$_ ; \
 	$(PYTHON) -m cli4 --dump | sort > $$tmp.1 ; \
-	$(PYTHON) -m cli4 --openapi $(OPENAPI_URL) | sed -e 's/^[A-Z][A-Z]*  *//' -e 's/?.*//' -e 's/\/:[a-z][A-Za-z_]*/\/:id/g' -e 's/\/:[a-z][A-Za-z_]*}/\/:id/g' -e 's/:id\/:id/:id/' -e 's/\/:id$$//' -e 's/\/:id$$//' -e 's/\/:id ;/ ;/' -e 's/\/$$//' | sort -u > $$tmp.2 ; \
-	egrep -v '; deprecated' < $$tmp.2 | diff $$tmp.1 - > $$tmp.3 ; \
+	$(PYTHON) -m cli4 --openapi $(OPENAPI_URL) | sed -e 's/^[A-Z][A-Z]*  *//' -e 's/?.*//' -e 's/\/:[a-z][A-Za-z_]*/\/:id/g' -e 's/\/:[a-z][A-Za-z_]*}/\/:id/g' -e 's/:id\/:id/:id/' -e 's/\/:id$$//' -e 's/\/:id$$//' -e 's/\/:id ;/ ;/' -e 's/ ; Content-Type: .*//' -e 's/\/$$//' | sort -u > $$tmp.2 ; \
+	egrep -v '; deprecated' < $$tmp.2 | sed -e 's/ ; .*//' | diff $$tmp.1 - > $$tmp.3 ; \
 	echo "In code:" ; \
 	egrep '< ' < $$tmp.3 | sed -e 's/< /    /' | sort | tee $$tmp.4 ; \
 	echo "In docs:" ; \
