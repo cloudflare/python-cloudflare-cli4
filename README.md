@@ -984,14 +984,14 @@ $
 
 ### Zone file upload (i.e. import) Python examples (uses BIND format files)
 
-Because `import` is a reserved word in Python there needs to be a slight workaround to calling this within code.
+Because `import` is a keyword (or reserved word) in Python we append a '_' (underscore) to the verb in order to use.
+The `cli4` command does not need this edit.
 
 ```
     #
-    # "import" is a reserved word and hence this code - it's ugly; but correct.
+    # "import" is a reserved word and hence we add '_' to the end of verb.
     #
-    dns_records_import = getattr(cf.zones.dns_records, 'import')
-    r = dns_records_import.post(zone_id, files={'file':fd})
+    r = cf.zones.dns_records.import_.post(zone_id, files={'file':fd})
 ```
 
 See (examples/example_dns_import.py)[examples/example_dns_import.py] for working code.
