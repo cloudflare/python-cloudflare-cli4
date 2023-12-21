@@ -42,14 +42,11 @@ def main():
 
     zone_id = zones[0]['id']
 
-    #
-    # "import" is a reserved word and hence this code - it's ugly; but correct.
-    #
-    m = cf.zones.dns_records
-    m = getattr(m, 'import')
-
     try:
-        r = m.post(zone_id, files={'file':fd})
+        #
+        # "import" is a reserved word and hence we add '_' to the end of verb.
+        #
+        r = cf.zones.dns_records.import_.post(zone_id, files={'file':fd})
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/zones/dns_records/import %s - %d %s - api call failed' % (dns_name, e, e))
 
