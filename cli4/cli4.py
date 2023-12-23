@@ -41,7 +41,7 @@ def process_params_content_files(method, binary_file, args):
     while len(args) > 0 and ('=' in args[0] or args[0][0] == '@'):
         arg = args.pop(0)
         if arg[0] == '@':
-            # a file to be uploaded - used in workers/script - only via PUT
+            # a file to be uploaded - used in workers/script etc - only via PUT or POST
             filename = arg[1:]
             if method not in ['PUT','POST']:
                 sys.exit('cli4: %s - raw file upload only with PUT or POST' % (filename))
@@ -259,8 +259,6 @@ def run_command(cf, method, command, params=None, content=None, files=None):
     if content and params:
         sys.stderr.write('cli4: /%s - content and params not allowed together\n' % (command))
         raise Exception
-    if content:
-        params = content
 
     results = []
     if identifier2 is None:
@@ -268,6 +266,7 @@ def run_command(cf, method, command, params=None, content=None, files=None):
     for i2 in identifier2:
         try:
             if method == 'GET':
+                # no content with a GET call
                 r = m.get(identifier1=identifier1,
                           identifier2=i2,
                           identifier3=identifier3,
@@ -276,22 +275,22 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 r = m.patch(identifier1=identifier1,
                             identifier2=i2,
                             identifier3=identifier3,
-                            data=params)
+                            data=content)
             elif method == 'POST':
                 r = m.post(identifier1=identifier1,
                            identifier2=i2,
                            identifier3=identifier3,
-                           data=params, files=files)
+                           data=content, files=files)
             elif method == 'PUT':
                 r = m.put(identifier1=identifier1,
                           identifier2=i2,
                           identifier3=identifier3,
-                          data=params)
+                          data=content)
             elif method == 'DELETE':
                 r = m.delete(identifier1=identifier1,
                              identifier2=i2,
                              identifier3=identifier3,
-                             data=params)
+                             data=content)
             else:
                 pass
         except CloudFlare.exceptions.CloudFlareAPIError as e:
