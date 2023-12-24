@@ -2,6 +2,8 @@
 
 import os
 import sys
+
+sys.path.insert(0, os.path.abspath('.'))
 import CloudFlare
 
 def find_call(cf, verbs):
@@ -11,6 +13,8 @@ def find_call(cf, verbs):
     # This is not normally needed for other calls
     m = cf
     for verb in verbs.split('/'):
+        if verb == '' or verb[0] == ':':
+            continue
         m = getattr(m, verb)
     return m
 
@@ -46,14 +50,14 @@ def doit(account_name, english_text):
         # This should be easy to call; however, the @ will not work in Python (or many languages)
         # r = cf.accounts.ai.run.@cf.meta.m2m100-1.2b(account_id, data=translate_data)
         # We find the endpoint via a quick string search
-        r = find_call(cf, 'accounts/ai/run/@cf/meta/m2m100_1.2b').post(account_id, data=translate_data)
+        r = find_call(cf, '/accounts/:id/ai/run/@cf/meta/m2m100_1.2b').post(account_id, data=translate_data)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/ai.run %d %s - api call failed' % (e, e))
 
     print(r['translated_text'])
 
 def main():
-    if sys.argv[1] == '-a':
+    if len(sys.argv) > 1 and sys.argv[1] == '-a':
         del sys.argv[1]
         account_name = sys.argv[1]
         del sys.argv[1]

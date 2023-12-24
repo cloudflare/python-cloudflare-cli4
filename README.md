@@ -1270,7 +1270,9 @@ It contains a full overview of Cloudflare's GraphQL features and keywords.
 See https://blog.cloudflare.com/workers-ai-update-stable-diffusion-code-llama-workers-ai-in-100-cities/ for the introduction,
 along with https://developers.cloudflare.com/workers-ai/models/ for the nitty gritty details.
 
-There are two examples for AI calls included with the code.
+There are three examples for AI calls included with the code.
+
+Image creation.
 
 ```bash
 $ python examples/example_ai_images.py A happy llama running through an orange cloud > /tmp/image.png
@@ -1280,9 +1282,23 @@ $ file /tmp/image.png
 $
 ```
 
+Translation.
+
 ```bash
 $ python examples/example_ai_translate.py I\'ll have an order of the moule frites
 Je vais avoir une commande des frites de moule
+$
+```
+
+Speech Recognition with the openai/whisper model.
+The following downloads a speech as an mp3 file and passes it to the AI API.
+It does a very good job transcribing; however, there's a good chance these mp3 files were use for training.
+That said, the example code is here to show how the API works vs testing the AI/ML quality.
+
+```bash
+$ python examples/example_ai_speechrecognition.py
+mp3 received: length=700367
+My fellow Americans, Michelle and I have been so touched by all the well wishes that we've received over the past few weeks. But tonight, tonight it's my turn to say thanks.
 $
 ```
 
