@@ -91,11 +91,14 @@ def process_params_content_files(method, binary_file, args):
             except ValueError:
                 sys.exit('cli4: %s="%s" - can\'t parse json value' % (tag_string, value_string))
         elif value_string[0] == '@':
-            # a file to be uploaded - used in dns_records/import - only via POST
+            # a file to be uploaded - used in dns_records/import etc - only via PUT or POST
             filename = value_string[1:]
-            if method != 'POST':
-                sys.exit('cli4: %s=%s - file upload only with POST' % (tag_string, filename))
-            files = {}
+            if method not in ['PUT', 'POST']:
+                sys.exit('cli4: %s=%s - file upload only with PUT or POST' % (tag_string, filename))
+            if files is None:
+                files = {}
+            if tag_string in files:
+                sys.exit('cli4: %s=%s - duplicate name' % (tag_string, filename))
             try:
                 if filename == '-':
                     files[tag_string] = sys.stdin
@@ -127,6 +130,15 @@ def process_params_content_files(method, binary_file, args):
             except TypeError:
                 sys.exit('cli4: %s=%s - param error. Can\'t mix unnamed and named list' %
                          (tag_string, value_string))
+
+    if content and params:
+        sys.exit('cli4: content and params not allowed together')
+
+    if params and files:
+        for k,v in params.items():
+            files[k] = (None, v)
+        params = None
+        # sys.exit('cli4: params and files not allowed together')
 
     return (params, content, files)
 
@@ -256,10 +268,6 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 sys.stderr.write('cli4: /%s - not found\n' % (command))
                 raise e
 
-    if content and params:
-        sys.stderr.write('cli4: /%s - content and params not allowed together\n' % (command))
-        raise Exception
-
     results = []
     if identifier2 is None:
         identifier2 = [None]
@@ -285,7 +293,7 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 r = m.put(identifier1=identifier1,
                           identifier2=i2,
                           identifier3=identifier3,
-                          data=content)
+                          data=content, files=files)
             elif method == 'DELETE':
                 r = m.delete(identifier1=identifier1,
                              identifier2=i2,
