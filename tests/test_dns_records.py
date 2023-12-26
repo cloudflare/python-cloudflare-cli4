@@ -44,7 +44,7 @@ def test_dns_records():
     dns_content3 = 'temp pytest element 3'
     print('dns_record: %s' % (dns_name))
 
-def test_dns_records_get():
+def test_dns_records_get1():
     # GET
     params = {'name':dns_name + '.' + zone_name, 'match':'all', 'type':dns_type}
     dns_results = cf.zones.dns_records.get(zone_id, params=params)
@@ -65,7 +65,7 @@ def test_dns_records_post():
     assert len(dns_id) == 32
     print('dns_record: %s %s' % (dns_name, dns_id))
 
-def test_dns_records_get():
+def test_dns_records_get2():
     # GET
     params = {'name':dns_name + '.' + zone_name, 'match':'all', 'type':dns_type}
     dns_results = cf.zones.dns_records.get(zone_id, params=params)
@@ -74,7 +74,7 @@ def test_dns_records_get():
     assert dns_results[0]['type'] == dns_type
     assert dns_results[0]['content'] == dns_content1
 
-def test_dns_records_get():
+def test_dns_records_get3():
     # GET
     dns_result = cf.zones.dns_records.get(zone_id, dns_id)
     assert dns_result['name'] == dns_name + '.' + zone_name
@@ -97,7 +97,7 @@ def test_dns_records_put():
     assert dns_result['type'] == dns_type
     assert dns_result['content'] == dns_content3
 
-def test_dns_records_get():
+def test_dns_records_get4():
     # GET
     dns_result = cf.zones.dns_records.get(zone_id, dns_id)
     assert dns_result['name'] == dns_name + '.' + zone_name
@@ -109,7 +109,7 @@ def test_dns_records_delete():
     dns_result = cf.zones.dns_records.delete(zone_id, dns_id)
     assert dns_result['id'] == dns_id
 
-def test_dns_records_get():
+def test_dns_records_get5():
     # GET
     params = {'name':dns_name + '.' + zone_name, 'match':'all', 'type':dns_type}
     dns_results = cf.zones.dns_records.get(zone_id, params=params)

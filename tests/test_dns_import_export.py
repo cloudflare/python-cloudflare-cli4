@@ -18,9 +18,6 @@ def test_cloudflare():
     cf = CloudFlare.CloudFlare()
     assert isinstance(cf, CloudFlare.CloudFlare)
 
-dns_name = None
-dns_id = None
-
 def test_find_zone():
     global zone_name, zone_id
     # grab the first zone identifier
@@ -43,6 +40,30 @@ def test_dns_import():
     assert results['total_records_parsed'] == 0
 
 def test_dns_export():
+    # EXPORT
+    dns_records = cf.zones.dns_records.export.get(zone_id)
+    assert len(dns_records) > 0
+    assert isinstance(dns_records, str)
+    assert 'SOA' in dns_records
+    assert 'NS' in dns_records
+
+def test_cloudflare_with_debug():
+    global cf
+    cf = None
+    cf = CloudFlare.CloudFlare(debug=True)
+    assert isinstance(cf, CloudFlare.CloudFlare)
+
+def test_dns_import_with_debug():
+    # IMPORT
+    fd = open('/dev/null', 'rb')
+    results = cf.zones.dns_records.import_.post(zone_id, files={'file':fd})
+    # {"recs_added": 0, "recs_added_by_type": {}, "total_records_parsed": 0}
+    assert len(results) > 0
+    assert results['recs_added'] == 0
+    assert len(results['recs_added_by_type']) == 0
+    assert results['total_records_parsed'] == 0
+
+def test_dns_export_with_debug():
     # EXPORT
     dns_records = cf.zones.dns_records.export.get(zone_id)
     assert len(dns_records) > 0

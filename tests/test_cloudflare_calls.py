@@ -20,45 +20,49 @@ cf = None
 
 def test_cloudflare():
     global cf
+    cf = None
     cf = CloudFlare.CloudFlare()
     assert isinstance(cf, CloudFlare.CloudFlare)
 
-def test_ips():
+def test_ips1():
     ips = cf.ips()
     assert isinstance(ips, dict)
     assert len(ips) > 0
 
 def test_cloudflare_debug():
     global cf
+    cf = None
     cf = CloudFlare.CloudFlare(debug=True)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
-def test_ips():
+def test_ips2():
     ips = cf.ips()
     assert isinstance(ips, dict)
     assert len(ips) > 0
 
 def test_cloudflare_raw():
     global cf
+    cf = None
     cf = CloudFlare.CloudFlare(raw=False)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
-def test_ips():
+def test_ips3():
     ips = cf.ips()
     assert isinstance(ips, dict)
     assert len(ips) > 0
 
 def test_cloudflare_no_sessions():
     global cf
+    cf = None
     cf = CloudFlare.CloudFlare(use_sessions=False)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
-def test_ips():
+def test_ips4():
     ips = cf.ips()
     assert isinstance(ips, dict)
     assert len(ips) > 0
 
-def test_ips():
+def test_ips5():
     ips = cf.ips()
     assert isinstance(ips, dict)
     assert len(ips) > 0
