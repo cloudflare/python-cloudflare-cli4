@@ -2,68 +2,125 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
 
+sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
 
 # CloudFlare(email=None, key=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None, global_request_timeout=5, max_request_retries=5)
 
 class TestCloudflare:
     """ TestCloudflare """
-    def test_email_key_token(self):
-        """ test_email_key_token """
-        # Always clear environment
-        self._setup()
 
-        profile = self._profile
+    def test_email_key_token000(self):
+        self._run(0, 0, 0)
+    def test_email_key_token001(self):
+        self._run(0, 0, 1)
+    def test_email_key_token002(self):
+        self._run(0, 0, 2)
+    def test_email_key_token010(self):
+        self._run(0, 1, 0)
+    def test_email_key_token011(self):
+        self._run(0, 1, 1)
+    def test_email_key_token012(self):
+        self._run(0, 1, 2)
+    def test_email_key_token020(self):
+        self._run(0, 2, 0)
+    def test_email_key_token021(self):
+        self._run(0, 2, 1)
+    def test_email_key_token022(self):
+        self._run(0, 2, 2)
 
-        assert self._email or self._key or self._token
+    def test_email_key_token100(self):
+        self._run(1, 1, 0)
+    def test_email_key_token101(self):
+        self._run(1, 1, 1)
+    def test_email_key_token102(self):
+        self._run(1, 1, 2)
+    def test_email_key_token110(self):
+        self._run(1, 1, 1)
+    def test_email_key_token111(self):
+        self._run(1, 1, 1)
+    def test_email_key_token112(self):
+        self._run(1, 1, 2)
+    def test_email_key_token120(self):
+        self._run(1, 2, 1)
+    def test_email_key_token121(self):
+        self._run(1, 2, 1)
+    def test_email_key_token122(self):
+        self._run(1, 2, 2)
 
-        # if not self._email and not self._key and not self._token:
-        #     assert 'EMAIL/KEY/TOKEN all needed in order to run this test' == ''
+    def test_email_key_token200(self):
+        self._run(2, 0, 0)
+    def test_email_key_token201(self):
+        self._run(2, 0, 1)
+    def test_email_key_token202(self):
+        self._run(2, 0, 2)
+    def test_email_key_token210(self):
+        self._run(2, 1, 2)
+    def test_email_key_token211(self):
+        self._run(2, 1, 1)
+    def test_email_key_token212(self):
+        self._run(2, 1, 2)
+    def test_email_key_token220(self):
+        self._run(2, 2, 2)
+    def test_email_key_token221(self):
+        self._run(2, 2, 1)
+    def test_email_key_token222(self):
+        self._run(2, 2, 2)
 
-        cf = None
-        # loop over each combination
-        for email in [None, self._email, 'example@example.com']:
-            for key in [None, self._key, self._token]:
-                for token in [None, self._token, self._key]:
-                    print('email = ', self._obfuscate(email), 'key = ', self._obfuscate(key), 'token = ', self._obfuscate(token))
-                    if cf:
-                        del cf
-                    cf = CloudFlare.CloudFlare(email=email, key=key, token=token, profile=profile)
-                    assert isinstance(cf, CloudFlare.CloudFlare)
+    def _run(self, token_index, key_index, email_index):
 
-                    try:
-                        r = cf.zones(params={'per_page':1})
-                    except:
-                        r = None
+        try:
+            profile = self._profile
+        except AttributeError:
+            # Always clear environment
+            self._setup()
+            assert self._email or self._key or self._token
+            # if not self._email and not self._key and not self._token:
+            #     assert 'EMAIL/KEY/TOKEN all needed in order to run this test' == ''
+            profile = self._profile
 
-                    if email is None and key is None and token == self._token:
-                        assert isinstance(r, list)
-                        assert len(r) == 1
-                        assert isinstance(r[0], dict)
-                        continue
+        # select combination
+        email = [None, self._email, 'example@example.com'][email_index]
+        key = [None, self._key, self._token][key_index]
+        token = [None, self._token, self._key][token_index]
 
-                    if email is None and key == self._token and token is None:
-                        assert isinstance(r, list)
-                        assert len(r) == 1
-                        assert isinstance(r[0], dict)
-                        continue
+        print('email = ', self._obfuscate(email), 'key = ', self._obfuscate(key), 'token = ', self._obfuscate(token))
 
-                    if email == self._email and key == self._key and token is None:
-                        assert isinstance(r, list)
-                        assert len(r) == 1
-                        assert isinstance(r[0], dict)
-                        continue
+        cf = CloudFlare.CloudFlare(email=email, key=key, token=token, profile=profile)
+        assert isinstance(cf, CloudFlare.CloudFlare)
 
-                    if email == self._email and key is None and token == self._key:
-                        assert isinstance(r, list)
-                        assert len(r) == 1
-                        assert isinstance(r[0], dict)
-                        continue
+        try:
+            r = cf.zones(params={'per_page':1})
+        except:
+            r = None
 
-                    # Nothing else should work!
-                    assert r is None
+        if email is None and key is None and token == self._token:
+            assert isinstance(r, list)
+            assert len(r) == 1
+            assert isinstance(r[0], dict)
+            return
+
+        if email is None and key == self._token and token is None:
+            assert isinstance(r, list)
+            assert len(r) == 1
+            assert isinstance(r[0], dict)
+            return
+
+        if email == self._email and key == self._key and token is None:
+            assert isinstance(r, list)
+            assert len(r) == 1
+            assert isinstance(r[0], dict)
+            return
+
+        if email == self._email and key is None and token == self._key:
+            assert isinstance(r, list)
+            assert len(r) == 1
+            assert isinstance(r[0], dict)
+            return
+
+        # Nothing else should work!
+        assert r is None
 
     def _setup(self):
         """ setup """
