@@ -1,5 +1,22 @@
 # Change Log
 
+ - 2023-12-27 11:50:33 -0800 [6153da0](../../commit/6153da03fde5ab5c4869d6e021d9f8f0cf22826f) 2.15.0
+ - 2023-12-27 11:49:53 -0800 [d6ae4ea](../../commit/d6ae4eaed86bb8e3df4a68a91ccfdb2cd3ea032d) added Content-Type processing on add, removed old api web checking (hence remove bs4), refactoring of all add methods, network now handles data/json cleanly, results returned based on Content-Type via new code, setup/requirements removed BeautifulSoup/bs4
+ - 2023-12-26 15:18:00 -0800 [91bd97d](../../commit/91bd97d1778e533832ea06dd798deb4cd4c69eaf) corrected missing tests; added debug test - useful for coverage
+ - 2023-12-26 15:17:07 -0800 [25c981a](../../commit/25c981ad37bedb3156b414a8dca23988864e790f) test cf.add()
+ - 2023-12-26 15:16:44 -0800 [edf9e51](../../commit/edf9e511857ede29420c687ee142b8c17b7cecaa) complete rewrite - maybe better; maybe not; however, test runs are nicer to look at
+ - 2023-12-26 11:09:14 -0800 [61ca2d6](../../commit/61ca2d6ee7846403f892ea5a763ca67d9ae37458) automate the list of aliases - far better for future
+ - 2023-12-26 09:50:44 -0800 [75234ea](../../commit/75234ea40aff1d29860c386ec64db43b1a521854) Allow PUT and POST to both send files, move params into files when both types used
+ - 2023-12-25 16:17:21 -0800 [fc74b5a](../../commit/fc74b5ac5e5085763dae72e4a45641912e02b1b4) more test cases
+ - 2023-12-25 16:16:37 -0800 [a42d836](../../commit/a42d83616557376865990cd3af44c39ddc785765) more test cases
+ - 2023-12-25 12:56:15 -0800 [945afcc](../../commit/945afcc8ee9192b274e5800f35dfe70b89215176) more test cases and moved pytest to pytest with coverage
+ - 2023-12-25 12:54:04 -0800 [08da722](../../commit/08da7224adf0574729a242e9e8bb6090a193eccf) __init__.py needed for coverage to work
+ - 2023-12-23 16:23:36 -0800 [42d8a62](../../commit/42d8a62e48d78670d666e9076418e22994989467) added more AI examples
+ - 2023-12-23 10:26:50 -0800 [241af4d](../../commit/241af4dd12d5285f789d9c4a626c45dc66e4d905) cleanup of params vs content
+ - 2023-12-21 14:20:44 -0800 [57e9c0f](../../commit/57e9c0f10671b72be84db6c4ff302b4792ba8a43) updated to handle new keyword handling method
+ - 2023-12-21 14:15:59 -0800 [6769d9f](../../commit/6769d9f2678cca64737d108df9093b8f818e9ea2) updated to handle new keyword handling method
+ - 2023-12-14 17:40:29 +0000 [d7ca6d1](../../commit/d7ca6d1ba1a7e84ea843095d33f5eb55add7afdb) Added first pass at Content-Type processing from openapi data
+ - 2023-12-13 14:01:10 +0000 [d141d87](../../commit/d141d872876c4d3e88449c54fcdf246caee7343d) CHANGELOG.md pushed to github
  - 2023-12-13 13:59:55 +0000 [9b0787e](../../commit/9b0787efa929d374392e9db4f6fcec05700de0fe) 2.14.3
  - 2023-12-13 13:52:53 +0000 [ab6f4db](../../commit/ab6f4db695c8666489491abb503ada59f3c30f49) handle {account-identifier} with a dash vs underscore. Arggg!
  - 2023-12-13 13:52:03 +0000 [f445051](../../commit/f445051a99a9b933e4b7ddf50ba82d477b3f74b1) /live added - but does not response yet
