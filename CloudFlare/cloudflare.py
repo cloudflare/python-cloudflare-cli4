@@ -9,7 +9,7 @@ from .utils import user_agent, build_curl
 from .read_configs import read_configs
 from .api_v4 import api_v4
 from .api_extras import api_extras
-from .api_decode_from_web import api_decode_from_web
+#from .api_decode_from_web import api_decode_from_web # TODO - remove at some point
 from .api_decode_from_openapi import api_decode_from_openapi
 from .exceptions import CloudFlareError, CloudFlareAPIError, CloudFlareInternalError
 
@@ -65,12 +65,50 @@ class CloudFlare():
                 del self.network
                 self.network = None
 
-        def _add_headers(self, headers):
+        def _add_headers(self, method, content_type, data, files):
             """ Add default headers """
-            headers['User-Agent'] = self.user_agent
-            headers['Content-Type'] = 'application/json'
+            self.headers = {}
+            self.headers['User-Agent'] = self.user_agent
+            if method == 'GET':
+                # no content type needed - except we throw in a default just for grin's
+                self.headers['Content-Type'] = 'application/json'
+            elif content_type is not None and method in content_type:
+                    # this api endpoint and this method requires a specific content type.
+                    ct = content_type[method]
+                    if isinstance(ct, list):
+                        # How do we choose from more than one content type?
+                        for t in ct:
+                            # we have to match against the data type - arggg! how? XXX/TODO - use first for now
+                            self.headers['Content-Type'] = t
+                            break
+                    else:
+                        self.headers['Content-Type'] = ct
+            else:
+                # default choice 
+                self.headers['Content-Type'] = 'application/json'
 
-        def _add_auth_headers(self, headers, method):
+            # now adjust Content-Type based on data and files
+            if method != 'GET':
+                if self.headers['Content-Type'] == 'application/json' and isinstance(data, str):
+                    # passing javascript vs JSON
+                    self.headers['Content-Type'] = 'application/javascript'
+                if self.headers['Content-Type'] == 'application/json' and isinstance(data, (bytes,bytearray)):
+                    # passing binary file vs JSON
+                    self.headers['Content-Type'] = 'application/octet-stream'
+                if data and self.headers['Content-Type'] == 'multipart/form-data':
+                    # convert from params to files (i.e multipart/form-data)
+                    files = {}
+                    for k,v in data.items():
+                        # files[k] = (None, v, 'application/json')
+                        files[k] = (None, json.dumps(v), 'application/json')
+                    data = None
+                if files:
+                    # overwrite Content-Type as we are uploading data
+                    self.headers['Content-Type'] = 'multipart/form-data'
+                    # however something isn't right and this works ... look at again later!
+                    del self.headers['Content-Type']
+
+        def _add_auth_headers(self, method):
             """ Add authentication headers """
 
             v = 'email' + '.' + method.lower()
@@ -93,22 +131,22 @@ class CloudFlare():
 
             if api_email is None and api_token is not None:
                 # post issue-114 - token is used
-                headers['Authorization'] = 'Bearer %s' % (api_token)
+                self.headers['Authorization'] = 'Bearer %s' % (api_token)
             elif api_email is None and api_key is not None:
                 # pre issue-114 - key is used vs token - backward compat
-                headers['Authorization'] = 'Bearer %s' % (api_key)
+                self.headers['Authorization'] = 'Bearer %s' % (api_key)
             elif api_email is not None and api_key is not None:
                 # boring old school email/key methodology (token ignored)
-                headers['X-Auth-Email'] = api_email
-                headers['X-Auth-Key'] = api_key
+                self.headers['X-Auth-Email'] = api_email
+                self.headers['X-Auth-Key'] = api_key
             elif api_email is not None and api_token is not None:
                 # boring old school email/key methodology (token ignored)
-                headers['X-Auth-Email'] = api_email
-                headers['X-Auth-Key'] = api_token
+                self.headers['X-Auth-Email'] = api_email
+                self.headers['X-Auth-Key'] = api_token
             else:
                 raise CloudFlareInternalError(0, 'coding issue!')
 
-        def _add_certtoken_headers(self, headers, method):
+        def _add_certtoken_headers(self, method):
             """ Add authentication headers """
 
             v = 'certtoken' + '.' + method.lower()
@@ -119,56 +157,58 @@ class CloudFlare():
 
             if api_certtoken is None:
                 raise CloudFlareAPIError(0, 'no cert token defined')
-            headers['X-Auth-User-Service-Key'] = api_certtoken
+            self.headers['X-Auth-User-Service-Key'] = api_certtoken
 
-        def do_no_auth(self, method, parts, identifiers, params=None, data=None, files=None):
+        def do_not_available(self, method, parts, identifiers, params=None, data=None, content_type=None, files=None):
             """ Cloudflare v4 API"""
 
-            headers = {}
-            self._add_headers(headers)
-            return self._call(method, headers, parts, identifiers, params, data, files)
+            # base class simply returns not available - no processing of any arguments
+            raise CloudFlareAPIError(0, 'call not available')
 
-        def do_auth(self, method, parts, identifiers, params=None, data=None, files=None):
+        def do_no_auth(self, method, parts, identifiers, params=None, data=None, content_type=None, files=None):
             """ Cloudflare v4 API"""
 
-            headers = {}
-            self._add_headers(headers)
-            self._add_auth_headers(headers, method)
-            if isinstance(data, str):
-                # passing javascript vs JSON
-                headers['Content-Type'] = 'application/javascript'
-            if files:
-                # overwrite Content-Type as we are uploading data
-                headers['Content-Type'] = 'multipart/form-data'
-                # however something isn't right and this works ... look at again later!
-                del headers['Content-Type']
-            return self._call(method, headers, parts, identifiers, params, data, files)
+            self._add_headers(method, content_type, data, files)
+            # We decide at this point if we are sending json or string data
+            if isinstance(data, (str,bytes,bytearray)):
+                return self._call(method, parts, identifiers, params, data, None, files)
+            else:
+                return self._call(method, parts, identifiers, params, None, data, files)
 
-        def do_auth_unwrapped(self, method, parts, identifiers, params=None, data=None, files=None):
+        def do_auth(self, method, parts, identifiers, params=None, data=None, content_type=None, files=None):
             """ Cloudflare v4 API"""
 
-            headers = {}
-            self._add_headers(headers)
-            self._add_auth_headers(headers, method)
-            if isinstance(data, str):
-                # passing javascript vs JSON
-                headers['Content-Type'] = 'application/javascript'
-            if files:
-                # overwrite Content-Type as we are uploading data
-                headers['Content-Type'] = 'multipart/form-data'
-                # however something isn't right and this works ... look at again later!
-                del headers['Content-Type']
-            return self._call_unwrapped(method, headers, parts, identifiers, params, data, files)
+            self._add_headers(method, content_type, data, files)
+            self._add_auth_headers(method)
+            # We decide at this point if we are sending json or string data
+            if isinstance(data, (str,bytes,bytearray)):
+                return self._call(method, parts, identifiers, params, data, None, files)
+            else:
+                return self._call(method, parts, identifiers, params, None, data, files)
 
-        def do_certauth(self, method, parts, identifiers, params=None, data=None, files=None):
+        def do_auth_unwrapped(self, method, parts, identifiers, params=None, data=None, content_type=None, files=None):
             """ Cloudflare v4 API"""
 
-            headers = {}
-            self._add_headers(headers)
-            self._add_certtoken_headers(headers, method)
-            return self._call(method, headers, parts, identifiers, params, data, files)
+            self._add_headers(method, content_type, data, files)
+            self._add_auth_headers(method)
+            # We decide at this point if we are sending json or string data
+            if isinstance(data, (str,bytes,bytearray)):
+                return self._call_unwrapped(method, parts, identifiers, params, data, None, files)
+            else:
+                return self._call_unwrapped(method, parts, identifiers, params, None, data, files)
 
-        def _call_network(self, method, headers, parts, identifiers, params, data, files):
+        def do_certauth(self, method, parts, identifiers, params=None, data=None, content_type=None, files=None):
+            """ Cloudflare v4 API"""
+
+            self._add_headers(method, content_type, data, files)
+            self._add_certtoken_headers(method)
+            # We decide at this point if we are sending json or string data
+            if isinstance(data, (str,bytes,bytearray)):
+                return self._call(method, parts, identifiers, params, data, None, files)
+            else:
+                return self._call(method, parts, identifiers, params, None, data, files)
+
+        def _call_network(self, method, headers, parts, identifiers, params, data_str, data_json, files):
             """ Cloudflare v4 API"""
 
             if (method is None) or (parts[0] is None):
@@ -177,7 +217,7 @@ class CloudFlare():
 
             # By this point we know that parts[] has 5 elements and identifiers[] has 4 elements (even if some are None)
 
-            if parts[1] is not None or (data is not None and method == 'GET'):
+            if parts[1] is not None or (data_str is not None and method == 'GET'):
                 if identifiers[0] is None:
                     raise CloudFlareAPIError(0, 'You must specify first identifier')
                 if identifiers[1] is None:
@@ -210,20 +250,20 @@ class CloudFlare():
                     if parts[4]:
                         url += '/' + parts[4]
 
-            if files and data:
-                # Can't send data and form data - so move data into files and send as multipart/form-data
+            if files and data_json:
+                # Can't send data_json and form data - so move data_json into files and send as multipart/form-data
                 new_files = []
                 new_files += [(f, (files[f].name, files[f])) for f in files]
-                new_files += [(d, (None, data[d])) for d in data]
+                new_files += [(d, (None, data_json[d])) for d in data_json]
                 files = tuple(new_files)
-                data = None
+                data_json = None
 
             if self.logger:
-                msg = build_curl(method, url, headers, params, data, files)
+                msg = build_curl(method, url, headers, params, data_str, data_json, files)
                 self.logger.debug('Call: emulated curl command ...\n%s', msg)
 
             try:
-                response = self.network(method, url, headers, params, data, files)
+                response = self.network(method, url, headers, params, data_str, data_json, files)
             except requests_RequestException as e:
                 if self.logger:
                     self.logger.debug('Call: requests exception! "%s"', e)
@@ -254,11 +294,14 @@ class CloudFlare():
             response_code = response.status_code
             response_data = response.content
             if not isinstance(response_data, (str, bytes, bytearray)):
-                response_data = response_data.decode("utf-8")
+                response_data = response_data.decode('utf-8')
 
             if self.logger:
                 if 'text/' == response_type[0:5] or response_type in ['application/javascript', 'application/json']:
-                    self.logger.debug('Response: %d, %s, %s', response_code, response_type, response_data[0:100])
+                    if len(response_data) > 100:
+                        self.logger.debug('Response: %d, %s, %s...', response_code, response_type, response_data[0:100])
+                    else:
+                        self.logger.debug('Response: %d, %s, %s', response_code, response_type, response_data)
                 else:
                     self.logger.debug('Response: %d, %s, %s', response_code, response_type, '...')
 
@@ -304,13 +347,13 @@ class CloudFlare():
 
             return [response_type, response_code, response_data]
 
-        def _raw(self, method, headers, parts, identifiers, params, data, files):
+        def _raw(self, method, headers, parts, identifiers, params, data_str, data_json, files):
             """ Cloudflare v4 API"""
 
             [response_type, response_code, response_data] = self._call_network(method,
                                                                                headers, parts,
                                                                                identifiers,
-                                                                               params, data, files)
+                                                                               params, data_str, data_json, files)
 
             if response_type == 'application/json':
                 # API says it's JSON; so it better be parsable as JSON
@@ -393,7 +436,7 @@ class CloudFlare():
                         response_data = {'success': False,
                                          'code': response_code,
                                          'result': response_data}
-            elif response_type in ['text/plain', 'application/octet-stream']:
+            elif response_type in ['text/plain', 'text/csv', 'application/octet-stream']:
                 # API says it's text; but maybe it's actually JSON? - should be fixed in API
                 if hasattr(response_data, 'decode'):
                     response_data = response_data.decode('utf-8')
@@ -413,8 +456,10 @@ class CloudFlare():
                         response_data = {'success': False,
                                          'code': response_code,
                                          'result': response_data}
-            elif response_type in ['text/javascript', 'application/javascript']:
+            elif response_type in ['text/javascript', 'application/javascript', 'text/html']:
                 # used by Cloudflare workers
+                if hasattr(response_data, 'decode'):
+                    response_data = response_data.decode('utf-8')
                 if response_code == requests_codes.ok:
                     # 200 ok
                     response_data = {'success': True,
@@ -424,18 +469,6 @@ class CloudFlare():
                     response_data = {'success': False,
                                      'code': response_code,
                                      'result': str(response_data)}
-            elif response_type == 'text/html':
-                # used by media for preview
-                if response_code == requests_codes.ok:
-                    # 200 ok
-                    response_data = {'success': True,
-                                     'result': str(response_data)}
-                else:
-                    # 3xx & 4xx errors
-                    response_data = {'success': False,
-                                     'code': response_code,
-                                     'result': str(response_data)}
-
             elif response_type[0:6] in ['audio/', 'image/', 'video/']:
                 # raw - just pass thru
                 if response_code == requests_codes.ok:
@@ -460,10 +493,10 @@ class CloudFlare():
             # it would be nice to return the error code and content type values; but not quite yet
             return response_data
 
-        def _call(self, method, headers, parts, identifiers, params, data, files):
+        def _call(self, method, parts, identifiers, params, data_str, data_json, files):
             """ Cloudflare v4 API"""
 
-            response_data = self._raw(method, headers, parts, identifiers, params, data, files)
+            response_data = self._raw(method, self.headers, parts, identifiers, params, data_str, data_json, files)
 
             # Sanatize the returned results - just in case API is messed up
             if 'success' not in response_data:
@@ -555,15 +588,20 @@ class CloudFlare():
                     result = response_data
             if self.logger:
                 if isinstance(result, str):
+                    if len(result) > 100:
+                        self.logger.debug('Response: %s...', result[0:100].replace('\n', ' '))
+                    else:
+                        self.logger.debug('Response: %s', result.replace('\n', ' '))
+                elif isinstance(result, (bytes,bytearray)):
                     self.logger.debug('Response: %s', result[0:100])
                 else:
                     self.logger.debug('Response: %s', '...')
             return result
 
-        def _call_unwrapped(self, method, headers, parts, identifiers, params, data, files):
+        def _call_unwrapped(self, method, parts, identifiers, params, data_str, data_json, files):
             """ Cloudflare v4 API"""
 
-            response_data = self._raw(method, headers, parts, identifiers, params, data, files)
+            response_data = self._raw(method, self.headers, parts, identifiers, params, data_str, data_json, files)
             if self.logger:
                 self.logger.debug('Response: %s', response_data)
             result = response_data
@@ -589,59 +627,16 @@ class CloudFlare():
 
             return response.text
 
-    class _add_unused():
+    class add_base():
         """ Cloudflare v4 API"""
 
-        def __init__(self, base, parts):
-            """ Cloudflare v4 API"""
-
-            self._base = base
-            self._parts_unused = parts
-
-        def __call__(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
-            """ Cloudflare v4 API"""
-
-            # This is the same as a get()
-            return self.get(identifier1, identifier2, identifier3, identifier4, params=params, data=data)
-
-        def __str__(self):
-            """ Cloudflare v4 API"""
-
-            return '[%s]' % ('/' + '/:id/'.join(filter(None, self._parts_unused)))
-
-        def get(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
-            """ Cloudflare v4 API"""
-
-            raise CloudFlareAPIError(0, 'not found')
-
-        def patch(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
-            """ Cloudflare v4 API"""
-
-            raise CloudFlareAPIError(0, 'not found')
-
-        def post(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None, files=None):
-            """ Cloudflare v4 API"""
-
-            raise CloudFlareAPIError(0, 'not found')
-
-        def put(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
-            """ Cloudflare v4 API"""
-
-            raise CloudFlareAPIError(0, 'not found')
-
-        def delete(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
-            """ Cloudflare v4 API"""
-
-            raise CloudFlareAPIError(0, 'not found')
-
-    class _add_no_auth():
-        """ Cloudflare v4 API"""
-
-        def __init__(self, base, parts):
+        def __init__(self, base, parts, content_type=None):
             """ Cloudflare v4 API"""
 
             self._base = base
             self._parts = parts
+            self._content_type = content_type
+            self._do = None
 
         def __call__(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
@@ -657,165 +652,99 @@ class CloudFlare():
         def get(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            return self._base.do_no_auth('GET', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
+            return self._do('GET', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
 
         def patch(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            raise CloudFlareAPIError(0, 'patch() call not available for this endpoint')
+            return self._do('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
 
         def post(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            raise CloudFlareAPIError(0, 'post() call not available for this endpoint')
+            return self._do('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type, files)
 
-        def put(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
+        def put(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            raise CloudFlareAPIError(0, 'put() call not available for this endpoint')
+            return self._do('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type, files)
 
         def delete(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            raise CloudFlareAPIError(0, 'delete() call not available for this endpoint')
+            return self._do('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
 
-    class _add_with_auth():
+    class _add_unused(add_base):
         """ Cloudflare v4 API"""
 
-        def __init__(self, base, parts):
+        def __init__(self, base, parts, content_type):
             """ Cloudflare v4 API"""
 
-            self._base = base
-            self._parts = parts
+            super().__init__(base, parts, content_type)
+            self._do = self._base.do_not_available
 
-        def __call__(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
-            """ Cloudflare v4 API"""
-
-            # This is the same as a get()
-            return self.get(identifier1, identifier2, identifier3, identifier4, params=params, data=data)
-
-        def __str__(self):
-            """ Cloudflare v4 API"""
-
-            return '[%s]' % ('/' + '/:id/'.join(filter(None, self._parts)))
-
-        def get(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
-            """ Cloudflare v4 API"""
-
-            return self._base.do_auth('GET', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
-
-        def patch(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
-            """ Cloudflare v4 API"""
-
-            return self._base.do_auth('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
-
-        def post(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None, files=None):
-            """ Cloudflare v4 API"""
-
-            return self._base.do_auth('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files)
-
-        def put(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
-            """ Cloudflare v4 API"""
-
-            return self._base.do_auth('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
-
-        def delete(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
-            """ Cloudflare v4 API"""
-
-            return self._base.do_auth('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
-
-    class _add_with_auth_unwrapped():
+    class _add_no_auth(add_base):
         """ Cloudflare v4 API"""
 
-        def __init__(self, base, parts):
+        def __init__(self, base, parts, content_type):
             """ Cloudflare v4 API"""
 
-            self._base = base
-            self._parts = parts
-
-        def __call__(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
-            """ Cloudflare v4 API"""
-
-            # This is the same as a get()
-            return self.get(identifier1, identifier2, identifier3, identifier4, params=params, data=data)
-
-        def __str__(self):
-            """ Cloudflare v4 API"""
-
-            return '[%s]' % ('/' + '/:id/'.join(filter(None, self._parts)))
-
-        def get(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
-            """ Cloudflare v4 API"""
-
-            return self._base.do_auth_unwrapped('GET', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
+            super().__init__(base, parts, content_type)
+            self._do = self._base.do_no_auth
+            self._valid = True
 
         def patch(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            return self._base.do_auth_unwrapped('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
+            return self._base.do_not_available('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
 
         def post(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            return self._base.do_auth_unwrapped('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files)
+            return self._base.do_not_available('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type, files)
 
         def put(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            return self._base.do_auth_unwrapped('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
+            return self._base.do_not_available('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
 
         def delete(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            return self._base.do_auth_unwrapped('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
+            return self._base.do_not_available('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
 
-    class _add_with_cert_auth():
+    class _add_with_auth(add_base):
         """ Cloudflare v4 API"""
 
-        def __init__(self, base, parts):
+        def __init__(self, base, parts, content_type):
             """ Cloudflare v4 API"""
 
-            self._base = base
-            self._parts = parts
+            super().__init__(base, parts, content_type)
+            self._do = self._base.do_auth
+            self._valid = True
 
-        def __call__(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
+    class _add_with_auth_unwrapped(add_base):
+        """ Cloudflare v4 API"""
+
+        def __init__(self, base, parts, content_type):
             """ Cloudflare v4 API"""
 
-            # This is the same as a get()
-            return self.get(identifier1, identifier2, identifier3, identifier4, params=params, data=data)
+            super().__init__(base, parts, content_type)
+            self._do = self._base.do_auth_unwrapped
+            self._valid = True
 
-        def __str__(self):
+    class _add_with_cert_auth(add_base):
+        """ Cloudflare v4 API"""
+
+        def __init__(self, base, parts, content_type):
             """ Cloudflare v4 API"""
 
-            return '[%s]' % ('/' + '/:id/'.join(filter(None, self._parts)))
+            super().__init__(base, parts, content_type)
+            self._do = self._base.do_certauth
+            self._valid = True
 
-        def get(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
-            """ Cloudflare v4 API"""
-
-            return self._base.do_certauth('GET', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
-
-        def patch(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
-            """ Cloudflare v4 API"""
-
-            return self._base.do_certauth('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
-
-        def post(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None, files=None):
-            """ Cloudflare v4 API"""
-
-            return self._base.do_certauth('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files)
-
-        def put(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
-            """ Cloudflare v4 API"""
-
-            return self._base.do_certauth('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
-
-        def delete(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
-            """ Cloudflare v4 API"""
-
-            return self._base.do_certauth('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
-
-    def add(self, t, p1, p2=None, p3=None, p4=None, p5=None):
-        """add api call to class"""
+    def add(self, t, p1, p2=None, p3=None, p4=None, p5=None, content_type=None):
+        """ add api call to class"""
 
         a = []
         if p1:
@@ -864,15 +793,15 @@ class CloudFlare():
             pass
 
         if t == 'VOID':
-            f = self._add_unused(self._base, parts)
+            f = self._add_unused(self._base, parts, content_type=None)
         elif t == 'OPEN':
-            f = self._add_no_auth(self._base, parts)
+            f = self._add_no_auth(self._base, parts, content_type=content_type)
         elif t == 'AUTH':
-            f = self._add_with_auth(self._base, parts)
+            f = self._add_with_auth(self._base, parts, content_type=content_type)
         elif t == 'AUTH_UNWRAPPED':
-            f = self._add_with_auth_unwrapped(self._base, parts)
+            f = self._add_with_auth_unwrapped(self._base, parts, content_type=content_type)
         elif t == 'CERT':
-            f = self._add_with_cert_auth(self._base, parts)
+            f = self._add_with_cert_auth(self._base, parts, content_type=content_type)
         else:
             # should never happen
             raise CloudFlareAPIError(0, 'api load type mismatch')
@@ -888,11 +817,11 @@ class CloudFlare():
                 setattr(branch, name, f)
 
     def api_list(self):
-        """recursive walk of the api tree returning a list of api calls"""
+        """ recursive walk of the api tree returning a list of api calls"""
         return self._api_list(m=self)
 
     def _api_list(self, m=None, s=''):
-        """recursive walk of the api tree returning a list of api calls"""
+        """ recursive walk of the api tree returning a list of api calls"""
         w = []
         for n in sorted(dir(m)):
             if n[0] == '_':
@@ -907,32 +836,30 @@ class CloudFlare():
                 # really should not happen!
                 raise CloudFlareAPIError(0, '%s: not found - should not happen' % (n))
             d = dir(a)
-            if '_base' in d:
-                # it's a known api call - lets show the result and continue down the tree
+            if '_base' not in d:
+                continue
+            # it's a known api call - lets show the result and continue down the tree
+            if '_parts' in d and '_valid' in d:
                 if 'delete' in d or 'get' in d or 'patch' in d or 'post' in d or 'put' in d:
                     # only show the result if a call exists for this part
-                    if '_parts_unused' in d:
-                            # This is an uncallable endpoint - presently no way to return this info
-                            # w.append(str(a)[1:-1] + ' ; UNUSED')
+                    if n[-1] == '_':
+                        if  keyword.iskeyword(n[:-1]):
+                            # should always be a keyword - but now nothing needs to be done
                             pass
-                    if '_parts' in d:
-                        if n[-1] == '_':
-                            if  keyword.iskeyword(n[:-1]):
-                                # should always be a keyword - but now nothing needs to be done
-                                pass
-                            # remove the extra keyword postfix'ed with underscore
-                            w.append(str(a)[1:-1])
-                        else:
-                            # handle underscores by returning the actual API call vs the method name
-                            w.append(str(a)[1:-1])
-                # now recurse downwards into the tree
-                w = w + self._api_list(a, s + '/' + n)
+                        # remove the extra keyword postfix'ed with underscore
+                        w.append(str(a)[1:-1])
+                    else:
+                        # handle underscores by returning the actual API call vs the method name
+                        w.append(str(a)[1:-1])
+            # now recurse downwards into the tree
+            w = w + self._api_list(a, s + '/' + n)
         return w
 
-    def api_from_web(self):
-        """ Cloudflare v4 API"""
-
-        return api_decode_from_web(self._base.api_from_web())
+    # TODO - remove at some point
+    #def api_from_web(self):
+    #    """ Cloudflare v4 API"""
+    #
+    #    return api_decode_from_web(self._base.api_from_web())
 
     def api_from_openapi(self, url):
         """ Cloudflare v4 API"""

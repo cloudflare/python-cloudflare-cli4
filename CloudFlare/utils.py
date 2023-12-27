@@ -33,7 +33,7 @@ def sanitize_secrets(secrets):
 
     return secrets_copy
 
-def build_curl(method, url, headers, params, data, files):
+def build_curl(method, url, headers, params, data_str, data_json, files):
     """ misc utilities  for Cloudflare API"""
 
     msg = []
@@ -52,13 +52,29 @@ def build_curl(method, url, headers, params, data, files):
         if k is None:
             continue
         msg.append('            -H "%s: %s" \\' % (k, h[k]))
-    # data
-    if data is not None:
+    # data_str
+    if data_str is not None:
+        if isinstance(data_str, (bytes,bytearray)):
+            if len(data_str) > 100:
+                msg.append('            --data-binary \'%s ...\' \\' % (str(data_str[0:100]).replace('\n', '\n')))
+            else:
+                msg.append('            --data-binary \'%s\' \\' % (str(data_str).replace('\n', '\n')))
+        else:
+            if len(data_str) > 100:
+                msg.append('            --data \'%s ...\' \\' % (str(data_str[0:100]).replace('\n', ' ')))
+            else:
+                msg.append('            --data \'%s\' \\' % (str(data_str).replace('\n', ' ')))
+    # data_json
+    if data_json is not None:
+        print('===', type(data_json), len(data_json))
         try:
-            str_data = json.dumps(data)
+            s = json.dumps(data_json)
         except:
-            str_data = str(data)
-        msg.append('            --data \'%s\' \\' % (str_data.replace('\n', ' ')))
+            s = str(data_json)
+        if len(s) > 100:
+            msg.append('            --data \'%s ...\' \\' % (s[0:100].replace('\n', ' ')))
+        else:
+            msg.append('            --data \'%s\' \\' % (s.replace('\n', ' ')))
     # files
     if files is not None:
         if isinstance(files, (list, tuple)):

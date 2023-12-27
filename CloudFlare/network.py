@@ -2,11 +2,11 @@
 
 from urllib.parse import urlparse
 
+import sys
 import requests
 from requests.adapters import HTTPAdapter
 
 from .exceptions import CloudFlareAPIError
-
 
 class CFnetwork:
     """Network for Cloudflare API"""
@@ -21,7 +21,7 @@ class CFnetwork:
         self.max_request_retries = max_request_retries
         self.session = None
 
-    def __call__(self, method, url, headers=None, params=None, data=None, files=None):
+    def __call__(self, method, url, headers=None, params=None, data_str=None, data_json=None, files=None):
         """Network for Cloudflare API"""
 
         if self.use_sessions:
@@ -40,85 +40,52 @@ class CFnetwork:
         method = method.upper()
 
         if method == 'GET':
+            # no data or files
             r = self.session.get(
                 url,
                 headers=headers,
                 params=params,
-                data=data,
                 timeout=self.global_request_timeout,
             )
         elif method == 'POST':
-            if isinstance(data, str):
-                r = self.session.post(
-                    url,
-                    headers=headers,
-                    params=params,
-                    data=data,
-                    files=files,
-                    timeout=self.global_request_timeout,
-                )
-            else:
-                r = self.session.post(
-                    url,
-                    headers=headers,
-                    params=params,
-                    json=data,
-                    files=files,
-                    timeout=self.global_request_timeout,
-                )
+            r = self.session.post(
+                url,
+                headers=headers,
+                params=params,
+                data=data_str,
+                json=data_json,
+                files=files,
+                timeout=self.global_request_timeout,
+            )
         elif method == 'PUT':
-            if isinstance(data, str):
-                r = self.session.put(
-                    url,
-                    headers=headers,
-                    params=params,
-                    data=data,
-                    timeout=self.global_request_timeout,
-                )
-            else:
-                r = self.session.put(
-                    url,
-                    headers=headers,
-                    params=params,
-                    json=data,
-                    timeout=self.global_request_timeout,
-                )
+            r = self.session.put(
+                url,
+                headers=headers,
+                params=params,
+                data=data_str,
+                json=data_json,
+                files=files,
+                timeout=self.global_request_timeout,
+            )
         elif method == 'DELETE':
-            if isinstance(data, str):
-                r = self.session.delete(
-                    url,
-                    headers=headers,
-                    params=params,
-                    data=data,
-                    timeout=self.global_request_timeout,
-                )
-            else:
-                r = self.session.delete(
-                    url,
-                    headers=headers,
-                    params=params,
-                    json=data,
-                    timeout=self.global_request_timeout,
-                )
+            r = self.session.delete(
+                url,
+                headers=headers,
+                params=params,
+                data=data_str,
+                json=data_json,
+                timeout=self.global_request_timeout,
+            )
         elif method == 'PATCH':
-            if isinstance(data, str):
-                r = self.session.request(
-                    'PATCH',
-                    url,
-                    headers=headers,
-                    params=params,
-                    data=data,
-                    timeout=self.global_request_timeout,
-                )
-            else:
-                r = self.session.request(
-                    'PATCH',
-                    url,
-                    headers=headers,
-                    params=params,
-                    json=data,
-                    timeout=self.global_request_timeout,
-                )
+            r = self.session.request(
+                'PATCH',
+                url,
+                headers=headers,
+                params=params,
+                data=data_str,
+                json=data_json,
+                timeout=self.global_request_timeout,
+            )
         else:
             # should never happen
             raise CloudFlareAPIError(0, 'method not supported')

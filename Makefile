@@ -96,7 +96,7 @@ lint:
 openapi:
 	@tmp=/tmp/_$$$$_ ; \
 	$(PYTHON) -m cli4 --dump | sort > $$tmp.1 ; \
-	$(PYTHON) -m cli4 --openapi $(OPENAPI_URL) | sed -e 's/^[A-Z][A-Z]*  *//' -e 's/?.*//' -e 's/\/:[a-z][A-Za-z_]*/\/:id/g' -e 's/\/:[a-z][A-Za-z_]*}/\/:id/g' -e 's/:id\/:id/:id/' -e 's/\/:id$$//' -e 's/\/:id$$//' -e 's/\/:id ;/ ;/' -e 's/ ; Content-Type: .*//' -e 's/\/$$//' | sort -u > $$tmp.2 ; \
+	$(PYTHON) -m cli4 --openapi $(OPENAPI_URL) | tee $$tmp.5 | sed -e 's/^[A-Z][A-Z]*  *//' -e 's/?.*//' -e 's/\/:[a-z][A-Za-z_]*/\/:id/g' -e 's/\/:[a-z][A-Za-z_]*}/\/:id/g' -e 's/:id\/:id/:id/' -e 's/\/:id$$//' -e 's/\/:id$$//' -e 's/\/:id ;/ ;/' -e 's/ ; Content-Type: .*//' -e 's/\/$$//' | sort -u > $$tmp.2 ; \
 	egrep -v '; deprecated' < $$tmp.2 | sed -e 's/ ; .*//' | diff $$tmp.1 - > $$tmp.3 ; \
 	echo "In code:" ; \
 	egrep '< ' < $$tmp.3 | sed -e 's/< /    /' | sort | tee $$tmp.4 ; \
@@ -104,6 +104,8 @@ openapi:
 	egrep '> ' < $$tmp.3 | sed -e 's/> /    /' | sort | sed -e "s/\//self.add('AUTH', '/" -e "s/$$/'\)/" -e "s/\/:id\//', '/g" ; \
 	echo "Deprecated:" ; \
 	egrep '; deprecated' < $$tmp.2 | while read cmd x deprecated deprecated_date ; do egrep "$$cmd" $$tmp.4 | sed -e "s/$$/ ; deprecated $$deprecated_date/" ; done | sort | uniq ; \
+	echo "Content-Type's:" ; \
+	egrep ';' < $$tmp.5 | egrep -v '; deprecated' | egrep -v ' ; Content-Type: application/json' | sed -e 's/^/    /' ; \
 	rm $$tmp.?
 
 TUNA_CLI4_TEST_COMMAND = "/ips"

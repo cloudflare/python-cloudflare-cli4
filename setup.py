@@ -29,7 +29,7 @@ def main():
         packages=['cli4', 'examples']+find_packages(),
         include_package_data=True,
         data_files = [('share/man/man1', ['cli4/cli4.1'])],
-        install_requires=['requests', 'pyyaml', 'jsonlines', 'beautifulsoup4'],
+        install_requires=['requests', 'pyyaml', 'jsonlines'],
         keywords='cloudflare',
         entry_points={
             'console_scripts': [
