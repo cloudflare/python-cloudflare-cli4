@@ -3,6 +3,10 @@
 import os
 import sys
 import uuid
+import tempfile
+
+fp = open('/dev/null', 'rb')
+n = fp.read()
 
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
@@ -31,8 +35,10 @@ def test_find_zone():
 
 def test_dns_import():
     # IMPORT
-    fd = open('/dev/null', 'rb')
-    results = cf.zones.dns_records.import_.post(zone_id, files={'file':fd})
+    # create a zero length file
+    fp = tempfile.TemporaryFile(mode='w+b')
+    fp.seek(0)
+    results = cf.zones.dns_records.import_.post(zone_id, files={'file':fp})
     # {"recs_added": 0, "recs_added_by_type": {}, "total_records_parsed": 0}
     assert len(results) > 0
     assert results['recs_added'] == 0
@@ -55,8 +61,10 @@ def test_cloudflare_with_debug():
 
 def test_dns_import_with_debug():
     # IMPORT
-    fd = open('/dev/null', 'rb')
-    results = cf.zones.dns_records.import_.post(zone_id, files={'file':fd})
+    # create a zero length file
+    fp = tempfile.TemporaryFile(mode='w+b')
+    fp.seek(0)
+    results = cf.zones.dns_records.import_.post(zone_id, files={'file':fp})
     # {"recs_added": 0, "recs_added_by_type": {}, "total_records_parsed": 0}
     assert len(results) > 0
     assert results['recs_added'] == 0
