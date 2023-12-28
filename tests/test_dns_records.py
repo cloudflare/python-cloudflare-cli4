@@ -3,6 +3,7 @@
 import os
 import sys
 import uuid
+import random
 
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
@@ -10,24 +11,26 @@ import CloudFlare
 # test GET POST PUT PATCH & DELETE - but not in that order
 
 cf = None
-zone_name = None
-zone_id = None
 
 def test_cloudflare():
     global cf
     cf = CloudFlare.CloudFlare()
     assert isinstance(cf, CloudFlare.CloudFlare)
 
+zone_name = None
+zone_id = None
+
 def test_find_zone():
     global zone_name, zone_id
-    # grab the first zone identifier
-    params = {'per_page':1}
+    # grab a random zone identifier from the first 10 zones
+    params = {'per_page':10}
     zones = cf.zones.get(params=params)
-    assert  len(zones) == 1
-    zone_name = zones[0]['name']
-    zone_id = zones[0]['id']
+    assert len(zones) > 0 and len(zones) <= 10
+    n = random.randrange(len(zones))
+    zone_name = zones[n]['name']
+    zone_id = zones[n]['id']
     assert len(zone_id) == 32
-    print('zone: %s %s' % (zone_id, zone_name))
+    print('zone: %s %s' % (zone_id, zone_name), file=sys.stderr)
 
 dns_name = None
 dns_type = None
@@ -42,7 +45,7 @@ def test_dns_records():
     dns_content1 = 'temp pytest element 1'
     dns_content2 = 'temp pytest element 2'
     dns_content3 = 'temp pytest element 3'
-    print('dns_record: %s' % (dns_name))
+    print('dns_record: %s' % (dns_name), file=sys.stderr)
 
 def test_dns_records_get1():
     # GET
@@ -63,7 +66,7 @@ def test_dns_records_post():
 
     dns_id = dns_result['id']
     assert len(dns_id) == 32
-    print('dns_record: %s %s' % (dns_name, dns_id))
+    print('dns_record: %s %s' % (dns_name, dns_id), file=sys.stderr)
 
 def test_dns_records_get2():
     # GET
