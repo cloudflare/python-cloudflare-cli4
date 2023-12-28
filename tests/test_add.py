@@ -54,10 +54,3 @@ def test_app_invalid_with_dash():
         assert int(e) == 7000
         assert str(e) == 'No route for that URI'
         print(int(e), str(e))
-
-if __name__ == '__main__':
-    test_cloudflare()
-    test_app_invalid()
-    test_app_invalid_with_underscore()
-    test_app_invalid_with_dash()
-
