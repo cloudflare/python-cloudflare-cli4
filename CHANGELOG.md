@@ -1,5 +1,9 @@
 # Change Log
 
+ - 2023-12-28 11:58:34 -0800 [aac4e6f](../../commit/aac4e6f1ee520f42c7ffa7fbf92195f955f27ea1) 2.15.1
+ - 2023-12-28 11:58:00 -0800 [fddc424](../../commit/fddc424adb7d9bb7d205bb8aedcf6bbd1d9536eb) fixed a bad edit from 241af4d which stopped data being send on PUT/POST/PATCH/DELETE
+ - 2023-12-28 11:49:45 -0800 [62eb860](../../commit/62eb8602e979ff7437728727444f3332c2f21b4b) example of purge_cache for free or enterprise accounts
+ - 2023-12-27 11:53:31 -0800 [64ee01b](../../commit/64ee01b4df74b4847e378485659d98a49c0d72a7) CHANGELOG.md pushed to github
  - 2023-12-27 11:50:33 -0800 [6153da0](../../commit/6153da03fde5ab5c4869d6e021d9f8f0cf22826f) 2.15.0
  - 2023-12-27 11:49:53 -0800 [d6ae4ea](../../commit/d6ae4eaed86bb8e3df4a68a91ccfdb2cd3ea032d) added Content-Type processing on add, removed old api web checking (hence remove bs4), refactoring of all add methods, network now handles data/json cleanly, results returned based on Content-Type via new code, setup/requirements removed BeautifulSoup/bs4
  - 2023-12-26 15:18:00 -0800 [91bd97d](../../commit/91bd97d1778e533832ea06dd798deb4cd4c69eaf) corrected missing tests; added debug test - useful for coverage
