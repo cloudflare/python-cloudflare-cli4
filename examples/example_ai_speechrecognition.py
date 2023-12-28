@@ -3,6 +3,7 @@
 import os
 import sys
 import random
+import tempfile
 import requests
 
 sys.path.insert(0, os.path.abspath('.'))
@@ -19,6 +20,15 @@ def find_call(cf, verbs):
             continue
         m = getattr(m, verb)
     return m
+
+def user_agent():
+    s = random.choice([
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36 Edg/91.0.864.48',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0',
+            'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36',
+    ])
+    return s
 
 def doit(account_name, mp3_data):
 
@@ -59,28 +69,24 @@ def doit(account_name, mp3_data):
 def download_file(url, referer, n_requested):
     headers={}
     headers['Referer'] = referer
-    headers['User-Agent'] = random.choice([
-                                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15',
-                                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36 Edg/91.0.864.48',
-                                'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0',
-                                'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36',
-                        ])
+    headers['User-Agent'] = user_agent()
 
-    local_filename = '/tmp/' + url.split('/')[-1]
+    # will be deleted once program exits
+    fp = tempfile.TemporaryFile(mode='w+b')
+
     n_received = 0
     # NOTE the stream=True parameter below
     with requests.get(url, headers=headers, stream=True) as r:
         r.raise_for_status()
-        with open(local_filename, 'wb') as f:
-            for chunk in r.iter_content(chunk_size=16*1024): 
-                # If you have chunk encoded response uncomment if
-                # and set chunk_size parameter to None.
-                #if chunk: 
-                f.write(chunk)
-                n_received += len(chunk)
-                if n_received > n_requested:
-                    break
-    return local_filename
+        for chunk in r.iter_content(chunk_size=16*1024): 
+            fp.write(chunk)
+            n_received += len(chunk)
+            if n_received > n_requested:
+                break
+
+    # rewind the file so it's ready to read
+    fp.seek(0)
+    return fp
 
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == '-a':
@@ -98,8 +104,8 @@ def main():
         referer = 'https://www.americanrhetoric.com/barackobamaspeeches.htm'
 
     # we only grab the first 680KB of the file - that's enough to show working code
-    mp3_file = download_file(url, referer, 680 * 1024)
-    mp3_data = open(mp3_file, "rb").read()
+    mp3_fp = download_file(url, referer, 680 * 1024)
+    mp3_data = mp3_fp.read()
     print('mp3 received: length=%d' % (len(mp3_data)))
 
     doit(account_name, mp3_data)
