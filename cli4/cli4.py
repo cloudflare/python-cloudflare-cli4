@@ -140,6 +140,11 @@ def process_params_content_files(method, binary_file, args):
         params = None
         # sys.exit('cli4: params and files not allowed together')
 
+    if method != 'GET':
+        if params:
+            content = params
+            params = None
+
     return (params, content, files)
 
 def run_command(cf, method, command, params=None, content=None, files=None):
