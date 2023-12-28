@@ -37,7 +37,19 @@ install: build
 	sudo rm -rf ${NAME}.egg-info
 
 test: all
-	if pip show pytest-cov > /dev/null; then $(PYTEST) --cov=CloudFlare ; else $(PYTEST) -vv ; fi
+	@if pip show pytest-cov > /dev/null; \
+	then \
+		if [ `find CloudFlare cli4 examples tests setup.py -type f -name '*.py' -newer .coverage | wc -l` != 0 ]; \
+		then \
+			echo $(PYTEST) --cov=CloudFlare ; \
+			$(PYTEST) --cov=CloudFlare ; \
+		else \
+			true ; \
+		fi ; \
+	else \
+		echo $(PYTEST) -vv ; \
+		$(PYTEST) -vv ; \
+	fi
 
 cli4test: all
 	$(PYTHON) -m cli4 /ips > /dev/null
