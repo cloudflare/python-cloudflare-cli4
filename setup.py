@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Cloudflare API code - setup.py file"""
 import re
-from setuptools import setup, find_packages
+from setuptools import setup
 
 _version_re = re.compile(r"__version__\s=\s'(.*)'")
 
@@ -26,7 +26,8 @@ def main():
         url='https://github.com/cloudflare/python-cloudflare',
         license='MIT',
         options={"bdist_wheel": {"universal": True}},
-        packages=['cli4', 'examples']+find_packages(),
+        packages=['CloudFlare', 'cli4', 'examples'],
+        test_suite="CloudFlare.tests",
         include_package_data=True,
         data_files = [('share/man/man1', ['cli4/cli4.1'])],
         install_requires=['requests', 'pyyaml', 'jsonlines'],
