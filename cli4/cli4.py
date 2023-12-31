@@ -485,11 +485,16 @@ def do_it(args):
 
     if do_dump:
         a = dump_commands(cf)
+        # success - just dump results and exit
         sys.stdout.write(a)
         sys.exit(0)
 
     if do_openapi:
-        a = dump_commands_from_web(cf, openapi_url)
+        try:
+            a = dump_commands_from_web(cf, openapi_url)
+        except CloudFlare.exceptions.CloudFlareAPIError as e:
+            sys.exit('cli4: %s - Failed' % (e))
+        # success - just dump results and exit
         sys.stdout.write(a)
         sys.exit(0)
 

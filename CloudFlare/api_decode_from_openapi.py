@@ -62,21 +62,18 @@ def api_decode_from_openapi(content):
 
     try:
         j = json.loads(content)
-    except Exception as e:
-        sys.stderr.write("OpenAPI json format issue: %s\n" % (e))
-        return None
+    except json.decoder.JSONDecodeError as e:
+        raise SyntaxError('OpenAPI json decode failed: %s' % (e))
 
     try:
         components = j['components']
         info = j['info']
-        openapi = j['openapi']
+        cloudflare_version = info['version']
+        openapi_version = j['openapi']
         paths = j['paths']
         servers = ['servers']
     except Exception as e:
-        sys.stderr.write("OpenAPI json format structure: %s\n" % (e))
-        return None
-
-    sys.stderr.write("OpenAPI %s json file - version: %s\n" % (openapi, info['version']))
+        raise SyntaxError('OpenAPI json missing standard OpenAPI values: %s' % (e))
 
     all_cmds = []
     for path in paths:
@@ -85,4 +82,4 @@ def api_decode_from_openapi(content):
             continue
         all_cmds += do_path(path, paths[path])
 
-    return sorted(all_cmds, key=lambda v: v['cmd'])
+    return sorted(all_cmds, key=lambda v: v['cmd']), openapi_version, cloudflare_version

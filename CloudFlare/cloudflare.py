@@ -9,7 +9,6 @@ from .utils import user_agent, build_curl
 from .read_configs import read_configs
 from .api_v4 import api_v4
 from .api_extras import api_extras
-#from .api_decode_from_web import api_decode_from_web # TODO - remove at some point
 from .api_decode_from_openapi import api_decode_from_openapi
 from .exceptions import CloudFlareError, CloudFlareAPIError, CloudFlareInternalError
 
@@ -601,12 +600,29 @@ class CloudFlare():
             result = response_data
             return result
 
-        def api_from_openapi(self, url=None):
+        def _api_from_openapi(self, url=None):
             """ Cloudflare v4 API"""
 
             if url is None:
                 url = self.openapi_url
-            return self._read_from_web(url)
+
+            try:
+                v = self._read_from_web(url)
+            except Exception as e:
+                if self.logger:
+                    self.logger.debug('OpenAPI read from web failed: %s', e)
+                raise CloudFlareAPIError(0, 'OpenAPI read from web failed: %s' % (e)) from None
+
+            try:
+                v, openapi_version, cloudflare_version = api_decode_from_openapi(v)
+            except SyntaxError as e:
+                if self.logger:
+                    self.logger.debug('OpenAPI bad json file: %s', e)
+                raise CloudFlareAPIError(0, 'OpenAPI bad json file: %s' % (e)) from None
+
+            if self.logger:
+                self.logger.debug('OpenAPI version: %s, Cloudflare API version: %s', openapi_version, cloudflare_version)
+            return v
 
         def _read_from_web(self, url):
             """ Cloudflare v4 API"""
@@ -619,7 +635,7 @@ class CloudFlare():
             except Exception as e:
                 if self.logger:
                     self.logger.debug('Call: exception! "%s"', e)
-                raise CloudFlareAPIError(0, 'connection failed.')
+                raise CloudFlareAPIError(0, 'connection failed.') from None
 
             return response.text
 
@@ -851,16 +867,10 @@ class CloudFlare():
             w = w + self._api_list(a, s + '/' + n)
         return w
 
-    # TODO - remove at some point
-    #def api_from_web(self):
-    #    """ Cloudflare v4 API"""
-    #
-    #    return api_decode_from_web(self._base.api_from_web())
-
     def api_from_openapi(self, url=None):
         """ Cloudflare v4 API"""
 
-        return api_decode_from_openapi(self._base.api_from_openapi(url))
+        return self._base._api_from_openapi(url)
 
     def __init__(self, email=None, key=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None, global_request_timeout=None, max_request_retries=None):
         """ Cloudflare v4 API"""
