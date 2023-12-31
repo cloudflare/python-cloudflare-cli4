@@ -1,4 +1,4 @@
-""" dump api tests """
+""" add to api tests """
 
 import os
 import sys
@@ -11,9 +11,9 @@ import CloudFlare
 
 cf = None
 
-def test_cloudflare():
+def test_cloudflare(debug=False):
     global cf
-    cf = CloudFlare.CloudFlare()
+    cf = CloudFlare.CloudFlare(debug=debug)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
 def test_app_invalid():
@@ -21,36 +21,43 @@ def test_app_invalid():
     cf.add('OPEN', 'invalid')
     try:
         results = cf.invalid()
-        print('error - should not reach here')
+        print('error - should not reach here', file=sys.stderr)
         assert False
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         # error 7000 No route for that URI
         assert int(e) == 7000
         assert str(e) == 'No route for that URI'
-        print(int(e), str(e))
+        print('error: %d=%s' % (int(e), str(e)), file=sys.stderr)
 
 def test_app_invalid_with_underscore():
     """add API commands"""
     cf.add('OPEN', 'in_valid')
     try:
         results = cf.in_valid()
-        print('error - should not reach here')
+        print('error - should not reach here', file=sys.stderr)
         assert False
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         # error 7000 No route for that URI
         assert int(e) == 7000
         assert str(e) == 'No route for that URI'
-        print(int(e), str(e))
+        print('error: %d=%s' % (int(e), str(e)), file=sys.stderr)
 
 def test_app_invalid_with_dash():
     """add API commands"""
     cf.add('OPEN', 'in-val-id')
     try:
         results = cf.in_val_id()
-        print('error - should not reach here')
+        print('error - should not reach here', file=sys.stderr)
         assert False
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         # error 7000 No route for that URI
         assert int(e) == 7000
         assert str(e) == 'No route for that URI'
-        print(int(e), str(e))
+        print('error: %d=%s' % (int(e), str(e)), file=sys.stderr)
+
+if __name__ == '__main__':
+    test_cloudflare(debug=True)
+    test_app_invalid()
+    test_app_invalid_with_underscore()
+    test_app_invalid_with_dash()
+

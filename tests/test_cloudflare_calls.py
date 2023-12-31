@@ -3,6 +3,7 @@
 import os
 import sys
 
+sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
 
@@ -20,7 +21,6 @@ cf = None
 
 def test_cloudflare():
     global cf
-    cf = None
     cf = CloudFlare.CloudFlare()
     assert isinstance(cf, CloudFlare.CloudFlare)
 
@@ -31,7 +31,6 @@ def test_ips1():
 
 def test_cloudflare_debug():
     global cf
-    cf = None
     cf = CloudFlare.CloudFlare(debug=True)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
@@ -42,7 +41,6 @@ def test_ips2():
 
 def test_cloudflare_raw():
     global cf
-    cf = None
     cf = CloudFlare.CloudFlare(raw=False)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
@@ -53,7 +51,6 @@ def test_ips3():
 
 def test_cloudflare_no_sessions():
     global cf
-    cf = None
     cf = CloudFlare.CloudFlare(use_sessions=False)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
@@ -66,3 +63,14 @@ def test_ips5():
     ips = cf.ips()
     assert isinstance(ips, dict)
     assert len(ips) > 0
+
+if __name__ == '__main__':
+    test_cloudflare()
+    test_ips1()
+    test_cloudflare_debug()
+    test_ips2()
+    test_cloudflare_raw()
+    test_ips3()
+    test_cloudflare_no_sessions()
+    test_ips4()
+    test_ips5()

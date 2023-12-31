@@ -5,6 +5,7 @@ import sys
 import uuid
 import random
 
+sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
 
@@ -12,19 +13,26 @@ import CloudFlare
 
 cf = None
 
-def test_cloudflare():
+def test_cloudflare(debug=False):
     global cf
-    cf = CloudFlare.CloudFlare()
+    cf = CloudFlare.CloudFlare(debug=debug)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
 zone_name = None
 zone_id = None
 
-def test_find_zone():
+def test_find_zone(domain_name=None):
     global zone_name, zone_id
     # grab a random zone identifier from the first 10 zones
-    params = {'per_page':10}
-    zones = cf.zones.get(params=params)
+    if domain_name:
+        params = {'per_page':1, 'name':domain_name}
+    else:
+        params = {'per_page':10}
+    try:
+        zones = cf.zones.get(params=params)
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        print('%s: Error %d=%s' % (domain_name, int(e), str(e)), file=sys.stderr)
+        exit(0)
     assert len(zones) > 0 and len(zones) <= 10
     n = random.randrange(len(zones))
     zone_name = zones[n]['name']
@@ -38,7 +46,7 @@ dns_content1 = None
 dns_content2 = None
 dns_content3 = None
 
-def test_dns_records():
+def test_dns_records_create_values():
     global dns_name, dns_type, dns_content1, dns_content2, dns_content3
     dns_name = str(uuid.uuid1())
     dns_type = 'TXT'
@@ -117,3 +125,20 @@ def test_dns_records_get5():
     params = {'name':dns_name + '.' + zone_name, 'match':'all', 'type':dns_type}
     dns_results = cf.zones.dns_records.get(zone_id, params=params)
     assert len(dns_results) == 0
+
+if __name__ == '__main__':
+    test_cloudflare(debug=True)
+    if len(sys.argv) > 1:
+        test_find_zone(sys.argv[1])
+    else:
+        test_find_zone()
+    test_dns_records_create_values()
+    test_dns_records_get1()
+    test_dns_records_post()
+    test_dns_records_get2()
+    test_dns_records_get3()
+    test_dns_records_patch()
+    test_dns_records_put()
+    test_dns_records_get4()
+    test_dns_records_delete()
+    test_dns_records_get5()

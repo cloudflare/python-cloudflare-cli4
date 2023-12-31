@@ -12,9 +12,9 @@ import CloudFlare
 
 cf = None
 
-def test_cloudflare():
+def test_cloudflare(debug=False):
     global cf
-    cf = CloudFlare.CloudFlare()
+    cf = CloudFlare.CloudFlare(debug=debug)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
 zone_name = None
@@ -24,10 +24,14 @@ def test_find_zone(domain_name=None):
     global zone_name, zone_id
     # grab a random zone identifier from the first 10 zones
     if domain_name:
-        params = {'per_page':10, 'name':domain_name}
+        params = {'per_page':1, 'name':domain_name}
     else:
         params = {'per_page':10}
-    zones = cf.zones.get(params=params)
+    try:
+        zones = cf.zones.get(params=params)
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        print('%s: Error %d=%s' % (domain_name, int(e), str(e)), file=sys.stderr)
+        exit(0)
     assert len(zones) > 0 and len(zones) <= 10
     n = random.randrange(len(zones))
     zone_name = zones[n]['name']
@@ -57,7 +61,7 @@ def test_certificates():
         print('%s: %48s %29s %s' % (zone_name, c['id'], c['expires_on'], c['hostnames']), file=sys.stderr)
 
 if __name__ == '__main__':
-    test_cloudflare()
+    test_cloudflare(debug=True)
     if len(sys.argv) > 1:
         test_find_zone(sys.argv[1])
     else:

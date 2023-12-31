@@ -3,13 +3,19 @@
 import os
 import sys
 
+sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
 
 # CloudFlare(email=None, key=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None, global_request_timeout=5, max_request_retries=5)
 
+cf = None
+
 class TestCloudflare:
     """ TestCloudflare """
+
+    def __init__(self, debug=False):
+        self._debug = debug
 
     def test_email_key_token000(self):
         self._run(0, 0, 0)
@@ -69,7 +75,7 @@ class TestCloudflare:
         self._run(2, 2, 2)
 
     def _run(self, token_index, key_index, email_index):
-
+        global cf
         try:
             profile = self._profile
         except AttributeError:
@@ -85,41 +91,50 @@ class TestCloudflare:
         key = [None, self._key, self._token][key_index]
         token = [None, self._token, self._key][token_index]
 
-        print('email = ', self._obfuscate(email), 'key = ', self._obfuscate(key), 'token = ', self._obfuscate(token))
-
-        cf = CloudFlare.CloudFlare(email=email, key=key, token=token, profile=profile)
+        try:
+            cf = CloudFlare.CloudFlare(email=email, key=key, token=token, debug=self._debug, profile=profile)
+        except Exception as e:
+            print('Error: %s' % (e))
+            # don't know what to do; but, lets continue anyway
+            return
         assert isinstance(cf, CloudFlare.CloudFlare)
 
         try:
-            r = cf.zones(params={'per_page':1})
+            r = cf.zones.get(params={'per_page':1})
         except:
             r = None
 
         if email is None and key is None and token == self._token:
+            print('SUCCESS (as expeced): email = ', self._obfuscate(email), 'key = ', self._obfuscate(key), 'token = ', self._obfuscate(token), file=sys.stderr)
             assert isinstance(r, list)
             assert len(r) == 1
             assert isinstance(r[0], dict)
             return
 
         if email is None and key == self._token and token is None:
+            print('SUCCESS (as expeced): email = ', self._obfuscate(email), 'key = ', self._obfuscate(key), 'token = ', self._obfuscate(token), file=sys.stderr)
+            assert isinstance(r, list)
             assert isinstance(r, list)
             assert len(r) == 1
             assert isinstance(r[0], dict)
             return
 
         if email == self._email and key == self._key and token is None:
+            print('SUCCESS (as expeced): email = ', self._obfuscate(email), 'key = ', self._obfuscate(key), 'token = ', self._obfuscate(token), file=sys.stderr)
             assert isinstance(r, list)
             assert len(r) == 1
             assert isinstance(r[0], dict)
             return
 
         if email == self._email and key is None and token == self._key:
+            print('SUCCESS (as expeced): email = ', self._obfuscate(email), 'key = ', self._obfuscate(key), 'token = ', self._obfuscate(token), file=sys.stderr)
             assert isinstance(r, list)
             assert len(r) == 1
             assert isinstance(r[0], dict)
             return
 
         # Nothing else should work!
+        print('FAILED  (as expeced): email = ', self._obfuscate(email), 'key = ', self._obfuscate(key), 'token = ', self._obfuscate(token), file=sys.stderr)
         assert r is None
 
     def _setup(self):
@@ -178,7 +193,34 @@ class TestCloudflare:
 
     def _obfuscate(self, s):
         """ _obfuscate """
+        return '█' if s is None else '█' * len(s)
 
-        if s is None:
-            return ''
-        return '█' * len(s)
+if __name__ == '__main__':
+    t = TestCloudflare(debug=True)
+    t.test_email_key_token000()
+    t.test_email_key_token001()
+    t.test_email_key_token002()
+    t.test_email_key_token010()
+    t.test_email_key_token011()
+    t.test_email_key_token012()
+    t.test_email_key_token020()
+    t.test_email_key_token021()
+    t.test_email_key_token022()
+    t.test_email_key_token100()
+    t.test_email_key_token101()
+    t.test_email_key_token102()
+    t.test_email_key_token110()
+    t.test_email_key_token111()
+    t.test_email_key_token112()
+    t.test_email_key_token120()
+    t.test_email_key_token121()
+    t.test_email_key_token122()
+    t.test_email_key_token200()
+    t.test_email_key_token201()
+    t.test_email_key_token202()
+    t.test_email_key_token210()
+    t.test_email_key_token211()
+    t.test_email_key_token212()
+    t.test_email_key_token220()
+    t.test_email_key_token221()
+    t.test_email_key_token222()

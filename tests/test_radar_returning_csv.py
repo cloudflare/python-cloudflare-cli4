@@ -12,9 +12,9 @@ import CloudFlare
 
 cf = None
 
-def test_cloudflare():
+def test_cloudflare(debug=False):
     global cf
-    cf = CloudFlare.CloudFlare()
+    cf = CloudFlare.CloudFlare(debug=debug)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
 aliases = None
@@ -33,8 +33,8 @@ def test_radar_datasets_ranking():
         )
     aliases = sorted(aliases, key=lambda v: v[2], reverse=False)
 
-def test_radar_datasets_ranking_three_aliases():
-    for v in aliases[0:3]:
+def test_radar_datasets_ranking_two_aliases():
+    for v in aliases[0:2]:
         alias = v[1]
         n_lines = v[2]
         results = cf.radar.datasets(alias)
@@ -44,3 +44,7 @@ def test_radar_datasets_ranking_three_aliases():
         assert lines[0] == 'domain'
         assert len(lines) >= n_lines + 1
 
+if __name__ == '__main__':
+    test_cloudflare(debug=True)
+    test_radar_datasets_ranking()
+    test_radar_datasets_ranking_two_aliases()

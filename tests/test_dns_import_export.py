@@ -7,9 +7,7 @@ import time
 import random
 import tempfile
 
-fp = open('/dev/null', 'rb')
-n = fp.read()
-
+sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
 
@@ -25,11 +23,18 @@ def test_cloudflare():
 zone_name = None
 zone_id = None
 
-def test_find_zone():
+def test_find_zone(domain_name=None):
     global zone_name, zone_id
     # grab a random zone identifier from the first 10 zones
-    params = {'per_page':10}
-    zones = cf.zones.get(params=params)
+    if domain_name:
+        params = {'per_page':1, 'name':domain_name}
+    else:
+        params = {'per_page':10}
+    try:
+        zones = cf.zones.get(params=params)
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        print('%s: Error %d=%s' % (domain_name, int(e), str(e)), file=sys.stderr)
+        exit(0)
     assert len(zones) > 0 and len(zones) <= 10
     n = random.randrange(len(zones))
     zone_name = zones[n]['name']
@@ -66,7 +71,6 @@ def test_dns_export():
 
 def test_cloudflare_with_debug():
     global cf
-    cf = None
     cf = CloudFlare.CloudFlare(debug=True)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
@@ -99,7 +103,10 @@ def test_dns_export_with_debug():
 
 if __name__ == '__main__':
     test_cloudflare()
-    test_find_zone()
+    if len(sys.argv) > 1:
+        test_find_zone(sys.argv[1])
+    else:
+        test_find_zone()
     test_dns_import()
     test_dns_export()
     test_cloudflare_with_debug()

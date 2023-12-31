@@ -2,21 +2,20 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
 
+sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
 
 cf = None
 
-def test_cloudflare():
+def test_cloudflare(debug=False):
     global cf
-    cf = CloudFlare.CloudFlare()
+    cf = CloudFlare.CloudFlare(debug=debug)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
 def test_ips():
     # no auth required
-    cf = CloudFlare.CloudFlare()
-    assert isinstance(cf, CloudFlare.CloudFlare)
     ips = cf.ips()
     assert isinstance(ips, dict)
     assert isinstance(ips['ipv4_cidrs'], list)
@@ -35,3 +34,8 @@ def test_ips_plus_jdcloud():
     assert len(ips['ipv4_cidrs']) > 0
     assert len(ips['ipv6_cidrs']) > 0
     assert len(ips['jdcloud_cidrs']) > 0
+
+if __name__ == '__main__':
+    test_cloudflare(debug=True)
+    test_ips()
+    test_ips_plus_jdcloud()
