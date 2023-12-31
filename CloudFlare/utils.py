@@ -66,7 +66,6 @@ def build_curl(method, url, headers, params, data_str, data_json, files):
                 msg.append('            --data \'%s\' \\' % (str(data_str).replace('\n', ' ')))
     # data_json
     if data_json is not None:
-        print('===', type(data_json), len(data_json))
         try:
             s = json.dumps(data_json)
         except:
