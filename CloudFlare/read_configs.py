@@ -11,7 +11,7 @@ def read_configs(profile=None):
     """ reading the config file for Cloudflare API"""
 
     # We return all these values
-    config = {'email': None, 'key': None, 'token': None, 'certtoken': None, 'extras': None, 'base_url': None, 'profile': None}
+    config = {'email': None, 'key': None, 'token': None, 'certtoken': None, 'extras': None, 'base_url': None, 'openapi_url': None, 'profile': None}
 
     # envioronment variables override config files - so setup first
     config['email'] = os.getenv('CLOUDFLARE_EMAIL') if os.getenv('CLOUDFLARE_EMAIL') is not None else os.getenv('CF_API_EMAIL')
@@ -20,6 +20,7 @@ def read_configs(profile=None):
     config['certtoken'] = os.getenv('CLOUDFLARE_API_CERTKEY') if os.getenv('CLOUDFLARE_API_CERTKEY') is not None else os.getenv('CF_API_CERTKEY')
     config['extras'] = os.getenv('CLOUDFLARE_API_EXTRAS') if os.getenv('CLOUDFLARE_API_EXTRAS') is not None else os.getenv('CF_API_EXTRAS')
     config['base_url'] = os.getenv('CLOUDFLARE_API_URL') if os.getenv('CLOUDFLARE_API_URL') is not None else os.getenv('CF_API_URL')
+    config['openapi_url'] = os.getenv('CLOUDFLARE_OPENAPI_URL') if os.getenv('CLOUDFLARE_OPENAPI_URL') is not None else os.getenv('CF_OPENAPI_URL')
 
     config['global_request_timeout'] = os.getenv('CLOUDFLARE_GLOBAL_REQUEST_TIMEOUT')
     config['max_request_retries'] = os.getenv('CLOUDFLARE_MAX_REQUEST_RETRIES')
@@ -58,7 +59,7 @@ def read_configs(profile=None):
         if not cp.has_section(profile):
             raise Exception("%s: configuration section missing - configuration file only has these sections: %s" % (profile, ','.join(cp.sections())))
 
-        for option in ['email', 'key', 'token', 'certtoken', 'extras', 'base_url', 'global_request_timeout', 'max_request_retries']:
+        for option in ['email', 'key', 'token', 'certtoken', 'extras', 'base_url', 'openapi_url', 'global_request_timeout', 'max_request_retries']:
             try:
                 config_value = cp.get(profile, option)
                 if option == 'extras':

@@ -305,6 +305,21 @@ class CloudFlare():
                 else:
                     self.logger.debug('Response: %d, %s, %s', response_code, response_type, '...')
 
+            if response_code == 500:
+                # The /certificates API call insists on a 500 error return and yet has valid error data
+                # lets check and convert if able
+                try:
+                    j = json.loads(response_data)
+                    if 'status' not in j and 'errors' not in j:
+                        # no go - it's not a Cloudflare error format
+                        pass
+                    else:
+                        # yippe - try to continue by allowing to process fully
+                        response_code = 200
+                except:
+                    # ignore - maybe a real 500!
+                    pass
+
             if response_code >= 500 and response_code <= 599:
                 # 500 Internal Server Error
                 # 501 Not Implemented
@@ -336,13 +351,13 @@ class CloudFlare():
             #
             #    # don't deal with these errors, just pass upwards!
             #    response.raise_for_status()
-            #
+
             #if response_code >= 300 and response_code <= 399:
             #    # 304 Not Modified
             #
             #    # don't deal with these errors, just pass upwards!
             #    response.raise_for_status()
-            #
+
             # should be a 200 response at this point
 
             return [response_type, response_code, response_data]
@@ -355,143 +370,90 @@ class CloudFlare():
                                                                                identifiers,
                                                                                params, data_str, data_json, files)
 
+            if response_code != requests_codes.ok:
+                # 3xx & 4xx errors (5xx's handled above)
+                response_data = {'success': False,
+                                 'errors': [{'code': response_code, 'message':'HTTP response code %d' % response_code}],
+                                 'result': str(response_data)}
+
+                # it would be nice to return the error code and content type values; but not quite yet
+                return response_data
+
             if response_type == 'application/json':
                 # API says it's JSON; so it better be parsable as JSON
                 # NDJSON is returned by Enterprise Log Share i.e. /zones/:id/logs/received
                 if hasattr(response_data, 'decode'):
                     response_data = response_data.decode('utf-8')
                 try:
-                    response_data = json.loads(response_data)
-                    if not isinstance(response_data, (dict)):
-                        response_data = {'success': True,
-                                         'result': response_data}
-                except ValueError:
                     if response_data == '':
                         # This should really be 'null' but it isn't. Even then, it's wrong!
-                        if response_code == requests_codes.ok:
-                            # 200 ok
-                            response_data = {'success': True,
-                                             'result': None}
-                        else:
-                            # 3xx & 4xx errors
-                            response_data = {'success': False,
-                                             'code': response_code,
-                                             'result': None}
+                        response_data = None
                     else:
-                        # Lets see if it's NDJSON data
-                        # NDJSON is a series of JSON elements with newlines between each element
-                        try:
-                            r = []
-                            for l in response_data.splitlines():
-                                r.append(json.loads(l))
-                            response_data = r
-                        except:
-                            # While this should not happen; it's always possible
-                            if self.logger:
-                                self.logger.debug('Response data not JSON: %r', response_data)
-                            raise CloudFlareAPIError(0, 'JSON parse failed - report to Cloudflare.')
+                        response_data = json.loads(response_data)
+                except ValueError:
+                    # Lets see if it's NDJSON data
+                    # NDJSON is a series of JSON elements with newlines between each element
+                    try:
+                        r = []
+                        for l in response_data.splitlines():
+                            r.append(json.loads(l))
+                        response_data = r
+                    except:
+                        # While this should not happen; it's always possible
+                        if self.logger:
+                            self.logger.debug('Response data not JSON: %r', response_data)
+                        raise CloudFlareAPIError(0, 'JSON parse failed - report to Cloudflare.')
 
-                if response_code == requests_codes.ok:
-                    # 200 ok - so nothing needs to be done
-                    pass
-                else:
-                    # 3xx & 4xx errors - we should report that somehow - but not quite yet
-                    # response_data['code'] = response_code
-                    pass
-            elif response_type == 'application/octet-stream' and isinstance(response_data, (int, float)):
-                # It's binary data
-                if response_code == requests_codes.ok:
-                    # 200 ok
-                    response_data = {'success': True,
-                                     'result': response_data}
-                else:
-                    # 3xx & 4xx errors
-                    response_data = {'success': False,
-                                     'code': response_code,
-                                     'result': response_data}
-            elif response_type == 'application/octet-stream' and isinstance(response_data, (bytes, bytearray)):
+                if isinstance(response_data, dict) and 'success' in response_data:
+                    return response_data
+                # if it's not a dict then it's not going to have 'success'
+                return {'success': True, 'result': response_data}
+
+            if response_type in ['text/plain', 'text/csv', 'application/octet-stream']:
                 # API says it's text; but maybe it's actually JSON? - should be fixed in API
                 if hasattr(response_data, 'decode'):
                     response_data = response_data.decode('utf-8')
                 try:
                     response_data = json.loads(response_data)
-                    if not isinstance(response_data, (dict)) or 'success' not in response_data:
-                        if response_code == requests_codes.ok:
-                            # 200 ok
-                            response_data = {'success': True,
-                                             'result': response_data}
-                        else:
-                            # 3xx & 4xx errors
-                            response_data = {'success': False,
-                                             'code': response_code,
-                                             'result': response_data}
                 except ValueError:
                     # So it wasn't JSON - moving on as if it's text!
-                    # A single value is returned (vs an array or object)
-                    if response_code == requests_codes.ok:
-                        # 200 ok
-                        response_data = {'success': True, 'result': response_data}
-                    else:
-                        # 3xx & 4xx errors
-                        response_data = {'success': False,
-                                         'code': response_code,
-                                         'result': response_data}
-            elif response_type in ['text/plain', 'text/csv', 'application/octet-stream']:
-                # API says it's text; but maybe it's actually JSON? - should be fixed in API
-                if hasattr(response_data, 'decode'):
-                    response_data = response_data.decode('utf-8')
-                try:
-                    response_data = json.loads(response_data)
-                    if not isinstance(response_data, (dict)):
-                        response_data = {'success': True,
-                                         'result': response_data}
-                except ValueError:
-                    # So it wasn't JSON - moving on as if it's text!
-                    # A single value is returned (vs an array or object)
-                    if response_code == requests_codes.ok:
-                        # 200 ok
-                        response_data = {'success': True, 'result': response_data}
-                    else:
-                        # 3xx & 4xx errors
-                        response_data = {'success': False,
-                                         'code': response_code,
-                                         'result': response_data}
-            elif response_type in ['text/javascript', 'application/javascript', 'text/html']:
+                    pass
+                if isinstance(response_data, dict) and 'success' in response_data:
+                    return response_data
+                return {'success': True, 'result': response_data}
+
+            if response_type in ['text/javascript', 'application/javascript', 'text/html']:
                 # used by Cloudflare workers
                 if hasattr(response_data, 'decode'):
                     response_data = response_data.decode('utf-8')
-                if response_code == requests_codes.ok:
-                    # 200 ok
-                    response_data = {'success': True,
-                                     'result': str(response_data)}
-                else:
-                    # 3xx & 4xx errors
-                    response_data = {'success': False,
-                                     'code': response_code,
-                                     'result': str(response_data)}
-            elif response_type[0:6] in ['audio/', 'image/', 'video/']:
-                # raw - just pass thru
-                if response_code == requests_codes.ok:
-                    response_data = {'success': True, 'result': response_data}
-                else:
-                    response_data = {'success': False,
-                                     'code': response_code,
-                                     'result': response_data}
-            else:
-                # Assuming nothing - but continuing anyway
-                # A single value is returned (vs an array or object)
-                if response_code == requests_codes.ok:
-                    # 200 ok
-                    response_data = {'success': True,
-                                     'result': str(response_data)}
-                else:
-                    # 3xx & 4xx errors
-                    response_data = {'success': False,
-                                     'code': response_code,
-                                     'result': str(response_data)}
+                return {'success': True, 'result': str(response_data)}
 
-            # it would be nice to return the error code and content type values; but not quite yet
-            return response_data
+            if response_type == 'application/octet-stream' and isinstance(response_data, (int, float)):
+                # it's raw/binary - just pass thru
+                return {'success': True, 'result': response_data}
+
+            if response_type == 'application/octet-stream' and isinstance(response_data, (bytes, bytearray)):
+                # API says it's text; but maybe it's actually JSON? - should be fixed in API
+                if hasattr(response_data, 'decode'):
+                    response_data = response_data.decode('utf-8')
+                try:
+                    response_data = json.loads(response_data)
+                except ValueError:
+                    # So it wasn't JSON - moving on as if it's text!
+                    pass
+
+                if isinstance(response_data, dict) and 'success' in response_data:
+                    return response_data
+                return {'success': True, 'result': response_data}
+
+            if response_type[0:6] in ['audio/', 'image/', 'video/']:
+                # it's raw/binary - just pass thru
+                return {'success': True, 'result': response_data}
+
+            # Assuming nothing - but continuing anyway as if its a string
+            if hasattr(response_data, 'decode'):
+                response_data = response_data.decode('utf-8')
+            return {'success': True, 'result': str(response_data)}
 
         def _call(self, method, parts, identifiers, params, data_str, data_json, files):
             """ Cloudflare v4 API"""
@@ -528,6 +490,7 @@ class CloudFlare():
                     if 'result' not in response_data:
                         # Only happens on /certificates call
                         # should be fixed in /certificates API
+                        # may well be fixed by now
                         if self.logger:
                             self.logger.debug('Response: assuming success = "False"')
                         r = response_data
@@ -586,12 +549,13 @@ class CloudFlare():
                     result = response_data['result']
                 except:
                     result = response_data
+
             if self.logger:
-                if isinstance(result, str):
-                    if len(result) > 100:
-                        self.logger.debug('Response: %s...', result[0:100].replace('\n', ' '))
+                if isinstance(result, (str, dict, list)):
+                    if len(str(result)) > 100:
+                        self.logger.debug('Response: %s...', str(result)[0:100].replace('\n', ' '))
                     else:
-                        self.logger.debug('Response: %s', result.replace('\n', ' '))
+                        self.logger.debug('Response: %s', str(result).replace('\n', ' '))
                 elif isinstance(result, (bytes,bytearray)):
                     self.logger.debug('Response: %s', result[0:100])
                 else:
