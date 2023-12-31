@@ -386,7 +386,8 @@ def do_it(args):
     output = 'json'
     example = False
     raw = False
-    dump = False
+    do_dump = False
+    do_openapi = None
     openapi_url = None
     binary_file = False
     profile = None
@@ -453,9 +454,10 @@ def do_it(args):
         elif opt in ('-p', '--profile'):
             profile = arg
         elif opt in ('-d', '--dump'):
-            dump = True
+            do_dump = True
         elif opt in ('-A', '--openapi'):
-            openapi_url = arg
+            do_openapi = True
+            openapi_url = arg if arg != '' else None
         elif opt in ('-b', '--binary'):
             binary_file = True
         elif opt in ('-G', '--get'):
@@ -481,12 +483,12 @@ def do_it(args):
     except Exception as e:
         sys.exit(e)
 
-    if dump:
+    if do_dump:
         a = dump_commands(cf)
         sys.stdout.write(a)
         sys.exit(0)
 
-    if openapi_url:
+    if do_openapi:
         a = dump_commands_from_web(cf, openapi_url)
         sys.stdout.write(a)
         sys.exit(0)
