@@ -14,6 +14,7 @@ from .api_decode_from_openapi import api_decode_from_openapi
 from .exceptions import CloudFlareError, CloudFlareAPIError, CloudFlareInternalError
 
 BASE_URL = 'https://api.cloudflare.com/client/v4'
+OPENAPI_URL = 'https://github.com/cloudflare/api-schemas/raw/main/openapi.json'
 
 DEFAULT_GLOBAL_REQUEST_TIMEOUT = 5
 DEFAULT_MAX_REQUEST_RETRIES = 5
@@ -37,6 +38,9 @@ class CloudFlare():
 
             # We must have a base_url value
             self.base_url = config['base_url'] if 'base_url' in config else BASE_URL
+
+            # The modern-day API definition comes from here (soon)
+            self.openapi_url = config['openapi_url'] if 'openapi_url' in config else OPENAPI_URL
 
             self.raw = config['raw']
             self.use_sessions = config['use_sessions']
@@ -119,12 +123,18 @@ class CloudFlare():
             api_token = self.config[v] if v in self.config else self.api_token
 
             if api_email is None and api_key is None and api_token is None:
+                if self.logger:
+                    self.logger.debug('neither email/key or token defined')
                 raise CloudFlareAPIError(0, 'neither email/key or token defined')
 
             if api_key is not None and api_token is not None:
+                if self.logger:
+                    self.logger.debug('confused info - both key and token defined')
                 raise CloudFlareAPIError(0, 'confused info - both key and token defined')
 
             if api_email is not None and api_key is None and api_token is None:
+                if self.logger:
+                    self.logger.debug('email defined however neither key or token defined')
                 raise CloudFlareAPIError(0, 'email defined however neither key or token defined')
 
             # We know at this point that at-least one api_* is set and no confusion!
@@ -156,6 +166,8 @@ class CloudFlare():
                 api_certtoken = self.api_certtoken # use generic value for all methods
 
             if api_certtoken is None:
+                if self.logger:
+                    self.logger.debug('no cert token defined')
                 raise CloudFlareAPIError(0, 'no cert token defined')
             self.headers['X-Auth-User-Service-Key'] = api_certtoken
 
@@ -163,7 +175,9 @@ class CloudFlare():
             """ Cloudflare v4 API"""
 
             # base class simply returns not available - no processing of any arguments
-            raise CloudFlareAPIError(0, 'call not available')
+            if self.logger:
+                self.logger.debug('call for this method not available')
+            raise CloudFlareAPIError(0, 'call for this method not available')
 
         def do_no_auth(self, method, parts, identifiers, params=None, data=None, content_type=None, files=None):
             """ Cloudflare v4 API"""
@@ -305,8 +319,24 @@ class CloudFlare():
                 else:
                     self.logger.debug('Response: %d, %s, %s', response_code, response_type, '...')
 
-            if response_code == 500:
+            if response_code == 429:
+                # 429 Too Many Requests
+                # The HTTP 429 Too Many Requests response status code indicates the user
+                # has sent too many requests in a given amount of time ("rate limiting").
+                # A Retry-After header might be included to this response indicating how
+                # long to wait before making a new request.
+                try:
+                    retry_after = response.headers['Retry-After']
+                except (KeyError,IndexError):
+                    retry_after = ''
+                # XXX/TODO no processing for now - but could try again within library
+                if self.logger:
+                    self.logger.debug('Response: 429 Header Retry-After: %s', retry_after)
+
+            # if (response_code >= 400 and response_code <= 499) or response_code == 500:
+            if response_code in [400,500]:
                 # The /certificates API call insists on a 500 error return and yet has valid error data
+                # Other API calls can return 400 or 4xx with valid response data
                 # lets check and convert if able
                 try:
                     j = json.loads(response_data)
@@ -317,7 +347,7 @@ class CloudFlare():
                         # yippe - try to continue by allowing to process fully
                         response_code = 200
                 except:
-                    # ignore - maybe a real 500!
+                    # ignore - maybe a real error, let proceed!
                     pass
 
             if response_code >= 500 and response_code <= 599:
@@ -571,9 +601,11 @@ class CloudFlare():
             result = response_data
             return result
 
-        def api_from_openapi(self, url):
+        def api_from_openapi(self, url=None):
             """ Cloudflare v4 API"""
 
+            if url is None:
+                url = self.openapi_url
             return self._read_from_web(url)
 
         def _read_from_web(self, url):
@@ -825,7 +857,7 @@ class CloudFlare():
     #
     #    return api_decode_from_web(self._base.api_from_web())
 
-    def api_from_openapi(self, url):
+    def api_from_openapi(self, url=None):
         """ Cloudflare v4 API"""
 
         return api_decode_from_openapi(self._base.api_from_openapi(url))
@@ -834,6 +866,15 @@ class CloudFlare():
         """ Cloudflare v4 API"""
 
         self._base = None
+
+        if email and not isinstance(email, str):
+            raise TypeError('email must be str')
+        if key and not isinstance(key, str):
+            raise TypeError('key must be str')
+        if token and not isinstance(token, str):
+            raise TypeError('token must be str')
+        if certtoken and not isinstance(certtoken, str):
+            raise TypeError('certtoken must be str')
 
         try:
             config = read_configs(profile)
