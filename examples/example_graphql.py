@@ -12,9 +12,9 @@ import CloudFlare
 
 def now_iso8601_time(h_delta):
     """Cloudflare API code - example"""
-
     t = time.time() - (h_delta * 3600)
-    r = datetime.datetime.fromtimestamp(int(t), tz=pytz.timezone("UTC")).strftime('%Y-%m-%dT%H:%M:%SZ')
+    # only use yyyy-mm-dd part for httpRequests1dGroups below
+    r = datetime.datetime.fromtimestamp(int(t), tz=pytz.timezone("UTC")).strftime('%Y-%m-%d')
     return r
 
 def main():
@@ -52,7 +52,7 @@ def main():
           }
         }
       }
-    """ % (zone_id, date_before[0:10], date_after[0:10]) # only use yyyy-mm-dd part for httpRequests1dGroups
+    """ % (zone_id, date_before, date_after)
 
     # query - always a post
     try:
