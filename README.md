@@ -185,6 +185,7 @@ This parameter controls how the data is returned from a successful call (see not
 Timeouts (10s) and Retries (5) are configured by default. Should you wish to override them, use these settings:
 * `global_request_timeout` - How long before each API call to Cloudflare should time out (in seconds)
 * `max_requests_retries` - How many times to retry an API call when DNS lookups, socket connections, or connect timeouts occur.
+
 > NOTE: `max_request_retries` is only available when `use_sessions` is not disabled.
 
 The following paramaters are for debug and/or development usage
@@ -442,7 +443,7 @@ import CloudFlare
 
 The other raised response is **CloudFlareInternalError** which can happen when calling an invalid method.
 
-In some cases more than one error is returned. In this case the return value **e** is also an array.
+In some cases more than one error is returned. In this case the return value `e` is also an array.
 You can iterate over that array to see the additional error.
 
 ```python
@@ -461,13 +462,13 @@ import CloudFlare
     ...
 ```
 
-### Exception examples
+### Exception handling
 
-Here's examples using the CLI command `cli4` of the responses passed back in exceptions.
+Here's code using the CLI command `cli4` of the responses passed back in exceptions.
 
 First a simple get with a clean (non-error) response.
 
-```
+```bash
 $ cli4 /zones/:example.com/dns_records | jq -c '.[]|{"name":.name,"type":.type,"content":.content}'
 {"name":"example.com","type":"MX","content":"something.example.com"}
 {"name":"something.example.com","type":"A","content":"10.10.10.10"}
@@ -477,14 +478,15 @@ $
 Next a simple/single error response.
 This is simulated by providing incorrect authentication information.
 
-```
+```bash
 $ CLOUDFLARE_EMAIL='someone@example.com' cli4 /zones/
 cli4: /zones - 9103 Unknown X-Auth-Key or X-Auth-Email
 $
 ```
 
 More than one call can be done on the same command line. In this mode, the connection is preserved between calls.
-```
+
+```bash
 $ cli4 /user/organizations /user/invites
 ...
 $
@@ -494,7 +496,7 @@ Note that the output is presently two JSON structures one after the other - so l
 Finally, a command that provides more than one error response.
 This is simulated by passing an invalid IPv4 address to a DNS record creation.
 
-```
+```bash
 $ cli4 --post name='foo' type=A content="NOT-A-VALID-IP-ADDRESS" /zones/:example.com/dns_records
 cli4: /zones/:example.com/dns_records - 9005 Content for A record is invalid. Must be a valid IPv4 address
 cli4: /zones/:example.com/dns_records - 1004 DNS Validation Error
@@ -627,14 +629,14 @@ $ cli4 [-V|--version] [-h|--help] [-v|--verbose] \
 
 For API calls that need to pass data or parameters there is various formats to use.
 
-The simplest form is ```item=value```. This passes the value as a string within the APIs JSON data.
+The simplest form is `item=value`. This passes the value as a string within the APIs JSON data.
 
-If you need a numeric value passed then **==** can be used to force the value to be treated as a numeric value within the APIs JSON data.
-For example: ```item==value```.
+If you need a numeric value passed then `==` can be used to force the value to be treated as a numeric value within the APIs JSON data.
+For example: `item==value`.
 
-if you need to pass a list of items; then **[]** can be used. For example:
+if you need to pass a list of items; then `[]` can be used. For example:
 
-```
+```bash
 pool_id1="11111111111111111111111111111111"
 pool_id2="22222222222222222222222222222222"
 pool_id3="33333333333333333333333333333333"
@@ -644,15 +646,15 @@ cli4 --post global_pools="[ ${pool_id1}, ${pool_id2}, ${pool_id3} ]" region_pool
 Data or parameters can be either named or unnamed.
 It can not be both.
 Named is the majority format; as described above.
-Unnamed parameters simply don't have anything before the **=** sign, as in ```=value```.
+Unnamed parameters simply don't have anything before the `=` sign, as in `=value`.
 This format is presently only used by the Cloudflare Load Balancer API calls.
 For example:
 
-```
+```bash
 cli4 --put ="00000000000000000000000000000000" /user/load_balancers/maps/:00000000000000000000000000000000/region/:WNAM
 ```
 
-Data can also be uploaded from file contents. Using the ```item=@filename``` format will open the file and the contents uploaded in the POST.
+Data can also be uploaded from file contents. Using the `item=@filename` format will open the file and the contents uploaded in the POST.
 
 ### CLI output
 
@@ -664,20 +666,20 @@ There is also a `--ndjson` flag for use with line based JSON data - this is main
 Additonally the output can be plain text or binary image format depending on the results from the API call (some calls results in non JSON results).
 The `--image` flag will return the data in the same format as the API's results.
 
-### Simple CLI examples
+### Simple CLI calls
 
- * ```cli4 /user/billing/profile```
- * ```cli4 /user/invites```
+ * `cli4 /user/billing/profile`
+ * `cli4 /user/invites`
 
- * ```cli4 /zones/:example.com```
- * ```cli4 /zones/:example.com/dnssec```
- * ```cli4 /zones/:example.com/settings/ipv6```
- * ```cli4 --put /zones/:example.com/activation_check```
- * ```cli4 /zones/:example.com/keyless_certificates```
+ * `cli4 /zones/:example.com`
+ * `cli4 /zones/:example.com/dnssec`
+ * `cli4 /zones/:example.com/settings/ipv6`
+ * `cli4 --put /zones/:example.com/activation_check`
+ * `cli4 /zones/:example.com/keyless_certificates`
 
- * ```cli4 /zones/:example.com/analytics/dashboard```
+ * `cli4 /zones/:example.com/analytics/dashboard`
 
-### More complex CLI examples
+### More complex CLI calls
 
 Here is the creation of a DNS entry, followed by a listing of that entry and then the deletion of that entry.
 
@@ -708,7 +710,7 @@ $
 There's the ability to handle dns entries with multiple values.
 This produces more than one API call within the command.
 
-```
+```bash
 $ cli4 /zones/:example.com/dns_records/:test.example.com | jq -c '.[]|{"id":.id,"name":.name,"type":.type,"content":.content}'
 {"id":"00000000000000000000000000000000","name":"test.example.com","type":"A","content":"192.168.0.1"}
 {"id":"00000000000000000000000000000000","name":"test.example.com","type":"AAAA","content":"2001:d8b::1"}
@@ -746,9 +748,9 @@ $ cli4 /zones/:example.com/available_plans | jq -c '.[]|{"id":.id,"name":.name}'
 $
 ```
 
-### Cloudflare CA CLI examples
+### Cloudflare CA CLI calls
 
-Here's some Cloudflare CA examples. Note the need of the zone_id= parameter with the basic **/certificates** call.
+Here's some Cloudflare CA calls. Note the need of the `zone_id=` parameter with the basic `/certificates` call.
 
 ```bash
 $ cli4 /zones/:example.com | jq -c '.|{"id":.id,"name":.name}'
@@ -763,6 +765,7 @@ $
 ```
 
 A certificate can be viewed via a simple GET request.
+
 ```bash
 $ cli4 /certificates/:123456789012345678901234567890123456789012345678
 {
@@ -778,7 +781,8 @@ $ cli4 /certificates/:123456789012345678901234567890123456789012345678
 $
 ```
 
-Creating a certificate. This is done with a **POST** request. Note the use of **==** in order to pass a decimal number (vs. string) in JSON. The CSR is not shown for simplicity sake.
+Creating a certificate. This is done with a `POST` request. Note the use of `==` in order to pass a decimal number (vs. string) in JSON. The CSR is not shown for simplicity sake.
+
 ```bash
 $ CSR=`cat example.com.csr`
 $ cli4 --post hostnames='["example.com","*.example.com"]' requested_validity==365 request_type="origin-ecc" csr="$CSR" /certificates
@@ -797,7 +801,8 @@ $ cli4 --post hostnames='["example.com","*.example.com"]' requested_validity==36
 $
 ```
 
-Deleting a certificate can be done with a **DELETE** call.
+Deleting a certificate can be done with a `DELETE` call.
+
 ```bash
 $ cli4 --delete /certificates/:123456789012345678901234567890123456789012345678
 {
@@ -807,11 +812,11 @@ $ cli4 --delete /certificates/:123456789012345678901234567890123456789012345678
 $
 ```
 
-### Paging CLI examples
+### Paging CLI calls
 
-The **--raw** command provides access to the paging returned values.
+The `--raw` command provides access to the paging returned values.
 See the API documentation for all the info.
-Here's an example of how to page thru a list of zones (it's included in the examples folder as **example_paging_thru_zones.sh**).
+Here's an example of how to page thru a list of zones (it's included in the examples folder as `example_paging_thru_zones.sh`).
 Note the use of `==` to pass a number vs a string as paramater.
 
 ```bash
@@ -842,7 +847,7 @@ done
 
 It produces the following results.
 
-```
+```bash
 COUNT=5 PAGE=1 PER_PAGE=5 TOTAL_COUNT=31 TOTAL_PAGES=7 -- accumsan.example auctor.example consectetur.example dapibus.example elementum.example
 COUNT=5 PAGE=2 PER_PAGE=5 TOTAL_COUNT=31 TOTAL_PAGES=7 -- felis.example iaculis.example ipsum.example justo.example lacus.example
 COUNT=5 PAGE=3 PER_PAGE=5 TOTAL_COUNT=31 TOTAL_PAGES=7 -- lectus.example lobortis.example maximus.example morbi.example pharetra.example
@@ -856,7 +861,7 @@ COUNT=5 PAGE=6 PER_PAGE=5 TOTAL_COUNT=31 TOTAL_PAGES=7 -- vivamus.example
 
 Some API calls use cursors to read beyond the initally returned values. See the API page in order to see which API calls do this.
 
-```
+```bash
 $ ACCOUNT_ID="00000000000000000000000000000000"
 $ LIST_ID="00000000000000000000000000000000"
 $
@@ -867,9 +872,9 @@ after=Mxm4GVmKjYbFjy2VxMPipnJigm1M_s6lCS9ABR9wx-RM2A
 $
 ```
 
-Once we have the ```after``` value, we can pass it along in order to read the next hunk of values. We finish when ```after``` returns as null (or isn't present).
+Once we have the `after` value, we can pass it along in order to read the next hunk of values. We finish when `after` returns as null (or isn't present).
 
-```
+```bash
 $ cli4 --raw cursor="$after" /accounts/::${ACCOUNT_ID}/rules/lists/::${LIST_ID}/items > /tmp/page2.json
 $ after=`jq -r '.result_info.cursors.after' < /tmp/page2.json`
 $ echo "after=$after"
@@ -879,7 +884,7 @@ $
 
 We can see the results now in two files.
 
-```
+```bash
 $ jq -c '.result[]' < /tmp/page1.json | wc -l
       25
 $
@@ -922,11 +927,11 @@ ff78f842188e4b869eb5389ae9ab8f41  2a06:98c0::/29    Cloudflare IP
 $
 ```
 
-The ```result_info.cursors``` area also contains a ```before``` value for reverse scrolling.
+The `result_info.cursors` area also contains a `before` value for reverse scrolling.
 
-As with ```per_page``` scrolling, raw mode is used.
+As with `per_page` scrolling, raw mode is used.
 
-### DNSSEC CLI examples
+### DNSSEC CLI calls
 
 ```bash
 $ cli4 /zones/:example.com/dnssec | jq -c '{"status":.status}'
@@ -954,7 +959,7 @@ $ cli4 /zones/:example.com/dnssec
 $
 ```
 
-### Zone file upload (i.e. import) CLI examples (uses BIND format files)
+### Zone file upload (i.e. import) CLI calls (uses BIND format files)
 
 Refer to [Import DNS records](https://api.cloudflare.com/#dns-records-for-a-zone-import-dns-records) on API documentation for this feature.
 
@@ -982,25 +987,25 @@ $ cli4 --post file=@zone.txt /zones/:example.com/dns_records/import
 $
 ```
 
-### Zone file upload (i.e. import) Python examples (uses BIND format files)
+### Zone file upload (i.e. import) Python calls (uses BIND format files)
 
 Because `import` is a keyword (or reserved word) in Python we append a '_' (underscore) to the verb in order to use.
 The `cli4` command does not need this edit.
 
-```
+```python
     #
     # "import" is a reserved word and hence we add '_' to the end of verb.
     #
     r = cf.zones.dns_records.import_.post(zone_id, files={'file':fd})
 ```
 
-See (examples/example_dns_import.py)[examples/example_dns_import.py] for working code.
+See [examples/example_dns_import.py](https://github.com/cloudflare/python-cloudflare/tree/master/examples/example_dns_import.py) for working code.
 
-### Zone file download (i.e. export) CLI examples (uses BIND format files)
+### Zone file download (i.e. export) CLI calls (uses BIND format files)
 
 The following is documented within the **Advanced** option of the DNS page within the Cloudflare portal.
 
-```
+```bash
 $ cli4 /zones/:example.com/dns_records/export | egrep -v '^;;|^$'
 $ORIGIN .
 @       3600    IN      SOA     example.com.    root.example.com.       (
@@ -1020,7 +1025,8 @@ $
 The egrep is used for documentation brevity.
 
 This can also be done via Python code with the following example.
-```
+
+```python
 #!/usr/bin/env python
 import sys
 import CloudFlare
@@ -1052,7 +1058,7 @@ Cloudflare Workers are described on the Cloudflare blog at
 
 The Python libraries now support the Cloudflare Workers API calls. The following javascript is lifted from [https://cloudflareworkers.com/](https://cloudflareworkers.com/) and slightly modified.
 
-```
+```bash
 $ cat modify-body.js
 addEventListener("fetch", event => {
   event.respondWith(fetchAndModify(event.request));
@@ -1082,17 +1088,17 @@ async function fetchAndModify(request) {
 $
 ```
 
-Here's the website with it's simple ```<body>``` statement
+Here's the website with it's simple `<body>` statement
 
-```
+```bash
 $ curl -sS https://example.com/ | fgrep '<body'
   <body>
 $
 ```
 
-Now lets add the script. Looking above, you will see that it's simple action is to modify the ```<body>``` statement and make the background yellow.
+Now lets add the script. Looking above, you will see that it's simple action is to modify the `<body>` statement and make the background yellow.
 
-```
+```bash
 $ cli4 --put @- /zones/:example.com/workers/script < modify-body.js
 {
     "etag": "1234567890123456789012345678901234567890123456789012345678901234",
@@ -1106,7 +1112,7 @@ $
 
 The following call checks that the script is associated with the zone. In this case, it's the only script added by this user.
 
-```
+```bash
 $ cli4 /user/workers/scripts
 [
     {
@@ -1121,7 +1127,7 @@ $
 
 Next step is to make sure a route is added for that script on that zone.
 
-```
+```bash
 $ cli4 --post pattern="example.com/*" script="example-com" /zones/:example.com/workers/routes
 {
     "id": "12345678901234567890123456789012"
@@ -1141,7 +1147,7 @@ $
 
 With that script added to the zone and the route added, we can now see the website has been modified because of the Cloudflare Worker.
 
-```
+```bash
 $ curl -sS https://example.com/ | fgrep '<body'
   <body style="background: #ff0;">
 $
@@ -1149,7 +1155,7 @@ $
 
 All this can be removed; hence bringing the website back to its initial state.
 
-```
+```bash
 $ cli4 --delete /zones/:example.com/workers/script
 12345678901234567890123456789012
 $ cli4 --delete /zones/:example.com/workers/routes/:12345678901234567890123456789012
@@ -1163,21 +1169,22 @@ $
 
 Refer to the Cloudflare Workers API documentation for more information.
 
-
 ## Cloudflare Instant Logs
 
 Please see https://developers.cloudflare.com/logs/instant-logs for all the information on how to use this feature.
 The `cli4` command along with the Python libaries can be used to control the instant logs; however, the websocket reading is outside the scope of this library.
 
 To query the states of the instant logs:
-```
+
+```bash
 $ cli4 /zones/:example.com/logpush/edge/jobs | jq .
 []
 $
 ```
 
 To add monitoring:
-```
+
+```bash
 $ cli4 --post \
         ='{
                 "fields": "ClientIP,ClientRequestHost,ClientRequestMethod,ClientRequestURI,EdgeEndTimestamp,EdgeResponseBytes,EdgeResponseStatus,EdgeStartTimestamp,RayID",
@@ -1198,7 +1205,8 @@ $
 ```
 
 To see the results:
-```
+
+```bash
 $ cli4 /zones/:example.com/logpush/edge/jobs | jq .
 [
   {
@@ -1235,10 +1243,10 @@ The GraphQL interface can be accessed via the command line or via Python.
     httpRequests1dGroups = zone_info = r['data']['viewer']['zones'][0]['httpRequests1dGroups']
 ```
 
-See the [examples/example_graphql.sh](examples/example_graphql.sh) and [examples/example_graphql.py](examples/example_graphql.py) files for working examples.
+See the [examples/example_graphql.sh](examples/example_graphql.sh) and [examples/example_graphql.py](https://github.com/cloudflare/python-cloudflare/tree/master/examples/example_graphql.py) files for working examples.
 Here is the working example of the shell version:
 
-```
+```bash
 $ examples/example_graphql.sh example.com
 2020-07-14T02:00:00Z    34880
 2020-07-14T03:00:00Z    18953
@@ -1270,7 +1278,7 @@ It contains a full overview of Cloudflare's GraphQL features and keywords.
 See https://blog.cloudflare.com/workers-ai-update-stable-diffusion-code-llama-workers-ai-in-100-cities/ for the introduction,
 along with https://developers.cloudflare.com/workers-ai/models/ for the nitty gritty details.
 
-There are three examples for AI calls included with the code.
+There are three AI calls included within the example folder.
 
 Image creation.
 
@@ -1303,7 +1311,6 @@ $
 ```
 
 This is presently work-in-progress because of the non-Python calling method. The syntax could change in the future.
-The examples will be updated.
 
 They can also be called via `cli4`.
 
@@ -1340,7 +1347,7 @@ Along with a version of the library above `2.14.1`.
 
 ## Implemented API calls
 
-The **--dump** argument to cli4 will produce a list of all the call implemented within the library.
+The `--dump` argument to cli4 will produce a list of all the call implemented within the library.
 
 ```bash
 $ cli4 --dump
@@ -1361,6 +1368,7 @@ An automatically generated table of commands is provided [here](TABLE-OF-COMMAND
 ## Adding extra API calls manually
 
 Extra API calls can be added via the configuration file
+
 ```bash
 $ cat ~/.cloudflare/cloudflare.cfg
 [Cloudflare]
@@ -1378,7 +1386,7 @@ Technically, this is only useful for internal testing within Cloudflare.
 
 The following error can be caused by an out of date SSL/TLS library and/or out of date Python.
 
-```
+```bash
 /usr/local/lib/python2.7/dist-packages/requests/packages/urllib3/util/ssl_.py:318: SNIMissingWarning: An HTTPS request has been made, but the SNI (Subject Name Indication) extension to TLS is not available on this platform. This may cause the server to present an incorrect TLS certificate, which can cause validation failures. You can upgrade to a newer version of Python to solve this. For more information, see https://urllib3.readthedocs.org/en/latest/security.html#snimissingwarning.
   SNIMissingWarning
 /usr/local/lib/python2.7/dist-packages/requests/packages/urllib3/util/ssl_.py:122: InsecurePlatformWarning: A true SSLContext object is not available. This prevents urllib3 from configuring SSL appropriately and may cause certain SSL connections to fail. You can upgrade to a newer version of Python to solve this. For more information, see https://urllib3.readthedocs.org/en/latest/security.html#insecureplatformwarning.
@@ -1402,6 +1410,8 @@ As of January 2020 the code is shipped up to pypi with Python2 support removed.
 
 As of January 2020 the code is Python3.8 clean. The new `SyntaxWarning` messages (i.e. `SyntaxWarning: "is" with a literal. Did you mean "=="?`) meant minor edits were needed.
 
+As of late 2023 the code is Python3.11 clean.
+
 ## pypi and GitHub signed releases
 
 As of October/2022, the code is signed by the maintainers personal email address: `mahtin@mahtin.com` `7EA1 39C4 0C1C 842F 9D41 AAF9 4A34 925D 0517 2859`
@@ -1417,4 +1427,4 @@ An automatically generated CHANGELOG is provided [here](CHANGELOG.md).
 
 ## Copyright
 
-Portions copyright [Felix Wong (gnowxilef)](https://github.com/gnowxilef) 2015 and Cloudflare 2016 & 2022.
+Portions copyright [Felix Wong (gnowxilef)](https://github.com/gnowxilef) 2015 and Cloudflare 2016 thru 2023.
