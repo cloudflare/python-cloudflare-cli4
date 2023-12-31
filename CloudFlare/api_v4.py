@@ -262,7 +262,7 @@ def zones_logs(self):
     self.add('VOID', 'zones', 'logs/control/retention')
     self.add('AUTH', 'zones', 'logs/control/retention/flag')
     self.add('AUTH_UNWRAPPED', 'zones', 'logs/received')
-    self.add('AUTH_UNWRAPPED', 'zones', 'logs/received/fields')
+    self.add('AUTH', 'zones', 'logs/received/fields')
     self.add('AUTH_UNWRAPPED', 'zones', 'logs/rayids')
 
 def railguns(self):
