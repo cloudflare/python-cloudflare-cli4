@@ -11,11 +11,10 @@ import CloudFlare
 
 cf = None
 
+debug = False
+
 class TestCloudflare:
     """ TestCloudflare """
-
-    def __init__(self, debug=False):
-        self._debug = debug
 
     def test_email_key_token000(self):
         self._run(0, 0, 0)
@@ -92,7 +91,7 @@ class TestCloudflare:
         token = [None, self._token, self._key][token_index]
 
         try:
-            cf = CloudFlare.CloudFlare(email=email, key=key, token=token, debug=self._debug, profile=profile)
+            cf = CloudFlare.CloudFlare(email=email, key=key, token=token, debug=debug, profile=profile)
         except Exception as e:
             print('Error: %s' % (e))
             # don't know what to do; but, lets continue anyway
@@ -196,7 +195,8 @@ class TestCloudflare:
         return '█' if s is None else '█' * len(s)
 
 if __name__ == '__main__':
-    t = TestCloudflare(debug=True)
+    debug = True
+    t = TestCloudflare()
     t.test_email_key_token000()
     t.test_email_key_token001()
     t.test_email_key_token002()
