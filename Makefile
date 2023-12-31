@@ -8,8 +8,6 @@ PYTEST = pytest
 EMAIL = "mahtin@mahtin.com"
 NAME = "cloudflare"
 
-OPENAPI_URL = "https://github.com/cloudflare/api-schemas/raw/main/openapi.json"
-
 #all:	README.rst CHANGELOG.md build
 all:	CHANGELOG.md build
 
@@ -108,7 +106,7 @@ lint:
 openapi:
 	@tmp=/tmp/_$$$$_ ; \
 	$(PYTHON) -m cli4 --dump | sort > $$tmp.1 ; \
-	$(PYTHON) -m cli4 --openapi $(OPENAPI_URL) | tee $$tmp.5 | sed -e 's/^[A-Z][A-Z]*  *//' -e 's/?.*//' -e 's/\/:[a-z][A-Za-z_]*/\/:id/g' -e 's/\/:[a-z][A-Za-z_]*}/\/:id/g' -e 's/:id\/:id/:id/' -e 's/\/:id$$//' -e 's/\/:id$$//' -e 's/\/:id ;/ ;/' -e 's/ ; Content-Type: .*//' -e 's/\/$$//' | sort -u > $$tmp.2 ; \
+	$(PYTHON) -m cli4 --openapi '' | tee $$tmp.5 | sed -e 's/^[A-Z][A-Z]*  *//' -e 's/?.*//' -e 's/\/:[a-z][A-Za-z_]*/\/:id/g' -e 's/\/:[a-z][A-Za-z_]*}/\/:id/g' -e 's/:id\/:id/:id/' -e 's/\/:id$$//' -e 's/\/:id$$//' -e 's/\/:id ;/ ;/' -e 's/ ; Content-Type: .*//' -e 's/\/$$//' | sort -u > $$tmp.2 ; \
 	egrep -v '; deprecated' < $$tmp.2 | sed -e 's/ ; .*//' | diff $$tmp.1 - > $$tmp.3 ; \
 	echo "In code:" ; \
 	egrep '< ' < $$tmp.3 | sed -e 's/< /    /' | sort | tee $$tmp.4 ; \
