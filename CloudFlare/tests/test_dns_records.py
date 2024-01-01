@@ -55,6 +55,20 @@ def test_dns_records_create_values():
     dns_content3 = 'temp pytest element 3'
     print('dns_record: %s' % (dns_name), file=sys.stderr)
 
+def test_dns_records_port_invalid():
+    # create an invalid DNS record - i.e. txt value for A record IP address
+    dns_record = {'name':dns_name, 'type':'A', 'content':'NOT-A-VALID-IP-ADDRESS'}
+    try:
+        dns_result = cf.zones.dns_records.post(zone_id, data=dns_record)
+        assert False
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        # more than one error returned by the API - a specific error and a generic error
+        assert len(e) > 0
+        for x in e:
+            print('Error expected: %d %s' % (int(x), str(x)))
+        print('Error expected: %d %s' % (int(e), str(e)))
+        assert True
+
 def test_dns_records_get1():
     # GET
     params = {'name':dns_name + '.' + zone_name, 'match':'all', 'type':dns_type}
@@ -133,6 +147,7 @@ if __name__ == '__main__':
     else:
         test_find_zone()
     test_dns_records_create_values()
+    test_dns_records_port_invalid()
     test_dns_records_get1()
     test_dns_records_post()
     test_dns_records_get2()
