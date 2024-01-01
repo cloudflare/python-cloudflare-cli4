@@ -453,6 +453,7 @@ class CloudFlare():
 
             if response_type in ['text/javascript', 'application/javascript', 'text/html']:
                 # used by Cloudflare workers
+
                 if hasattr(response_data, 'decode'):
                     response_data = response_data.decode('utf-8')
                 return {'success': True, 'result': str(response_data)}
@@ -877,14 +878,14 @@ class CloudFlare():
 
         self._base = None
 
-        if email and not isinstance(email, str):
-            raise TypeError('email must be str')
-        if key and not isinstance(key, str):
-            raise TypeError('key must be str')
-        if token and not isinstance(token, str):
-            raise TypeError('token must be str')
-        if certtoken and not isinstance(certtoken, str):
-            raise TypeError('certtoken must be str')
+        if email is not None and not isinstance(email, str):
+            raise TypeError('email is %s - must be str' % (type(email)))
+        if key is not None and not isinstance(key, str):
+            raise TypeError('key is %s - must be str' % (type(key)))
+        if token is not None and not isinstance(token, str):
+            raise TypeError('token is %s - must be str' % (type(token)))
+        if certtoken is not None and not isinstance(certtoken, str):
+            raise TypeError('certtoken is %s - must be str' % (type(certtoken)))
 
         try:
             config = read_configs(profile)
