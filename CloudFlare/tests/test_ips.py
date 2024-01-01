@@ -35,7 +35,39 @@ def test_ips_plus_jdcloud():
     assert len(ips['ipv6_cidrs']) > 0
     assert len(ips['jdcloud_cidrs']) > 0
 
+def test_ips_patch():
+    # should fail!
+    try:
+        ips = cf.ips.patch()
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        print('Error expected: %s' % (e), file=sys.stderr)
+
+def test_ips_post():
+    # should fail!
+    try:
+        ips = cf.ips.post()
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        print('Error expected: %s' % (e), file=sys.stderr)
+
+def test_ips_put():
+    # should fail!
+    try:
+        ips = cf.ips.put()
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        print('Error expected: %s' % (e), file=sys.stderr)
+
+def test_ips_delete():
+    # should fail!
+    try:
+        ips = cf.ips.delete()
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        print('Error expected: %s' % (e), file=sys.stderr)
+
 if __name__ == '__main__':
     test_cloudflare(debug=True)
     test_ips()
     test_ips_plus_jdcloud()
+    test_ips_patch()
+    test_ips_post()
+    test_ips_put()
+    test_ips_delete()

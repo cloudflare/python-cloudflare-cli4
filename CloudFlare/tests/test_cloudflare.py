@@ -39,12 +39,42 @@ def test_ips3():
     assert isinstance(ips, dict)
     assert len(ips) > 0
 
-def test_cloudflare_with_global_request_timeout_and__max_request_retries(debug=False):
+def test_cloudflare_with_global_request_timeout_and_max_request_retries(debug=False):
     global cf
     cf = CloudFlare.CloudFlare(debug=debug, global_request_timeout=10, max_request_retries=2)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
 def test_ips4():
+    ips = cf.ips()
+    assert isinstance(ips, dict)
+    assert len(ips) > 0
+
+def test_cloudflare_with_global_request_timeout_invalid(debug=False):
+    global cf
+    cf = CloudFlare.CloudFlare(debug=debug, global_request_timeout='STRING')
+    assert isinstance(cf, CloudFlare.CloudFlare)
+
+def test_ips5():
+    ips = cf.ips()
+    assert isinstance(ips, dict)
+    assert len(ips) > 0
+
+def test_cloudflare_with_max_request_retries_invalid(debug=False):
+    global cf
+    cf = CloudFlare.CloudFlare(debug=debug, max_request_retries='STRING')
+    assert isinstance(cf, CloudFlare.CloudFlare)
+
+def test_ips6():
+    ips = cf.ips()
+    assert isinstance(ips, dict)
+    assert len(ips) > 0
+
+def test_cloudflare_with_global_request_timeout_and_max_request_retries_invalid(debug=False):
+    global cf
+    cf = CloudFlare.CloudFlare(debug=debug, global_request_timeout='STRING', max_request_retries='STRING')
+    assert isinstance(cf, CloudFlare.CloudFlare)
+
+def test_ips7():
     ips = cf.ips()
     assert isinstance(ips, dict)
     assert len(ips) > 0
@@ -56,5 +86,12 @@ if __name__ == '__main__':
     test_ips2()
     test_cloudflare_with_max_request_retries(debug=True)
     test_ips3()
-    test_cloudflare_with_global_request_timeout_and__max_request_retries(debug=True)
+    test_cloudflare_with_global_request_timeout_and_max_request_retries(debug=True)
     test_ips4()
+    test_cloudflare_with_global_request_timeout_invalid(debug=True)
+    test_ips5()
+    test_cloudflare_with_max_request_retries_invalid(debug=True)
+    test_ips6()
+    test_cloudflare_with_global_request_timeout_and_max_request_retries_invalid(debug=True)
+    test_ips7()
+

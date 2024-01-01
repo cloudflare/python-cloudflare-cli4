@@ -8,14 +8,6 @@ sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
 
 # test Cloudflare init param (ie. debug, raw, etc)
-#
-# cf = CloudFlare.CloudFlare(
-#          email=None, key=None, token=None, certtoken=None,
-#          debug=False, raw=False, use_sessions=True,
-#          profile=None,
-#          base_url=None,
-#          global_request_timeout=None, max_request_retries=None
-#      )
 
 cf = None
 
@@ -23,6 +15,13 @@ def test_cloudflare():
     global cf
     cf = CloudFlare.CloudFlare()
     assert isinstance(cf, CloudFlare.CloudFlare)
+
+def test_percent_s():
+
+    s = '%s' % cf
+    assert len(s) > 0 and isinstance(s, str)
+    s = '%r' % cf
+    assert len(s) > 0 and isinstance(s, str)
 
 def test_ips1():
     ips = cf.ips()
@@ -64,8 +63,75 @@ def test_ips5():
     assert isinstance(ips, dict)
     assert len(ips) > 0
 
+def test_cloudflare_url_invalid():
+    global cf
+    cf = CloudFlare.CloudFlare(base_url='blah blah blah blah ...')
+    # this does not fail yet - so we wait
+
+def test_ips6_should_fail():
+    try:
+        ips = cf.ips()
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        print('Error expected: %d %s' % (e, e), file=sys.stderr)
+        pass
+
+def test_cloudflare_url_wrong():
+    global cf
+    cf = CloudFlare.CloudFlare(base_url='http://example.com/')
+    # this does not fail yet - so we wait
+
+def test_ips7_should_fail():
+    try:
+        ips = cf.ips()
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        print('Error expected: %d %s' % (e, e), file=sys.stderr)
+        pass
+
+def test_cloudflare_email_invalid():
+    global cf
+    try:
+        cf = CloudFlare.CloudFlare(email=int(0))
+        assert False
+    except TypeError as e:
+        print('Error expected: %s' % (e), file=sys.stderr)
+
+def test_cloudflare_key_invalid():
+    global cf
+    try:
+        cf = CloudFlare.CloudFlare(key=int(0))
+        assert False
+    except TypeError as e:
+        print('Error expected: %s' % (e), file=sys.stderr)
+
+def test_cloudflare_token_invalid():
+    global cf
+    try:
+        cf = CloudFlare.CloudFlare(token=int(0))
+        assert False
+    except TypeError as e:
+        print('Error expected: %s' % (e), file=sys.stderr)
+
+def test_cloudflare_certtoken_invalid():
+    global cf
+    try:
+        cf = CloudFlare.CloudFlare(certtoken=int(0))
+        assert False
+    except TypeError as e:
+        print('Error expected: %s' % (e), file=sys.stderr)
+
+def test_cloudflare_context():
+    global cf
+
+    cf = None
+    with CloudFlare.CloudFlare() as cf:
+        assert isinstance(cf, CloudFlare.CloudFlare)
+        ips = cf.ips()
+        assert isinstance(ips, dict)
+        assert len(ips) > 0
+
 if __name__ == '__main__':
     test_cloudflare()
+    test_percent_s()
     test_ips1()
     test_cloudflare_debug()
     test_ips2()
@@ -74,3 +140,16 @@ if __name__ == '__main__':
     test_cloudflare_no_sessions()
     test_ips4()
     test_ips5()
+
+    test_cloudflare_url_wrong()
+    test_ips6_should_fail()
+
+    test_cloudflare_url_invalid()
+    test_ips7_should_fail()
+
+    test_cloudflare_email_invalid()
+    test_cloudflare_key_invalid()
+    test_cloudflare_token_invalid()
+    test_cloudflare_certtoken_invalid()
+
+    test_cloudflare_contexe()
