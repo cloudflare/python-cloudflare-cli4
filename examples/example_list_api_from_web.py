@@ -5,6 +5,7 @@ import os
 import sys
 import json
 
+sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
 
@@ -13,9 +14,12 @@ def main():
 
     cf = CloudFlare.CloudFlare()
     try:
-        found_comands= cf.api_from_web()
+        found_comands = cf.api_from_openapi()
     except Exception as e:
         exit('api_from_web: - %s - api call connection failed' % (e))
+
+    # {"action": "GET", "cmd": "/accounts", "deprecated": false, "deprecated_date": "", "deprecated_already": false}
+    # {"action": "DELETE", "cmd": "/accounts/:id/addressing/prefixes/:id/delegations", "deprecated": false, "deprecated_date": "", "deprecated_already": false, "content_type": "application/json"}
 
     cmds = {}
     for r in found_comands:
