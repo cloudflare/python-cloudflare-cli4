@@ -21,6 +21,13 @@ def main():
     # {"action": "GET", "cmd": "/accounts", "deprecated": false, "deprecated_date": "", "deprecated_already": false}
     # {"action": "DELETE", "cmd": "/accounts/:id/addressing/prefixes/:id/delegations", "deprecated": false, "deprecated_date": "", "deprecated_already": false, "content_type": "application/json"}
 
+    print('# cloudflare-python')
+    print('')
+    print('## Table of commands')
+    print('')
+    print('|`GET`   |`PUT`   |`POST`  |`PATCH` |`DELETE`|API call|')
+    print('|--------|--------|--------|--------|--------|:-------|')
+
     cmds = {}
     for r in found_comands:
         if r['deprecated'] or r['deprecated_already']:
@@ -36,13 +43,15 @@ def main():
     # GET    -      PUT    PATCH  DELETE  /zones/:zone_identifier/waiting_rooms/:waiting_room_id
 
     for cmd in cmds.keys():
-        p = ''
+        p = '|'
         for method in ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']:
             if method in cmds[cmd]:
-                p += '%-7s' % method
+                p += '%-8s|' % ('`' + method + '`')
             else:
-                p += '%-7s' % '-'
-        print("%s %s" % (p, cmd))
+                p += '%-8s|' % ('-')
+        print("%s %s |" % (p, cmd))
+
+    print('')
 
 if __name__ == '__main__':
     main()
