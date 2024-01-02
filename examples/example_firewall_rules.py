@@ -5,6 +5,7 @@ import os
 import sys
 import re
 import json
+import uuid
 
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
@@ -18,7 +19,7 @@ def main():
     try:
         zone_name = sys.argv[1]
     except IndexError:
-        exit('usage: example_bot_management.py zone_name True/False')
+        exit('usage: example_firewall_rules.py zone_name')
 
     # grab the zone identifier
     try:
@@ -37,60 +38,79 @@ def main():
 
     zone_id = zones[0]['id']
 
-    # SHOW EXISTSING FIREWALL RULES
+    # SHOW EXISTING FIREWALL RULES
     r = cf.zones.firewall.rules.get(zone_id)
-    print('filewall rules =\n' + json.dumps(r, indent=4, sort_keys=False) + '\n')
+    print('existing filewall rules =\n' + json.dumps(r, indent=4, sort_keys=False) + '\n')
+
+    # SHOW EXISTING FILTERS
+    r = cf.zones.filters.get(zone_id)
+    print('existing filters =\n' + json.dumps(r, indent=4, sort_keys=False) + '\n')
 
     # CREATE A FILTER & FIREWALL RULES
 
+    reference_name = 'FILTER-' + str(uuid.uuid1())
+
     my_filter = {
-        # 'id': '00000000000000000000000000000000',
         'expression': 'http.request.uri.path == "/private.html$"',
         'paused': True,
-        'description': 'stop access to /foo.html',
-        'ref': 'FILTER-1',
+        'description': 'stop access to /private.html',
+        'ref': reference_name,
     }
 
-    my_data = [
+    my_rule = [
         {
             'action': 'block',
             'filter': my_filter,
-            # 'id': '00000000000000000000000000000000',
-            # 'products': ['waf'],
-            # 'priority': 1,
-            # 'paused': True,
-            # 'description': 'stop access to /foo.html',
-            # 'ref': 'FILTER-1',
+            'paused': True,
         }
     ]
 
     try:
-        r = cf.zones.firewall.rules.post(zone_id, data=my_data)
-    except Exception as e:
-        print(e)
+        r = cf.zones.firewall.rules.post(zone_id, data=my_rule)
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        print('create zones.filewall.rules: %d %s' % (int(e), str(e)))
         exit(1)
 
     print('firewall rule created =\n' + json.dumps(r, indent=4, sort_keys=False) + '\n')
 
-    # SHOW EXISTSING FILTERS
-    r = cf.zones.filters.get(zone_id)
-    print('filters =\n' + json.dumps(r, indent=4, sort_keys=False) + '\n')
+    firewall_id = r[0]['id']
+    filter_id = r[0]['filter']['id']
 
-    # DELETE EXISTSING FILTERS
-    for f in r:
-        print('id = ' + f['id'])
-        r2 = cf.zones.filters.delete(zone_id, f['id'])
-        print('deleted id = ' + r2['id'])
+    print('filewall_id = %s filter_id = %s' % (firewall_id, filter_id))
 
-    # SHOW EXISTSING FIREWALL RULES
+    # SHOW PRESENT FIREWALL RULES
     r = cf.zones.firewall.rules.get(zone_id)
-    print('filewall rules =\n' + json.dumps(r, indent=4, sort_keys=False) + '\n')
+    print('present filewall rules =\n' + json.dumps(r, indent=4, sort_keys=False) + '\n')
 
-    # DELETE EXISTSING FIREWALL RULES
+    # DELETE NEW FIREWALL RULES
     for f in r:
         print('id = ' + f['id'])
-        r2 = cf.zones.firewall.rules.delete(zone_id, f['id'])
-        print('deleted id = ' + r2['id'])
+        try:
+            r2 = cf.zones.firewall.rules.delete(zone_id, f['id'])
+            print('deleted id = ' + r2['id'])
+        except CloudFlare.exceptions.CloudFlareAPIError as e:
+            print('zones.filewall.rules.delete: %d %s' % (int(e), str(e)))
+
+    # SHOW PRESENT FILTERS
+    r = cf.zones.filters.get(zone_id)
+    print('present filters =\n' + json.dumps(r, indent=4, sort_keys=False) + '\n')
+
+    # DELETE NEW FILTERS
+    for f in r:
+        print('id = ' + f['id'])
+        try:
+            r2 = cf.zones.filters.delete(zone_id, f['id'])
+            print('deleted id = ' + r2['id'])
+        except CloudFlare.exceptions.CloudFlareAPIError as e:
+            print('zones.filters.delete: %d %s' % (int(e), str(e)))
+
+    # SHOW FINAL FIREWALL RULES
+    r = cf.zones.firewall.rules.get(zone_id)
+    print('final filewall rules =\n' + json.dumps(r, indent=4, sort_keys=False) + '\n')
+
+    # SHOW FINAL FILTERS
+    r = cf.zones.filters.get(zone_id)
+    print('final filters =\n' + json.dumps(r, indent=4, sort_keys=False) + '\n')
 
 if __name__ == '__main__':
     main()
