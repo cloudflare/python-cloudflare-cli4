@@ -307,7 +307,11 @@ class CloudFlare():
             response_code = response.status_code
             response_data = response.content
             if not isinstance(response_data, (str, bytes, bytearray)):
-                response_data = response_data.decode('utf-8')
+                # the more I think about it; then less likely this will ever be called
+                try:
+                    response_data = response_data.decode('utf-8')
+                except UnicodeDecodeError as e:
+                    pass
 
             if self.logger:
                 if 'text/' == response_type[0:5] or response_type in ['application/javascript', 'application/json']:
@@ -399,7 +403,7 @@ class CloudFlare():
                                                                                identifiers,
                                                                                params, data_str, data_json, files)
 
-            if response_code != requests_codes.ok:
+            if response_code not in [requests_codes.ok, requests_codes.created, requests_codes.accepted]:
                 # 3xx & 4xx errors (5xx's handled above)
                 response_data = {'success': False,
                                  'errors': [{'code': response_code, 'message':'HTTP response code %d' % response_code}],
@@ -412,7 +416,14 @@ class CloudFlare():
                 # API says it's JSON; so it better be parsable as JSON
                 # NDJSON is returned by Enterprise Log Share i.e. /zones/:id/logs/received
                 if hasattr(response_data, 'decode'):
-                    response_data = response_data.decode('utf-8')
+                    try:
+                        response_data = response_data.decode('utf-8')
+                    except UnicodeDecodeError as e:
+                        # clearly not a string that can be decoded!
+                        if self.logger:
+                            self.logger.debug('Response: decode(utf-8) failed, reverting to binary response')
+                        # return binary
+                        return {'success': True, 'result': response_data}
                 try:
                     if response_data == '':
                         # This should really be 'null' but it isn't. Even then, it's wrong!
@@ -438,10 +449,17 @@ class CloudFlare():
                 # if it's not a dict then it's not going to have 'success'
                 return {'success': True, 'result': response_data}
 
-            if response_type in ['text/plain', 'text/csv', 'application/octet-stream']:
+            if response_type in ['text/plain', 'application/octet-stream']:
                 # API says it's text; but maybe it's actually JSON? - should be fixed in API
                 if hasattr(response_data, 'decode'):
-                    response_data = response_data.decode('utf-8')
+                    try:
+                        response_data = response_data.decode('utf-8')
+                    except UnicodeDecodeError as e:
+                        # clearly not a string that can be decoded!
+                        if self.logger:
+                            self.logger.debug('Response: decode(utf-8) failed, reverting to binary response')
+                        # return binary
+                        return {'success': True, 'result': response_data}
                 try:
                     response_data = json.loads(response_data)
                 except ValueError:
@@ -451,11 +469,17 @@ class CloudFlare():
                     return response_data
                 return {'success': True, 'result': response_data}
 
-            if response_type in ['text/javascript', 'application/javascript', 'text/html']:
-                # used by Cloudflare workers
-
+            if response_type in ['text/javascript', 'application/javascript', 'text/html', 'text/css', 'text/csv']:
+                # used by Cloudflare workers etc
                 if hasattr(response_data, 'decode'):
-                    response_data = response_data.decode('utf-8')
+                    try:
+                        response_data = response_data.decode('utf-8')
+                    except UnicodeDecodeError as e:
+                        # clearly not a string that can be decoded!
+                        if self.logger:
+                            self.logger.debug('Response: decode(utf-8) failed, reverting to binary response')
+                        # return binary
+                        return {'success': True, 'result': response_data}
                 return {'success': True, 'result': str(response_data)}
 
             if response_type == 'application/octet-stream' and isinstance(response_data, (int, float)):
@@ -465,7 +489,14 @@ class CloudFlare():
             if response_type == 'application/octet-stream' and isinstance(response_data, (bytes, bytearray)):
                 # API says it's text; but maybe it's actually JSON? - should be fixed in API
                 if hasattr(response_data, 'decode'):
-                    response_data = response_data.decode('utf-8')
+                    try:
+                        response_data = response_data.decode('utf-8')
+                    except UnicodeDecodeError as e:
+                        # clearly not a string that can be decoded!
+                        if self.logger:
+                            self.logger.debug('Response: decode(utf-8) failed, reverting to binary response')
+                        # return binary
+                        return {'success': True, 'result': response_data}
                 try:
                     response_data = json.loads(response_data)
                 except ValueError:
@@ -476,13 +507,20 @@ class CloudFlare():
                     return response_data
                 return {'success': True, 'result': response_data}
 
-            if response_type[0:6] in ['audio/', 'image/', 'video/']:
+            if response_type in ['application/pdf', 'application/zip'] or response_type[0:6] in ['audio/', 'image/', 'video/']:
                 # it's raw/binary - just pass thru
                 return {'success': True, 'result': response_data}
 
             # Assuming nothing - but continuing anyway as if its a string
             if hasattr(response_data, 'decode'):
-                response_data = response_data.decode('utf-8')
+                try:
+                    response_data = response_data.decode('utf-8')
+                except UnicodeDecodeError as e:
+                    # clearly not a string that can be decoded!
+                    if self.logger:
+                        self.logger.debug('Response: decode(utf-8) failed, reverting to binary response')
+                    # return binary
+                    return {'success': True, 'result': response_data}
             return {'success': True, 'result': str(response_data)}
 
         def _call(self, method, parts, identifiers, params, data_str, data_json, files):
