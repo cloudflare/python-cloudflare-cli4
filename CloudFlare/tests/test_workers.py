@@ -35,7 +35,9 @@ def test_find_account(find_name=None):
         print('%s: Error %d=%s' % (find_name, int(e), str(e)), file=sys.stderr)
         exit(0)
     assert len(accounts) > 0 and len(accounts) <= 10
-    n = random.randrange(len(accounts))
+    # n = random.randrange(len(accounts))
+    # stop using a random account - use the primary account (i.e. the zero'th one)
+    n = 0
     account_name = accounts[n]['name']
     account_id = accounts[n]['id']
     assert len(account_id) == 32
