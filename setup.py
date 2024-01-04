@@ -26,7 +26,7 @@ def main():
         url='https://github.com/cloudflare/python-cloudflare',
         license='MIT',
         options={"bdist_wheel": {"universal": True}},
-        packages=['CloudFlare', 'cli4', 'examples'],
+        packages=['CloudFlare', 'CloudFlare/tests', 'cli4', 'examples'],
         test_suite="CloudFlare.tests",
         include_package_data=True,
         data_files = [('share/man/man1', ['cli4/cli4.1'])],
