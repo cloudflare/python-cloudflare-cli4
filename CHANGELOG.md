@@ -1,5 +1,45 @@
 # Change Log
 
+ - 2024-01-04 15:42:32 -0800 [ce080f3](../../commit/ce080f3da8061dabbc0fc1604e92eaba4f0a4cf1) 2.16.0
+ - 2024-01-04 15:42:09 -0800 [f2441b1](../../commit/f2441b1f2320840fed526d81370cbde5f00d8b4e) added CloudFlare/tests as a package - a better place to keep tests
+ - 2024-01-04 15:39:18 -0800 [401149c](../../commit/401149c20e074b824fc8f4467c92b08fa327f568) return http code 200 and more 2xx now accepted, check for decode() errors
+ - 2024-01-04 15:37:25 -0800 [68ab29c](../../commit/68ab29c6a6d8963025bfb29ba1908881edbb93a7) confine account to first one
+ - 2024-01-04 15:36:51 -0800 [7e88785](../../commit/7e88785a2439f76f7e9e6264d34f200550e6c4c6) testing pdf uploading and downloading
+ - 2024-01-02 09:00:43 -0800 [6ba9ced](../../commit/6ba9ced49892023377cff9298d652a6dbc857d0f) cleanup to show correct sequence of firewall and filter creation and deletion
+ - 2024-01-01 17:30:17 -0800 [8a04e95](../../commit/8a04e956687e42dafd244d65cb4eb32fa05f10ca) now builds TABLE-OF-COMMANDS.md
+ - 2024-01-01 17:29:31 -0800 [0c85423](../../commit/0c85423812fec5bd8720292259b189175da99590) more table - based on examples/example_list_api_from_web.py
+ - 2024-01-01 17:21:23 -0800 [38ea7a2](../../commit/38ea7a2cf476d098b4d391ae3fbc3eaec25ade67) moved to api_from_openapi()
+ - 2024-01-01 17:11:09 -0800 [f42454b](../../commit/f42454ba2b3e269d64e44126f364338865d88b1b) update email examples to reflect newer api
+ - 2024-01-01 13:09:11 -0800 [e6d9692](../../commit/e6d9692dfa29e12bcb4656b4c8542ae023a6ae9d) added workers create and delete
+ - 2023-12-31 16:55:20 -0800 [2ff132d](../../commit/2ff132db5e276238e387baaca11d96bdd62a477d) test invalid dns records
+ - 2023-12-31 16:19:21 -0800 [26a90c3](../../commit/26a90c3703d0960c7a6d8b78170a520f2408d157) more tests - invalid types and string returns
+ - 2023-12-31 16:15:12 -0800 [8dbf8cd](../../commit/8dbf8cd2cbcbccdbb28eb84b24345e6254089c26) force check for None on email/key/token/certtoken
+ - 2023-12-31 12:42:47 -0800 [e7224a8](../../commit/e7224a844c48abc7668ef5c8672654a14e3d81f7) /graphql tests
+ - 2023-12-31 12:04:15 -0800 [28a3fd7](../../commit/28a3fd7a686e6050f0aee3cf23d604c4c89aa0a9) incorrect coding of /zones/:id/logs/received/fields
+ - 2023-12-31 11:34:41 -0800 [0487170](../../commit/048717072aa7bef0b4826cd3fbb761f2fdd7fa09) typo
+ - 2023-12-31 11:11:43 -0800 [3124aa6](../../commit/3124aa6b0d999d8e7d2c3248cc241d58c878fc1a) easier date code
+ - 2023-12-31 10:47:45 -0800 [08d9d4c](../../commit/08d9d4cb5ea721f8e69ceb15799e82143bb77ef6) test raw=True calls via listing zones
+ - 2023-12-31 09:44:48 -0800 [0b6271a](../../commit/0b6271aebfbe77e099f42db5b7f46355dcfe295e) moved /tests to /CloudFlare/tests
+ - 2023-12-31 09:37:34 -0800 [74c7ce0](../../commit/74c7ce0920a67f34dde5a3cd7c6edd5a5fb42c8f) removed api_decode_from_web.py as the old api.cloudflare.com website has gone away
+ - 2023-12-31 09:36:06 -0800 [5795d40](../../commit/5795d4041b7107d16858804346ca96d4cf50850b) moved /tests to /CloudFlare/tests. Removed find_package - as it was installing /tests and conflicting with other packages
+ - 2023-12-31 09:33:59 -0800 [5622686](../../commit/562268622c679e261b405838708e93f3d78e3b0c) tests more return values
+ - 2023-12-31 09:33:05 -0800 [fb245ee](../../commit/fb245ee77f180cfb0401a6a1a19ff567aa446d18) OpenAPI code now returns clean errors and version number. cli4 prints fetch errors cleanly
+ - 2023-12-30 18:13:09 -0800 [d6cd999](../../commit/d6cd99988ff17af1c070c79b8d141e51e01fb51c) moved tests to under CloudFlare
+ - 2023-12-30 18:06:31 -0800 [5390d3d](../../commit/5390d3d5c81d6395de043c5c2084a49b8a6c8408) typo
+ - 2023-12-30 17:48:41 -0800 [609044f](../../commit/609044ffe134b098596ae33b0bfd61c049f3d34f) markdown cleanup
+ - 2023-12-30 17:21:07 -0800 [8c53a8a](../../commit/8c53a8a59db60e197716c7895c80b2941c07aa65) openapi url now in code where it belongs, args checked for type str, logging messgaes for various errors, http error code 400 & 429 handled
+ - 2023-12-30 17:16:24 -0800 [53af1a2](../../commit/53af1a2b0717d36bf3ec598d6030bf229f732b55) --openapi call now with optional argument as url is built into code
+ - 2023-12-30 17:15:35 -0800 [5558e19](../../commit/5558e19c1c65b468034fe3ab2c78ac92e0a6958b) all tests now similar structure, callable from command line, debug on by default for command line calls
+ - 2023-12-30 17:12:16 -0800 [b2c3eaa](../../commit/b2c3eaa581a25ea81f0e07d3898e2e7041a95495) move OPENAPI_URL into code where it belongs
+ - 2023-12-30 16:42:11 -0800 [e8ba3e3](../../commit/e8ba3e3c5b1193178efcf69ddc3baeac468b9338) only create one logger - longstanding issue solved
+ - 2023-12-30 16:09:50 -0800 [e460d78](../../commit/e460d7808fd83c8fb93499a7fead7b893c968557) added openapi_url config - rarely used outside of development
+ - 2023-12-29 14:12:05 -0800 [4383548](../../commit/4383548771b214862150b0c2bcd59fd516a56125) deal with /certificates case - which is unique
+ - 2023-12-28 14:02:39 -0800 [98c0526](../../commit/98c0526d92e517804dad136e6b8dbe638e654b5b) do not run tests if nothing has changed
+ - 2023-12-28 14:02:09 -0800 [4a8626f](../../commit/4a8626f9a20e2bd4781dd5f9b386010d1431ee02) make zone choice random, add delay for import as it is rate limited
+ - 2023-12-28 14:00:53 -0800 [3b17a03](../../commit/3b17a03d67d4f7d6b82b5cda2da3b56e7bf3055b) remove excess code
+ - 2023-12-28 12:38:27 -0800 [678b70a](../../commit/678b70a5d539dc6e87e59b75550ff3fcef625631) moved to use tempfile.TemporaryFile so more portable over many systems
+ - 2023-12-28 12:32:05 -0800 [01ebc72](../../commit/01ebc7286eddb67387b49f06939ebd8075d45fe2) moved to use tempfile.TemporaryFile so more portable over many systems
+ - 2023-12-28 11:59:04 -0800 [6b1cbe4](../../commit/6b1cbe4e446f877fad61f5b2d7cc60e2faeddad7) CHANGELOG.md pushed to github
  - 2023-12-28 11:58:34 -0800 [aac4e6f](../../commit/aac4e6f1ee520f42c7ffa7fbf92195f955f27ea1) 2.15.1
  - 2023-12-28 11:58:00 -0800 [fddc424](../../commit/fddc424adb7d9bb7d205bb8aedcf6bbd1d9536eb) fixed a bad edit from 241af4d which stopped data being send on PUT/POST/PATCH/DELETE
  - 2023-12-28 11:49:45 -0800 [62eb860](../../commit/62eb8602e979ff7437728727444f3332c2f21b4b) example of purge_cache for free or enterprise accounts
