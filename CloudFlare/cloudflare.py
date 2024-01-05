@@ -486,35 +486,6 @@ class CloudFlare():
                         return {'success': True, 'result': response_data}
                 return {'success': True, 'result': str(response_data)}
 
-            if response_type == 'application/octet-stream' and isinstance(response_data, (int, float)):
-                # it's raw/binary - just pass thru
-                return {'success': True, 'result': response_data}
-
-            if response_type == 'application/octet-stream' and isinstance(response_data, (bytes, bytearray)):
-                # API says it's text; but maybe it's actually JSON? - should be fixed in API
-                if hasattr(response_data, 'decode'):
-                    try:
-                        response_data = response_data.decode('utf-8')
-                    except UnicodeDecodeError as e:
-                        # clearly not a string that can be decoded!
-                        if self.logger:
-                            self.logger.debug('Response: decode(utf-8) failed, reverting to binary response')
-                        # return binary
-                        return {'success': True, 'result': response_data}
-                try:
-                    if response_data == '':
-                        # This should really be 'null' but it isn't. Even then, it's wrong!
-                        response_data = None
-                    else:
-                        response_data = json.loads(response_data)
-                except ValueError:
-                    # So it wasn't JSON - moving on as if it's text!
-                    pass
-
-                if isinstance(response_data, dict) and 'success' in response_data:
-                    return response_data
-                return {'success': True, 'result': response_data}
-
             if response_type in ['application/pdf', 'application/zip'] or response_type[0:6] in ['audio/', 'image/', 'video/']:
                 # it's raw/binary - just pass thru
                 return {'success': True, 'result': response_data}
