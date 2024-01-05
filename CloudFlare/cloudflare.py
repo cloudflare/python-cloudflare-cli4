@@ -403,7 +403,7 @@ class CloudFlare():
                                                                                identifiers,
                                                                                params, data_str, data_json, files)
 
-            if response_code not in [requests_codes.ok, requests_codes.created, requests_codes.accepted]:
+            if response_code not in [requests_codes.ok, requests_codes.created, requests_codes.accepted, requests_codes.no_content]:
                 # 3xx & 4xx errors (5xx's handled above)
                 response_data = {'success': False,
                                  'errors': [{'code': response_code, 'message':'HTTP response code %d' % response_code}],
@@ -461,7 +461,11 @@ class CloudFlare():
                         # return binary
                         return {'success': True, 'result': response_data}
                 try:
-                    response_data = json.loads(response_data)
+                    if response_data == '':
+                        # This should really be 'null' but it isn't. Even then, it's wrong!
+                        response_data = None
+                    else:
+                        response_data = json.loads(response_data)
                 except ValueError:
                     # So it wasn't JSON - moving on as if it's text!
                     pass
@@ -498,7 +502,11 @@ class CloudFlare():
                         # return binary
                         return {'success': True, 'result': response_data}
                 try:
-                    response_data = json.loads(response_data)
+                    if response_data == '':
+                        # This should really be 'null' but it isn't. Even then, it's wrong!
+                        response_data = None
+                    else:
+                        response_data = json.loads(response_data)
                 except ValueError:
                     # So it wasn't JSON - moving on as if it's text!
                     pass
