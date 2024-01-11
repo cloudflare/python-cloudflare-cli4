@@ -1,5 +1,8 @@
 [MASTER]
 ; load-plugins=pylint_mccabe
+load-plugins=
+    pylint.extensions.no_self_use,
+    pylint.extensions.bad_builtin
 
 [REPORTS]
 output-format=colorized
@@ -7,18 +10,14 @@ output-format=colorized
 [MESSAGES CONTROL]
 disable=
     attribute-defined-outside-init,
-    bad-builtin,
     duplicate-code,
     fixme,
     locally-disabled,
-    locally-enabled,
-    missing-super-argument,
-    model-missing-unicode,
-    no-self-use,
     too-few-public-methods,
     too-many-ancestors,
     too-many-lines,
     unused-argument,
+    consider-using-f-string,
     RP0001,
     RP0002,
     RP0003,
