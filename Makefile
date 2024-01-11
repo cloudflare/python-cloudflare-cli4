@@ -41,6 +41,7 @@ test: all
 		then \
 			echo $(PYTEST) --cov=CloudFlare ; \
 			$(PYTEST) --cov=CloudFlare ; \
+			coverage html ; \
 		else \
 			true ; \
 		fi ; \
@@ -118,16 +119,15 @@ openapi:
 	egrep ';' < $$tmp.5 | egrep -v '; deprecated' | egrep -v ' ; Content-Type: application/json' | sed -e 's/^/    /' ; \
 	rm $$tmp.?
 
+TUNA_CLI4_TEST_COMMAND = "--openapi="
 TUNA_CLI4_TEST_COMMAND = "/ips"
-TUNA_CLI4_TEST_COMMAND = "--api"
-TUNA_CLI4_TEST_COMMAND = "--openapi $(OPENAPI_URL)"
 
 tuna:
 	@tmp=/tmp/_$$$$_ ; \
 	$(PYTHON) -X importtime -m cli4 $(TUNA_CLI4_TEST_COMMAND) > /dev/null 2> $$tmp.1 ; \
 	tuna $$tmp.1 2> /dev/null & \
 	tunapid=$$! ; \
-	sleep 1 ; \
+	sleep 10 ; \
 	kill $$tunapid ; \
 	rm $$tmp.?
 
