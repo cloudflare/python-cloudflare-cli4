@@ -7,17 +7,12 @@ class myjsonlines():
 
     def __init__(self):
         """ __init__ """
-        pass
-
-    def available(self):
-        """ available() """
         if not myjsonlines._jsonlines:
             try:
                 import jsonlines
                 myjsonlines._jsonlines = jsonlines
-            except ImportError:
-                return False
-        return True
+            except ImportError as e:
+                raise ImportError from e
 
     def Writer(self, fd):
         """ Writer() """

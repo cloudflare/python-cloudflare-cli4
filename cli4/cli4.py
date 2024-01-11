@@ -7,21 +7,37 @@ import getopt
 import keyword
 import json
 
-my_yaml = None
-my_jsonlines = None
-
 import CloudFlare
+
 from .dump import dump_commands, dump_commands_from_web
 from . import converters
 from . import examples
 
+my_yaml = None
+my_jsonlines = None
+
+class CLI4InternalError(Exception):
+    """ errors in cli4 """
+
 def load_and_check_yaml():
     """ load_and_check_yaml() """
+    # only called if user uses --yaml flag
     from . import myyaml
     global my_yaml
-    my_yaml = myyaml.myyaml()
-    if not my_yaml.available():
-        sys.exit('cli4: install yaml support')
+    try:
+        my_yaml = myyaml.myyaml()
+    except ImportError:
+        sys.exit('cli4: install yaml support via: pip install pyyaml')
+
+def load_and_check_jsonlines():
+    """ load_and_check_yaml() """
+    # only called if user uses --ndjson flag
+    from . import myjsonlines
+    global my_jsonlines
+    try:
+        my_jsonlines = myjsonlines.myjsonlines()
+    except ImportError:
+        sys.exit('cli4: install jsonlines support via: pip install jsonlines')
 
 def strip_multiline(s):
     """ remove leading/trailing tabs/spaces on each line"""
@@ -56,7 +72,7 @@ def process_params_content_files(method, binary_file, args):
                         with open(filename, 'rb') as f:
                             content = f.read()
                     else:
-                        with open(filename, 'r') as f:
+                        with open(filename, 'r', encoding="utf-8") as f:
                             content = f.read()
             except IOError:
                 sys.exit('cli4: %s - file open failure' % (filename))
@@ -86,8 +102,8 @@ def process_params_content_files(method, binary_file, args):
                 value_string = strip_multiline(value_string)
                 try:
                     value = my_yaml.safe_load(value_string)
-                except my_yaml.parser.ParserError as e:
-                    raise ValueError
+                except my_yaml.parser.ParserError:
+                    raise ValueError from None
             except ValueError:
                 sys.exit('cli4: %s="%s" - can\'t parse json value' % (tag_string, value_string))
         elif value_string[0] == '@':
@@ -203,8 +219,8 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                         elif (cmd[0] == 'user') and (cmd[1] == 'load_balancers') and (cmd[2] == 'pools'):
                             identifier1 = converters.convert_load_balancers_pool_to_identifier(cf, element)
                         else:
-                            raise Exception("/%s/%s :NOT CODED YET" % ('/'.join(cmd), element))
-                    except Exception as e:
+                            raise CLI4InternalError("/%s/%s :NOT CODED YET" % ('/'.join(cmd), element))
+                    except CLI4InternalError as e:
                         sys.stderr.write('cli4: /%s - %s\n' % (command, e))
                         raise e
                 cmd.append(':' + identifier1)
@@ -229,8 +245,8 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                                                                                       identifier1,
                                                                                       element)
                         else:
-                            raise Exception("/%s/%s :NOT CODED YET" % ('/'.join(cmd), element))
-                    except Exception as e:
+                            raise CLI4InternalError("/%s/:%s :NOT CODED YET" % ('/'.join(cmd), element))
+                    except CLI4InternalError as e:
                         sys.stderr.write('cli4: /%s - %s\n' % (command, e))
                         raise e
                 # identifier2 may be an array - this needs to be dealt with later
@@ -252,10 +268,11 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                     # raw string - used for workers script_names
                     identifier3 = element[1:]
                 else:
+                    #  /accounts/:id/storage/kv/namespaces/:id/values/:key_name - it's a strange one!
                     if len(cmd) >= 6 and cmd[0] == 'accounts' and cmd[2] == 'storage' and cmd[3] == 'kv' and cmd[4] == 'namespaces' and cmd[6] == 'values':
                         identifier3 = element
                     else:
-                        sys.stderr.write('/%s/%s :NOT CODED YET 3\n' % ('/'.join(cmd), element))
+                        sys.stderr.write('/%s/:%s :NOT CODED YET\n' % ('/'.join(cmd), element))
                         raise e
         else:
             try:
@@ -332,9 +349,9 @@ def write_results(results, output):
     if len(results) == 1:
         results = results[0]
 
-    if isinstance(results, str) or isinstance(results, (bytes, bytearray)):
+    if isinstance(results, (str, bytes, bytearray)):
         # if the results are a simple string, then it should be dumped directly
-        # this is only used for /zones/:id/dns_records/export presently
+        # this is only used for /zones/:id/dns_records/export, workers, and other calls
         # or
         # output is image or audio or video or something like that so we dump directly
         pass
@@ -441,11 +458,7 @@ def do_it(args):
             load_and_check_yaml()
             output = 'yaml'
         elif opt in ('-n', '--ndjson'):
-            from . import myjsonlines
-            global my_jsonlines
-            my_jsonlines = myjsonlines.myjsonlines()
-            if not my_jsonlines.available():
-                sys.exit('cli4: install jsonlines support')
+            load_and_check_jsonlines()
             output = 'ndjson'
         elif opt in ('-i', '--image'):
             output = 'image'

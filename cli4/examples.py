@@ -8,13 +8,13 @@ if sys.version_info < (3, 9):
     # function, so use the PyPI version:
     try:
         import importlib_resources
-    except ModuleNotFoundError as e:
+    except ModuleNotFoundError:
         importlib_resources = None
 else:
     # importlib.resources has files(), so use that:
     import importlib.resources as importlib_resources
 
-examples_package_name = 'examples'
+EXAMPLES_PACKAGE_NAME = 'examples'
 
 def display():
     """ display() """
@@ -23,7 +23,7 @@ def display():
         raise ModuleNotFoundError('Module "importlib_resources" missing - please "pip install importlib_resources" as your Python version is lower than 3.9')
 
     try:
-        pkg = importlib_resources.files(examples_package_name)
+        pkg = importlib_resources.files(EXAMPLES_PACKAGE_NAME)
     except ModuleNotFoundError as e:
         raise e
 
@@ -36,4 +36,3 @@ def display():
             if '__init__.py' in os.fspath(f):
                 continue
             print('\t%s' % (os.fspath(f)))
-

@@ -8,18 +8,13 @@ class myyaml():
 
     def __init__(self):
         """ __init__ """
-        pass
-
-    def available(self):
-        """ available() """
         if not myyaml._yaml:
             try:
                 import yaml
                 myyaml._yaml = yaml
                 myyaml.parser = yaml.parser
-            except ImportError:
-                return False
-        return True
+            except ImportError as e:
+                raise ImportError from e
 
     def safe_load(self,value_string):
         """ safe_load() """

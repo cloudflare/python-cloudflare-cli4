@@ -22,5 +22,3 @@ def dump_commands_from_web(cf, url):
             else:
                 a.append('%-6s %s' % (r['action'], r['cmd']))
     return '\n'.join(a) + '\n'
-
-
