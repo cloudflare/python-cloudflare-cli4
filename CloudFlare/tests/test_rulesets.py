@@ -14,6 +14,7 @@ import CloudFlare
 cf = None
 
 def test_cloudflare(debug=False):
+    """ test_cloudflare """
     global cf
     cf = CloudFlare.CloudFlare(debug=debug)
     assert isinstance(cf, CloudFlare.CloudFlare)
@@ -22,6 +23,7 @@ zone_name = None
 zone_id = None
 
 def test_find_zone(domain_name=None):
+    """ test_find_zone """
     global zone_name, zone_id
     # grab a random zone identifier from the first 10 zones
     if domain_name:
@@ -32,7 +34,7 @@ def test_find_zone(domain_name=None):
         zones = cf.zones.get(params=params)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         print('%s: Error %d=%s' % (domain_name, int(e), str(e)), file=sys.stderr)
-        exit(0)
+        assert False
     assert len(zones) > 0 and len(zones) <= 10
     n = random.randrange(len(zones))
     zone_name = zones[n]['name']
@@ -45,6 +47,7 @@ ruleset_ref = None
 ruleset_content = None
 
 def test_ruleset_create_values():
+    """ test_ruleset_create_values """
     global ruleset_name, ruleset_ref, ruleset_content
     ruleset_name = str(uuid.uuid1())
     ruleset_ref = str(uuid.uuid1())
@@ -73,6 +76,7 @@ def test_ruleset_create_values():
 ruleset_id = None
 
 def test_rulesets_get():
+    """ test_rulesets_get """
     # GET
     ruleset_results = cf.zones.rulesets.get(zone_id)
     assert isinstance(ruleset_results, list)
@@ -86,6 +90,7 @@ def test_rulesets_get():
     assert True
 
 def test_ruleset_post():
+    """ test_rulesets_post """
     global ruleset_id
     # POST
     ruleset = cf.zones.rulesets.post(zone_id, data=ruleset_content)
@@ -102,6 +107,7 @@ def test_ruleset_post():
     print('ruleset: %s: name=%s kind=%s phase=%s' % (ruleset['id'], ruleset['name'], ruleset['kind'], ruleset['phase']), file=sys.stderr)
 
 def test_rulesets_get_specific():
+    """ test_rulesets_get_specific """
     # GET
     ruleset = cf.zones.rulesets.get(zone_id, ruleset_id)
     assert isinstance(ruleset, dict)
@@ -114,10 +120,11 @@ def test_rulesets_get_specific():
     print('ruleset: %s: name=%s kind=%s phase=%s' % (ruleset['id'], ruleset['name'], ruleset['kind'], ruleset['phase']), file=sys.stderr)
 
 def test_ruleset_delete():
+    """ test_rulesets_delete """
     # DELETE
     ruleset_response = cf.zones.rulesets.delete(zone_id, ruleset_id)
     # None is returned - not quite the same response as other delete's in the API
-    assert ruleset_response == None
+    assert ruleset_response is None
 
 if __name__ == '__main__':
     test_cloudflare(debug=true)

@@ -13,6 +13,7 @@ import CloudFlare
 cf = None
 
 def test_cloudflare(debug=False):
+    """ test_cloudflare """
     global cf
     cf = CloudFlare.CloudFlare(debug=debug)
     assert isinstance(cf, CloudFlare.CloudFlare)
@@ -21,6 +22,7 @@ zone_name = None
 zone_id = None
 
 def test_find_zone(domain_name=None):
+    """ test_find_zone """
     global zone_name, zone_id
     # grab a random zone identifier from the first 10 zones
     if domain_name:
@@ -31,7 +33,7 @@ def test_find_zone(domain_name=None):
         zones = cf.zones.get(params=params)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         print('%s: Error %d=%s' % (domain_name, int(e), str(e)), file=sys.stderr)
-        exit(0)
+        assert False
     assert len(zones) > 0 and len(zones) <= 10
     n = random.randrange(len(zones))
     zone_name = zones[n]['name']
@@ -40,12 +42,13 @@ def test_find_zone(domain_name=None):
     print('zone: %s %s' % (zone_id, zone_name), file=sys.stderr)
 
 def test_certificates():
+    """ test_certificates """
     params = {'zone_id':zone_id}
     try:
         certificates = cf.certificates(params=params)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         print('%s: Error %d=%s - can not run this test on this domain - no worries - skipping' % (zone_name, int(e), str(e)), file=sys.stderr)
-        exit(0)
+        return
 
     assert isinstance(certificates, list)
     if len(certificates) == 0:

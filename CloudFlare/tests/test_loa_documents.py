@@ -16,6 +16,7 @@ import CloudFlare
 cf = None
 
 def test_cloudflare(debug=False):
+    """ test_cloudflare """
     global cf
     cf = CloudFlare.CloudFlare(debug=debug)
     assert isinstance(cf, CloudFlare.CloudFlare)
@@ -24,6 +25,7 @@ account_name = None
 account_id = None
 
 def test_find_account(find_name=None):
+    """ test_find_account """
     global account_name, account_id
     # grab a random account identifier from the first 10 accounts
     if find_name:
@@ -34,7 +36,7 @@ def test_find_account(find_name=None):
         accounts = cf.accounts.get(params=params)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         print('%s: Error %d=%s' % (find_name, int(e), str(e)), file=sys.stderr)
-        exit(0)
+        assert False
     assert len(accounts) > 0 and len(accounts) <= 10
     # n = random.randrange(len(accounts))
     # stop using a random account - use the primary account (i.e. the zero'th one)
@@ -45,6 +47,7 @@ def test_find_account(find_name=None):
     print('account: %s %s' % (account_id, account_name), file=sys.stderr)
 
 def test_addressing_prefixs():
+    """ test_addressing_prefixs """
     prefixes = cf.accounts.addressing.prefixes(account_id)
     assert isinstance(prefixes, list)
     for p in prefixes:
@@ -56,6 +59,7 @@ def test_addressing_prefixs():
         print('%s: cidr=%s asn=%s advertised=%s approved=%s' % (p['id'], p['cidr'], p['asn'], p['advertised'], p['approved']), file=sys.stderr)
 
 def test_addressing_loa_documents():
+    """ test_addressing_loa_documents """
     loa_documents = cf.accounts.addressing.loa_documents(account_id)
     assert isinstance(loa_documents, list)
     for loa_document in loa_documents:
@@ -67,6 +71,7 @@ def test_addressing_loa_documents():
         print('%s: filename=%s size_bytes=%d verified=%s' % (loa_document['id'], loa_document['filename'], loa_document['size_bytes'], loa_document['verified']), file=sys.stderr)
 
 def test_addressing_loa_documents_upload(filename=None):
+    """ test_addressing_loa_documents_upload """
     if not filename:
         filename = 'CloudFlare/tests/dummy_loa_document.pdf'
     try:
@@ -93,6 +98,7 @@ def test_addressing_loa_documents_upload(filename=None):
     assert size_bytes == loa_document['size_bytes']
 
 def ispdf(s):
+    """ ispdf """
     idx = 0
     while s[idx] in [b'\r', b'\n']:
         idx += 1
@@ -110,6 +116,7 @@ def ispdf(s):
     return False
 
 def test_addressing_loa_documents_download():
+    """ test_addressing_loa_documents_download """
     loa_documents = cf.accounts.addressing.loa_documents(account_id)
     assert isinstance(loa_documents, list)
     for loa_document in loa_documents:
@@ -126,11 +133,6 @@ def test_addressing_loa_documents_download():
         assert size_bytes == len(pdf_content)
         print('%s: %s' % (loa_document_identifier, pdf_content[0:10]))
         assert ispdf(pdf_content)
-
-def create_pdf_file():
-    with tempfile.NamedTemporaryFile() as fp:
-        fp.write(pdf_file_content)
-        return fp.name
 
 if __name__ == '__main__':
     test_cloudflare(debug=True)

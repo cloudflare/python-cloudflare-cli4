@@ -15,13 +15,15 @@ cf = None
 OPENAPI_URL = "https://github.com/cloudflare/api-schemas/raw/main/openapi.json"
 
 def test_cloudflare(debug=False):
+    """ test_cloudflare """
     global cf
     cf = CloudFlare.CloudFlare(debug=debug)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
-verb_only = re.compile('^[a-zA-Z0-9][a-zA-Z0-9_\-]*[a-zA-Z0-9]$')
+verb_only = re.compile('^[a-zA-Z0-9][-a-zA-Z0-9_]*[a-zA-Z0-9]$')
 
 def check_cmd_syntax(cmd):
+    """ check_cmd_syntax """
     assert '/' == cmd[0]
     for verb in cmd[1:].split('/'):
         if verb[0] == '@':
@@ -35,6 +37,7 @@ def check_cmd_syntax(cmd):
             assert bool(verb_only.match(verb))
 
 def check_method_syntax(method):
+    """ check_method_syntax """
     assert method in ['GET', 'POST', 'PATCH', 'PUT', 'DELETE']
 
 def test_api_list():

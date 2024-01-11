@@ -12,11 +12,13 @@ import CloudFlare
 cf = None
 
 def test_cloudflare(debug=False):
+    """ test_cloudflare """
     global cf
     cf = CloudFlare.CloudFlare(debug=debug)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
 def test_app_invalid():
+    """ test_app_invalid """
     """add API commands"""
     cf.add('OPEN', 'invalid')
     try:
@@ -60,4 +62,3 @@ if __name__ == '__main__':
     test_app_invalid()
     test_app_invalid_with_underscore()
     test_app_invalid_with_dash()
-

@@ -17,63 +17,91 @@ class TestCloudflare:
     """ TestCloudflare """
 
     def test_email_key_token000(self):
+        """ test_email_key_token### """
         self._run(0, 0, 0)
     def test_email_key_token001(self):
+        """ test_email_key_token### """
         self._run(0, 0, 1)
     def test_email_key_token002(self):
+        """ test_email_key_token### """
         self._run(0, 0, 2)
     def test_email_key_token010(self):
+        """ test_email_key_token### """
         self._run(0, 1, 0)
     def test_email_key_token011(self):
+        """ test_email_key_token### """
         self._run(0, 1, 1)
     def test_email_key_token012(self):
+        """ test_email_key_token### """
         self._run(0, 1, 2)
     def test_email_key_token020(self):
+        """ test_email_key_token### """
         self._run(0, 2, 0)
     def test_email_key_token021(self):
+        """ test_email_key_token### """
         self._run(0, 2, 1)
     def test_email_key_token022(self):
+        """ test_email_key_token### """
         self._run(0, 2, 2)
 
     def test_email_key_token100(self):
+        """ test_email_key_token### """
         self._run(1, 1, 0)
     def test_email_key_token101(self):
+        """ test_email_key_token### """
         self._run(1, 1, 1)
     def test_email_key_token102(self):
+        """ test_email_key_token### """
         self._run(1, 1, 2)
     def test_email_key_token110(self):
+        """ test_email_key_token### """
         self._run(1, 1, 1)
     def test_email_key_token111(self):
+        """ test_email_key_token### """
         self._run(1, 1, 1)
     def test_email_key_token112(self):
+        """ test_email_key_token### """
         self._run(1, 1, 2)
     def test_email_key_token120(self):
+        """ test_email_key_token### """
         self._run(1, 2, 1)
     def test_email_key_token121(self):
+        """ test_email_key_token### """
         self._run(1, 2, 1)
     def test_email_key_token122(self):
+        """ test_email_key_token### """
         self._run(1, 2, 2)
 
     def test_email_key_token200(self):
+        """ test_email_key_token### """
         self._run(2, 0, 0)
     def test_email_key_token201(self):
+        """ test_email_key_token### """
         self._run(2, 0, 1)
     def test_email_key_token202(self):
+        """ test_email_key_token### """
         self._run(2, 0, 2)
     def test_email_key_token210(self):
+        """ test_email_key_token### """
         self._run(2, 1, 2)
     def test_email_key_token211(self):
+        """ test_email_key_token### """
         self._run(2, 1, 1)
     def test_email_key_token212(self):
+        """ test_email_key_token### """
         self._run(2, 1, 2)
     def test_email_key_token220(self):
+        """ test_email_key_token### """
         self._run(2, 2, 2)
     def test_email_key_token221(self):
+        """ test_email_key_token### """
         self._run(2, 2, 1)
     def test_email_key_token222(self):
+        """ test_email_key_token### """
         self._run(2, 2, 2)
 
     def _run(self, token_index, key_index, email_index):
+        """ _run """
         global cf
         try:
             profile = self._profile

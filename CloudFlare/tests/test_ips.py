@@ -10,11 +10,13 @@ import CloudFlare
 cf = None
 
 def test_cloudflare(debug=False):
+    """ test_cloudflare """
     global cf
     cf = CloudFlare.CloudFlare(debug=debug)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
 def test_ips():
+    """ test_ips """
     # no auth required
     ips = cf.ips()
     assert isinstance(ips, dict)
@@ -24,6 +26,7 @@ def test_ips():
     assert len(ips['ipv6_cidrs']) > 0
 
 def test_ips_plus_jdcloud():
+    """ test_ips_plus_jdcloud """
     # no auth required
     params = {'networks':'jdcloud'}
     ips = cf.ips(params=params)
@@ -36,30 +39,38 @@ def test_ips_plus_jdcloud():
     assert len(ips['jdcloud_cidrs']) > 0
 
 def test_ips_patch():
+    """ test_ips_patch """
     # should fail!
     try:
-        ips = cf.ips.patch()
+        cf.ips.patch()
+        assert False
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         print('Error expected: %s' % (e), file=sys.stderr)
 
 def test_ips_post():
+    """ test_ips_post """
     # should fail!
     try:
-        ips = cf.ips.post()
+        cf.ips.post()
+        assert False
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         print('Error expected: %s' % (e), file=sys.stderr)
 
 def test_ips_put():
+    """ test_ips_put """
     # should fail!
     try:
-        ips = cf.ips.put()
+        cf.ips.put()
+        assert False
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         print('Error expected: %s' % (e), file=sys.stderr)
 
 def test_ips_delete():
+    """ test_ips_delete """
     # should fail!
     try:
-        ips = cf.ips.delete()
+        cf.ips.delete()
+        assert False
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         print('Error expected: %s' % (e), file=sys.stderr)
 

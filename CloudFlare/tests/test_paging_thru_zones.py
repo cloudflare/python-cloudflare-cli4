@@ -12,22 +12,23 @@ import CloudFlare
 cf = None
 
 def test_cloudflare(debug=False):
+    """ test_cloudflare """
     global cf
     cf = CloudFlare.CloudFlare(raw=True, debug=debug)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
 def paging_thru_zones(name=None):
-
+    """ paging_thru_zones """
     count_received = 0
     total_count = 0 # we want to confirm this total later
     page_number = 0
-    while True: 
+    while True:
         page_number += 1
         params = {'per_page':10,'page':page_number,'name':name}
         try:
             raw_results = cf.zones.get(params=params)
-        except CloudFlare.exceptions.CloudFlareAPIError as e:
-            exit('/zones.get %d %s - api call failed' % (e, e))
+        except CloudFlare.exceptions.CloudFlareAPIError:
+            assert False
 
         assert 'result_info' in raw_results
         assert 'result' in raw_results
@@ -64,7 +65,6 @@ def paging_thru_zones(name=None):
         for zone in results:
             assert 'id' in zone
             assert 'name' in zone
-            zone_id = zone['id']
             zone_name = zone['name']
             domains.append(zone_name)
         print("COUNT=%d PAGE=%d PER_PAGE=%d TOTAL_COUNT=%d TOTAL_PAGES=%d -- %s" % (count, page, per_page, total_count, total_pages, ','.join(domains)), file=sys.stderr)
@@ -77,13 +77,16 @@ def paging_thru_zones(name=None):
     assert count_received == total_count
 
 def test_paging_thru_zones():
+    """ test_paging_thru_zones """
     paging_thru_zones(None)
 
 def test_paging_thru_zones_match_com():
+    """ test_paging_thru_zones_match_com """
     # we assume your account has one of these domains
     paging_thru_zones('ends_with:.com')
 
 def test_paging_thru_zones_match_nothing():
+    """ test_paging_thru_zones_match_nothing """
     paging_thru_zones('QWERTYUIOOP')
 
 if __name__ == '__main__':

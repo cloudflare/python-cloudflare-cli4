@@ -17,6 +17,7 @@ import CloudFlare
 cf = None
 
 def test_cloudflare(debug=False):
+    """ test_cloudflare """
     global cf
     cf = CloudFlare.CloudFlare(debug=debug)
     assert isinstance(cf, CloudFlare.CloudFlare)
@@ -25,6 +26,7 @@ zone_name = None
 zone_id = None
 
 def test_find_zone(domain_name=None):
+    """ test_find_zone """
     global zone_name, zone_id
     # grab a random zone identifier from the first 10 zones
     if domain_name:
@@ -35,7 +37,7 @@ def test_find_zone(domain_name=None):
         zones = cf.zones.get(params=params)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         print('%s: Error %d=%s' % (domain_name, int(e), str(e)), file=sys.stderr)
-        exit(0)
+        assert False
     assert len(zones) > 0 and len(zones) <= 10
     n = random.randrange(len(zones))
     zone_name = zones[n]['name']
@@ -75,14 +77,15 @@ def test_graphql():
     try:
         r = cf.graphql.post(data={'query':query})
     except CloudFlare.exceptions.CloudFlareAPIError as e:
-        exit('/graphql.post %d %s - api call failed' % (e, e))
+        print('%s: Error %d=%s' % ('/graphql.post', int(e), str(e)), file=sys.stderr)
+        assert False
 
     # success - lets confirm it's graphql results as-per query above
 
     # basic graphql results
     assert 'data' in r
     assert 'errors' in r
-    assert r['errors'] == None
+    assert r['errors'] is None
 
     # viewer and zones from above
     assert 'viewer' in r['data']

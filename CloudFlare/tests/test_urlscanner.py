@@ -13,6 +13,7 @@ import CloudFlare
 cf = None
 
 def test_cloudflare(debug=False):
+    """ test_cloudflare """
     global cf
     cf = CloudFlare.CloudFlare(debug=debug)
     assert isinstance(cf, CloudFlare.CloudFlare)
@@ -21,6 +22,7 @@ account_name = None
 account_id = None
 
 def test_find_account(find_name=None):
+    """ test_find_account """
     global account_name, account_id
     # grab a random account identifier from the first 10 accounts
     if find_name:
@@ -31,7 +33,7 @@ def test_find_account(find_name=None):
         accounts = cf.accounts.get(params=params)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         print('%s: Error %d=%s' % (find_name, int(e), str(e)), file=sys.stderr)
-        exit(0)
+        assert False
     assert len(accounts) > 0 and len(accounts) <= 10
     # n = random.randrange(len(accounts))
     # stop using a random account - use the primary account (i.e. the zero'th one)
@@ -45,6 +47,7 @@ scan_uuid = None
 scan_url = None
 
 def test_urlscanner():
+    """ test_urlscanner """
     global scan_uuid, scan_url
     scans = cf.accounts.urlscanner.scan.get(account_id, params={'limit':10})
     assert isinstance(scans, dict)
@@ -63,6 +66,7 @@ def test_urlscanner():
     scan_url = tasks[n]['url']
 
 def test_urlscanner_scan():
+    """ test_urlscanner_scan """
     scan = cf.accounts.urlscanner.scan.get(account_id, scan_uuid)
     assert isinstance(scan, dict)
     assert 'scan' in scan
@@ -79,18 +83,21 @@ def test_urlscanner_scan():
 # https://www.w3.org/TR/png/#5PNG-file-signature
 # PNG signature 89 50 4E 47 0D 0A 1A 0A
 def ispng(s):
+    """ ispng """
     if b'\x89PNG\x0d\x0a\x1a\x0a' == s[0:8]:
         return True
     return False
 
 # we don't write out the image - we have no interest in doing this
 def write_png_file(s):
+    """ write_png_file """
     hostname = scan_url.split('/')[2].replace('.', '_')
     with tempfile.NamedTemporaryFile(mode='wb', prefix='screenshot-' + hostname + '-', suffix='.png', delete=False) as fp:
         fp.write(s)
         print('%s' % (fp.name), file=sys.stderr)
 
 def test_urlscanner_scan_screenshot():
+    """ test_urlscanner_scan_screenshot """
     # the real test - returning bytes as this is an image
     png_content = cf.accounts.urlscanner.scan.screenshot.get(account_id, scan_uuid)
     assert isinstance(png_content, bytes)

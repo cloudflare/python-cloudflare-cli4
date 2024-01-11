@@ -2,7 +2,6 @@
 
 import os
 import sys
-import time
 import uuid
 import random
 
@@ -15,6 +14,7 @@ import CloudFlare
 cf = None
 
 def test_cloudflare(debug=False):
+    """ test_cloudflare """
     global cf
     cf = CloudFlare.CloudFlare(debug=debug)
     assert isinstance(cf, CloudFlare.CloudFlare)
@@ -23,6 +23,7 @@ account_name = None
 account_id = None
 
 def test_find_account(find_name=None):
+    """ test_find_account """
     global account_name, account_id
     # grab a random account identifier from the first 10 accounts
     if find_name:
@@ -33,7 +34,7 @@ def test_find_account(find_name=None):
         accounts = cf.accounts.get(params=params)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         print('%s: Error %d=%s' % (find_name, int(e), str(e)), file=sys.stderr)
-        exit(0)
+        assert False
     assert len(accounts) > 0 and len(accounts) <= 10
     # n = random.randrange(len(accounts))
     # stop using a random account - use the primary account (i.e. the zero'th one)
@@ -80,6 +81,7 @@ script_id = None
 script_tag = None
 
 def test_workers_script_put():
+    """ test_workers_script_put """
     global script_id, script_tag
 
     script_id = str(uuid.uuid1())
@@ -92,6 +94,7 @@ def test_workers_script_put():
     script_tag = r['tag']
 
 def test_workers_find():
+    """ test_workers_find """
     workers = cf.accounts.workers.scripts(account_id)
     assert len(workers) > 0
     assert isinstance(workers, list)
@@ -104,6 +107,7 @@ def test_workers_find():
     assert found == True
 
 def test_workers_find_all():
+    """ test_workers_find_all """
     workers = cf.accounts.workers.scripts(account_id)
     assert len(workers) >= 0
     assert isinstance(workers, list)
@@ -124,6 +128,7 @@ def test_workers_find_all():
         break
 
 def test_workers_script_delete():
+    """ test_workers_script_delete """
     r = cf.accounts.workers.scripts.delete(account_id, script_id)
     assert isinstance(r, dict)
     assert 'id' in r
@@ -140,4 +145,3 @@ if __name__ == '__main__':
     test_workers_find()
     test_workers_find_all()
     test_workers_script_delete()
-

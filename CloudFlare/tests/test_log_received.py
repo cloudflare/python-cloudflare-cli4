@@ -14,6 +14,7 @@ import CloudFlare
 cf = None
 
 def test_cloudflare(debug=False):
+    """ test_cloudflare """
     global cf
     cf = CloudFlare.CloudFlare(debug=debug)
     assert isinstance(cf, CloudFlare.CloudFlare)
@@ -22,6 +23,7 @@ zone_name = None
 zone_id = None
 
 def test_find_zone(domain_name=None):
+    """ test_find_zone """
     global zone_name, zone_id
     # grab a random zone identifier from the first 10 zones
     if domain_name:
@@ -32,7 +34,7 @@ def test_find_zone(domain_name=None):
         zones = cf.zones.get(params=params)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         print('%s: Error %d=%s' % (domain_name, int(e), str(e)), file=sys.stderr)
-        exit(0)
+        assert False
     assert len(zones) > 0 and len(zones) <= 10
     n = random.randrange(len(zones))
     zone_name = zones[n]['name']
@@ -47,9 +49,10 @@ def test_logs_received():
     try:
         r = cf.zones.logs.received.get(zone_id)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
-        exit('/zones.logs.received.get %d %s - api call failed' % (e, e))
+        print('%s: Error %d=%s' % ('/zones.logs.received.get', int(e), str(e)), file=sys.stderr)
+        assert False
     # XXX/TODO - sadly this call returns all manner of weird stuff - we punt for now
-    assert r != None
+    assert r is not None
 
 if __name__ == '__main__':
     test_cloudflare(debug=True)

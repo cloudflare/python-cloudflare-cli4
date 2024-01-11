@@ -13,6 +13,7 @@ import CloudFlare
 cf = None
 
 def test_cloudflare(debug=False):
+    """ test_cloudflare """
     global cf
     cf = CloudFlare.CloudFlare(debug=debug)
     assert isinstance(cf, CloudFlare.CloudFlare)
@@ -20,6 +21,7 @@ def test_cloudflare(debug=False):
 aliases = None
 
 def test_radar_datasets_ranking():
+    """ test_radar_datasets_ranking """
     # get the list of aliases - we only need to grab 12 values
     global aliases
     params = {'limit':12}
@@ -34,6 +36,7 @@ def test_radar_datasets_ranking():
     aliases = sorted(aliases, key=lambda v: v[2], reverse=False)
 
 def test_radar_datasets_ranking_two_aliases():
+    """ test_radar_datasets_ranking_two_aliases """
     for v in aliases[0:2]:
         alias = v[1]
         n_lines = v[2]

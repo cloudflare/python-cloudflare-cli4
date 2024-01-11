@@ -16,6 +16,7 @@ import CloudFlare
 cf = None
 
 def test_cloudflare():
+    """ test_cloudflare """
     global cf
     cf = CloudFlare.CloudFlare()
     assert isinstance(cf, CloudFlare.CloudFlare)
@@ -24,6 +25,7 @@ zone_name = None
 zone_id = None
 
 def test_find_zone(domain_name=None):
+    """ test_find_zone """
     global zone_name, zone_id
     # grab a random zone identifier from the first 10 zones
     if domain_name:
@@ -34,7 +36,7 @@ def test_find_zone(domain_name=None):
         zones = cf.zones.get(params=params)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         print('%s: Error %d=%s' % (domain_name, int(e), str(e)), file=sys.stderr)
-        exit(0)
+        assert False
     assert len(zones) > 0 and len(zones) <= 10
     n = random.randrange(len(zones))
     zone_name = zones[n]['name']
@@ -43,6 +45,7 @@ def test_find_zone(domain_name=None):
     print('zone: %s %s' % (zone_id, zone_name), file=sys.stderr)
 
 def test_dns_import():
+    """ test_dns_import """
     # IMPORT
     # create a zero length file
     fp = tempfile.TemporaryFile(mode='w+b')
@@ -62,6 +65,7 @@ def test_dns_import():
     assert results['total_records_parsed'] == 0
 
 def test_dns_export():
+    """ test_dns_export """
     # EXPORT
     dns_records = cf.zones.dns_records.export.get(zone_id)
     assert len(dns_records) > 0
@@ -70,11 +74,13 @@ def test_dns_export():
     assert 'NS' in dns_records
 
 def test_cloudflare_with_debug():
+    """ test_cloudflare_with_debug """
     global cf
     cf = CloudFlare.CloudFlare(debug=True)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
 def test_dns_import_with_debug():
+    """ test_dns_import_with_debug """
     # IMPORT
     # create a zero length file
     fp = tempfile.TemporaryFile(mode='w+b')
@@ -94,6 +100,7 @@ def test_dns_import_with_debug():
     assert results['total_records_parsed'] == 0
 
 def test_dns_export_with_debug():
+    """ test_dns_export_with_debug """
     # EXPORT
     dns_records = cf.zones.dns_records.export.get(zone_id)
     assert len(dns_records) > 0
