@@ -39,7 +39,7 @@ def main():
         v = None
     except Exception as e:
         exit('/user.tokens.get - %s - api call failed' % (e))
- 
+
     if v:
         print('TOKENS:')
         for t in v:
@@ -54,12 +54,12 @@ def main():
         v = None
     except Exception as e:
         exit('/user.tokens.verify.get - %s - api call failed' % (e))
- 
+
     if v:
         print('VERIFYED TOKENS')
         print(' %s %-10s [%-20s %-20s]' % (
             v['id'],
-            v['status'], 
+            v['status'],
             v['not_before'] if 'not_before' in v else '',
             v['expires_on'] if 'expires_on' in v else ''
        ))
@@ -70,4 +70,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

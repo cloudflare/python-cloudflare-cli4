@@ -62,7 +62,7 @@ def do_dns_update(cf, zone_name, zone_id, dns_name, ip_address, ip_address_type)
             continue
 
         proxied_state = dns_record['proxied']
- 
+
         # Yes, we need to update this record - we know it's the same address type
 
         dns_record_id = dns_record['id']
@@ -135,4 +135,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

@@ -18,7 +18,7 @@ def main():
             method = 'DELETE'
     except IndexError:
         pass
-    
+
     try:
         zone_name = sys.argv[1]
     except IndexError:
@@ -74,4 +74,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

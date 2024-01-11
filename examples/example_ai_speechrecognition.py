@@ -12,7 +12,7 @@ import CloudFlare
 def find_call(cf, verbs):
     # So we walk over the @ via a getattr() call.
     # We also have to deal with a . in a verb - that does not work in Python. So sad.
-    # Also, the - is actually an _ in this Python library. 
+    # Also, the - is actually an _ in this Python library.
     # This is not normally needed for other calls
     m = cf
     for verb in verbs.split('/'):
@@ -39,7 +39,7 @@ def doit(account_name, mp3_data):
     cf = CloudFlare.CloudFlare(global_request_timeout=120)
 
     try:
-        if account_name == None or account_name == '':
+        if account_name is None or account_name == '':
             params = {'per_page': 1}
         else:
             params = {'name': account_name, 'per_page': 1}
@@ -78,7 +78,7 @@ def download_file(url, referer, n_requested):
     # NOTE the stream=True parameter below
     with requests.get(url, headers=headers, stream=True) as r:
         r.raise_for_status()
-        for chunk in r.iter_content(chunk_size=16*1024): 
+        for chunk in r.iter_content(chunk_size=16*1024):
             fp.write(chunk)
             n_received += len(chunk)
             if n_received > n_requested:

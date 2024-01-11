@@ -47,7 +47,7 @@ def main():
             print('\t%s %-30s %s' % (hostname_info['id'], hostname_info['hostname'], hostname_info['created_at']))
 
             for s in sorted(hostname_info.keys()):
-                if s in ['id', 'hostname', 'created_at'] or hostname_info[s] == None:
+                if s in ['id', 'hostname', 'created_at'] or hostname_info[s] is None:
                     continue
                 print('\t%-15s = %s' % (s, hostname_info[s]))
 

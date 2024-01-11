@@ -11,7 +11,7 @@ def main():
     cf = CloudFlare.CloudFlare(raw=True)
 
     page_number = 0
-    while True: 
+    while True:
         page_number += 1
         try:
             raw_results = cf.zones.get(params={'per_page':5,'page':page_number})
