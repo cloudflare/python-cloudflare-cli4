@@ -17,7 +17,7 @@ def do_path(cmd, values):
     if cmd[0] != '/':
         cmd = '/' + cmd  # make sure there's a leading /
 
-    cmd = match_identifier.sub(':id', cmd) 
+    cmd = match_identifier.sub(':id', cmd)
     if cmd[-4:] == '/:id':
         cmd = cmd[:-4]
     if cmd[-4:] == '/:id':
@@ -63,7 +63,7 @@ def api_decode_from_openapi(content):
     try:
         j = json.loads(content)
     except json.decoder.JSONDecodeError as e:
-        raise SyntaxError('OpenAPI json decode failed: %s' % (e))
+        raise SyntaxError('OpenAPI json decode failed: %s' % (e)) from None
 
     try:
         components = j['components']
@@ -71,9 +71,21 @@ def api_decode_from_openapi(content):
         cloudflare_version = info['version']
         openapi_version = j['openapi']
         paths = j['paths']
-        servers = ['servers']
-    except Exception as e:
-        raise SyntaxError('OpenAPI json missing standard OpenAPI values: %s' % (e))
+        servers = j['servers']
+    except KeyError as e:
+        raise SyntaxError('OpenAPI json missing standard OpenAPI values: %s' % (e)) from None
+
+    if len(components) == 0:
+        raise SyntaxError('OpenAPI json components missing values')
+
+    cloudflare_url = None
+    for server in servers:
+        try:
+           cloudflare_url = server['url']
+        except KeyError as e:
+           pass
+    if not cloudflare_url:
+        raise SyntaxError('OpenAPI json servers/server missing url value')
 
     all_cmds = []
     for path in paths:
@@ -82,4 +94,4 @@ def api_decode_from_openapi(content):
             continue
         all_cmds += do_path(path, paths[path])
 
-    return sorted(all_cmds, key=lambda v: v['cmd']), openapi_version, cloudflare_version
+    return sorted(all_cmds, key=lambda v: v['cmd']), openapi_version, cloudflare_version, cloudflare_url

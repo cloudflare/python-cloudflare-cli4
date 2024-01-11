@@ -10,7 +10,7 @@ import logging
 DEBUG = 0
 INFO = 1
 
-class CFlogger(object):
+class CFlogger():
     """ Logging for Cloudflare API"""
 
     logger = None

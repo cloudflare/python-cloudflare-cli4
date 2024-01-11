@@ -7,6 +7,9 @@ try:
 except ImportError:
     import ConfigParser as configparser # py2
 
+class ReadConfigError(Exception):
+    """ errors for read_configs"""
+
 def read_configs(profile=None):
     """ reading the config file for Cloudflare API"""
 
@@ -34,11 +37,11 @@ def read_configs(profile=None):
             os.path.expanduser('~/.cloudflare/cloudflare.cfg')
         ])
     except:
-        raise Exception("%s: configuration file error" % ('.cloudflare.cfg'))
+        raise ReadConfigError("%s: configuration file error" % ('.cloudflare.cfg')) from None
 
     if len(cp.sections()) == 0 and profile is not None and len(profile) > 0:
         # no config file and yet a config name provided - not acceptable!
-        raise Exception("%s: configuration section provided however config file missing" % (profile))
+        raise ReadConfigError("%s: configuration section provided however config file missing" % (profile)) from None
 
     # Is it CloudFlare or Cloudflare? (A legacy issue)
     if profile is None:
@@ -57,7 +60,7 @@ def read_configs(profile=None):
         # we have a configuration file - lets use it
 
         if not cp.has_section(profile):
-            raise Exception("%s: configuration section missing - configuration file only has these sections: %s" % (profile, ','.join(cp.sections())))
+            raise ReadConfigError("%s: configuration section missing - configuration file only has these sections: %s" % (profile, ','.join(cp.sections()))) from None
 
         for option in ['email', 'key', 'token', 'certtoken', 'extras', 'base_url', 'openapi_url', 'global_request_timeout', 'max_request_retries']:
             try:
@@ -70,8 +73,6 @@ def read_configs(profile=None):
                     config.pop(option)
             except (configparser.NoOptionError, configparser.NoSectionError):
                 pass
-            except:
-                pass
 
             # do we have an override for specific calls? (i.e. token.post or email.get etc)
             for method in ['get', 'patch', 'post', 'put', 'delete']:
@@ -83,8 +84,6 @@ def read_configs(profile=None):
                         config.pop(option_for_method)
                 except (configparser.NoOptionError, configparser.NoSectionError):
                     pass
-                except:
-                    pass
 
     # do any final cleanup - only needed for extras (which are multiline)
     if 'extras' in config and config['extras'] is not None:
@@ -95,7 +94,7 @@ def read_configs(profile=None):
         if config[x] is None or config[x] == '':
             try:
                 config.pop(x)
-            except:
+            except KeyError:
                 pass
 
     return config

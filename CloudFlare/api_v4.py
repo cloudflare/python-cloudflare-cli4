@@ -12,6 +12,11 @@ def api_v4(self):
 
     # The API commands for /radar/
     radar(self)
+    radar_as112(self)
+    radar_attacks(self)
+    radar_bgp(self)
+    radar_email(self)
+    radar_http(self)
 
     # The API commands for /zones/
     zones(self)
@@ -930,6 +935,68 @@ def radar(self):
     self.add('AUTH', 'radar/annotations/outages')
     self.add('AUTH', 'radar/annotations/outages/locations')
 
+    self.add('AUTH', 'radar/datasets')
+    self.add('AUTH', 'radar/datasets/download')
+
+    self.add('VOID', 'radar/dns')
+    self.add('VOID', 'radar/dns/top')
+    self.add('AUTH', 'radar/dns/top/ases')
+    self.add('AUTH', 'radar/dns/top/locations')
+
+    self.add('VOID', 'radar/entities')
+    self.add('AUTH', 'radar/entities/asns')
+    self.add('AUTH', 'radar/entities/asns', 'rel')
+    self.add('AUTH', 'radar/entities/asns/ip')
+    self.add('AUTH', 'radar/entities/ip')
+    self.add('AUTH', 'radar/entities/locations')
+
+    self.add('VOID', 'radar/netflows')
+    self.add('AUTH', 'radar/netflows/timeseries')
+    self.add('VOID', 'radar/netflows/top')
+    self.add('AUTH', 'radar/netflows/top/ases')
+    self.add('AUTH', 'radar/netflows/top/locations')
+
+    self.add('VOID', 'radar/performance')
+    self.add('VOID', 'radar/performance/iqi')
+    self.add('AUTH', 'radar/performance/iqi/summary')
+    self.add('AUTH', 'radar/performance/iqi/timeseries_groups')
+
+    self.add('VOID', 'radar/quality')
+    self.add('VOID', 'radar/quality/iqi')
+    self.add('AUTH', 'radar/quality/iqi/summary')
+    self.add('AUTH', 'radar/quality/iqi/timeseries_groups')
+    self.add('VOID', 'radar/quality/speed')
+    self.add('AUTH', 'radar/quality/speed/histogram')
+    self.add('AUTH', 'radar/quality/speed/summary')
+    self.add('VOID', 'radar/quality/speed/top')
+    self.add('AUTH', 'radar/quality/speed/top/ases')
+    self.add('AUTH', 'radar/quality/speed/top/locations')
+
+    self.add('VOID', 'radar/ranking')
+    self.add('AUTH', 'radar/ranking/domain')
+    self.add('AUTH', 'radar/ranking/timeseries')
+    self.add('AUTH', 'radar/ranking/timeseries_groups')
+    self.add('AUTH', 'radar/ranking/top')
+
+    self.add('VOID', 'radar/search')
+    self.add('AUTH', 'radar/search/global')
+
+    self.add('AUTH', 'radar/specialevents')
+
+    self.add('VOID', 'radar/verified_bots')
+    self.add('VOID', 'radar/verified_bots/top')
+    self.add('AUTH', 'radar/verified_bots/top/bots')
+    self.add('AUTH', 'radar/verified_bots/top/categories')
+
+    self.add('VOID', 'radar/connection_tampering')
+    self.add('AUTH', 'radar/connection_tampering/summary')
+    self.add('AUTH', 'radar/connection_tampering/timeseries_groups')
+    self.add('AUTH', 'radar/traffic_anomalies')
+    self.add('AUTH', 'radar/traffic_anomalies/locations')
+
+def radar_as112(self):
+    """ radar_as112 """
+
     self.add('VOID', 'radar/as112')
     self.add('VOID', 'radar/as112/summary')
     self.add('AUTH', 'radar/as112/summary/dnssec')
@@ -960,6 +1027,9 @@ def radar(self):
     self.add('AUTH', 'radar/as112/top/locations/dnssec')
     self.add('AUTH', 'radar/as112/top/locations/edns')
     self.add('AUTH', 'radar/as112/top/locations/ip_version')
+
+def radar_attacks(self):
+    """ radar_attacks """
 
     self.add('VOID', 'radar/attacks')
     self.add('VOID', 'radar/attacks/layer3')
@@ -1012,6 +1082,9 @@ def radar(self):
     self.add('AUTH', 'radar/attacks/layer7/top/locations/target')
     self.add('AUTH', 'radar/attacks/layer7/top/vertical')
 
+def radar_bgp(self):
+    """ radar_bgp """
+
     self.add('VOID', 'radar/bgp')
     self.add('VOID', 'radar/bgp/leaks')
     self.add('AUTH', 'radar/bgp/leaks/events')
@@ -1027,13 +1100,8 @@ def radar(self):
     self.add('AUTH', 'radar/bgp/routes/pfx2as')
     self.add('AUTH', 'radar/bgp/routes/stats')
 
-    self.add('AUTH', 'radar/datasets')
-    self.add('AUTH', 'radar/datasets/download')
-
-    self.add('VOID', 'radar/dns')
-    self.add('VOID', 'radar/dns/top')
-    self.add('AUTH', 'radar/dns/top/ases')
-    self.add('AUTH', 'radar/dns/top/locations')
+def radar_email(self):
+    """ radar_email """
 
     self.add('VOID', 'radar/email')
     self.add('VOID', 'radar/email/security')
@@ -1079,14 +1147,11 @@ def radar(self):
     self.add('AUTH', 'radar/email/security/top/locations/spam')
     self.add('AUTH', 'radar/email/security/top/locations/spf')
 
-    self.add('VOID', 'radar/entities')
-    self.add('AUTH', 'radar/entities/asns')
-    self.add('AUTH', 'radar/entities/asns', 'rel')
-    self.add('AUTH', 'radar/entities/asns/ip')
-    self.add('AUTH', 'radar/entities/ip')
-    self.add('AUTH', 'radar/entities/locations')
+def radar_http(self):
+    """ radar_http """
 
     self.add('VOID', 'radar/http')
+
     self.add('VOID', 'radar/http/summary')
     self.add('AUTH', 'radar/http/summary/bot_class')
     self.add('AUTH', 'radar/http/summary/device_type')
@@ -1095,6 +1160,7 @@ def radar(self):
     self.add('AUTH', 'radar/http/summary/ip_version')
     self.add('AUTH', 'radar/http/summary/os')
     self.add('AUTH', 'radar/http/summary/tls_version')
+
     self.add('VOID', 'radar/http/timeseries')
     self.add('AUTH', 'radar/http/timeseries/bot_class')
     self.add('AUTH', 'radar/http/timeseries/browser')
@@ -1105,6 +1171,18 @@ def radar(self):
     self.add('AUTH', 'radar/http/timeseries/ip_version')
     self.add('AUTH', 'radar/http/timeseries/os')
     self.add('AUTH', 'radar/http/timeseries/tls_version')
+
+    self.add('VOID', 'radar/http/timeseries_groups')
+    self.add('AUTH', 'radar/http/timeseries_groups/bot_class')
+    self.add('AUTH', 'radar/http/timeseries_groups/browser')
+    self.add('AUTH', 'radar/http/timeseries_groups/browser_family')
+    self.add('AUTH', 'radar/http/timeseries_groups/device_type')
+    self.add('AUTH', 'radar/http/timeseries_groups/http_protocol')
+    self.add('AUTH', 'radar/http/timeseries_groups/http_version')
+    self.add('AUTH', 'radar/http/timeseries_groups/ip_version')
+    self.add('AUTH', 'radar/http/timeseries_groups/os')
+    self.add('AUTH', 'radar/http/timeseries_groups/tls_version')
+
     self.add('VOID', 'radar/http/top')
     self.add('AUTH', 'radar/http/top/ases')
     self.add('AUTH', 'radar/http/top/ases/bot_class')
@@ -1124,62 +1202,6 @@ def radar(self):
     self.add('AUTH', 'radar/http/top/locations/ip_version')
     self.add('AUTH', 'radar/http/top/locations/os')
     self.add('AUTH', 'radar/http/top/locations/tls_version')
-
-    self.add('VOID', 'radar/netflows')
-    self.add('AUTH', 'radar/netflows/timeseries')
-    self.add('VOID', 'radar/netflows/top')
-    self.add('AUTH', 'radar/netflows/top/ases')
-    self.add('AUTH', 'radar/netflows/top/locations')
-
-    self.add('VOID', 'radar/performance')
-    self.add('VOID', 'radar/performance/iqi')
-    self.add('AUTH', 'radar/performance/iqi/summary')
-    self.add('AUTH', 'radar/performance/iqi/timeseries_groups')
-
-    self.add('VOID', 'radar/quality')
-    self.add('VOID', 'radar/quality/iqi')
-    self.add('AUTH', 'radar/quality/iqi/summary')
-    self.add('AUTH', 'radar/quality/iqi/timeseries_groups')
-    self.add('VOID', 'radar/quality/speed')
-    self.add('AUTH', 'radar/quality/speed/histogram')
-    self.add('AUTH', 'radar/quality/speed/summary')
-    self.add('VOID', 'radar/quality/speed/top')
-    self.add('AUTH', 'radar/quality/speed/top/ases')
-    self.add('AUTH', 'radar/quality/speed/top/locations')
-
-    self.add('VOID', 'radar/ranking')
-    self.add('AUTH', 'radar/ranking/domain')
-    self.add('AUTH', 'radar/ranking/timeseries')
-    self.add('AUTH', 'radar/ranking/timeseries_groups')
-    self.add('AUTH', 'radar/ranking/top')
-
-    self.add('VOID', 'radar/search')
-    self.add('AUTH', 'radar/search/global')
-
-    self.add('AUTH', 'radar/specialevents')
-
-    self.add('VOID', 'radar/http/timeseries_groups')
-    self.add('AUTH', 'radar/http/timeseries_groups/bot_class')
-    self.add('AUTH', 'radar/http/timeseries_groups/browser')
-    self.add('AUTH', 'radar/http/timeseries_groups/browser_family')
-    self.add('AUTH', 'radar/http/timeseries_groups/device_type')
-    self.add('AUTH', 'radar/http/timeseries_groups/http_protocol')
-    self.add('AUTH', 'radar/http/timeseries_groups/http_version')
-    self.add('AUTH', 'radar/http/timeseries_groups/ip_version')
-    self.add('AUTH', 'radar/http/timeseries_groups/os')
-    self.add('AUTH', 'radar/http/timeseries_groups/tls_version')
-
-    self.add('VOID', 'radar/verified_bots')
-    self.add('VOID', 'radar/verified_bots/top')
-    self.add('AUTH', 'radar/verified_bots/top/bots')
-    self.add('AUTH', 'radar/verified_bots/top/categories')
-
-    self.add('VOID', 'radar/connection_tampering')
-    self.add('AUTH', 'radar/connection_tampering/summary')
-    self.add('AUTH', 'radar/connection_tampering/timeseries_groups')
-    self.add('AUTH', 'radar/traffic_anomalies')
-    self.add('AUTH', 'radar/traffic_anomalies/locations')
-
 
 def from_developers(self):
     """ from_developers """

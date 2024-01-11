@@ -3,7 +3,7 @@
 class CloudFlareError(Exception):
     """ errors for Cloudflare API"""
 
-    class CodeMessage(object):
+    class CodeMessage():
         """ a small class to save away an interger and string (the code and the message)"""
 
         def __init__(self, code, message):

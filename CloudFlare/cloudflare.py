@@ -1,16 +1,16 @@
 """ Cloudflare v4 API"""
 import json
 import keyword
-from requests import RequestException as requests_RequestException, ConnectionError as requests_ConnectionError, exceptions as requests_exceptions, codes as requests_codes
+from requests import RequestException as requests_RequestException, ConnectionError as requests_ConnectionError, exceptions as requests_exceptions
 
 from .network import CFnetwork
 from .logging_helper import CFlogger
 from .utils import user_agent, build_curl
-from .read_configs import read_configs
+from .read_configs import read_configs, ReadConfigError
 from .api_v4 import api_v4
 from .api_extras import api_extras
 from .api_decode_from_openapi import api_decode_from_openapi
-from .exceptions import CloudFlareError, CloudFlareAPIError, CloudFlareInternalError
+from .exceptions import CloudFlareAPIError, CloudFlareInternalError
 
 BASE_URL = 'https://api.cloudflare.com/client/v4'
 OPENAPI_URL = 'https://github.com/cloudflare/api-schemas/raw/main/openapi.json'
@@ -87,7 +87,7 @@ class CloudFlare():
                     else:
                         self.headers['Content-Type'] = ct
             else:
-                # default choice 
+                # default choice
                 self.headers['Content-Type'] = 'application/json'
 
             # now adjust Content-Type based on data and files
@@ -185,8 +185,7 @@ class CloudFlare():
             # We decide at this point if we are sending json or string data
             if isinstance(data, (str,bytes,bytearray)):
                 return self._call(method, parts, identifiers, params, data, None, files)
-            else:
-                return self._call(method, parts, identifiers, params, None, data, files)
+            return self._call(method, parts, identifiers, params, None, data, files)
 
         def do_auth(self, method, parts, identifiers, params=None, data=None, content_type=None, files=None):
             """ Cloudflare v4 API"""
@@ -196,8 +195,7 @@ class CloudFlare():
             # We decide at this point if we are sending json or string data
             if isinstance(data, (str,bytes,bytearray)):
                 return self._call(method, parts, identifiers, params, data, None, files)
-            else:
-                return self._call(method, parts, identifiers, params, None, data, files)
+            return self._call(method, parts, identifiers, params, None, data, files)
 
         def do_auth_unwrapped(self, method, parts, identifiers, params=None, data=None, content_type=None, files=None):
             """ Cloudflare v4 API"""
@@ -207,8 +205,7 @@ class CloudFlare():
             # We decide at this point if we are sending json or string data
             if isinstance(data, (str,bytes,bytearray)):
                 return self._call_unwrapped(method, parts, identifiers, params, data, None, files)
-            else:
-                return self._call_unwrapped(method, parts, identifiers, params, None, data, files)
+            return self._call_unwrapped(method, parts, identifiers, params, None, data, files)
 
         def do_certauth(self, method, parts, identifiers, params=None, data=None, content_type=None, files=None):
             """ Cloudflare v4 API"""
@@ -218,8 +215,7 @@ class CloudFlare():
             # We decide at this point if we are sending json or string data
             if isinstance(data, (str,bytes,bytearray)):
                 return self._call(method, parts, identifiers, params, data, None, files)
-            else:
-                return self._call(method, parts, identifiers, params, None, data, files)
+            return self._call(method, parts, identifiers, params, None, data, files)
 
         def _call_network(self, method, headers, parts, identifiers, params, data_str, data_json, files):
             """ Cloudflare v4 API"""
@@ -228,9 +224,7 @@ class CloudFlare():
                 # should never happen
                 raise CloudFlareInternalError(0, 'You must specify a method and endpoint')
 
-            # By this point we know that parts[] has 5 elements and identifiers[] has 4 elements (even if some are None)
-
-            if parts[1] is not None or (data_str is not None and method == 'GET'):
+            if len(parts) > 1 and parts[1] is not None or (data_str is not None and method == 'GET'):
                 if identifiers[0] is None:
                     raise CloudFlareAPIError(0, 'You must specify first identifier')
                 if identifiers[1] is None:
@@ -252,15 +246,16 @@ class CloudFlare():
                     url = (self.base_url + '/'
                            + parts[0] + '/'
                            + identifiers[0])
-            if parts[2]:
+
+            if len(parts) > 2 and parts[2]:
                 url += '/' + parts[2]
                 if identifiers[2]:
                     url += '/' + identifiers[2]
-                if parts[3]:
+                if len(parts) > 3 and parts[3]:
                     url += '/' + parts[3]
                     if identifiers[3]:
                         url += '/' + identifiers[3]
-                    if parts[4]:
+                    if len(parts) > 4 and parts[4]:
                         url += '/' + parts[4]
 
             if files and data_json:
@@ -277,18 +272,19 @@ class CloudFlare():
 
             try:
                 response = self.network(method, url, headers, params, data_str, data_json, files)
-            except requests_RequestException as e:
-                if self.logger:
-                    self.logger.debug('Call: requests exception! "%s"', e)
-                raise CloudFlareAPIError(0, e)
+
             except requests_ConnectionError as e:
                 if self.logger:
                     self.logger.debug('Call: requests connection exception! "%s"', e)
-                raise CloudFlareAPIError(0, 'connection error')
+                raise CloudFlareAPIError(0, 'connection error') from None
             except requests_exceptions.Timeout as e:
                 if self.logger:
                     self.logger.debug('Call: requests timeout exception! "%s"', e)
-                raise CloudFlareAPIError(0, 'connection timeout')
+                raise CloudFlareAPIError(0, 'connection timeout') from None
+            except requests_RequestException as e:
+                if self.logger:
+                    self.logger.debug('Call: requests exception! "%s"', e)
+                raise CloudFlareAPIError(0, e) from None
             except Exception as e:
                 if self.logger:
                     self.logger.debug('Call: exception! "%s"', e)
@@ -301,7 +297,7 @@ class CloudFlare():
                     # remove the ;paramaters part (like charset=, etc.)
                     response_type = response_type[0:response_type.rfind(';')]
                 response_type = response_type.strip().lower()
-            except:
+            except KeyError:
                 # API should always response; but if it doesn't; here's the default
                 response_type = 'application/octet-stream'
             response_code = response.status_code
@@ -310,7 +306,7 @@ class CloudFlare():
                 # the more I think about it; then less likely this will ever be called
                 try:
                     response_data = response_data.decode('utf-8')
-                except UnicodeDecodeError as e:
+                except UnicodeDecodeError:
                     pass
 
             if self.logger:
@@ -349,11 +345,11 @@ class CloudFlare():
                     else:
                         # yippe - try to continue by allowing to process fully
                         response_code = 200
-                except:
+                except (ValueError, json.decoder.JSONDecodeError):
                     # ignore - maybe a real error, let proceed!
                     pass
 
-            if response_code >= 500 and response_code <= 599:
+            if 500 <= response_code <= 599:
                 # 500 Internal Server Error
                 # 501 Not Implemented
                 # 502 Bad Gateway
@@ -374,7 +370,7 @@ class CloudFlare():
                 # should not be reached
                 raise CloudFlareInternalError(0, 'internal error in status code processing')
 
-            #if response_code >= 400 and response_code <= 499:
+            # if 400 <= response_code <= 499:
             #    # 400 Bad Request
             #    # 401 Unauthorized
             #    # 403 Forbidden
@@ -385,7 +381,7 @@ class CloudFlare():
             #    # don't deal with these errors, just pass upwards!
             #    response.raise_for_status()
 
-            #if response_code >= 300 and response_code <= 399:
+            # if 300 <= response_code <= 399:
             #    # 304 Not Modified
             #
             #    # don't deal with these errors, just pass upwards!
@@ -403,7 +399,8 @@ class CloudFlare():
                                                                                identifiers,
                                                                                params, data_str, data_json, files)
 
-            if response_code not in [requests_codes.ok, requests_codes.created, requests_codes.accepted, requests_codes.no_content]:
+            # API can return HTTP code OK, CREATED, ACCEPTED, or NO-CONTENT - all of which are a-ok.
+            if response_code not in [200, 201, 202, 204]:
                 # 3xx & 4xx errors (5xx's handled above)
                 response_data = {'success': False,
                                  'errors': [{'code': response_code, 'message':'HTTP response code %d' % response_code}],
@@ -418,7 +415,7 @@ class CloudFlare():
                 if hasattr(response_data, 'decode'):
                     try:
                         response_data = response_data.decode('utf-8')
-                    except UnicodeDecodeError as e:
+                    except UnicodeDecodeError:
                         # clearly not a string that can be decoded!
                         if self.logger:
                             self.logger.debug('Response: decode(utf-8) failed, reverting to binary response')
@@ -430,7 +427,7 @@ class CloudFlare():
                         response_data = None
                     else:
                         response_data = json.loads(response_data)
-                except ValueError:
+                except (ValueError,json.decoder.JSONDecodeError):
                     # Lets see if it's NDJSON data
                     # NDJSON is a series of JSON elements with newlines between each element
                     try:
@@ -438,11 +435,11 @@ class CloudFlare():
                         for l in response_data.splitlines():
                             r.append(json.loads(l))
                         response_data = r
-                    except:
+                    except (ValueError, json.decoder.JSONDecodeError):
                         # While this should not happen; it's always possible
                         if self.logger:
                             self.logger.debug('Response data not JSON: %r', response_data)
-                        raise CloudFlareAPIError(0, 'JSON parse failed - report to Cloudflare.')
+                        raise CloudFlareAPIError(0, 'JSON parse failed - report to Cloudflare.') from None
 
                 if isinstance(response_data, dict) and 'success' in response_data:
                     return response_data
@@ -454,7 +451,7 @@ class CloudFlare():
                 if hasattr(response_data, 'decode'):
                     try:
                         response_data = response_data.decode('utf-8')
-                    except UnicodeDecodeError as e:
+                    except UnicodeDecodeError:
                         # clearly not a string that can be decoded!
                         if self.logger:
                             self.logger.debug('Response: decode(utf-8) failed, reverting to binary response')
@@ -466,7 +463,7 @@ class CloudFlare():
                         response_data = None
                     else:
                         response_data = json.loads(response_data)
-                except ValueError:
+                except (ValueError, json.decoder.JSONDecodeError):
                     # So it wasn't JSON - moving on as if it's text!
                     pass
                 if isinstance(response_data, dict) and 'success' in response_data:
@@ -478,7 +475,7 @@ class CloudFlare():
                 if hasattr(response_data, 'decode'):
                     try:
                         response_data = response_data.decode('utf-8')
-                    except UnicodeDecodeError as e:
+                    except UnicodeDecodeError:
                         # clearly not a string that can be decoded!
                         if self.logger:
                             self.logger.debug('Response: decode(utf-8) failed, reverting to binary response')
@@ -494,7 +491,7 @@ class CloudFlare():
             if hasattr(response_data, 'decode'):
                 try:
                     response_data = response_data.decode('utf-8')
-                except UnicodeDecodeError as e:
+                except UnicodeDecodeError:
                     # clearly not a string that can be decoded!
                     if self.logger:
                         self.logger.debug('Response: decode(utf-8) failed, reverting to binary response')
@@ -521,15 +518,15 @@ class CloudFlare():
                         # The following only happens on /graphql call
                         try:
                             message = response_data['errors'][0]['message']
-                        except:
+                        except KeyError:
                             message = ''
                         try:
                             location = str(response_data['errors'][0]['location'])
-                        except:
+                        except KeyError:
                             location = ''
                         try:
                             path = '>'.join(response_data['errors'][0]['path'])
-                        except:
+                        except KeyError:
                             path = ''
                         response_data['errors'] = [{'code': 99999, 'message': message + ' - ' + location + ' - ' + path}]
                         response_data['success'] = False
@@ -574,17 +571,17 @@ class CloudFlare():
                     if self.logger:
                         self.logger.debug('Response: error %d %s', code, message)
                     raise CloudFlareAPIError(code, message, error_chain)
-                else:
-                    if self.logger:
-                        self.logger.debug('Response: error %d %s', code, message)
-                    raise CloudFlareAPIError(code, message)
+
+                if self.logger:
+                    self.logger.debug('Response: error %d %s', code, message)
+                raise CloudFlareAPIError(code, message)
 
             if self.raw:
                 result = {}
                 # theres always a result value - unless it's a graphql query
                 try:
                     result['result'] = response_data['result']
-                except:
+                except KeyError:
                     result['result'] = response_data
                 # theres may not be a result_info on every call
                 if 'result_info' in response_data:
@@ -594,7 +591,7 @@ class CloudFlare():
                 # theres always a result value - unless it's a graphql query
                 try:
                     result = response_data['result']
-                except:
+                except KeyError:
                     result = response_data
 
             if self.logger:
@@ -618,7 +615,7 @@ class CloudFlare():
             result = response_data
             return result
 
-        def _api_from_openapi(self, url=None):
+        def api_from_openapi(self, url=None):
             """ Cloudflare v4 API"""
 
             if url is None:
@@ -632,14 +629,18 @@ class CloudFlare():
                 raise CloudFlareAPIError(0, 'OpenAPI read from web failed: %s' % (e)) from None
 
             try:
-                v, openapi_version, cloudflare_version = api_decode_from_openapi(v)
+                v, openapi_version, cloudflare_version, cloudflare_url = api_decode_from_openapi(v)
             except SyntaxError as e:
                 if self.logger:
                     self.logger.debug('OpenAPI bad json file: %s', e)
                 raise CloudFlareAPIError(0, 'OpenAPI bad json file: %s' % (e)) from None
 
+            #if self.base_url != cloudflare_url:
+            #    # XXX/TODO should this be recorded or throw an error?
+            #    pass
+
             if self.logger:
-                self.logger.debug('OpenAPI version: %s, Cloudflare API version: %s', openapi_version, cloudflare_version)
+                self.logger.debug('OpenAPI version: %s, Cloudflare API version: %s url: %s', openapi_version, cloudflare_version, cloudflare_url)
             return v
 
         def _read_from_web(self, url):
@@ -657,7 +658,7 @@ class CloudFlare():
 
             return response.text
 
-    class add_base():
+    class _CFbase():
         """ Cloudflare v4 API"""
 
         def __init__(self, base, parts, content_type=None):
@@ -666,7 +667,7 @@ class CloudFlare():
             self._base = base
             self._parts = parts
             self._content_type = content_type
-            self._do = None
+            self._do = self._base.do_not_available
 
         def __call__(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
@@ -677,7 +678,12 @@ class CloudFlare():
         def __str__(self):
             """ Cloudflare v4 API"""
 
-            return '[%s]' % ('/' + '/:id/'.join(filter(None, self._parts)))
+            return '[' + '/' + '/:id/'.join(self._parts) + ']'
+
+        def __repr__(self):
+            """ Cloudflare v4 API"""
+
+            return '[' + '/' + '/:id/'.join(self._parts) + ']'
 
         def get(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
@@ -704,7 +710,7 @@ class CloudFlare():
 
             return self._do('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
 
-    class _add_unused(add_base):
+    class _CFbaseUnused(_CFbase):
         """ Cloudflare v4 API"""
 
         def __init__(self, base, parts, content_type):
@@ -713,7 +719,7 @@ class CloudFlare():
             super().__init__(base, parts, content_type)
             self._do = self._base.do_not_available
 
-    class _add_no_auth(add_base):
+    class _CFbaseNoAuth(_CFbase):
         """ Cloudflare v4 API"""
 
         def __init__(self, base, parts, content_type):
@@ -733,7 +739,7 @@ class CloudFlare():
 
             return self._base.do_not_available('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type, files)
 
-        def put(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
+        def put(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
             return self._base.do_not_available('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
@@ -743,7 +749,7 @@ class CloudFlare():
 
             return self._base.do_not_available('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
 
-    class _add_with_auth(add_base):
+    class _CFbaseAuth(_CFbase):
         """ Cloudflare v4 API"""
 
         def __init__(self, base, parts, content_type):
@@ -753,7 +759,7 @@ class CloudFlare():
             self._do = self._base.do_auth
             self._valid = True
 
-    class _add_with_auth_unwrapped(add_base):
+    class _CFbaseAuthUnwrapped(_CFbase):
         """ Cloudflare v4 API"""
 
         def __init__(self, base, parts, content_type):
@@ -763,7 +769,7 @@ class CloudFlare():
             self._do = self._base.do_auth_unwrapped
             self._valid = True
 
-    class _add_with_cert_auth(add_base):
+    class _CFbaseAuthCert(_CFbase):
         """ Cloudflare v4 API"""
 
         def __init__(self, base, parts, content_type):
@@ -788,9 +794,10 @@ class CloudFlare():
         if p5:
             a += p5.split('/')
 
-        parts = [p1, p2, p3, p4, p5]
+        parts = [p for p in [p1, p2, p3, p4, p5] if p is not None]
 
         branch = self
+        element = None
         for element in a[0:-1]:
             try:
                 if '-' in element:
@@ -803,7 +810,7 @@ class CloudFlare():
                 break
 
         if not branch:
-                raise CloudFlareAPIError(0, 'api load: element **%s** missing when adding path /%s' % (element, '/'.join(a)))
+            raise CloudFlareAPIError(0, 'api load: element **%s** missing when adding path /%s' % (element, '/'.join(a)))
 
         name = a[-1]
         try:
@@ -823,15 +830,15 @@ class CloudFlare():
             pass
 
         if t == 'VOID':
-            f = self._add_unused(self._base, parts, content_type=None)
+            f = self._CFbaseUnused(self._base, parts, content_type=None)
         elif t == 'OPEN':
-            f = self._add_no_auth(self._base, parts, content_type=content_type)
+            f = self._CFbaseNoAuth(self._base, parts, content_type=content_type)
         elif t == 'AUTH':
-            f = self._add_with_auth(self._base, parts, content_type=content_type)
+            f = self._CFbaseAuth(self._base, parts, content_type=content_type)
         elif t == 'AUTH_UNWRAPPED':
-            f = self._add_with_auth_unwrapped(self._base, parts, content_type=content_type)
+            f = self._CFbaseAuthUnwrapped(self._base, parts, content_type=content_type)
         elif t == 'CERT':
-            f = self._add_with_cert_auth(self._base, parts, content_type=content_type)
+            f = self._CFbaseAuthCert(self._base, parts, content_type=content_type)
         else:
             # should never happen
             raise CloudFlareAPIError(0, 'api load type mismatch')
@@ -864,7 +871,7 @@ class CloudFlare():
                 a = getattr(m, n)
             except AttributeError:
                 # really should not happen!
-                raise CloudFlareAPIError(0, '%s: not found - should not happen' % (n))
+                raise CloudFlareAPIError(0, '%s: not found - should not happen' % (n)) from None
             d = dir(a)
             if '_base' not in d:
                 continue
@@ -888,7 +895,7 @@ class CloudFlare():
     def api_from_openapi(self, url=None):
         """ Cloudflare v4 API"""
 
-        return self._base._api_from_openapi(url)
+        return self._base.api_from_openapi(url)
 
     def __init__(self, email=None, key=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None, global_request_timeout=None, max_request_retries=None):
         """ Cloudflare v4 API"""
@@ -906,7 +913,7 @@ class CloudFlare():
 
         try:
             config = read_configs(profile)
-        except Exception as e:
+        except ReadConfigError as e:
             raise e
 
         # class creation values override all configuration values
@@ -935,9 +942,9 @@ class CloudFlare():
 
         # we do not need to handle item.call values - they pass straight thru
 
-        for x in config:
-            if config[x] == '':
-                config[x] = None
+        for k,v in config.items():
+            if v == '':
+                config[k] = None
 
         self._base = self._v4base(config)
 

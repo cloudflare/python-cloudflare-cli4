@@ -2,13 +2,12 @@
 
 from urllib.parse import urlparse
 
-import sys
 import requests
 from requests.adapters import HTTPAdapter
 
 from .exceptions import CloudFlareAPIError
 
-class CFnetwork:
+class CFnetwork():
     """Network for Cloudflare API"""
 
     def __init__(

@@ -11,7 +11,7 @@ def user_agent():
     # this additional data helps support @ Cloudflare help customers
     return ('python-cloudflare/' + __version__ + '/' +
             'python-requests/' + str(requests__version__) + '/' +
-            'python/' + '.'.join(map(str, sys.version_info[:3]))
+            'python/' + '.'.join([str(v) for v in sys.version_info[:3]])
            )
 
 def sanitize_secrets(secrets):
@@ -68,7 +68,7 @@ def build_curl(method, url, headers, params, data_str, data_json, files):
     if data_json is not None:
         try:
             s = json.dumps(data_json)
-        except:
+        except (TypeError, ValueError, RecursionError):
             s = str(data_json)
         if len(s) > 100:
             msg.append('            --data \'%s ...\' \\' % (s[0:100].replace('\n', ' ')))
