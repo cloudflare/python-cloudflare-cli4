@@ -47,7 +47,7 @@ ruleset_ref = None
 ruleset_content = None
 
 def test_ruleset_create_values():
-    """ test_ruleset_create_values """
+    """ test_accounts_ruleset_create_values """
     global ruleset_name, ruleset_ref, ruleset_content
     ruleset_name = str(uuid.uuid1())
     ruleset_ref = str(uuid.uuid1())
@@ -75,8 +75,8 @@ def test_ruleset_create_values():
 
 ruleset_id = None
 
-def test_rulesets_get():
-    """ test_rulesets_get """
+def test_zones_rulesets_get():
+    """ test_zones_rulesets_get """
     # GET
     ruleset_results = cf.zones.rulesets.get(zone_id)
     assert isinstance(ruleset_results, list)
@@ -89,8 +89,8 @@ def test_rulesets_get():
         print('ruleset: %s: name=%s kind=%s phase=%s' % (ruleset['id'], ruleset['name'], ruleset['kind'], ruleset['phase']), file=sys.stderr)
     assert True
 
-def test_ruleset_post():
-    """ test_rulesets_post """
+def test_zones_ruleset_post():
+    """ test_zones_rulesets_post """
     global ruleset_id
     # POST
     ruleset = cf.zones.rulesets.post(zone_id, data=ruleset_content)
@@ -106,8 +106,8 @@ def test_ruleset_post():
     ruleset_id = ruleset['id']
     print('ruleset: %s: name=%s kind=%s phase=%s' % (ruleset['id'], ruleset['name'], ruleset['kind'], ruleset['phase']), file=sys.stderr)
 
-def test_rulesets_get_specific():
-    """ test_rulesets_get_specific """
+def test_zones_rulesets_get_specific():
+    """ test_zones_rulesets_get_specific """
     # GET
     ruleset = cf.zones.rulesets.get(zone_id, ruleset_id)
     assert isinstance(ruleset, dict)
@@ -119,21 +119,94 @@ def test_rulesets_get_specific():
     assert ruleset['id'] == ruleset_id
     print('ruleset: %s: name=%s kind=%s phase=%s' % (ruleset['id'], ruleset['name'], ruleset['kind'], ruleset['phase']), file=sys.stderr)
 
-def test_ruleset_delete():
-    """ test_rulesets_delete """
+def test_zones_ruleset_delete():
+    """ test_zones_rulesets_delete """
     # DELETE
     ruleset_response = cf.zones.rulesets.delete(zone_id, ruleset_id)
     # None is returned - not quite the same response as other delete's in the API
     assert ruleset_response is None
 
+account_name = None
+account_id = None
+
+def test_find_account(find_name=None):
+    """ test_find_account """
+    global account_name, account_id
+    # grab a random account identifier from the first 10 accounts
+    if find_name:
+        params = {'per_page':1, 'name':find_name}
+    else:
+        params = {'per_page':10}
+    try:
+        accounts = cf.accounts.get(params=params)
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        print('%s: Error %d=%s' % (find_name, int(e), str(e)), file=sys.stderr)
+        assert False
+    assert len(accounts) > 0 and len(accounts) <= 10
+    # n = random.randrange(len(accounts))
+    # stop using a random account - use the primary account (i.e. the zero'th one)
+    n = 0
+    account_name = accounts[n]['name']
+    account_id = accounts[n]['id']
+    assert len(account_id) == 32
+    print('account: %s %s' % (account_id, account_name), file=sys.stderr)
+
+ruleset_id = None
+ruleset_version = None
+
+def test_accounts_ruleset():
+    """ test_accounts_ruleset """
+    global ruleset_id, ruleset_version
+    ruleset_results = results = cf.accounts.rulesets(account_id)
+    assert isinstance(ruleset_results, list)
+    for ruleset in ruleset_results:
+        assert isinstance(ruleset, dict)
+        assert 'id' in ruleset
+        assert 'version' in ruleset
+        ruleset_id = ruleset['id']
+        ruleset_version = ruleset['version']
+        # we only need one!
+        break
+    print('account ruleset: %s %s' % (ruleset_id, ruleset_name), file=sys.stderr)
+
+def test_accounts_rulesets_versions():
+    """ test_accounts_ruleset_versions """
+    ruleset = cf.accounts.rulesets.versions(account_id, ruleset_id, ruleset_version)
+    assert isinstance(ruleset, dict)
+    assert 'id' in ruleset
+    assert 'version' in ruleset
+    assert ruleset['id'] == ruleset_id
+    assert ruleset['version'] == ruleset_version
+
+def test_accounts_rulesets_versions_by_tag():
+    """ test_accounts_rulesets_versions_by_tag """
+    # List an account ruleset version's rules by tag
+    # /accounts/{account_id}/rulesets/{ruleset_id}/versions/{ruleset_version}/by_tag/{rule_tag}
+    # four id's passed on call!
+    rule_tag = 'QWERTYUIOP'
+    try:
+        results = cf.accounts.rulesets.versions.by_tag(account_id, ruleset_id, ruleset_version, rule_tag)
+        print('results=', results, file=sys.stderr)
+        assert False
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        print('Error expected: %d %s' % (int(e), str(e)), file=sys.stderr)
+        assert True
+
 if __name__ == '__main__':
-    test_cloudflare(debug=true)
+    test_cloudflare(debug=True)
     if len(sys.argv) > 1:
         test_find_zone(sys.argv[1])
     else:
         test_find_zone()
     test_ruleset_create_values()
-    test_rulesets_get()
-    test_ruleset_post()
-    test_rulesets_get_specific()
-    test_ruleset_delete()
+    test_zones_rulesets_get()
+    test_zones_ruleset_post()
+    test_zones_rulesets_get_specific()
+    test_zones_ruleset_delete()
+    if len(sys.argv) > 2:
+        test_find_account(sys.argv[2])
+    else:
+        test_find_account()
+    test_accounts_ruleset()
+    test_accounts_rulesets_versions()
+    test_accounts_rulesets_versions_by_tag()
