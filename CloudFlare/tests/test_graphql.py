@@ -52,8 +52,83 @@ def now_iso8601_time(h_delta):
     r = datetime.datetime.fromtimestamp(int(t), tz=pytz.timezone("UTC")).strftime('%Y-%m-%d')
     return r
 
-def test_graphql():
-    """ /graphql test """
+def test_graphql_get():
+    """ /graphql_get test """
+    try:
+        # graphql is alwatys a post - this should fail (but presently doesn't)
+        r = cf.graphql.get()
+        if r is not None and 'data' in r and 'errors' in r:
+            # still an invalid API!
+            print('Error in API (but proceeding) r=', r, file=sys.stderr)
+            assert True
+        else:
+            assert False
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        print('Error expected: %s' % (e), file=sys.stderr)
+        assert True
+
+def test_graphql_patch():
+    """ /graphql_patch test """
+    try:
+        # graphql is alwatys a post - this should fail (but presently doesn't)
+        r = cf.graphql.patch()
+        if r is not None and 'data' in r and 'errors' in r:
+            # still an invalid API!
+            print('Error in API (but proceeding) r=', r, file=sys.stderr)
+            assert True
+        else:
+            assert False
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        print('Error expected: %s' % (e), file=sys.stderr)
+        assert True
+
+def test_graphql_put():
+    """ /graphql_put test """
+    try:
+        # graphql is alwatys a post - this should fail (but presently doesn't)
+        r = cf.graphql.put()
+        if r is not None and 'data' in r and 'errors' in r:
+            # still an invalid API!
+            print('Error in API (but proceeding) r=', r, file=sys.stderr)
+            assert True
+        else:
+            assert False
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        print('Error expected: %s' % (e), file=sys.stderr)
+        assert True
+
+def test_graphql_delete():
+    """ /graphql_delete test """
+    try:
+        # graphql is alwatys a post - this should fail (but presently doesn't)
+        r = cf.graphql.delete()
+        if r is not None and 'data' in r and 'errors' in r:
+            # still an invalid API!
+            print('Error in API (but proceeding) r=', r, file=sys.stderr)
+            assert True
+        else:
+            assert False
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        print('Error expected: %s' % (e), file=sys.stderr)
+        assert True
+
+def test_graphql_post_empty():
+    """ /graphql_post_empty test """
+    try:
+        # graphql requires data - this should fail (but presently doesn't)
+        r = cf.graphql.post(data={})
+        if r is not None and 'data' in r and 'errors' in r:
+            # still an invalid API!
+            print('Error in API (but proceeding) r=', r, file=sys.stderr)
+            assert True
+        else:
+            assert False
+    except CloudFlare.exceptions.CloudFlareAPIError as e:
+        print('Error expected: %s' % (e), file=sys.stderr)
+        assert True
+
+def test_graphql_post():
+    """ /graphql_post test """
     date_before = now_iso8601_time(0) # now
     date_after = now_iso8601_time(3 * 24) # 3 days worth
 
@@ -119,4 +194,9 @@ if __name__ == '__main__':
         test_find_zone(sys.argv[1])
     else:
         test_find_zone()
-    test_graphql()
+    test_graphql_get()
+    test_graphql_put()
+    test_graphql_patch()
+    test_graphql_delete()
+    test_graphql_post_empty()
+    test_graphql_post()
