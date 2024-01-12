@@ -339,14 +339,20 @@ class CloudFlare():
                 # lets check and convert if able
                 try:
                     j = json.loads(response_data)
-                    if 'success' not in j and 'errors' not in j:
-                        # no go - it's not a Cloudflare error format
-                        pass
-                    else:
+                    if len(j) == 2 and 'code' in j and 'error' in j:
+                        # This is an incorrect response from the API (happens on 404's) - but we can handle it cleanly here
+                        # {\n  "code": 1000,\n  "error": "not_found"\n}
+                        response_data = '{"errors": [{"code": %d, "message": "%s"}], "success": false, "result": null}' % (j['code'], j['error'])
+                        response_data = response_data.encode()
+                        response_code = 200
+                    elif 'success' in j and 'errors' in j:
                         # yippe - try to continue by allowing to process fully
                         response_code = 200
+                    else:
+                        # no go - it's not a Cloudflare error format
+                        pass
                 except (ValueError, json.decoder.JSONDecodeError):
-                    # ignore - maybe a real error, let proceed!
+                    # ignore - maybe a real error that's not json, let proceed!
                     pass
 
             if 500 <= response_code <= 599:
@@ -506,6 +512,8 @@ class CloudFlare():
 
             # Sanatize the returned results - just in case API is messed up
             if 'success' not in response_data:
+                # { "data": null, "errors": [ { "message": "request must be a POST", "path": null, "extensions": { "timestamp": "20...
+                # XXX/TODO should be retested and aybe recoded/deleted
                 if 'errors' in response_data:
                     if response_data['errors'] is None:
                         # Only happens on /graphql call
