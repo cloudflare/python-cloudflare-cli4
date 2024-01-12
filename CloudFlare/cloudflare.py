@@ -333,13 +333,13 @@ class CloudFlare():
                     self.logger.debug('Response: 429 Header Retry-After: %s', retry_after)
 
             # if (response_code >= 400 and response_code <= 499) or response_code == 500:
-            if response_code in [400,500]:
+            if response_code in [400,401,403,404,405,500]:
                 # The /certificates API call insists on a 500 error return and yet has valid error data
                 # Other API calls can return 400 or 4xx with valid response data
                 # lets check and convert if able
                 try:
                     j = json.loads(response_data)
-                    if 'status' not in j and 'errors' not in j:
+                    if 'success' not in j and 'errors' not in j:
                         # no go - it's not a Cloudflare error format
                         pass
                     else:
