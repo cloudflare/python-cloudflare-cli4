@@ -55,13 +55,13 @@ def build_curl(method, url, headers, params, data_str, data_json, files):
     # data_str
     if data_str is not None:
         if isinstance(data_str, (bytes,bytearray)):
-            if len(data_str) > 100:
-                msg.append('            --data-binary \'%s ...\' \\' % (str(data_str[0:100]).replace('\n', '\n')))
+            if len(data_str) > 180:
+                msg.append('            --data-binary \'%s ...\' \\' % (str(data_str[0:180]).replace('\n', '\n')))
             else:
                 msg.append('            --data-binary \'%s\' \\' % (str(data_str).replace('\n', '\n')))
         else:
-            if len(data_str) > 100:
-                msg.append('            --data \'%s ...\' \\' % (str(data_str[0:100]).replace('\n', ' ')))
+            if len(data_str) > 180:
+                msg.append('            --data \'%s ...\' \\' % (str(data_str[0:180]).replace('\n', ' ')))
             else:
                 msg.append('            --data \'%s\' \\' % (str(data_str).replace('\n', ' ')))
     # data_json
@@ -70,8 +70,8 @@ def build_curl(method, url, headers, params, data_str, data_json, files):
             s = json.dumps(data_json)
         except (TypeError, ValueError, RecursionError):
             s = str(data_json)
-        if len(s) > 100:
-            msg.append('            --data \'%s ...\' \\' % (s[0:100].replace('\n', ' ')))
+        if len(s) > 180:
+            msg.append('            --data \'%s ...\' \\' % (s[0:180].replace('\n', ' ')))
         else:
             msg.append('            --data \'%s\' \\' % (s.replace('\n', ' ')))
     # files

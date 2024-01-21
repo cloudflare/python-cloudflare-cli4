@@ -311,8 +311,8 @@ class CloudFlare():
 
             if self.logger:
                 if 'text/' == response_type[0:5] or response_type in ['application/javascript', 'application/json']:
-                    if len(response_data) > 100:
-                        self.logger.debug('Response: %d, %s, %s...', response_code, response_type, response_data[0:100])
+                    if len(response_data) > 180:
+                        self.logger.debug('Response: %d, %s, %s...', response_code, response_type, response_data[0:180])
                     else:
                         self.logger.debug('Response: %d, %s, %s', response_code, response_type, response_data)
                 else:
@@ -604,12 +604,12 @@ class CloudFlare():
 
             if self.logger:
                 if isinstance(result, (str, dict, list)):
-                    if len(str(result)) > 100:
-                        self.logger.debug('Response: %s...', str(result)[0:100].replace('\n', ' '))
+                    if len(str(result)) > 180:
+                        self.logger.debug('Response: %s...', str(result)[0:180].replace('\n', ' '))
                     else:
                         self.logger.debug('Response: %s', str(result).replace('\n', ' '))
                 elif isinstance(result, (bytes,bytearray)):
-                    self.logger.debug('Response: %s', result[0:100])
+                    self.logger.debug('Response: %s', result[0:180])
                 else:
                     self.logger.debug('Response: %s', '...')
             return result
