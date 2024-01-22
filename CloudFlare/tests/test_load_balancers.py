@@ -215,7 +215,7 @@ def test_load_balancers_pool_health():
 
 def test_load_balancers_pool_delete_should_fail():
     """ test_load_balancers_pool_delete_should_fail """
-    if pool_id is None:
+    if pool_id is None or load_balancer_id is None:
         print('/accounts/load_balancers/pools: DELETE: skip', file=sys.stderr)
         return
     try:
