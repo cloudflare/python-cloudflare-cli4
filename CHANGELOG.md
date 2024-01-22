@@ -1,5 +1,27 @@
 # Change Log
 
+ - 2024-01-22 22:28:12 +0000 [fadbace](../../commit/fadbace4bbbb47e30089984b0fc88481249904c5) 2.17.0
+ - 2024-01-22 22:27:13 +0000 [ee72509](../../commit/ee725093486668f380a59cf68f208da110950cf6) make 4xx error handling more generic
+ - 2024-01-22 22:26:13 +0000 [ea9e609](../../commit/ea9e6094480612747c557a27148f6e7549537b52) testing load balancers becuase they return 412 HTTP errors
+ - 2024-01-21 17:38:08 +0000 [e09b075](../../commit/e09b075e740322382e15c67c01e519b3d9609370) debug messages line lenght needs to be longer so that error return messages are shown clearly
+ - 2024-01-20 18:21:28 +0000 [3b8e699](../../commit/3b8e69997a538e030fb63da1c8a81c4e65ca345b) issue-181 HTTP response code 412 not handled
+ - 2024-01-12 12:34:07 -0800 [2da9a7b](../../commit/2da9a7b56b3140c2d47d70f52ea8265d5b9d6dd4) handle 404 errors with invalid API error structure
+ - 2024-01-12 12:33:24 -0800 [f39b3c1](../../commit/f39b3c1824d52b09fa0b7aeeeb1f03a3750d5c9f) test get/put/patch/delete and post with no data - all expected return error
+ - 2024-01-12 11:42:56 -0800 [6acca0e](../../commit/6acca0ef657d703298a735011087619630897ab0) now testing api calls with four id values
+ - 2024-01-12 11:06:44 -0800 [604d2bd](../../commit/604d2bd96dd90e5c6638f8b01169dafbf1a23a35) now testing api calls with three id values
+ - 2024-01-12 11:05:06 -0800 [1a5a859](../../commit/1a5a8599b07e128f8834aa765537937e1d2974b7) improve error message responses for 400-405 http reponses code - they now decode Cloudflare error values
+ - 2024-01-11 15:32:09 -0800 [e3b2631](../../commit/e3b26318cb334f913b4c1c4c4d29be4cde80b8ab) tuna tweeks, coverage html added
+ - 2024-01-11 13:44:54 -0800 [dc18d57](../../commit/dc18d571b3533a69c2dfdc39fc25a97b7ff58977) lint found minor stuff
+ - 2024-01-11 13:44:19 -0800 [c7658a3](../../commit/c7658a38ee5143f06a5a99ea3201fdebc4487a6f) lint found minor stuff, fixed longstanding _parts list size
+ - 2024-01-11 11:48:33 -0800 [1ba1ca5](../../commit/1ba1ca5d6a209115a4c58b4673cc9d20fe887c30) lint found minor stuff
+ - 2024-01-11 11:47:37 -0800 [dbec555](../../commit/dbec555e4151cd8db0ef78b8ea79c04af4f2bca6) added lots of %s %r tests
+ - 2024-01-11 11:39:06 -0800 [e44bf75](../../commit/e44bf75ce6b4138c7b308bc91ae1d481a9bf8f16) lint found minor stuff
+ - 2024-01-11 11:38:12 -0800 [0ac418b](../../commit/0ac418bdec9b39f4a2990a54a3cc314c8a259386) updated lint rules
+ - 2024-01-05 15:44:19 -0800 [3d9f960](../../commit/3d9f960b7eef90f533e418007f062fc52b0cfcbf) cleanup of application/octet-stream duplicate code
+ - 2024-01-05 15:24:29 -0800 [cbf250f](../../commit/cbf250f71c1695ff8c66973b374e6cbcc3221ec2) /accounts/:id/urlscanner/scan/:id/screenshot returns a binary object - a png file
+ - 2024-01-05 12:39:27 -0800 [231b7a7](../../commit/231b7a7197fcc8c47aa44c901a409e4532e683d4) handle zero length content responses (normally 204 returns to delete)
+ - 2024-01-05 12:38:47 -0800 [ed08910](../../commit/ed08910ec5a4f5ec9dc9484cfdd19c5bf1770acf) testing rulesets where response is None to delete
+ - 2024-01-04 15:43:43 -0800 [26893b2](../../commit/26893b205f120f762d8ee3c462ce5c03237c9547) CHANGELOG.md pushed to github
  - 2024-01-04 15:42:32 -0800 [ce080f3](../../commit/ce080f3da8061dabbc0fc1604e92eaba4f0a4cf1) 2.16.0
  - 2024-01-04 15:42:09 -0800 [f2441b1](../../commit/f2441b1f2320840fed526d81370cbde5f00d8b4e) added CloudFlare/tests as a package - a better place to keep tests
  - 2024-01-04 15:39:18 -0800 [401149c](../../commit/401149c20e074b824fc8f4467c92b08fa327f568) return http code 200 and more 2xx now accepted, check for decode() errors
