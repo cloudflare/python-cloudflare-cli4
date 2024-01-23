@@ -20,24 +20,24 @@ def main():
         exit('/user.get %d %s - api call failed' % (e, e))
     except Exception as e:
         exit('/user.get - %s - api call failed' % (e))
-    for k in sorted(user.keys()):
-        if isinstance(user[k], list):
-            if isinstance(user[k][0], dict):
-                print('\t%-40s =' % (k))
-                for l in user[k]:
-                    for j in sorted(l.keys()):
-                        if isinstance(l[j], list):
-                            print('\t%-40s   %s = [ %s ]' % ('', j, ', '.join(l[j])))
+    for kk in sorted(user.keys()):
+        if isinstance(user[kk], list):
+            if isinstance(user[kk][0], dict):
+                print('\t%-40s =' % (kk))
+                for ll in user[kk]:
+                    for jj in sorted(ll.keys()):
+                        if isinstance(ll[jj], list):
+                            print('\t%-40s   %s = [ %s ]' % ('', jj, ', '.join(ll[jj])))
                         else:
-                            print('\t%-40s   %s = %s' % ('', j, l[j]))
+                            print('\t%-40s   %s = %s' % ('', jj, ll[jj]))
             else:
-                print('\t%-40s = [ %s ]' % (k, ', '.join(user[k])))
-        elif isinstance(user[k], dict):
-            print('\t%-40s =' % (k))
-            for j in sorted(user[k].keys()):
-                print('\t%-40s   %s = %s' % ('', j, user[k][j]))
+                print('\t%-40s = [ %s ]' % (kk, ', '.join(user[kk])))
+        elif isinstance(user[kk], dict):
+            print('\t%-40s =' % (kk))
+            for jj in sorted(user[kk].keys()):
+                print('\t%-40s   %s = %s' % ('', jj, user[kk][jj]))
         else:
-            print('\t%-40s = %s' % (k, user[k]))
+            print('\t%-40s = %s' % (kk, user[kk]))
     print('')
 
     print('ORGANIZATIONS:')
@@ -93,7 +93,7 @@ def main():
     profile_id = profile['id']
     profile_first = profile['first_name']
     profile_last = profile['last_name']
-    profile_company = profile['company']
+    profile_company = profile['company'] if 'company' in profile else ''
     if profile_company is None:
         profile_company = ''
 
@@ -166,4 +166,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

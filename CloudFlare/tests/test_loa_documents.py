@@ -56,7 +56,13 @@ def test_addressing_prefixs():
         assert 'asn' in p
         assert 'advertised' in p
         assert 'approved' in p
-        print('%s: cidr=%s asn=%s advertised=%s approved=%s' % (p['id'], p['cidr'], p['asn'], p['advertised'], p['approved']), file=sys.stderr)
+        print('%s: cidr=%s asn=%s advertised=%s approved=%s' % (
+            p['id'],
+            p['cidr'],
+            p['asn'],
+            p['advertised'],
+            p['approved']
+        ), file=sys.stderr)
 
 def test_addressing_loa_documents():
     """ test_addressing_loa_documents """
@@ -68,7 +74,12 @@ def test_addressing_loa_documents():
         assert 'filename' in loa_document
         assert 'verified' in loa_document
         assert 'size_bytes' in loa_document
-        print('%s: filename=%s size_bytes=%d verified=%s' % (loa_document['id'], loa_document['filename'], loa_document['size_bytes'], loa_document['verified']), file=sys.stderr)
+        print('%s: filename=%s size_bytes=%d verified=%s' % (
+           loa_document['id'],
+           loa_document['filename'],
+           loa_document['size_bytes'],
+           loa_document['verified']
+        ), file=sys.stderr)
 
 def test_addressing_loa_documents_upload(filename=None):
     """ test_addressing_loa_documents_upload """
@@ -94,7 +105,12 @@ def test_addressing_loa_documents_upload(filename=None):
     assert 'filename' in loa_document
     assert 'verified' in loa_document
     assert 'size_bytes' in loa_document
-    print('%s: filename=%s size_bytes=%d verified=%s' % (loa_document['id'], loa_document['filename'], loa_document['size_bytes'], loa_document['verified']), file=sys.stderr)
+    print('%s: filename=%s size_bytes=%d verified=%s' % (
+        loa_document['id'],
+        loa_document['filename'],
+        loa_document['size_bytes'],
+        loa_document['verified']
+    ), file=sys.stderr)
     assert size_bytes == loa_document['size_bytes']
 
 def ispdf(s):
@@ -126,7 +142,12 @@ def test_addressing_loa_documents_download():
         assert 'verified' in loa_document
         assert 'size_bytes' in loa_document
         assert isinstance(loa_document['size_bytes'], int)
-        print('%s: filename=%s size_bytes=%d verified=%s' % (loa_document['id'], loa_document['filename'], loa_document['size_bytes'], loa_document['verified']), file=sys.stderr)
+        print('%s: filename=%s size_bytes=%d verified=%s' % (
+            loa_document['id'],
+            loa_document['filename'],
+            loa_document['size_bytes'],
+            loa_document['verified']
+        ), file=sys.stderr)
         loa_document_identifier = loa_document['id']
         size_bytes = loa_document['size_bytes']
         pdf_content = cf.accounts.addressing.loa_documents.download(account_id, loa_document_identifier)

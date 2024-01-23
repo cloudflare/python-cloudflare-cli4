@@ -67,7 +67,7 @@ def doit(account_name, mp3_data):
 # based on ... thank you to the author
 # https://stackoverflow.com/questions/16694907/download-large-file-in-python-with-requests
 def download_file(url, referer, n_requested):
-    headers={}
+    headers = {}
     headers['Referer'] = referer
     headers['User-Agent'] = user_agent()
 

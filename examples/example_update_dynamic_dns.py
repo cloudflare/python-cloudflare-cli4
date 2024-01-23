@@ -18,8 +18,8 @@ def my_ip_address():
     url = 'https://api.ipify.org'
     try:
         ip_address = requests.get(url).text
-    except:
-        exit('%s: failed' % (url))
+    except requests.exceptions.ConnectionError as e:
+        exit('%s: failed - %s' % (url, e))
     if ip_address == '':
         exit('%s: failed' % (url))
 

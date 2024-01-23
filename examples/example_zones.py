@@ -47,26 +47,26 @@ def main():
             sys.stderr.write('/zones/dns_records %d %s - api call failed\n' % (e, e))
             continue
 
-        prog = re.compile('\.*'+zone_name+'$')
+        prog = re.compile(r'\.*'+zone_name+'$')
         dns_records = sorted(dns_records, key=lambda v: prog.sub('', v['name']) + '_' + v['type'])
         for dns_record in dns_records:
-                r_name = dns_record['name']
-                r_type = dns_record['type']
-                if 'content' in dns_record:
-                    r_value = dns_record['content']
-                else:
-                    # should not happen
-                    r_value = ''
-                if 'priority' in dns_record:
-                    r_priority = dns_record['priority']
-                else:
-                    r_priority = ''
-                r_ttl = dns_record['ttl']
-                if zone_type == 'secondary':
-                    r_id = 'secondary'
-                else:
-                    r_id = dns_record['id']
-                print('\t%s %60s %6d %-5s %4s %s' % (r_id, r_name, r_ttl, r_type, r_priority, r_value))
+            r_name = dns_record['name']
+            r_type = dns_record['type']
+            if 'content' in dns_record:
+                r_value = dns_record['content']
+            else:
+                # should not happen
+                r_value = ''
+            if 'priority' in dns_record:
+                r_priority = dns_record['priority']
+            else:
+                r_priority = ''
+            r_ttl = dns_record['ttl']
+            if zone_type == 'secondary':
+                r_id = 'secondary'
+            else:
+                r_id = dns_record['id']
+            print('\t%s %60s %6d %-5s %4s %s' % (r_id, r_name, r_ttl, r_type, r_priority, r_value))
 
         print('')
 
@@ -74,4 +74,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

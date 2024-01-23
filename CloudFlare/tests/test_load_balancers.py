@@ -176,7 +176,7 @@ def test_load_balancers_create():
         return
     dns_name = str(uuid.uuid1())
     balancer_data = {
-        'default_pools': [ pool_id ],
+        'default_pools': [pool_id],
         'fallback_pool': pool_id,
         'name': dns_name + '.' + zone_name,
         'description': dns_name,

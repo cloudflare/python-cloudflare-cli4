@@ -29,7 +29,7 @@ def main():
         packages=['CloudFlare', 'CloudFlare/tests', 'cli4', 'examples'],
         test_suite="CloudFlare.tests",
         include_package_data=True,
-        data_files = [('share/man/man1', ['cli4/cli4.1'])],
+        data_files=[('share/man/man1', ['cli4/cli4.1'])],
         install_requires=['requests', 'pyyaml', 'jsonlines'],
         keywords='cloudflare',
         entry_points={
@@ -45,6 +45,7 @@ def main():
             'Programming Language :: Python :: 3'
         ]
     )
+
 
 if __name__ == '__main__':
     main()

@@ -19,7 +19,7 @@ class CFlogger():
     def __init__(self, level):
         """ Logging for Cloudflare API"""
         self.logger_level = self._get_logging_level(level)
-        #logging.basicConfig(level=self.logger_level)
+        # logging.basicConfig(level=self.logger_level)
         if CFlogger.request_logger is None:
             CFlogger.request_logger = logging.getLogger("requests.packages.urllib3")
             CFlogger.request_logger.setLevel(self.logger_level)

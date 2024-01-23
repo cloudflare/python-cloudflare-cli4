@@ -67,7 +67,14 @@ def paging_thru_zones(name=None):
             assert 'name' in zone
             zone_name = zone['name']
             domains.append(zone_name)
-        print("COUNT=%d PAGE=%d PER_PAGE=%d TOTAL_COUNT=%d TOTAL_PAGES=%d -- %s" % (count, page, per_page, total_count, total_pages, ','.join(domains)), file=sys.stderr)
+        print("COUNT=%d PAGE=%d PER_PAGE=%d TOTAL_COUNT=%d TOTAL_PAGES=%d -- %s" % (
+            count,
+            page,
+            per_page,
+            total_count,
+            total_pages,
+            ','.join(domains)
+        ), file=sys.stderr)
 
         if count == 0 or page_number >= total_pages:
             # finished

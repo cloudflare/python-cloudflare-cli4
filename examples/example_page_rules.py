@@ -34,11 +34,11 @@ def main():
 
     zone_id = zones[0]['id']
 
-    url_match=f"*.{zone_name}/url1*"
-    url_forwarded=f"http://{zone_name}/url2"
+    url_match = f"*.{zone_name}/url1*"
+    url_forwarded = f"http://{zone_name}/url2"
 
-    targets=[{"target":"url","constraint":{"operator":"matches","value":url_match}}]
-    actions=[{"id":"forwarding_url","value":{"status_code":302,"url":url_forwarded}}]
+    targets = [{"target":"url","constraint":{"operator":"matches","value":url_match}}]
+    actions = [{"id":"forwarding_url","value":{"status_code":302,"url":url_forwarded}}]
     pagerule_for_redirection = {"status": "active","priority": 1,"actions": actions,"targets": targets}
 
     try:
@@ -46,12 +46,12 @@ def main():
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/zones.pagerules.get %d %s - api call failed' % (e, e))
 
-    create=True
+    create = True
 
     for rule in r:
         if (rule['actions'] == pagerule_for_redirection["actions"] and rule["targets"] == pagerule_for_redirection["targets"]):
             print('\t', '... rule already present!')
-            create=False
+            create = False
             break
 
     if (create):
@@ -65,4 +65,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

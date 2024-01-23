@@ -28,11 +28,11 @@ def display():
         raise e
 
     for ext,name in {'c': 'C', 'h': 'C', 'cc': 'C++', 'py':'Python', 'sh':'Bash', 'awk':'AWK'}.items():
-        l = sorted(pkg.glob('**/*.' + ext))
-        if len(l) == 0:
+        files = sorted(pkg.glob('**/*.' + ext))
+        if len(files) == 0:
             continue
         print('%s .%s files:' % (name, ext))
-        for f in sorted(pkg.glob('**/*.' + ext)):
-            if '__init__.py' in os.fspath(f):
+        for file in files:
+            if '__init__.py' in os.fspath(file):
                 continue
-            print('\t%s' % (os.fspath(f)))
+            print('\t%s' % (os.fspath(file)))

@@ -41,7 +41,7 @@ def main():
     date_after = now_iso8601_time(7 * 24) # 7 days worth
 
     zone_id = zones[0]['id']
-    query="""
+    query = """
       query {
         viewer {
             zones(filter: {zoneTag: "%s"} ) {
@@ -60,7 +60,7 @@ def main():
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/graphql.post %d %s - api call failed' % (e, e))
 
-    ## only one zone, so use zero'th element!
+    # only one zone, so use zero'th element!
     zone_info = r['data']['viewer']['zones'][0]
 
     httpRequests1dGroups = zone_info['httpRequests1dGroups']
@@ -75,4 +75,3 @@ def main():
 if __name__ == '__main__':
     main()
     exit(0)
-

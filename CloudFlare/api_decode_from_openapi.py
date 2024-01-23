@@ -51,9 +51,22 @@ def do_path(cmd, values):
                 content_type = ','.join(list(request_body['content'].keys()))
 
         if content_type:
-            v = {'action': action.upper(), 'cmd': cmd, 'deprecated': deprecated, 'deprecated_date': deprecated_date, 'deprecated_already': deprecated_already, 'content_type': content_type}
+            v = {
+                    'action': action.upper(),
+                    'cmd': cmd,
+                    'deprecated': deprecated,
+                    'deprecated_date': deprecated_date,
+                    'deprecated_already': deprecated_already,
+                    'content_type': content_type
+                }
         else:
-            v = {'action': action.upper(), 'cmd': cmd, 'deprecated': deprecated, 'deprecated_date': deprecated_date, 'deprecated_already': deprecated_already}
+            v = {
+                    'action': action.upper(),
+                    'cmd': cmd,
+                    'deprecated': deprecated,
+                    'deprecated_date': deprecated_date,
+                    'deprecated_already': deprecated_already
+                }
         cmds.append(v)
     return cmds
 
@@ -81,9 +94,9 @@ def api_decode_from_openapi(content):
     cloudflare_url = None
     for server in servers:
         try:
-           cloudflare_url = server['url']
+            cloudflare_url = server['url']
         except KeyError as e:
-           pass
+            pass
     if not cloudflare_url:
         raise SyntaxError('OpenAPI json servers/server missing url value')
 

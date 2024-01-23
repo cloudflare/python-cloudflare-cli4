@@ -39,14 +39,13 @@ def main():
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/zones/dns_records/export %s - %d %s - api call failed' % (zone_name, e, e))
 
-    for l in dns_records.splitlines():
-        if len(l) == 0 or l[0] == ';':
+    for line in dns_records.splitlines():
+        if len(line) == 0 or line[0] == ';':
             # blank line or comment line are skipped - to make example easy to see
             continue
-        print(l)
+        print(line)
 
     exit(0)
 
 if __name__ == '__main__':
     main()
-

@@ -43,7 +43,15 @@ def main():
     if v:
         print('TOKENS:')
         for t in v:
-            print('  %s %s [%-20s %-20s %-20s] %d %s' % (t['id'], t['status'], t['issued_on'], t['modified_on'], t['last_used_on'], len(t['policies']), t['name']))
+            print('  %s %s [%-20s %-20s %-20s] %d %s' % (
+                t['id'],
+                t['status'],
+                t['issued_on'],
+                t['modified_on'],
+                t['last_used_on'],
+                len(t['policies']),
+                t['name']
+            ))
         print('')
 
     # verify the user token being used (vs. email/key - this will throw an exception if it's not valid
@@ -62,7 +70,7 @@ def main():
             v['status'],
             v['not_before'] if 'not_before' in v else '',
             v['expires_on'] if 'expires_on' in v else ''
-       ))
+        ))
     else:
         print('User token not verified - i.e invalid (or not used)')
 

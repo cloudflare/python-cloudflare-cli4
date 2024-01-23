@@ -76,16 +76,16 @@ class CloudFlare():
                 # no content type needed - except we throw in a default just for grin's
                 self.headers['Content-Type'] = 'application/json'
             elif content_type is not None and method in content_type:
-                    # this api endpoint and this method requires a specific content type.
-                    ct = content_type[method]
-                    if isinstance(ct, list):
-                        # How do we choose from more than one content type?
-                        for t in ct:
-                            # we have to match against the data type - arggg! how? XXX/TODO - use first for now
-                            self.headers['Content-Type'] = t
-                            break
-                    else:
-                        self.headers['Content-Type'] = ct
+                # this api endpoint and this method requires a specific content type.
+                ct = content_type[method]
+                if isinstance(ct, list):
+                    # How do we choose from more than one content type?
+                    for t in ct:
+                        # we have to match against the data type - arggg! how? XXX/TODO - use first for now
+                        self.headers['Content-Type'] = t
+                        break
+                else:
+                    self.headers['Content-Type'] = ct
             else:
                 # default choice
                 self.headers['Content-Type'] = 'application/json'
@@ -438,8 +438,8 @@ class CloudFlare():
                     # NDJSON is a series of JSON elements with newlines between each element
                     try:
                         r = []
-                        for l in response_data.splitlines():
-                            r.append(json.loads(l))
+                        for line in response_data.splitlines():
+                            r.append(json.loads(line))
                         response_data = r
                     except (ValueError, json.decoder.JSONDecodeError):
                         # While this should not happen; it's always possible
@@ -569,8 +569,8 @@ class CloudFlare():
                     message = errors['error']
                 else:
                     message = ''
-                ##if 'messages' in response_data:
-                ##    errors['error_chain'] = response_data['messages']
+                # if 'messages' in response_data:
+                #     errors['error_chain'] = response_data['messages']
                 if 'error_chain' in errors:
                     error_chain = errors['error_chain']
                     for error in error_chain:
@@ -643,7 +643,7 @@ class CloudFlare():
                     self.logger.debug('OpenAPI bad json file: %s', e)
                 raise CloudFlareAPIError(0, 'OpenAPI bad json file: %s' % (e)) from None
 
-            #if self.base_url != cloudflare_url:
+            # if self.base_url != cloudflare_url:
             #    # XXX/TODO should this be recorded or throw an error?
             #    pass
 
@@ -823,7 +823,7 @@ class CloudFlare():
         name = a[-1]
         try:
             if keyword.iskeyword(name):
-                ## add the keyword appended with an extra underscore so it can used with Python code
+                # add the keyword appended with an extra underscore so it can used with Python code
                 f = getattr(branch, name + '_')
             else:
                 if '-' in name:
@@ -852,7 +852,7 @@ class CloudFlare():
             raise CloudFlareAPIError(0, 'api load type mismatch')
 
         if keyword.iskeyword(name):
-            ## add the keyword appended with an extra underscore so it can used with Python code
+            # add the keyword appended with an extra underscore so it can used with Python code
             setattr(branch, name + '_', f)
         else:
             if '-' in name:
@@ -888,7 +888,7 @@ class CloudFlare():
                 if 'delete' in d or 'get' in d or 'patch' in d or 'post' in d or 'put' in d:
                     # only show the result if a call exists for this part
                     if n[-1] == '_':
-                        if  keyword.iskeyword(n[:-1]):
+                        if keyword.iskeyword(n[:-1]):
                             # should always be a keyword - but now nothing needs to be done
                             pass
                         # remove the extra keyword postfix'ed with underscore

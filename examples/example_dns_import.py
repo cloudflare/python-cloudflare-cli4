@@ -20,7 +20,7 @@ def main():
 
     try:
         fd = open(file_name, 'rb')
-    except:
+    except IOError as e:
         exit('file open - %s' % (e))
 
     cf = CloudFlare.CloudFlare()
@@ -56,4 +56,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

@@ -18,8 +18,22 @@ def main():
     except Exception as e:
         exit('api_from_web: - %s - api call connection failed' % (e))
 
-    # {"action": "GET", "cmd": "/accounts", "deprecated": false, "deprecated_date": "", "deprecated_already": false}
-    # {"action": "DELETE", "cmd": "/accounts/:id/addressing/prefixes/:id/delegations", "deprecated": false, "deprecated_date": "", "deprecated_already": false, "content_type": "application/json"}
+    # {
+    #   "action": "GET",
+    #   "cmd": "/accounts",
+    #   "deprecated": false,
+    #   "deprecated_date": "",
+    #   "deprecated_already": false
+    # }
+
+    # {
+    #  "action": "DELETE",
+    #  "cmd": "/accounts/:id/addressing/prefixes/:id/delegations",
+    #  "deprecated": false,
+    #  "deprecated_date": "",
+    #  "deprecated_already": false,
+    #  "content_type": "application/json"
+    # }
 
     print('# cloudflare-python')
     print('')
@@ -55,4 +69,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

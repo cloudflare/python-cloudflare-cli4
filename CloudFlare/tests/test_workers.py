@@ -75,7 +75,7 @@ async function fetchAndModify(request) {
 }
 """
 
-sample_script_content = '\n'.join([s.strip() for s in sample_script_content.splitlines()  if s != '']).strip()
+sample_script_content = '\n'.join([s.strip() for s in sample_script_content.splitlines() if s != '']).strip()
 
 script_id = None
 script_tag = None
@@ -104,7 +104,7 @@ def test_workers_find():
         if script_id == w['id']:
             found = True
             break
-    assert found == True
+    assert found is True
 
 def test_workers_find_all():
     """ test_workers_find_all """

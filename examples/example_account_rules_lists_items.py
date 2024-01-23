@@ -30,7 +30,6 @@ def main():
             print('%s %s %s %-30s ; %s' % (item['id'], item['created_on'], item['modified_on'], item['ip'], item['comment']))
         print('')
 
-
         #
         # Add an element to list - showing POST function
         #
@@ -48,7 +47,6 @@ def main():
         #
         time.sleep(1)
 
-
         #
         # Print the full list again - to show POST worked
         #
@@ -59,7 +57,6 @@ def main():
             if item['ip'] == new_ip_address:
                 new_ip_id = item['id']
         print('')
-
 
         #
         # Now remove that element - to show DELETE function (note the use of new_ip_id value
@@ -89,4 +86,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

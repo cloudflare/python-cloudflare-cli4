@@ -11,8 +11,7 @@ def user_agent():
     # this additional data helps support @ Cloudflare help customers
     return ('python-cloudflare/' + __version__ + '/' +
             'python-requests/' + str(requests__version__) + '/' +
-            'python/' + '.'.join([str(v) for v in sys.version_info[:3]])
-           )
+            'python/' + '.'.join([str(v) for v in sys.version_info[:3]]))
 
 def sanitize_secrets(secrets):
     """ misc utilities  for Cloudflare API"""

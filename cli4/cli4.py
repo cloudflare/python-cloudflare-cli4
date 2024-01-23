@@ -42,7 +42,7 @@ def load_and_check_jsonlines():
 def strip_multiline(s):
     """ remove leading/trailing tabs/spaces on each line"""
     # This hack is needed in order to use yaml.safe_load() on JSON text - tabs are not allowed
-    return '\n'.join([l.strip() for l in s.splitlines()])
+    return '\n'.join([line.strip() for line in s.splitlines()])
 
 def process_params_content_files(method, binary_file, args):
     """ process_params_content_files() """
@@ -95,7 +95,7 @@ def process_params_content_files(method, binary_file, args):
         elif value_string[0] in '[{' and value_string[-1] in '}]':
             # a json structure - used in pagerules
             try:
-                #value = json.loads(value) - changed to yaml code to remove unicode string issues
+                # value = json.loads(value) - changed to yaml code to remove unicode string issues
                 load_and_check_yaml()
                 # cleanup string before parsing so that yaml.safe.load does not complain about whitespace
                 # >>> found character '\t' that cannot start any token <<<
@@ -193,7 +193,7 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 if len(element) in [32, 40, 48] and hex_only.match(element):
                     # raw identifier - lets just use it as-is
                     identifier1 = element
-                elif len(element) == 36  and uuid_value.match(element):
+                lif len(element) == 36 and uuid_value.match(element):
                     # uuid identifier - lets just use it as-is
                     identifier1 = element
                 elif element[0] == ':':
@@ -228,7 +228,7 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 if len(element) in [32, 40, 48] and hex_only.match(element):
                     # raw identifier - lets just use it as-is
                     identifier2 = element
-                elif len(element) == 36  and uuid_value.match(element):
+                elif len(element) == 36 and uuid_value.match(element):
                     # uuid identifier - lets just use it as-is
                     identifier2 = element
                 elif element[0] == ':':
@@ -237,13 +237,9 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 else:
                     try:
                         if (cmd[0] and cmd[0] == 'zones') and (cmd[2] and cmd[2] == 'dns_records'):
-                            identifier2 = converters.convert_dns_record_to_identifier(cf,
-                                                                                      identifier1,
-                                                                                      element)
+                            identifier2 = converters.convert_dns_record_to_identifier(cf, identifier1, element)
                         elif (cmd[0] and cmd[0] == 'zones') and (cmd[2] and cmd[2] == 'custom_hostnames'):
-                            identifier2 = converters.convert_custom_hostnames_to_identifier(cf,
-                                                                                      identifier1,
-                                                                                      element)
+                            identifier2 = converters.convert_custom_hostnames_to_identifier(cf, identifier1, element)
                         else:
                             raise CLI4InternalError("/%s/:%s :NOT CODED YET" % ('/'.join(cmd), element))
                     except CLI4InternalError as e:
@@ -259,7 +255,7 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 if len(element) in [32, 40, 48] and hex_only.match(element):
                     # raw identifier - lets just use it as-is
                     identifier3 = element
-                elif len(element) == 36  and uuid_value.match(element):
+                elif len(element) == 36 and uuid_value.match(element):
                     # uuid identifier - lets just use it as-is
                     identifier3 = element
                 elif waf_rules.match(element):

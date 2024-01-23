@@ -47,7 +47,7 @@ def main():
                 for k in sorted(r_value.keys()):
                     print('\t%-30s %10s    %s = %s' % ('', '', r_name+'/'+k, r_value[k]))
                 print('\t%-30s %10s = %s' % ('', '', '}'))
-            except:
+            except AttributeError:
                 print('\t%-30s %10s = %s' % (r_name, '(editable)' if r_editable else '', r_value))
 
         print('')
@@ -56,4 +56,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

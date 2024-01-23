@@ -36,7 +36,7 @@ def read_configs(profile=None):
             os.path.expanduser('~/.cloudflare.cfg'),
             os.path.expanduser('~/.cloudflare/cloudflare.cfg')
         ])
-    except:
+    except OSError:
         raise ReadConfigError("%s: configuration file error" % ('.cloudflare.cfg')) from None
 
     if len(cp.sections()) == 0 and profile is not None and len(profile) > 0:
@@ -50,7 +50,7 @@ def read_configs(profile=None):
         if cp.has_section('Cloudflare'):
             profile = 'Cloudflare'
 
-    ## still not found - then set to to CloudFlare for legacy reasons
+    # still not found - then set to to CloudFlare for legacy reasons
     if profile is None:
         profile = "CloudFlare"
 
