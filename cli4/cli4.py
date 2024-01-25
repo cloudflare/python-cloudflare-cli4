@@ -193,7 +193,7 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                 if len(element) in [32, 40, 48] and hex_only.match(element):
                     # raw identifier - lets just use it as-is
                     identifier1 = element
-                lif len(element) == 36 and uuid_value.match(element):
+                if len(element) == 36 and uuid_value.match(element):
                     # uuid identifier - lets just use it as-is
                     identifier1 = element
                 elif element[0] == ':':
