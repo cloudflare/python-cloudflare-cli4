@@ -3,9 +3,11 @@
 import os
 import re
 try:
-    import configparser # py3
+    # py3
+    import configparser
 except ImportError:
-    import ConfigParser as configparser # py2
+    # py2
+    import ConfigParser as configparser # type: ignore
 
 class ReadConfigError(Exception):
     """ errors for read_configs"""
