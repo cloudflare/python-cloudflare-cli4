@@ -30,7 +30,7 @@ def user_agent():
     ])
     return s
 
-def doit(account_name, mp3_data):
+def doit(account_name, audio_data):
 
     # Or place these in your cloudflare.cfg file
     os.environ['CLOUDFLARE_API_EXTRAS'] = '/accounts/:id/ai/run/@cf/openai/whisper'
@@ -54,9 +54,9 @@ def doit(account_name, mp3_data):
 
     try:
         # This should be easy to call; however, the @ will not work in Python (or many languages)
-        # r = cf.accounts.ai.run.@cf.openai/whisper(account_id, data=mp3_data)
+        # r = cf.accounts.ai.run.@cf.openai/whisper(account_id, data=audio_data)
         # We find the endpoint via a quick string search
-        r = find_call(cf, '/accounts/:id/ai/run/@cf/openai/whisper').post(account_id, data=mp3_data)
+        r = find_call(cf, '/accounts/:id/ai/run/@cf/openai/whisper').post(account_id, data=audio_data)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/ai.run %d %s - api call failed' % (e, e))
 
@@ -66,7 +66,7 @@ def doit(account_name, mp3_data):
 
 # based on ... thank you to the author
 # https://stackoverflow.com/questions/16694907/download-large-file-in-python-with-requests
-def download_file(url, referer, n_requested):
+def download_audio_file(url, referer, n_requested):
     headers = {}
     headers['Referer'] = referer
     headers['User-Agent'] = user_agent()
@@ -88,6 +88,37 @@ def download_file(url, referer, n_requested):
     fp.seek(0)
     return fp
 
+def default_audio_clip():
+
+    s = random.choice([
+        (
+            'https://www.americanrhetoric.com/mp3clipsXE/barackobama/barackobamapresidentialfarewellARXE.mp3',
+            'https://www.americanrhetoric.com/barackobamaspeeches.htm'
+        ),
+        (
+            'https://archive.org/download/DoNotGoGentleIntoThatGoodNight/gentle.ogg',
+	    'https://archive.org/details/DoNotGoGentleIntoThatGoodNight'
+	),
+        (
+            'https://www.nasa.gov/wp-content/uploads/2015/01/590333main_ringtone_eagleHasLanded_extended.mp3',
+	    'https://www.nasa.gov/audio-and-ringtones/'
+	),
+        (
+            'https://www.nasa.gov/wp-content/uploads/2015/01/590331main_ringtone_smallStep.mp3',
+	    'https://www.nasa.gov/audio-and-ringtones/'
+	),
+        (
+            'https://upload.wikimedia.org/wikipedia/en/7/7f/George_Bush_1988_No_New_Taxes.ogg',
+	    'https://en.wikipedia.org/wiki/File:George_Bush_1988_No_New_Taxes.ogg'
+	),
+        (
+            'https://archive.org/download/grand_meaulnes_2004_librivox/grandmeaulnes_01_alainfournier.mp3',
+	    'https://archive.org/details/grand_meaulnes_2004_librivox/grandmeaulnes_01_alainfournier_128kb.mp3'
+	),
+    ])
+
+    return s
+
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == '-a':
         del sys.argv[1]
@@ -100,15 +131,14 @@ def main():
         url = sys.argv[1]
         referer = url
     else:
-        url = 'https://www.americanrhetoric.com/mp3clipsXE/barackobama/barackobamapresidentialfarewellARXE.mp3'
-        referer = 'https://www.americanrhetoric.com/barackobamaspeeches.htm'
+        url, referer = default_audio_clip()
 
     # we only grab the first 680KB of the file - that's enough to show working code
-    mp3_fp = download_file(url, referer, 680 * 1024)
-    mp3_data = mp3_fp.read()
-    print('mp3 received: length=%d' % (len(mp3_data)))
+    audio_fp = download_audio_file(url, referer, 680 * 1024)
+    audio_data = audio_fp.read()
+    print('%s: length=%d' % (url.split('/')[-1:][0], len(audio_data)))
 
-    doit(account_name, mp3_data)
+    doit(account_name, audio_data)
 
 if __name__ == '__main__':
     main()
