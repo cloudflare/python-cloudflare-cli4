@@ -38,6 +38,10 @@ class CFnetwork():
 
         method = method.upper()
 
+        # https://docs.python-requests.org/en/latest/user/quickstart/#post-a-multipart-encoded-file
+        # Note, the json parameter is ignored if either data or files is passed.
+        # This should have been handled well before here (it is!)
+
         if method == 'GET':
             # no data or files
             r = self.session.get(
