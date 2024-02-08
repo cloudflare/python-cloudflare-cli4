@@ -103,13 +103,21 @@ class CloudFlare():
                     files = {}
                     for k,v in data.items():
                         # files[k] = (None, v, 'application/json')
-                        files[k] = (None, json.dumps(v), 'application/json')
+                        if isinstance(v, (dict, list)):
+                            files[k] = (None, json.dumps(v), 'application/json')
+                        else:
+                            files[k] = (None, v)
+                    # we have replaced data's values into files
                     data = None
+                if data is None and files is None and self.headers['Content-Type'] == 'multipart/form-data':
+                    # can't have zero length multipart/form-data and as there's no data or files; we don't need it
+                    del self.headers['Content-Type']
                 if files:
                     # overwrite Content-Type as we are uploading data
                     self.headers['Content-Type'] = 'multipart/form-data'
                     # however something isn't right and this works ... look at again later!
                     del self.headers['Content-Type']
+            return data, files
 
         def _add_auth_headers(self, method):
             """ Add authentication headers """
@@ -181,7 +189,7 @@ class CloudFlare():
         def do_no_auth(self, method, parts, identifiers, params=None, data=None, content_type=None, files=None):
             """ Cloudflare v4 API"""
 
-            self._add_headers(method, content_type, data, files)
+            data, files = self._add_headers(method, content_type, data, files)
             # We decide at this point if we are sending json or string data
             if isinstance(data, (str,bytes,bytearray)):
                 return self._call(method, parts, identifiers, params, data, None, files)
@@ -190,7 +198,7 @@ class CloudFlare():
         def do_auth(self, method, parts, identifiers, params=None, data=None, content_type=None, files=None):
             """ Cloudflare v4 API"""
 
-            self._add_headers(method, content_type, data, files)
+            data, files = self._add_headers(method, content_type, data, files)
             self._add_auth_headers(method)
             # We decide at this point if we are sending json or string data
             if isinstance(data, (str,bytes,bytearray)):
@@ -200,7 +208,7 @@ class CloudFlare():
         def do_auth_unwrapped(self, method, parts, identifiers, params=None, data=None, content_type=None, files=None):
             """ Cloudflare v4 API"""
 
-            self._add_headers(method, content_type, data, files)
+            data, files = self._add_headers(method, content_type, data, files)
             self._add_auth_headers(method)
             # We decide at this point if we are sending json or string data
             if isinstance(data, (str,bytes,bytearray)):
@@ -210,7 +218,7 @@ class CloudFlare():
         def do_certauth(self, method, parts, identifiers, params=None, data=None, content_type=None, files=None):
             """ Cloudflare v4 API"""
 
-            self._add_headers(method, content_type, data, files)
+            data, files = self._add_headers(method, content_type, data, files)
             self._add_certtoken_headers(method)
             # We decide at this point if we are sending json or string data
             if isinstance(data, (str,bytes,bytearray)):
@@ -258,21 +266,12 @@ class CloudFlare():
                     if len(parts) > 4 and parts[4]:
                         url += '/' + parts[4]
 
-            if files and data_json:
-                # Can't send data_json and form data - so move data_json into files and send as multipart/form-data
-                new_files = []
-                new_files += [(f, (files[f].name, files[f])) for f in files]
-                new_files += [(d, (None, data_json[d])) for d in data_json]
-                files = tuple(new_files)
-                data_json = None
-
             if self.logger:
                 msg = build_curl(method, url, headers, params, data_str, data_json, files)
                 self.logger.debug('Call: emulated curl command ...\n%s', msg)
 
             try:
                 response = self.network(method, url, headers, params, data_str, data_json, files)
-
             except requests_ConnectionError as e:
                 if self.logger:
                     self.logger.debug('Call: requests connection exception! "%s"', e)
