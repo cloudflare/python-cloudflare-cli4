@@ -44,13 +44,15 @@ def build_curl(method, url, headers, params, data_str, data_json, files):
                 continue
             url_full += '&%s=%s' % (k, params[k])
         url_full = url_full.replace('&', '?', 1)
-    msg.append('       curl -X %s "%s" \\' % (str(method), str(url_full)))
+    msg.append('       curl \\')
+    msg.append('            --url "%s" \\' % (str(url_full)))
+    msg.append('            --request %s \\' % (str(method)))
     # headers
     h = sanitize_secrets(headers)
     for k in h:
         if k is None:
             continue
-        msg.append('            -H "%s: %s" \\' % (k, h[k]))
+        msg.append('            --header "%s: %s" \\' % (k, h[k]))
     # data_str
     if data_str is not None:
         if isinstance(data_str, (bytes,bytearray)):
@@ -75,14 +77,22 @@ def build_curl(method, url, headers, params, data_str, data_json, files):
             msg.append('            --data \'%s\' \\' % (s.replace('\n', ' ')))
     # files
     if files is not None:
-        if isinstance(files, (list, tuple)):
+        if isinstance(files, (dict)):
+            for k, v in files.items():
+                if v[0] is None:
+                    msg.append('            --form %s="%s" \\' % (k, v[1]))
+                else:
+                    msg.append('            --form %s="%s" \\' % (k, v[0]))
+        elif isinstance(files, (list, tuple)):
             for f in files:
+                msg.append('            --form "%s" \\' % (f,))
+                continue
                 if f[1][0] is None:
                     # not a file
-                    msg.append('            --form "%s=%s" \\' % (f[0], f[1][1]))
+                    msg.append('            --form %s="%s" \\' % (f[0], f[1][1]))
                 else:
                     # a file
-                    msg.append('            --form "%s=@%s" \\' % (f[0], f[1][0]))
+                    msg.append('            --form %s="@%s" \\' % (f[0], f[1][0]))
         else:
             msg.append('            --form "file=@%s" \\' % (files))
 
