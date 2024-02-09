@@ -86,7 +86,7 @@ def build_curl(method, url, headers, params, data_str, data_json, files):
                         msg.append('            --form %s="%s" \\' % (k, v[0]))
                 else:
                     msg.append('            --form %s="%s" \\' % (k,v))
-        elif isinstance(files, (list, tuple)):
+        elif isinstance(files, (set, list, tuple)):
             for f in files:
                 if isinstance(f, (list, tuple)):
                     if f[1][0] is None:
