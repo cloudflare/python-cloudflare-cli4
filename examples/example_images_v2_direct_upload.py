@@ -68,17 +68,35 @@ def doit(account_name, image_filename):
         # --form requireSignedURLs=
 
         # here's examples using metadata and expiry.
+
+        # this is just simple metadata created to show it working - your code will be different
         metadata_values = {
             'source': image_filename,
             'size': image_filesize,
         }
-        files = {
-            ('metadata', (None, json.dumps(metadata_values))),
-            ('expiry', (None, time_plus_one_hour_in_iso))
-        }
+
+        # this code works with 2.14.2 in a simpler way
+
+        data = None
+        files = None
+        if CloudFlare.__version__ <= '2.14.2':
+            print('Using %s version of Cloudflare python library - hence using neither data or files')
+        else:
+            # with newer library than 2.17.0 you should be able to pass just the data version
+            print('Using %s version of Cloudflare python library - hence using %s' % (CloudFlare.__version__, 'data' if CloudFlare.__version__ > '2.17.0' else 'files'))
+            if CloudFlare.__version__ > '2.17.0':
+                data = {
+                    'metadata': json.dumps(metadata_values),
+                    'expiry': time_plus_one_hour_in_iso,
+                }
+            else:
+                files = {
+                    ('metadata', (None, json.dumps(metadata_values))),
+                    ('expiry', (None, time_plus_one_hour_in_iso))
+                }
 
         try:
-            r = cf.accounts.images.v2.direct_upload.post(account_id, files=files)
+            r = cf.accounts.images.v2.direct_upload.post(account_id, data=data, files=files)
         except CloudFlare.exceptions.CloudFlareAPIError as e:
             exit('%s: %d %s - api call failed' % ('/accounts/images/v2/direct_upload', e, e))
         print('v2 new image post results')
@@ -97,9 +115,14 @@ def doit(account_name, image_filename):
         except Exception as e:
             exit('%s: %s - api call failed' % (image_url, e))
 
-        response_code = r.status_code
-        if response_code != 200:
-           exit('%s: HTTP Error %s' % (image_url, response_code))
+        image_fp.close()
+
+        if r.status_code != 200:
+           if r.status_code == 403:
+               print('403 means you need to enable images in your account')
+           if r.status_code == 403:
+               print('415 means the file is a bad image format')
+           exit('%s: HTTP Error %s' % (image_url, r.status_code))
 
         j = r.json()
         if j['success'] == True:
@@ -107,8 +130,6 @@ def doit(account_name, image_filename):
             print(json.dumps(j['result'], indent=4))
         else:
             exit('Error:\n    errors: %s\n    messages: %s' % (image_url, j['errors'], j['messages']))
-
-        image_fp.close()
 
         # list all images
         try:
@@ -119,8 +140,11 @@ def doit(account_name, image_filename):
         print('All account images:')
         for img in r['images']:
             print('%s   %s: %s %s %s' % ('>' if img['id'] == image_id else ' ', img['id'], img['uploaded'], img['filename'], img['variants'][0]))
-            for k,v in img['meta'].items():
-                print('        %s = %s' % (k, v))
+            if 'meta' in img:
+                for k,v in img['meta'].items():
+                    print('        %s = %s' % (k, v))
+            else:
+                print('        - no meta data')
 
         # delete the image - this was just a test (comment this out if you end up using this code for uploads)
         try:
