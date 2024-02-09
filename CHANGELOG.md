@@ -1,5 +1,10 @@
 # Change Log
 
+ - 2024-02-09 13:24:46 -0800 [742c156](../../commit/742c15613ac0cf7762ccad53a54422a81afcfc7d) 2.18.1
+ - 2024-02-09 13:20:06 -0800 [2a3e059](../../commit/2a3e059df6a7f4e46c575c86030a90184c4b8917) add data and files to be present - which is not normall legal, convert code from dict to set for files data to improve requests() handling
+ - 2024-02-09 13:19:08 -0800 [10455f3](../../commit/10455f38d8d55665e5c3b007673cff73ce040d86) handle --form with set() - was missing
+ - 2024-02-09 12:14:25 -0800 [719c1f9](../../commit/719c1f96f0004184d55e30638be6a77cdbc257f2) cleanup of version checking code for readability
+ - 2024-02-09 11:32:08 -0800 [299ef93](../../commit/299ef93ec76b009e570beca417a851a30312dc70) CHANGELOG.md pushed to github
  - 2024-02-09 11:31:47 -0800 [5de022e](../../commit/5de022e4c79817e99bf0119f72c2df657d2f41a6) start using mypy for a checking source code
  - 2024-02-09 11:30:55 -0800 [61e8108](../../commit/61e810847fb47fe7d10b4db14cd746b6d3b25954) 2.18.0
  - 2024-02-08 17:17:07 -0800 [99d4228](../../commit/99d4228005df9ee479587e58e6296932c8cf6e9b) now prints correct --form data in all cases
