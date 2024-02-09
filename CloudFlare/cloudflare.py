@@ -98,17 +98,21 @@ class CloudFlare():
                 if self.headers['Content-Type'] == 'application/json' and isinstance(data, (bytes,bytearray)):
                     # passing binary file vs JSON
                     self.headers['Content-Type'] = 'application/octet-stream'
-                if data and self.headers['Content-Type'] == 'multipart/form-data':
+                if data and len(data) > 0 and self.headers['Content-Type'] == 'multipart/form-data':
                     # convert from params to files (i.e multipart/form-data)
-                    files = {}
+                    if files is None:
+                        files = set()
                     for k,v in data.items():
-                        # files[k] = (None, v, 'application/json')
                         if isinstance(v, (dict, list)):
-                            files[k] = (None, json.dumps(v), 'application/json')
+                            files.add((k, (None, json.dumps(v), 'application/json')))
                         else:
-                            files[k] = (None, v)
+                            files.add((k, (None, v)))
                     # we have replaced data's values into files
                     data = None
+                if data is not None and len(data) == 0:
+                    data = None
+                if files is not None and len(files) == 0:
+                    files = None
                 if data is None and files is None and self.headers['Content-Type'] == 'multipart/form-data':
                     # can't have zero length multipart/form-data and as there's no data or files; we don't need it
                     del self.headers['Content-Type']
