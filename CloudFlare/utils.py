@@ -79,22 +79,26 @@ def build_curl(method, url, headers, params, data_str, data_json, files):
     if files is not None:
         if isinstance(files, (dict)):
             for k, v in files.items():
-                if v[0] is None:
-                    msg.append('            --form %s="%s" \\' % (k, v[1]))
+                if isinstance(v, (list, tuple)):
+                    if v[0] is None:
+                        msg.append('            --form %s="%s" \\' % (k, v[1]))
+                    else:
+                        msg.append('            --form %s="%s" \\' % (k, v[0]))
                 else:
-                    msg.append('            --form %s="%s" \\' % (k, v[0]))
+                    msg.append('            --form %s="%s" \\' % (k,v))
         elif isinstance(files, (list, tuple)):
             for f in files:
-                msg.append('            --form "%s" \\' % (f,))
-                continue
-                if f[1][0] is None:
-                    # not a file
-                    msg.append('            --form %s="%s" \\' % (f[0], f[1][1]))
+                if isinstance(f, (list, tuple)):
+                    if f[1][0] is None:
+                        # not a file
+                        msg.append('            --form %s="%s" \\' % (f[0], f[1][1]))
+                    else:
+                        # a file
+                        msg.append('            --form %s="@%s" \\' % (f[0], f[1][0]))
                 else:
-                    # a file
-                    msg.append('            --form %s="@%s" \\' % (f[0], f[1][0]))
+                    msg.append('            --form "%s" \\' % (f,))
         else:
-            msg.append('            --form "file=@%s" \\' % (files))
+            msg.append('            --form file="@%s" \\' % (files))
 
     # remove the last \ from the last line.
     msg[-1] = msg[-1][:-1]
