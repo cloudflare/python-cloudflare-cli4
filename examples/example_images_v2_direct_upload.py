@@ -25,6 +25,24 @@ import CloudFlare
 # cli4 /accounts/:"${ACCOUNT}"/images/v1 | jq -r '.images[]|.id' | while read image_id ; do cli4 --delete /accounts/:"${ACCOUNT}"/images/v1/::$image_id ; done
 #
 
+#
+# A note about version numbers.
+# this code works with 2.14.2 in a simple way
+# this code works with 2.18.0 is a simple way
+# released between then require at-least one paramater send via files= in order to not trigger a backend API bug
+#
+
+def method_from_library_version():
+    if CloudFlare.__version__ <= '2.14.2':
+        print('Using %s version of Cloudflare python library - hence do not need data= or files=; but use files= if passing anything' % (CloudFlare.__version__))
+        return ''
+    if CloudFlare.__version__ <= '2.17.0':
+        print('Using %s version of Cloudflare python library - hence must use files=' % (CloudFlare.__version__))
+        return 'USE-FILES'
+    # with newer library than 2.17.0 (i.e 2.18.0 and above) you should be able to pass just the data version
+    print('Using %s version of Cloudflare python library - hence use data= as it is simpler' % (CloudFlare.__version__))
+    return 'USE-DATA'
+
 def doit(account_name, image_filename):
 
     # https://developers.cloudflare.com/stream/uploading-videos/direct-creator-uploads/
@@ -75,25 +93,24 @@ def doit(account_name, image_filename):
             'size': image_filesize,
         }
 
-        # this code works with 2.14.2 in a simpler way
-
         data = None
         files = None
-        if CloudFlare.__version__ <= '2.14.2':
-            print('Using %s version of Cloudflare python library - hence using neither data or files')
-        else:
-            # with newer library than 2.17.0 you should be able to pass just the data version
-            print('Using %s version of Cloudflare python library - hence using %s' % (CloudFlare.__version__, 'data' if CloudFlare.__version__ > '2.17.0' else 'files'))
-            if CloudFlare.__version__ > '2.17.0':
-                data = {
-                    'metadata': json.dumps(metadata_values),
-                    'expiry': time_plus_one_hour_in_iso,
-                }
-            else:
-                files = {
-                    ('metadata', (None, json.dumps(metadata_values))),
-                    ('expiry', (None, time_plus_one_hour_in_iso))
-                }
+
+        lib_method = method_from_library_version()
+
+        if lib_method == 'USE-FILES':
+            files = {
+                ('metadata', (None, json.dumps(metadata_values))),
+                ('expiry', (None, time_plus_one_hour_in_iso))
+            }
+        elif lib_method == 'USE-DATA':
+            data = {
+                'metadata': json.dumps(metadata_values),
+                'expiry': time_plus_one_hour_in_iso,
+            }
+        elif lib_method == '':
+            # optionally do nothing or send via files=
+            pass
 
         try:
             r = cf.accounts.images.v2.direct_upload.post(account_id, data=data, files=files)
