@@ -1,5 +1,19 @@
 # Change Log
 
+ - 2024-02-09 11:31:47 -0800 [5de022e](../../commit/5de022e4c79817e99bf0119f72c2df657d2f41a6) start using mypy for a checking source code
+ - 2024-02-09 11:30:55 -0800 [61e8108](../../commit/61e810847fb47fe7d10b4db14cd746b6d3b25954) 2.18.0
+ - 2024-02-08 17:17:07 -0800 [99d4228](../../commit/99d4228005df9ee479587e58e6296932c8cf6e9b) now prints correct --form data in all cases
+ - 2024-02-08 17:07:29 -0800 [a7e1b77](../../commit/a7e1b777c68f24f78201c8ec5717690cd360b06a) handle versions 2.14.2 or below or 2.17.0 or any version above that
+ - 2024-02-08 16:44:05 -0800 [4bd5e3f](../../commit/4bd5e3fe6b6768a631fa9ac555bd4d15d687009b) example for /accounts/:id/images/v2/direct_upload
+ - 2024-02-08 14:19:04 -0800 [0a9cc41](../../commit/0a9cc412388298c84b2c4695b2cd75ed503e8a2e) passing params as files for multipart/form-data type APIs needed some work
+ - 2024-02-08 14:11:49 -0800 [cd078fb](../../commit/cd078fb4264664ddee723c088c28abc97075f08d) improve debug prints. handle all the files debug formats
+ - 2024-02-08 14:08:37 -0800 [cec7f5a](../../commit/cec7f5a074826327eee954057f2c73d6a7c18c47) added comment to remind how data/json/files behaves
+ - 2024-02-03 11:08:43 -0800 [397ee01](../../commit/397ee018c281ec34c520ef32019705e7a4a7185a) make more generic vs mp3 only, add many clips to default clips (including French clip)
+ - 2024-01-25 22:15:19 +0000 [bb5e1ac](../../commit/bb5e1ac4c7a12793fa5feda3a80bff902179a5e3) minor edit to handle mypy processing
+ - 2024-01-25 20:14:58 +0000 [5907454](../../commit/5907454784d24e963d127a9a6fd8e0bcbf9cd956) damn typos!
+ - 2024-01-23 13:42:33 +0000 [b721505](../../commit/b7215055df2abad96523ad56cf3f383b4bf83f7c) PEP8 edits via pycodestyle
+ - 2024-01-22 22:42:30 +0000 [e90d38e](../../commit/e90d38eaa5ab40bca52d93d81bf1b7549ab70bda) handle case where zone and account disallow load balancing
+ - 2024-01-22 22:29:06 +0000 [cf595ab](../../commit/cf595ab09a0f1da8146217229655c75709f77071) CHANGELOG.md pushed to github
  - 2024-01-22 22:28:12 +0000 [fadbace](../../commit/fadbace4bbbb47e30089984b0fc88481249904c5) 2.17.0
  - 2024-01-22 22:27:13 +0000 [ee72509](../../commit/ee725093486668f380a59cf68f208da110950cf6) make 4xx error handling more generic
  - 2024-01-22 22:26:13 +0000 [ea9e609](../../commit/ea9e6094480612747c557a27148f6e7549537b52) testing load balancers becuase they return 412 HTTP errors
