@@ -29,7 +29,7 @@ def test_app_invalid():
         # error 7000 No route for that URI
         assert int(e) == 7000
         assert str(e) == 'No route for that URI'
-        print('error: %d=%s' % (int(e), str(e)), file=sys.stderr)
+        print('Error expected: %d=%s' % (int(e), str(e)), file=sys.stderr)
 
 def test_app_invalid_with_underscore():
     """add API commands"""
@@ -42,7 +42,7 @@ def test_app_invalid_with_underscore():
         # error 7000 No route for that URI
         assert int(e) == 7000
         assert str(e) == 'No route for that URI'
-        print('error: %d=%s' % (int(e), str(e)), file=sys.stderr)
+        print('Error expected: %d=%s' % (int(e), str(e)), file=sys.stderr)
 
 def test_app_invalid_with_dash():
     """add API commands"""
@@ -55,7 +55,7 @@ def test_app_invalid_with_dash():
         # error 7000 No route for that URI
         assert int(e) == 7000
         assert str(e) == 'No route for that URI'
-        print('error: %d=%s' % (int(e), str(e)), file=sys.stderr)
+        print('Error expected: %d=%s' % (int(e), str(e)), file=sys.stderr)
 
 if __name__ == '__main__':
     test_cloudflare(debug=True)
