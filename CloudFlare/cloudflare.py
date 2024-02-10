@@ -68,7 +68,7 @@ class CloudFlare():
                 del self.network
                 self.network = None
 
-        def _add_headers(self, method, content_type, data, files):
+        def _add_headers(self, method, data, files, content_type=None):
             """ Add default headers """
             self.headers = {}
             self.headers['User-Agent'] = self.user_agent
@@ -182,7 +182,7 @@ class CloudFlare():
                 raise CloudFlareAPIError(0, 'no cert token defined')
             self.headers['X-Auth-User-Service-Key'] = api_certtoken
 
-        def do_not_available(self, method, parts, identifiers, params=None, data=None, content_type=None, files=None):
+        def do_not_available(self, method, parts, identifiers, params=None, data=None, files=None, content_type=None):
             """ Cloudflare v4 API"""
 
             # base class simply returns not available - no processing of any arguments
@@ -190,39 +190,39 @@ class CloudFlare():
                 self.logger.debug('call for this method not available')
             raise CloudFlareAPIError(0, 'call for this method not available')
 
-        def do_no_auth(self, method, parts, identifiers, params=None, data=None, content_type=None, files=None):
+        def do_no_auth(self, method, parts, identifiers, params=None, data=None, files=None, content_type=None):
             """ Cloudflare v4 API"""
 
-            data, files = self._add_headers(method, content_type, data, files)
+            data, files = self._add_headers(method, data, files, content_type)
             # We decide at this point if we are sending json or string data
             if isinstance(data, (str,bytes,bytearray)):
                 return self._call(method, parts, identifiers, params, data, None, files)
             return self._call(method, parts, identifiers, params, None, data, files)
 
-        def do_auth(self, method, parts, identifiers, params=None, data=None, content_type=None, files=None):
+        def do_auth(self, method, parts, identifiers, params=None, data=None, files=None, content_type=None):
             """ Cloudflare v4 API"""
 
-            data, files = self._add_headers(method, content_type, data, files)
+            data, files = self._add_headers(method, data, files, content_type)
             self._add_auth_headers(method)
             # We decide at this point if we are sending json or string data
             if isinstance(data, (str,bytes,bytearray)):
                 return self._call(method, parts, identifiers, params, data, None, files)
             return self._call(method, parts, identifiers, params, None, data, files)
 
-        def do_auth_unwrapped(self, method, parts, identifiers, params=None, data=None, content_type=None, files=None):
+        def do_auth_unwrapped(self, method, parts, identifiers, params=None, data=None, files=None, content_type=None):
             """ Cloudflare v4 API"""
 
-            data, files = self._add_headers(method, content_type, data, files)
+            data, files = self._add_headers(method, data, files, content_type)
             self._add_auth_headers(method)
             # We decide at this point if we are sending json or string data
             if isinstance(data, (str,bytes,bytearray)):
                 return self._call_unwrapped(method, parts, identifiers, params, data, None, files)
             return self._call_unwrapped(method, parts, identifiers, params, None, data, files)
 
-        def do_certauth(self, method, parts, identifiers, params=None, data=None, content_type=None, files=None):
+        def do_certauth(self, method, parts, identifiers, params=None, data=None, files=None, content_type=None):
             """ Cloudflare v4 API"""
 
-            data, files = self._add_headers(method, content_type, data, files)
+            data, files = self._add_headers(method, data, files, content_type)
             self._add_certtoken_headers(method)
             # We decide at this point if we are sending json or string data
             if isinstance(data, (str,bytes,bytearray)):
@@ -677,7 +677,8 @@ class CloudFlare():
 
             self._base = base
             self._parts = parts
-            self._content_type = content_type
+            if content_type:
+                self._content_type = content_type
             self._do = self._base.do_not_available
 
         def __call__(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
@@ -699,27 +700,37 @@ class CloudFlare():
         def get(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            return self._do('GET', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
+            if getattr(self, '_content_type', False):
+                return self._do('GET', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
+            return self._do('GET', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
 
         def patch(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            return self._do('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
+            if getattr(self, '_content_type', False):
+                return self._do('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
+            return self._do('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
 
         def post(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            return self._do('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type, files)
+            if getattr(self, '_content_type', False):
+                return self._do('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files, self._content_type)
+            return self._do('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files)
 
         def put(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            return self._do('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type, files)
+            if getattr(self, '_content_type', False):
+                return self._do('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files, self._content_type)
+            return self._do('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files)
 
         def delete(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            return self._do('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
+            if getattr(self, '_content_type', False):
+                return self._do('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
+            return self._do('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
 
     class _CFbaseUnused(_CFbase):
         """ Cloudflare v4 API"""
@@ -743,22 +754,30 @@ class CloudFlare():
         def patch(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            return self._base.do_not_available('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
+            if getattr(self, '_content_type', False):
+                return self._base.do_not_available('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
+            return self._base.do_not_available('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
 
         def post(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            return self._base.do_not_available('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type, files)
+            if getattr(self, '_content_type', False):
+                return self._base.do_not_available('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files, self._content_type)
+            return self._base.do_not_available('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files)
 
         def put(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            return self._base.do_not_available('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
+            if getattr(self, '_content_type', False):
+                return self._base.do_not_available('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
+            return self._base.do_not_available('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
 
         def delete(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            return self._base.do_not_available('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
+            if getattr(self, '_content_type', False):
+                return self._base.do_not_available('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
+            return self._base.do_not_available('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
 
     class _CFbaseAuth(_CFbase):
         """ Cloudflare v4 API"""
