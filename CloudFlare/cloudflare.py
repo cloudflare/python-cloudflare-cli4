@@ -700,37 +700,52 @@ class CloudFlare():
         def get(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            if getattr(self, '_content_type', False):
-                return self._do('GET', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
-            return self._do('GET', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
+            try:
+                if getattr(self, '_content_type', False):
+                    return self._do('GET', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
+                return self._do('GET', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
+            except CloudFlareAPIError as e:
+                raise CloudFlareAPIError(e=e) from None
 
         def patch(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            if getattr(self, '_content_type', False):
-                return self._do('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
-            return self._do('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
+            try:
+                if getattr(self, '_content_type', False):
+                    return self._do('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
+                return self._do('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
+            except CloudFlareAPIError as e:
+                raise CloudFlareAPIError(e=e) from None
 
         def post(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            if getattr(self, '_content_type', False):
-                return self._do('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files, self._content_type)
-            return self._do('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files)
+            try:
+                if getattr(self, '_content_type', False):
+                    return self._do('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files, self._content_type)
+                return self._do('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files)
+            except CloudFlareAPIError as e:
+                raise CloudFlareAPIError(e=e) from None
 
         def put(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            if getattr(self, '_content_type', False):
-                return self._do('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files, self._content_type)
-            return self._do('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files)
+            try:
+                if getattr(self, '_content_type', False):
+                    return self._do('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files, self._content_type)
+                return self._do('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files)
+            except CloudFlareAPIError as e:
+                raise CloudFlareAPIError(e=e) from None
 
         def delete(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            if getattr(self, '_content_type', False):
-                return self._do('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
-            return self._do('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
+            try:
+                if getattr(self, '_content_type', False):
+                    return self._do('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
+                return self._do('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
+            except CloudFlareAPIError as e:
+                raise CloudFlareAPIError(e=e) from None
 
     class _CFbaseUnused(_CFbase):
         """ Cloudflare v4 API"""
@@ -754,30 +769,42 @@ class CloudFlare():
         def patch(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            if getattr(self, '_content_type', False):
-                return self._base.do_not_available('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
-            return self._base.do_not_available('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
+            try:
+                if getattr(self, '_content_type', False):
+                    return self._base.do_not_available('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
+                return self._base.do_not_available('PATCH', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
+            except CloudFlareAPIError as e:
+                raise CloudFlareAPIError(e=e) from None
 
         def post(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            if getattr(self, '_content_type', False):
-                return self._base.do_not_available('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files, self._content_type)
-            return self._base.do_not_available('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files)
+            try:
+                if getattr(self, '_content_type', False):
+                    return self._base.do_not_available('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files, self._content_type)
+                return self._base.do_not_available('POST', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, files)
+            except CloudFlareAPIError as e:
+                raise CloudFlareAPIError(e=e) from None
 
         def put(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None, files=None):
             """ Cloudflare v4 API"""
 
-            if getattr(self, '_content_type', False):
-                return self._base.do_not_available('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
-            return self._base.do_not_available('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
+            try:
+                if getattr(self, '_content_type', False):
+                    return self._base.do_not_available('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
+                return self._base.do_not_available('PUT', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
+            except CloudFlareAPIError as e:
+                raise CloudFlareAPIError(e=e) from None
 
         def delete(self, identifier1=None, identifier2=None, identifier3=None, identifier4=None, params=None, data=None):
             """ Cloudflare v4 API"""
 
-            if getattr(self, '_content_type', False):
-                return self._base.do_not_available('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
-            return self._base.do_not_available('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
+            try:
+                if getattr(self, '_content_type', False):
+                    return self._base.do_not_available('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data, self._content_type)
+                return self._base.do_not_available('DELETE', self._parts, [identifier1, identifier2, identifier3, identifier4], params, data)
+            except CloudFlareAPIError as e:
+                raise CloudFlareAPIError(e=e) from None
 
     class _CFbaseAuth(_CFbase):
         """ Cloudflare v4 API"""
@@ -809,6 +836,23 @@ class CloudFlare():
             self._do = self._base.do_certauth
             self._valid = True
 
+    @classmethod
+    def sanitize_verb(cls, v):
+        """ sanitize_verb """
+        # keywords are also changed to have underscore appended so it can used with Python code
+        if keyword.iskeyword(v):
+            v = v + '_'
+        # AI functions introduce '@' symbol - i.e .../@cf/... they are replaced with at_
+        if '@' == v[0]:
+            v = 'at_' + v[1:]
+        # AI functions introduce '.' symbol - i.e 1.0 they are replaced with underscore
+        if '.' in v:
+            v = v.replace('.','_')
+        # dashes (vs underscores) cause issues in Python and other languages. they are replaced with underscores
+        if '-' in v:
+            v = v.replace('-','_')
+        return v
+
     def add(self, t, p1, p2=None, p3=None, p4=None, p5=None, content_type=None):
         """ add api call to class"""
 
@@ -830,10 +874,7 @@ class CloudFlare():
         element = None
         for element in a[0:-1]:
             try:
-                if '-' in element:
-                    branch = getattr(branch, element.replace('-','_'))
-                else:
-                    branch = getattr(branch, element)
+                branch = getattr(branch, CloudFlare.sanitize_verb(element))
             except AttributeError:
                 # missing path - should never happen unless api_v4 is a busted file
                 branch = None
@@ -844,15 +885,7 @@ class CloudFlare():
 
         name = a[-1]
         try:
-            if keyword.iskeyword(name):
-                # add the keyword appended with an extra underscore so it can used with Python code
-                f = getattr(branch, name + '_')
-            else:
-                if '-' in name:
-                    # dashes (vs underscores) cause issues in Python and other languages
-                    f = getattr(branch, name.replace('-','_'))
-                else:
-                    f = getattr(branch, name)
+            branch = getattr(branch, CloudFlare.sanitize_verb(name))
             # we only are here becuase the name already exists - don't let it overwrite - should never happen unless api_v4 is a busted file
             raise CloudFlareAPIError(0, 'api load: duplicate name found: %s/**%s**' % ('/'.join(a[0:-1]), name))
         except AttributeError:
@@ -873,15 +906,19 @@ class CloudFlare():
             # should never happen
             raise CloudFlareAPIError(0, 'api load type mismatch')
 
-        if keyword.iskeyword(name):
-            # add the keyword appended with an extra underscore so it can used with Python code
-            setattr(branch, name + '_', f)
-        else:
-            if '-' in name:
-                # dashes (vs underscores) cause issues in Python and other languages
-                setattr(branch, name.replace('-','_'), f)
-            else:
-                setattr(branch, name, f)
+        setattr(branch, CloudFlare.sanitize_verb(name), f)
+
+    def find(self, cmd):
+        """ find """
+        m = self
+        for verb in cmd.split('/'):
+            if verb == '' or verb[0] == ':':
+                continue
+            try:
+                m = getattr(m, CloudFlare.sanitize_verb(verb))
+            except AttributeError:
+                raise AttributeError('%s: not found' % (verb)) from None
+        return m
 
     def api_list(self):
         """ recursive walk of the api tree returning a list of api calls"""

@@ -16,16 +16,24 @@ class CloudFlareError(Exception):
         def __str__(self):
             return self.message
 
-    def __init__(self, code, message, error_chain=None):
+    def __init__(self, code=0, message=None, error_chain=None, e=None):
         """ errors for Cloudflare API"""
 
-        self.evalue = self.CodeMessage(int(code), str(message))
+        if e and isinstance(e, CloudFlareAPIError):
+            self.evalue = e.evalue
+            self.error_chain = e.error_chain
+            return
+
+        self.evalue = CloudFlareError.CodeMessage(int(code), str(message))
         self.error_chain = None
         if error_chain is not None:
             self.error_chain = []
             for evalue in error_chain:
-                self.error_chain.append(
-                    self.CodeMessage(int(evalue['code']), str(evalue['message'])))
+                if isinstance(evalue, CloudFlareError.CodeMessage):
+                    v = evalue
+                else:
+                    v = CloudFlareError.CodeMessage(int(evalue['code']), str(evalue['message']))
+                self.error_chain.append(v)
             # self.error_chain.append({'code': self.code, 'message': str(self.message)})
         # As we are built off Exception, we need to get our superclass all squared away
         # super().__init__(message)

@@ -4,7 +4,6 @@
 import sys
 import re
 import getopt
-import keyword
 import json
 
 import CloudFlare
@@ -272,14 +271,7 @@ def run_command(cf, method, command, params=None, content=None, files=None):
                         raise e
         else:
             try:
-                if keyword.iskeyword(element):
-                    # a keyword is appended with an extra underscore so it can used with Python code
-                    m = getattr(m, element + '_')
-                elif '-' in element:
-                    # dashes (vs underscores) cause issues in Python and other languages
-                    m = getattr(m, element.replace('-','_'))
-                else:
-                    m = getattr(m, element)
+                m = getattr(m, CloudFlare.CloudFlare.sanitize_verb(element))
                 cmd.append(element)
             except AttributeError as e:
                 # the verb/element was not found
