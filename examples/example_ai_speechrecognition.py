@@ -9,17 +9,7 @@ import requests
 sys.path.insert(0, os.path.abspath('.'))
 import CloudFlare
 
-def find_call(cf, verbs):
-    # So we walk over the @ via a getattr() call.
-    # We also have to deal with a . in a verb - that does not work in Python. So sad.
-    # Also, the - is actually an _ in this Python library.
-    # This is not normally needed for other calls
-    m = cf
-    for verb in verbs.split('/'):
-        if verb == '' or verb[0] == ':':
-            continue
-        m = getattr(m, verb)
-    return m
+use_find = False
 
 def user_agent():
     s = random.choice([
@@ -53,10 +43,13 @@ def doit(account_name, audio_data):
         exit('%s: account name not found' % (account_name))
 
     try:
-        # This should be easy to call; however, the @ will not work in Python (or many languages)
-        # r = cf.accounts.ai.run.@cf.openai/whisper(account_id, data=audio_data)
-        # We find the endpoint via a quick string search
-        r = find_call(cf, '/accounts/:id/ai/run/@cf/openai/whisper').post(account_id, data=audio_data)
+        if use_find:
+            # you can use this format:
+            r = cf.find('/accounts/:id/ai/run/@cf/openai/whisper').post(account_id, data=audio_data)
+        else:
+            # or you can use this format:
+            # @'s are replaced by at_ so .../@cf/... becomes .../at_cf/...
+            r = cf.accounts.ai.run.at_cf.openai.whisper.post(account_id, data=audio_data)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         exit('/ai.run %d %s - api call failed' % (e, e))
 
