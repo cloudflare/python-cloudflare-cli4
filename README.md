@@ -989,7 +989,7 @@ $
 
 ### Zone file upload (i.e. import) Python calls (uses BIND format files)
 
-Because `import` is a keyword (or reserved word) in Python we append a '_' (underscore) to the verb in order to use.
+Because `import` is a keyword (or reserved word) in Python we append a `_` (underscore) to the verb in order to use.
 The `cli4` command does not need this edit.
 
 ```python
@@ -1280,7 +1280,7 @@ along with https://developers.cloudflare.com/workers-ai/models/ for the nitty gr
 
 There are three AI calls included within the example folder.
 
-Image creation.
+### Image creation.
 
 ```bash
 $ python examples/example_ai_images.py A happy llama running through an orange cloud > /tmp/image.png
@@ -1290,7 +1290,7 @@ $ file /tmp/image.png
 $
 ```
 
-Translation.
+### Translation.
 
 ```bash
 $ python examples/example_ai_translate.py I\'ll have an order of the moule frites
@@ -1298,7 +1298,8 @@ Je vais avoir une commande des frites de moule
 $
 ```
 
-Speech Recognition with the openai/whisper model.
+### Speech Recognition with the openai/whisper model.
+
 The following downloads a speech as an mp3 file and passes it to the AI API.
 It does a very good job transcribing; however, there's a good chance these mp3 files were use for training.
 That said, the example code is here to show how the API works vs testing the AI/ML quality.
@@ -1343,7 +1344,29 @@ extras =
 $
 ```
 
-Along with a version of the library above `2.14.1`.
+As the `@` (at) symbol and the `.` (dot) symbol aren't allowed in python variable names; you'll have the replace `@cf` with `at_cf` and `.` with `_`.
+There's already notes above that state that `-` (dash) is replaced with `_` in the code.
+That will be needed with some model names.
+
+The `cli4` command does not need this edit. It is done on the fly!
+
+For example, the following code is valid:
+```python
+    r = cf.accounts.ai.run.at_cf.openai.whisper.post(account_id, data=audio_data)
+    r = cf.accounts.ai.run.at_cf.meta.m2m100_1_2b.post(account_id, data=translate_data)
+    r = cf.accounts.ai.run.at_cf.stabilityai.stable_diffusion_xl_base_1_0.post(account_id, data=image_create_data)
+```
+
+Or you can use the `find()` call can will do this conversion for you.
+```python
+    translate_data = {'text':"I'll have an order of the moule frites", 'source_lang':'english', 'target_lang':'french'}
+
+    m = cf.find('/accounts/:id/ai/run/@cf/meta/m2m100-1.2b')
+    r = m.post(account_id, data=translate_data)
+    print(r['translated_text'])
+```
+
+You will also have to run with a version of the library above `2.18.2`.
 
 ## Implemented API calls
 
