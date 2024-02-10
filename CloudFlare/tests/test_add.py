@@ -17,8 +17,8 @@ def test_cloudflare(debug=False):
     cf = CloudFlare.CloudFlare(debug=debug)
     assert isinstance(cf, CloudFlare.CloudFlare)
 
-def test_app_invalid():
-    """ test_app_invalid """
+def test_add_invalid():
+    """ test_add_invalid """
     """add API commands"""
     cf.add('OPEN', 'invalid')
     try:
@@ -31,7 +31,7 @@ def test_app_invalid():
         assert str(e) == 'No route for that URI'
         print('Error expected: %d=%s' % (int(e), str(e)), file=sys.stderr)
 
-def test_app_invalid_with_underscore():
+def test_add_invalid_with_underscore():
     """add API commands"""
     cf.add('OPEN', 'in_valid')
     try:
@@ -44,7 +44,7 @@ def test_app_invalid_with_underscore():
         assert str(e) == 'No route for that URI'
         print('Error expected: %d=%s' % (int(e), str(e)), file=sys.stderr)
 
-def test_app_invalid_with_dash():
+def test_add_invalid_with_dash():
     """add API commands"""
     cf.add('OPEN', 'in-val-id')
     try:
@@ -59,6 +59,6 @@ def test_app_invalid_with_dash():
 
 if __name__ == '__main__':
     test_cloudflare(debug=True)
-    test_app_invalid()
-    test_app_invalid_with_underscore()
-    test_app_invalid_with_dash()
+    test_add_invalid()
+    test_add_invalid_with_underscore()
+    test_add_invalid_with_dash()
