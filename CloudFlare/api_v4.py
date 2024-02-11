@@ -190,7 +190,16 @@ def zones_settings(self):
     self.add('AUTH', 'zones', 'settings/waf')
     self.add('AUTH', 'zones', 'settings/webp')
     self.add('AUTH', 'zones', 'settings/websockets')
+
     self.add('VOID', 'zones', 'settings/zaraz')
+    self.add('AUTH', 'zones', 'settings/zaraz/config')
+    self.add('AUTH', 'zones', 'settings/zaraz/default')
+    self.add('AUTH', 'zones', 'settings/zaraz/export')
+    self.add('AUTH', 'zones', 'settings/zaraz/history')
+    self.add('AUTH', 'zones', 'settings/zaraz/history/configs')
+    self.add('AUTH', 'zones', 'settings/zaraz/publish')
+    self.add('AUTH', 'zones', 'settings/zaraz/workflow')
+
     self.add('VOID', 'zones', 'settings/zaraz/v2')
     self.add('AUTH', 'zones', 'settings/zaraz/v2/config')
     self.add('AUTH', 'zones', 'settings/zaraz/v2/default')
@@ -472,6 +481,8 @@ def accounts(self):
     self.add('VOID', 'accounts', 'vectorize')
     self.add('AUTH', 'accounts', 'vectorize/index')
     self.add('AUTH', 'accounts', 'vectorize/indexes')
+    self.add('AUTH', 'accounts', 'vectorize/indexes', 'delete-by-ids')
+    self.add('AUTH', 'accounts', 'vectorize/indexes', 'get-by-ids')
     self.add('AUTH', 'accounts', 'vectorize/indexes', 'insert', content_type={'POST':'application/x-ndjson'})
     self.add('AUTH', 'accounts', 'vectorize/indexes', 'query')
     self.add('AUTH', 'accounts', 'vectorize/indexes', 'upsert', content_type={'POST':'application/x-ndjson'})
@@ -779,6 +790,7 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'intel/ip')
     self.add('AUTH', 'accounts', 'intel/ip-list')
     self.add('AUTH', 'accounts', 'intel/miscategorization')
+    self.add('AUTH', 'accounts', 'intel/sinkholes')
     self.add('AUTH', 'accounts', 'intel/whois')
 
     self.add('VOID', 'accounts', 'magic')
@@ -896,6 +908,7 @@ def accounts_r2(self):
     self.add('AUTH', 'accounts', 'r2/buckets')
     self.add('AUTH', 'accounts', 'r2/buckets', 'usage')
     self.add('AUTH', 'accounts', 'r2/buckets', 'objects')
+    self.add('AUTH', 'accounts', 'r2/buckets', 'sippy')
 
 def zones_email(self):
     """ zones email """
