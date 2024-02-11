@@ -67,10 +67,8 @@ def test_dns_records_port_invalid():
         assert False
     except CloudFlare.exceptions.CloudFlareAPIError as e:
         # more than one error returned by the API - a specific error and a generic error
+        print('Error expected: %r' % (e))
         assert len(e) > 0
-        for x in e:
-            print('Error expected: %d %s' % (int(x), str(x)))
-        print('Error expected: %d %s' % (int(e), str(e)))
         assert True
 
 def test_dns_records_get1():
