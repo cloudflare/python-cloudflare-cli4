@@ -3,75 +3,92 @@
 class CloudFlareError(Exception):
     """ errors for Cloudflare API"""
 
-    class CodeMessage():
+    class _CodeMessage():
         """ a small class to save away an interger and string (the code and the message)"""
 
         def __init__(self, code, message):
-            self.code = code
-            self.message = message
+            self._code = code
+            self._message = message
 
         def __int__(self):
-            return self.code
+            return self._code
 
         def __str__(self):
-            return self.message
+            return self._message
 
     def __init__(self, code=0, message=None, error_chain=None, e=None):
         """ errors for Cloudflare API"""
 
         if e and isinstance(e, CloudFlareAPIError):
-            self.evalue = e.evalue
-            self.error_chain = e.error_chain
+            # create fresh values (i.e copies)
+            self._evalue = CloudFlareError._CodeMessage(int(e), str(e))
+            if getattr(e, '_error_chain', False):
+                self._error_chain = [CloudFlareError._CodeMessage(int(v), str(v)) for v in e._error_chain]
             return
 
-        self.evalue = CloudFlareError.CodeMessage(int(code), str(message))
-        self.error_chain = None
+        self._evalue = CloudFlareError._CodeMessage(int(code), str(message))
         if error_chain is not None:
-            self.error_chain = []
+            self._error_chain = []
             for evalue in error_chain:
-                if isinstance(evalue, CloudFlareError.CodeMessage):
+                if isinstance(evalue, CloudFlareError._CodeMessage):
                     v = evalue
                 else:
-                    v = CloudFlareError.CodeMessage(int(evalue['code']), str(evalue['message']))
-                self.error_chain.append(v)
-            # self.error_chain.append({'code': self.code, 'message': str(self.message)})
+                    v = CloudFlareError._CodeMessage(int(evalue['code']), str(evalue['message']))
+                self._error_chain.append(v)
         # As we are built off Exception, we need to get our superclass all squared away
         # super().__init__(message)
+
+    def __bool__(self):
+        """ bool value for Cloudflare API errors"""
+
+        # required because there's a len() function below that can return 0
+        # see https://docs.python.org/3/library/stdtypes.html#truth-value-testing
+        return True
 
     def __int__(self):
         """ integer value for Cloudflare API errors"""
 
-        return int(self.evalue)
+        return int(self._evalue)
 
     def __str__(self):
         """ string value for Cloudflare API errors"""
 
-        return str(self.evalue)
+        return str(self._evalue)
+
+    def __repr__(self):
+        """ string value for Cloudflare API errors"""
+
+        s = '[%d:"%s"]' % (int(self._evalue), str(self._evalue))
+        if getattr(self, '_error_chain', False):
+            for evalue in self._error_chain:
+                s += ' [%d:"%s"]' % (int(evalue), str(evalue))
+        return s
 
     def __len__(self):
         """ Cloudflare API errors can contain a chain of errors"""
 
-        if self.error_chain is None:
+        try:
+            return len(getattr(self, '_error_chain'))
+        except AttributeError:
             return 0
-        return len(self.error_chain)
 
     def __getitem__(self, ii):
         """ Cloudflare API errors can contain a chain of errors"""
 
-        return self.error_chain[ii]
+        return self._error_chain[ii]
 
     def __iter__(self):
         """ Cloudflare API errors can contain a chain of errors"""
 
-        if self.error_chain is None:
-            return
-        for evalue in self.error_chain:
-            yield evalue
+        if getattr(self, '_error_chain', False):
+            for evalue in self._error_chain:
+                yield evalue
+        return
 
     def next(self):
         """ Cloudflare API errors can contain a chain of errors"""
 
-        if self.error_chain is None:
+        if getattr(self, '_error_chain', False) is False:
             raise StopIteration
 
 class CloudFlareAPIError(CloudFlareError):
