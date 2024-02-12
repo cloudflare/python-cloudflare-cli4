@@ -1,5 +1,22 @@
 # Change Log
 
+ - 2024-02-12 14:24:13 -0800 [b2ec8f7](../../commit/b2ec8f7e7e92d3319555adc1384ea2326c5b9618) 2.18.2
+ - 2024-02-12 13:18:19 -0800 [6245faf](../../commit/6245fafc1b42b514f79ad79239fb483d5711b3b7) coverage should only be CloudFlare/*.py files
+ - 2024-02-12 11:10:29 -0800 [6c309ec](../../commit/6c309ec74aeb8398e84ceaccd57efd2486a504af) when more than one Content-Type is recommended try to make a good choice
+ - 2024-02-12 10:03:18 -0800 [bf93a19](../../commit/bf93a1942ed82835d30113d3d0647dc08d175275) one more %r needed
+ - 2024-02-12 10:02:49 -0800 [664c992](../../commit/664c9920f6184956048cd2801e4e22b1bdfe2ae6) add error print for error chain - to test that code
+ - 2024-02-11 12:03:50 -0800 [212c080](../../commit/212c080f2d241f375e01777ef24088ab9be24dd6) more api calls
+ - 2024-02-10 22:43:29 -0800 [eeb1355](../../commit/eeb1355a00a1773f007820c51865effd129277af) Issue182 triggered some rethink of the exception code plus some longstanding cleanup
+ - 2024-02-10 22:26:12 -0800 [9f8fe7a](../../commit/9f8fe7aae4929623aea112706830ac72d3f45ce9) cleanup error message
+ - 2024-02-10 18:33:24 -0800 [60c67b6](../../commit/60c67b6b05ecc48958bc77a54a87aa9540b0096b) print error before assert
+ - 2024-02-10 15:21:38 -0800 [1acba51](../../commit/1acba516a8e6ca50ec708ff966eae1c6f3f57ae2) typo
+ - 2024-02-10 15:21:04 -0800 [5a314b1](../../commit/5a314b17b45a05a73ca31c9a16eabc7608d64b2b) CloudFlare/tests/test_find.py
+ - 2024-02-10 15:12:38 -0800 [4a8c255](../../commit/4a8c25559116ac7a87dad26f5933613fbf0017fd) cleaner AI examples using find() call
+ - 2024-02-10 15:11:05 -0800 [6f38180](../../commit/6f381806cf534820b4cc3d1b38c4a4054c7d9b8c) cleaner AI exampled using the find() call and/or sanitized calls without at-symbols
+ - 2024-02-10 15:00:34 -0800 [e588f6b](../../commit/e588f6b8fc43ff84f507bed5429edf6fbbc301b7) cleaner sanitize code for keywords, dashes, at-symbols. Cleaner API Exception returns. Added unified find() call to reduce code
+ - 2024-02-10 12:37:38 -0800 [abcdcee](../../commit/abcdcee61d506932c7a84b8a79a653e838141146) improved error message - minor
+ - 2024-02-09 16:32:14 -0800 [0e7bbec](../../commit/0e7bbecce85dd0ebe0ff0e25a7ea70ccc795ef7e) cleanup of _content_type value - not needed if None, which is the default
+ - 2024-02-09 13:25:10 -0800 [07348fe](../../commit/07348fe1fae35da8e052048b5a76a7814fca381a) CHANGELOG.md pushed to github
  - 2024-02-09 13:24:46 -0800 [742c156](../../commit/742c15613ac0cf7762ccad53a54422a81afcfc7d) 2.18.1
  - 2024-02-09 13:20:06 -0800 [2a3e059](../../commit/2a3e059df6a7f4e46c575c86030a90184c4b8917) add data and files to be present - which is not normall legal, convert code from dict to set for files data to improve requests() handling
  - 2024-02-09 13:19:08 -0800 [10455f3](../../commit/10455f38d8d55665e5c3b007673cff73ce040d86) handle --form with set() - was missing
