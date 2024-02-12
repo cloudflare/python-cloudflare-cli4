@@ -16,6 +16,9 @@ class CloudFlareError(Exception):
         def __str__(self):
             return self._message
 
+        def __repr__(self):
+            return '[%d:"%s"]' % (int(self._code), str(self._message))
+
     def __init__(self, code=0, message=None, error_chain=None, e=None):
         """ errors for Cloudflare API"""
 
