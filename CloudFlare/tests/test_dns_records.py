@@ -69,6 +69,7 @@ def test_dns_records_port_invalid():
         # more than one error returned by the API - a specific error and a generic error
         print('Error expected: %r' % (e))
         assert len(e) > 0
+        print('Error expected (chain): %s' % (' '.join(['%r' % (v) for v in e])))
         assert True
 
 def test_dns_records_get1():
