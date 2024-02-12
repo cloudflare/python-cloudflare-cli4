@@ -80,10 +80,24 @@ class CloudFlare():
                 ct = content_type[method]
                 if isinstance(ct, list):
                     # How do we choose from more than one content type?
+                    found = False
                     for t in ct:
-                        # we have to match against the data type - arggg! how? XXX/TODO - use first for now
-                        self.headers['Content-Type'] = t
-                        break
+                        # we have to match against the data type - arggg!
+                        if 'application/octet-stream' == t and isinstance(data, (bytes,bytearray)):
+                            self.headers['Content-Type'] = t
+                            found = True
+                            break
+                        if 'application/json' == t and isinstance(data, (list,dict)):
+                            self.headers['Content-Type'] = t
+                            found = True
+                            break
+                        if 'application/javascript' == t and isinstance(data, str):
+                            self.headers['Content-Type'] = t
+                            found = True
+                            break
+                    if not found:
+                        # punt - pick first - we can't do anything else!
+                        self.headers['Content-Type'] = ct[0]
                 else:
                     self.headers['Content-Type'] = ct
             else:
