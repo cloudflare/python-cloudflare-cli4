@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
 
-# test /graphql
+# test waiting_rooms
 
 cf = None
 
