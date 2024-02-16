@@ -37,6 +37,7 @@ def main():
                 'cli4=cli4.__main__:main'
             ]
         },
+        python_requires='>3.5.0',
         classifiers=[
             'Development Status :: 5 - Production/Stable',
             'Intended Audience :: Developers',
