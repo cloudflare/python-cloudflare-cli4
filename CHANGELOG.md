@@ -1,5 +1,10 @@
 # Change Log
 
+ - 2024-02-17 08:12:56 +0900 [c7d9ae3](../../commit/c7d9ae3b7055b30fc2abfbd267d489ca2a1027f4) 2.19.0
+ - 2024-02-17 08:10:02 +0900 [9135f17](../../commit/9135f1774da0e8bba0981d35d7920e238676ddc2) typo introduced before 2.18.x - now fixed
+ - 2024-02-17 08:09:18 +0900 [3901158](../../commit/3901158a1de0993b6870c03600d67d503e335195) purge_cache test - was chasing a different bug
+ - 2024-02-14 13:42:44 -0800 [ba42673](../../commit/ba42673e3957b15c024b91e56e2963c4ef4aebe8) typo
+ - 2024-02-12 14:24:48 -0800 [c5b035a](../../commit/c5b035a637a55025dabae13e0db7b6aa30e32439) CHANGELOG.md pushed to github
  - 2024-02-12 14:24:13 -0800 [b2ec8f7](../../commit/b2ec8f7e7e92d3319555adc1384ea2326c5b9618) 2.18.2
  - 2024-02-12 13:18:19 -0800 [6245faf](../../commit/6245fafc1b42b514f79ad79239fb483d5711b3b7) coverage should only be CloudFlare/*.py files
  - 2024-02-12 11:10:29 -0800 [6c309ec](../../commit/6c309ec74aeb8398e84ceaccd57efd2486a504af) when more than one Content-Type is recommended try to make a good choice
