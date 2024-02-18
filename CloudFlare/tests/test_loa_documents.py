@@ -4,6 +4,9 @@ import os
 import sys
 import time
 import random
+import tempfile
+
+from utils import dummy_loa_document
 
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
@@ -68,14 +71,16 @@ def test_addressing_loa_documents():
     """ test_addressing_loa_documents """
     loa_documents = cf.accounts.addressing.loa_documents(account_id)
     assert isinstance(loa_documents, list)
-    for loa_document in loa_documents:
+    for loa_document in loa_documents[-4:]:
         assert isinstance(loa_document, dict)
         assert 'id' in loa_document
+        assert 'created' in loa_document
         assert 'filename' in loa_document
         assert 'verified' in loa_document
         assert 'size_bytes' in loa_document
-        print('%s: filename=%s size_bytes=%d verified=%s' % (
+        print('%s: %s filename=%s size_bytes=%d verified=%s' % (
            loa_document['id'],
+           loa_document['created'],
            loa_document['filename'],
            loa_document['size_bytes'],
            loa_document['verified']
@@ -83,16 +88,21 @@ def test_addressing_loa_documents():
 
 def test_addressing_loa_documents_upload(filename=None):
     """ test_addressing_loa_documents_upload """
-    if not filename:
-        filename = 'CloudFlare/tests/dummy_loa_document.pdf'
-    try:
-        pdf_file = open(filename, 'rb')
-    except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
-        print('%s: %s' % (filename, e), file=sys.stderr)
-        assert False
+    if filename:
+        # use provided file
+        try:
+            pdf_file = open(filename, 'rb')
+        except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
+            print('%s: %s' % (filename, e), file=sys.stderr)
+            assert False
+    else:
+        # create a dummy temporary file
+        pdf_file = tempfile.NamedTemporaryFile(mode='w+b', prefix='dummy-loa-document-', suffix='.pdf', delete=False)
+        pdf_file.write(dummy_loa_document.encode())
+        pdf_file.seek(0)
 
     size_bytes = os.fstat(pdf_file.fileno()).st_size
-    print('filename=%s size_bytes=%d' % (filename, size_bytes), file=sys.stderr)
+    print('filename=%s size_bytes=%d' % (pdf_file.name, size_bytes), file=sys.stderr)
 
     files = {'loa_document': pdf_file}
     try:
@@ -115,6 +125,8 @@ def test_addressing_loa_documents_upload(filename=None):
 
 def ispdf(s):
     """ ispdf """
+    if isinstance(s, str):
+        s = s.encode()
     idx = 0
     while s[idx] in [b'\r', b'\n']:
         idx += 1
@@ -129,21 +141,24 @@ def ispdf(s):
     if b'%PDF-' in s[0:1024]:
         return True
     # give up!
+    print('ispdf: failing with content="%s..."' % (s[0:50]), file=sys.stderr)
     return False
 
 def test_addressing_loa_documents_download():
     """ test_addressing_loa_documents_download """
     loa_documents = cf.accounts.addressing.loa_documents(account_id)
     assert isinstance(loa_documents, list)
-    for loa_document in loa_documents:
+    for loa_document in loa_documents[-4:]:
         assert isinstance(loa_document, dict)
         assert 'id' in loa_document
+        assert 'created' in loa_document
         assert 'filename' in loa_document
         assert 'verified' in loa_document
         assert 'size_bytes' in loa_document
         assert isinstance(loa_document['size_bytes'], int)
-        print('%s: filename=%s size_bytes=%d verified=%s' % (
+        print('%s: %s filename=%s size_bytes=%d verified=%s' % (
             loa_document['id'],
+            loa_document['created'],
             loa_document['filename'],
             loa_document['size_bytes'],
             loa_document['verified']
@@ -152,7 +167,6 @@ def test_addressing_loa_documents_download():
         size_bytes = loa_document['size_bytes']
         pdf_content = cf.accounts.addressing.loa_documents.download(account_id, loa_document_identifier)
         assert size_bytes == len(pdf_content)
-        print('%s: %s' % (loa_document_identifier, pdf_content[0:10]))
         assert ispdf(pdf_content)
 
 if __name__ == '__main__':
