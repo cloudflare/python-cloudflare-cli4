@@ -8,15 +8,21 @@ cli4 \- Command line access to Cloudflare v4 API
 [\fB\-V\fR|\fB\-\-version]
 [\fB\-h\fR|\fB\-\-help]
 [\fB\-v\fR|\fB\-\-verbose]
+[\fB\-e\fR|\fB\-\-examples]
 [\fB\-q\fR|\fB\-\-quiet]
 [\fB\-j\fR|\fB\-\-json]
 [\fB\-y\fR|\fB\-\-yaml]
 [\fB\-n\fR|\fB\-\-ndjson]
 [\fB\-r\fR|\fB\-\-raw]
+[\fB\ir\fR|\fB\-\-image]
 [\fB\-d\fR|\fB\-\-dump]
+[\fB\-b\fR|\fB\-\-binary]
+[\fB\-A openapi-url\fR|\fB\-\-openapi openapi-url]
 [\fB\-p profile-name\fR|\fB\-\-profile profile-name]
 [\fBitem\fR=\fIvalue\fR ...]
+[=\fIvalue\fR ...]
 [\fBitem\fR=@\fIfilename\fR ...]
+[=@\fIfilename\fR ...]
 [\fB\-G\fR|\fB\-\-get]
 [\fB\-P\fR|\fB\-\-patch]
 [\fB\-O\fR|\fB\-\-post]
@@ -36,6 +42,8 @@ Display program version number and exit.
 This information (in a terse form).
 .IP "[\-v, \-\-verbose]"
 Provide some protcol debugging information.
+.IP "[\-e, \-\-example]"
+Show the path to the examples folder/directory.
 .IP "[\-q, \-\-quiet]"
 Don't output any JSON/YAML responses.
 .IP "[\-j, \-\-json]"
@@ -46,8 +54,16 @@ Output response data in YAML format (if yaml package installed).
 Output response data in NDJSON format (if jsonlines package installed).
 .IP "[\-r, \-\-raw]"
 Output JSON results in raw mode without splitting out the errors and results.
+.IP "[\-i, \-\-image]"
+Output results as binary (i.e. it's an image).
+This isn't normally needed as the API returns a Content-Type to indicate an image is being returned.
+This option can be used to allow the API output to be output without any processing (i.e. JSON formatted).
 .IP "[\-d, \-\-dump]"
 Output a list of all API calls included in the code.
+.IP "[\-b, \-\-binary]"
+Open files in binary mode.
+.IP "[-A \fIopenapi-url\fR, \-\-openapi \fIopenapi-url\fR]"
+Decode Cloudflare's OpenAPI spec and output all the known commands.
 .IP "[-p \fIprofile-name\fR, \-\-profile \fIprofile-name\fR]"
 Select a \fIprofile-name\fR from the configuration file (hence select custom \fIemail\fR/\fItoken\fR values).
 .IP "\-\-get"
@@ -72,6 +88,7 @@ The API command(s) to execute.
 .SH COMMAND(S)
 The command string uses slash (\fB/\fR) to seperate the verbs in the same way that the Cloudflare v4 API documentation does.
 Any verb starting with colon (\fB:\fR) is either converted to zone_id, user_id, organtization_id, or otherwise.
+Any verb starting with coloe (\fB:\fR) and followed by 32 hex chracters is passed thru raw.
 Any verb starting with two colons (\fB::\fR) is passed thru raw.
 
 .SH RESULTS
