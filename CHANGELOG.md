@@ -1,5 +1,11 @@
 # Change Log
 
+ - 2024-02-22 11:23:43 +0900 [32d1461](../../commit/32d1461896e7a11242ac51c619b1f38ada0867c7) 2.18.1.rc1
+ - 2024-02-22 11:23:09 +0900 [a71dd35](../../commit/a71dd354fe44b8802e205767f16b92f8b0b533ab) added http_headers
+ - 2024-02-22 09:32:55 +0900 [c2c4adf](../../commit/c2c4adf2d4f75ee76bb25d82ac8628945644bd98) solidfied the Python3 only mindset
+ - 2024-02-19 16:45:40 +0900 [64f3a01](../../commit/64f3a011bb68812493c926b87a7c7b777199e5c6) brought man page up to date
+ - 2024-02-18 18:48:47 +0900 [618d02e](../../commit/618d02e546a82f1c26f483cd46bc14c808d44508) create dummy loa document on-the-fly with very-basic pdf content
+ - 2024-02-17 08:13:17 +0900 [4b2ec55](../../commit/4b2ec5520fe6cf53974f0b6ab65dad9f3c68e139) CHANGELOG.md pushed to github
  - 2024-02-17 08:12:56 +0900 [c7d9ae3](../../commit/c7d9ae3b7055b30fc2abfbd267d489ca2a1027f4) 2.19.0
  - 2024-02-17 08:10:02 +0900 [9135f17](../../commit/9135f1774da0e8bba0981d35d7920e238676ddc2) typo introduced before 2.18.x - now fixed
  - 2024-02-17 08:09:18 +0900 [3901158](../../commit/3901158a1de0993b6870c03600d67d503e335195) purge_cache test - was chasing a different bug

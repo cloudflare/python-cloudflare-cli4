@@ -6,7 +6,7 @@ import time
 import random
 import tempfile
 
-from utils import dummy_loa_document
+from CloudFlare.tests.utils import dummy_loa_document
 
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
