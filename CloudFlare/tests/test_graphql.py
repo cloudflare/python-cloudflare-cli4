@@ -2,10 +2,8 @@
 
 import os
 import sys
-import time
 import random
 import datetime
-import pytz
 import json
 
 sys.path.insert(0, os.path.abspath('.'))
@@ -45,12 +43,12 @@ def test_find_zone(domain_name=None):
     assert len(zone_id) == 32
     print('zone: %s %s' % (zone_id, zone_name), file=sys.stderr)
 
-def now_iso8601_time(h_delta):
-    """need a yyyy-mm-dd string"""
-    t = time.time() - (h_delta * 3600)
-    # only use yyyy-mm-dd part for httpRequests1dGroups below
-    r = datetime.datetime.fromtimestamp(int(t), tz=pytz.timezone("UTC")).strftime('%Y-%m-%d')
-    return r
+def rfc3339_iso8601_time(hour_delta=0, with_hms=False):
+    # format time (with an hour offset in RFC3339 ISO8601 format (and do it UTC time)
+    dt = (datetime.datetime.now(datetime.UTC).replace(microsecond=0) + datetime.timedelta(hours=hour_delta))
+    if with_hms:
+        return dt.isoformat().replace('+00:00', 'Z')
+    return dt.strftime('%Y-%m-%d')
 
 def test_graphql_get():
     """ /graphql_get test """
@@ -129,8 +127,8 @@ def test_graphql_post_empty():
 
 def test_graphql_post():
     """ /graphql_post test """
-    date_before = now_iso8601_time(0) # now
-    date_after = now_iso8601_time(3 * 24) # 3 days worth
+    date_before = rfc3339_iso8601_time(0) # now
+    date_after = rfc3339_iso8601_time(-3 * 24) # 3 days worth
 
     query = """
       query {

@@ -14,6 +14,13 @@ import CloudFlare
 
 cf = None
 
+def rfc3339_iso8601_time(hour_delta=0, with_hms=False):
+    # format time (with an hour offset in RFC3339 ISO8601 format (and do it UTC time)
+    dt = (datetime.datetime.now(datetime.UTC).replace(microsecond=0) + datetime.timedelta(hours=hour_delta))
+    if with_hms:
+        return dt.isoformat().replace('+00:00', 'Z')
+    return dt.strftime('%Y-%m-%d')
+
 def test_cloudflare(debug=False):
     """ test_cloudflare """
     global cf
@@ -52,7 +59,7 @@ metadata_values = json.dumps({
 })
 
 # format future time in RFC3339 format (and do it UTC time)
-time_plus_one_hour_in_iso = (datetime.datetime.utcnow().replace(microsecond=0) + datetime.timedelta(hours=1)).isoformat() + 'Z'
+time_plus_one_hour_in_iso = rfc3339_iso8601_time(1, True)
 
 def test_images_v2_direct_upload():
     """ test_images_v2_direct_upload """

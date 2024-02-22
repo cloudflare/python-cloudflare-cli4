@@ -3,19 +3,18 @@
 
 import os
 import sys
-import time
 import datetime
-import pytz
 
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
 
-def now_iso8601_time(h_delta):
-    """Cloudflare API code - example"""
-    t = time.time() - (h_delta * 3600)
-    # only use yyyy-mm-dd part for httpRequests1dGroups below
-    r = datetime.datetime.fromtimestamp(int(t), tz=pytz.timezone("UTC")).strftime('%Y-%m-%d')
-    return r
+def rfc3339_iso8601_time(hour_delta=0, with_hms=False):
+    """ rfc3339_iso8601_time """
+    # format time (with an hour offset in RFC3339 ISO8601 format (and do it UTC time)
+    dt = (datetime.datetime.now(datetime.UTC).replace(microsecond=0) + datetime.timedelta(hours=hour_delta))
+    if with_hms:
+        return dt.isoformat().replace('+00:00', 'Z')
+    return dt.strftime('%Y-%m-%d')
 
 def main():
     """Cloudflare API code - example"""
@@ -25,7 +24,7 @@ def main():
         zone_name = sys.argv[1]
         params = {'name':zone_name, 'per_page':1}
     except IndexError:
-        exit('usage: example_graphql zone')
+        sys.exit('usage: example_graphql zone')
 
     cf = CloudFlare.CloudFlare()
 
@@ -33,12 +32,10 @@ def main():
     try:
         zones = cf.zones.get(params=params)
     except CloudFlare.exceptions.CloudFlareAPIError as e:
-        exit('/zones.get %d %s - api call failed' % (e, e))
-    except Exception as e:
-        exit('/zones - %s - api call failed' % (e))
+        sys.exit('/zones.get %d %s - api call failed' % (int(e), str(e)))
 
-    date_before = now_iso8601_time(0) # now
-    date_after = now_iso8601_time(7 * 24) # 7 days worth
+    date_before = rfc3339_iso8601_time(0) # now
+    date_after = rfc3339_iso8601_time(-7 * 24) # 7 previous days worth
 
     zone_id = zones[0]['id']
     query = """
@@ -58,14 +55,14 @@ def main():
     try:
         r = cf.graphql.post(data={'query':query})
     except CloudFlare.exceptions.CloudFlareAPIError as e:
-        exit('/graphql.post %d %s - api call failed' % (e, e))
+        sys.exit('/graphql.post %d %s - api call failed' % (int(e), str(e)))
 
     # only one zone, so use zero'th element!
     zone_info = r['data']['viewer']['zones'][0]
 
-    httpRequests1dGroups = zone_info['httpRequests1dGroups']
+    http_requests1d_groups = zone_info['httpRequests1dGroups']
 
-    for h in sorted(httpRequests1dGroups, key=lambda v: v['dimensions']['date']):
+    for h in sorted(http_requests1d_groups, key=lambda v: v['dimensions']['date']):
         result_date = h['dimensions']['date']
         result_info = h['sum']['countryMap']
         print(result_date)
@@ -74,4 +71,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    exit(0)
+    sys.exit(0)

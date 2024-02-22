@@ -32,7 +32,16 @@ import CloudFlare
 # released between then require at-least one paramater send via files= in order to not trigger a backend API bug
 #
 
+def rfc3339_iso8601_time(hour_delta=0, with_hms=False):
+    """ rfc3339_iso8601_time """
+    # format time (with an hour offset in RFC3339 ISO8601 format (and do it UTC time)
+    dt = (datetime.datetime.now(datetime.UTC).replace(microsecond=0) + datetime.timedelta(hours=hour_delta))
+    if with_hms:
+        return dt.isoformat().replace('+00:00', 'Z')
+    return dt.strftime('%Y-%m-%d')
+
 def method_from_library_version():
+    """ method_from_library_version """
     if CloudFlare.__version__ <= '2.14.2':
         print('Using %s version of Cloudflare python library - hence do not need data= or files=; but use files= if passing anything' % (CloudFlare.__version__))
         return ''
@@ -44,6 +53,7 @@ def method_from_library_version():
     return 'USE-DATA'
 
 def doit(account_name, image_filename):
+    """ doit """
 
     # https://developers.cloudflare.com/stream/uploading-videos/direct-creator-uploads/
     # https://developers.cloudflare.com/api/operations/cloudflare-images-create-authenticated-direct-upload-url-v-2
@@ -53,16 +63,16 @@ def doit(account_name, image_filename):
             params = {'name': account_name, 'per_page': 1}
             accounts = cf.accounts.get(params=params)
         except CloudFlare.exceptions.CloudFlareAPIError as e:
-            exit('%s: %d %s - api call failed' % ('/accounts', e, e))
+            sys.exit('%s: %d %s - api call failed' % ('/accounts', int(e), str(e)))
         try:
             account_id = accounts[0]['id']
         except IndexError:
-            exit('%s: account name not found' % (account_name))
+            sys.exit('%s: account name not found' % (account_name))
 
         try:
            image_fp = open(image_filename, 'rb')
         except Exception as e:
-            exit('%s: %s - file read failed' % (image_filename, e))
+            sys.exit('%s: %s - file read failed' % (image_filename, e))
 
         image_filesize = os.fstat(image_fp.fileno()).st_size
         if image_filesize > 1024*1024*1024:
@@ -75,7 +85,7 @@ def doit(account_name, image_filename):
                 print('%s: filesize = %d Bytes' % (image_filename, image_filesize))
 
         # format future time in RFC3339 format (and do it UTC time)
-        time_plus_one_hour_in_iso = (datetime.datetime.utcnow().replace(microsecond=0) + datetime.timedelta(hours=1)).isoformat() + 'Z'
+        time_plus_one_hour_in_iso = rfc3339_iso8601_time(1, True)
 
         # direct_upload uses multipart/form-data and hence this info is passed as files (but None for filename)
         # these are the four form values
@@ -115,7 +125,7 @@ def doit(account_name, image_filename):
         try:
             r = cf.accounts.images.v2.direct_upload.post(account_id, data=data, files=files)
         except CloudFlare.exceptions.CloudFlareAPIError as e:
-            exit('%s: %d %s - api call failed' % ('/accounts/images/v2/direct_upload', e, e))
+            sys.exit('%s: %d %s - api call failed' % ('/accounts/images/v2/direct_upload', int(e), str(e)))
         print('v2 new image post results')
         print(json.dumps(r, indent=4))
 
@@ -128,9 +138,9 @@ def doit(account_name, image_filename):
         #      https://upload.videodelivery.net/f65014bc6ff5419ea86e7972a047ba22
 
         try:
-            r = requests.post(image_url, files={('file', image_fp) })
+            r = requests.post(image_url, files={('file', image_fp)}, timeout=5)
         except Exception as e:
-            exit('%s: %s - api call failed' % (image_url, e))
+            sys.exit('%s: %s - api call failed' % (image_url, e))
 
         image_fp.close()
 
@@ -139,20 +149,20 @@ def doit(account_name, image_filename):
                print('403 means you need to enable images in your account')
            if r.status_code == 403:
                print('415 means the file is a bad image format')
-           exit('%s: HTTP Error %s' % (image_url, r.status_code))
+           sys.exit('%s: HTTP Error %s' % (image_url, r.status_code))
 
         j = r.json()
-        if j['success'] == True:
+        if j['success'] is True:
             print('Image upload results')
             print(json.dumps(j['result'], indent=4))
         else:
-            exit('Error:\n    errors: %s\n    messages: %s' % (image_url, j['errors'], j['messages']))
+            sys.exit('Error:\n    errors: %s\n    messages: %s' % (j['errors'], j['messages']))
 
         # list all images
         try:
             r = cf.accounts.images.v2(account_id)
         except CloudFlare.exceptions.CloudFlareAPIError as e:
-            exit('%s: %d %s - api call failed' % ('/accounts/images/v1', e, e))
+            sys.exit('%s: %d %s - api call failed' % ('/accounts/images/v1', int(e), str(e)))
 
         print('All account images:')
         for img in r['images']:
@@ -167,21 +177,22 @@ def doit(account_name, image_filename):
         try:
             r = cf.accounts.images.v1.delete(account_id, image_id)
         except CloudFlare.exceptions.CloudFlareAPIError as e:
-            exit('%s: %d %s - api call failed' % ('/accounts/images/v1', e, e))
+            sys.exit('%s: %d %s - api call failed' % ('/accounts/images/v1', int(e), str(e)))
         print('Image delete')
         print(json.dumps(r, indent=4))
 
 def main():
+    """ main """
     try:
         account_name = sys.argv[1]
     except IndexError:
-        exit('usage: example_images_v2_direct_upload.py account_name image_filename')
+        sys.exit('usage: example_images_v2_direct_upload.py account_name image_filename')
     try:
         image_filename = sys.argv[2]
     except IndexError:
-        exit('usage: example_images_v2_direct_upload.py account_name image_filename')
+        sys.exit('usage: example_images_v2_direct_upload.py account_name image_filename')
     doit(account_name, image_filename)
-    exit(0)
+    sys.exit(0)
 
 if __name__ == '__main__':
     main()
