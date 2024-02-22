@@ -1,5 +1,9 @@
 # Change Log
 
+ - 2024-02-22 13:36:59 +0900 [6f9e5cf](../../commit/6f9e5cf637fb743e6e9a231ac2b3e37211d492d4) 2.19.1
+ - 2024-02-22 13:34:05 +0900 [08123c1](../../commit/08123c1cb1fd49c5727c89d5bfdac95f36f01624) http_headers documentation
+ - 2024-02-22 13:14:37 +0900 [44751a0](../../commit/44751a003c33d75d73d51889728e75be4bafb7f5) fix tag name creation
+ - 2024-02-22 11:25:20 +0900 [10d8af3](../../commit/10d8af3dce16af13127cb3e7fe2688acbdca9ad0) CHANGELOG.md pushed to github
  - 2024-02-22 11:23:43 +0900 [32d1461](../../commit/32d1461896e7a11242ac51c619b1f38ada0867c7) 2.18.1.rc1
  - 2024-02-22 11:23:09 +0900 [a71dd35](../../commit/a71dd354fe44b8802e205767f16b92f8b0b533ab) added http_headers
  - 2024-02-22 09:32:55 +0900 [c2c4adf](../../commit/c2c4adf2d4f75ee76bb25d82ac8628945644bd98) solidfied the Python3 only mindset
