@@ -2,15 +2,14 @@
 
 import os
 import sys
-import time
 import random
 import tempfile
-
-from CloudFlare.tests.utils import dummy_loa_document
 
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
 import CloudFlare
+
+from CloudFlare.tests.utils import dummy_loa_document
 
 # test /accounts/:id/addressing/prefixes
 # test /accounts/:id/addressing/loa_documents
