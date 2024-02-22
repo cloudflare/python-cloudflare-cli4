@@ -319,6 +319,42 @@ def main():
     ...
 ```
 
+### Passing your own HTTP headers to API calls
+
+There are very specific case where a user of the library needs to add custom headers to all HTTP calls.
+This is rarly needed.
+
+The addition headers can be passed via the confuration file as follows:
+
+```bash
+$ cat ~/.cloudflare/cloudflare.cfg
+...
+http_headers =
+        X-Header1:value
+        X-Header2: value1 value2 value3
+        X-Header3: "this is life as we know it"
+        X-Header4: 'two single quotes'
+        X-Header5:
+...
+$
+```
+Each line should have a header noun, a colon, and a verb.
+
+You can also pass these via Python calls.
+```python
+    import CloudFlare
+
+    http_headers = [
+        'X-Header1:value',
+        'X-Header2: value1 value2 value3',
+        'X-Header3: "this is life as we know it"',
+        'X-Header4: \'two single quotes\'',
+        'X-Header5:',
+    ]
+    cf = CloudFlare.CloudFlare(http_headers=http_headers)
+...
+```
+
 ### Advanced use of configuration file for authentication based on method
 
 The configuration file can have values that are both generic and specific to the method.
