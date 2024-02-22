@@ -29,6 +29,7 @@ def read_configs(profile=None):
 
     config['global_request_timeout'] = os.getenv('CLOUDFLARE_GLOBAL_REQUEST_TIMEOUT')
     config['max_request_retries'] = os.getenv('CLOUDFLARE_MAX_REQUEST_RETRIES')
+    config['http_headers'] = os.getenv('CLOUDFLARE_HTTP_HEADERS')
 
     # grab values from config files
     cp = configparser.ConfigParser()
@@ -64,11 +65,15 @@ def read_configs(profile=None):
         if not cp.has_section(profile):
             raise ReadConfigError("%s: configuration section missing - configuration file only has these sections: %s" % (profile, ','.join(cp.sections()))) from None
 
-        for option in ['email', 'key', 'token', 'certtoken', 'extras', 'base_url', 'openapi_url', 'global_request_timeout', 'max_request_retries']:
+        for option in ['email', 'key', 'token', 'certtoken', 'extras', 'base_url', 'openapi_url', 'global_request_timeout', 'max_request_retries', 'http_headers']:
             try:
                 config_value = cp.get(profile, option)
                 if option == 'extras':
+                    # we join all values together as one space seperated strings
                     config[option] = re.sub(r"\s+", ' ', config_value)
+                elif option == 'http_headers':
+                    # we keep lines as is for now
+                    config[option] = config_value
                 else:
                     config[option] = re.sub(r"\s+", '', config_value)
                 if config[option] is None or config[option] == '':
@@ -87,9 +92,11 @@ def read_configs(profile=None):
                 except (configparser.NoOptionError, configparser.NoSectionError):
                     pass
 
-    # do any final cleanup - only needed for extras (which are multiline)
+    # do any final cleanup - only needed for extras and http_headers (which are multiline)
     if 'extras' in config and config['extras'] is not None:
         config['extras'] = config['extras'].strip().split(' ')
+    if 'http_headers' in config and config['http_headers'] is not None:
+        config['http_headers'] = [h for h in config['http_headers'].split('\n') if len(h) > 0]
 
     # remove blank entries
     for x in sorted(config.keys()):

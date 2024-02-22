@@ -53,6 +53,7 @@ class CloudFlare():
                 self.max_request_retries = int(self.max_request_retries)
             except (TypeError, ValueError):
                 self.max_request_retries = DEFAULT_MAX_REQUEST_RETRIES
+            self.additional_http_headers = config['http_headers'] if 'http_headers' in config else None
             self.profile = config['profile']
             self.network = CFnetwork(
                 use_sessions=self.use_sessions,
@@ -135,6 +136,14 @@ class CloudFlare():
                     self.headers['Content-Type'] = 'multipart/form-data'
                     # however something isn't right and this works ... look at again later!
                     del self.headers['Content-Type']
+            if self.additional_http_headers:
+                for h in self.additional_http_headers:
+                    t, v = h.split(':', 1)
+                    t = t.strip()
+                    v = v.strip()
+                    if len(v) > 0 and ((v[0] == '"' and v[-1] == '"') or (v[0] == "'" and v[-1] == "'")):
+                        v = v[1:-1]
+                    self.headers[t] = v
             return data, files
 
         def _add_auth_headers(self, method):
@@ -978,7 +987,7 @@ class CloudFlare():
 
         return self._base.api_from_openapi(url)
 
-    def __init__(self, email=None, key=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None, global_request_timeout=None, max_request_retries=None):
+    def __init__(self, email=None, key=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None, global_request_timeout=None, max_request_retries=None, http_headers=None):
         """ Cloudflare v4 API"""
 
         self._base = None
@@ -1020,6 +1029,10 @@ class CloudFlare():
             config['global_request_timeout'] = global_request_timeout
         if max_request_retries is not None:
             config['max_request_retries'] = max_request_retries
+        if http_headers is not None:
+            if not isinstance(http_headers, list):
+                raise TypeError('http_headers is not a list')
+            config['http_headers'] = http_headers
 
         # we do not need to handle item.call values - they pass straight thru
 
