@@ -1471,6 +1471,8 @@ As of January 2020 the code is Python3.8 clean. The new `SyntaxWarning` messages
 
 As of late 2023 the code is Python3.11 clean.
 
+As of February 2024 the code is officially marked as 3.x only (3.5 and above to be specific) such that it can become PEP561 specific.
+
 ## pypi and GitHub signed releases
 
 As of October/2022, the code is signed by the maintainers personal email address: `mahtin@mahtin.com` `7EA1 39C4 0C1C 842F 9D41 AAF9 4A34 925D 0517 2859`
