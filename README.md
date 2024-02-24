@@ -355,6 +355,16 @@ You can also pass these via Python calls.
 ...
 ```
 
+These header values can also be passed via `cli4` command (many times) - use the `-v` option to see the debug messages:
+```
+$ cli4 -v --header 'X-something:' --header 'X-whatever:whatever' /zones > /tmp/results.json
+...
+            --header "X-something: " \
+            --header "X-whatever: whatever " \
+...
+$
+```
+
 ### Advanced use of configuration file for authentication based on method
 
 The configuration file can have values that are both generic and specific to the method.
@@ -657,6 +667,7 @@ $ cli4 [-V|--version] [-h|--help] [-v|--verbose] \
     [-A|--openapi url] \
     [-b|--binary] \
     [-p|--profile profile-name] \
+    [-h|--header additional-header] \
     [--get|--patch|--post|--put|--delete] \
     [item=value|item=@filename|@filename ...] /command ...
 ```
