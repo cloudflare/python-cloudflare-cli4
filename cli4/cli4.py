@@ -396,6 +396,7 @@ def do_it(args):
     openapi_url = None
     binary_file = False
     profile = None
+    http_headers = None
     method = 'GET'
 
     usage = ('usage: cli4 '
@@ -408,13 +409,14 @@ def do_it(args):
              + '[-A|--openapi url] '
              + '[-b|--binary] '
              + '[-p|--profile profile-name] '
+             + '[-h|--header additional-header] '
              + '[--get|--patch|--post|--put|--delete] '
              + '[item=value|item=@filename|@filename ...] '
              + '/command ...')
 
     try:
         opts, args = getopt.getopt(args,
-                                   'VhveqjynirdA:bp:GPOUD',
+                                   'VhveqjynirdA:bp:h:GPOUD',
                                    [
                                        'version', 'help', 'verbose',
                                        'examples',
@@ -425,6 +427,7 @@ def do_it(args):
                                        'openapi=',
                                        'binary',
                                        'profile=',
+                                       'header=',
                                        'get', 'patch', 'post', 'put', 'delete'
                                    ])
     except getopt.GetoptError:
@@ -454,6 +457,10 @@ def do_it(args):
             raw = True
         elif opt in ('-p', '--profile'):
             profile = arg
+        elif opt in ('-h', '--header'):
+            if http_headers is None:
+                http_headers = []
+            http_headers.append(arg)
         elif opt in ('-d', '--dump'):
             do_dump = True
         elif opt in ('-A', '--openapi'):
@@ -480,7 +487,7 @@ def do_it(args):
         sys.exit(0)
 
     try:
-        cf = CloudFlare.CloudFlare(debug=verbose, raw=raw, profile=profile)
+        cf = CloudFlare.CloudFlare(debug=verbose, raw=raw, profile=profile, http_headers=http_headers)
     except Exception as e:
         sys.exit(e)
 

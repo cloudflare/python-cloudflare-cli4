@@ -97,6 +97,14 @@ def read_configs(profile=None):
         config['extras'] = config['extras'].strip().split(' ')
     if 'http_headers' in config and config['http_headers'] is not None:
         config['http_headers'] = [h for h in config['http_headers'].split('\n') if len(h) > 0]
+        for h in config['http_headers']:
+            try:
+                t, v = h.split(':', 1)
+            except ValueError:
+                # clearly a bad header syntax
+                raise ReadConfigError('%s: header syntax error' % (h)) from None
+            if len(t.strip()) == 0:
+                raise ReadConfigError('%s: header syntax error' % (h)) from None
 
     # remove blank entries
     for x in sorted(config.keys()):

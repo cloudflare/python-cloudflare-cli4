@@ -1032,6 +1032,14 @@ class CloudFlare():
         if http_headers is not None:
             if not isinstance(http_headers, list):
                 raise TypeError('http_headers is not a list')
+            for h in http_headers:
+                try:
+                    t, v = h.split(':', 1)
+                except ValueError:
+                    # clearly a bad header syntax
+                    raise TypeError('http_headers bad syntax') from None
+                if len(t.strip()) == 0:
+                    raise TypeError('http_headers bad syntax') from None
             config['http_headers'] = http_headers
 
         # we do not need to handle item.call values - they pass straight thru
