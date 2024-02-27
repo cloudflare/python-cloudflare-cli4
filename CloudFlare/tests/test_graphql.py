@@ -4,6 +4,7 @@ import os
 import sys
 import random
 import datetime
+import pytz
 import json
 
 sys.path.insert(0, os.path.abspath('.'))
@@ -44,8 +45,12 @@ def test_find_zone(domain_name=None):
     print('zone: %s %s' % (zone_id, zone_name), file=sys.stderr)
 
 def rfc3339_iso8601_time(hour_delta=0, with_hms=False):
-    # format time (with an hour offset in RFC3339 ISO8601 format (and do it UTC time)
-    dt = (datetime.datetime.now(datetime.UTC).replace(microsecond=0) + datetime.timedelta(hours=hour_delta))
+    # format time (with an hour offset in RFC3339 or ISO8601 format (and do it UTC time)
+    if sys.version_info[:3][0] <= 3 and sys.version_info[:3][1] <= 10:
+        dt = datetime.datetime.utcnow().replace(microsecond=0, tzinfo=pytz.UTC)
+    else:
+        dt = datetime.datetime.now(datetime.UTC).replace(microsecond=0)
+    dt += datetime.timedelta(hours=hour_delta)
     if with_hms:
         return dt.isoformat().replace('+00:00', 'Z')
     return dt.strftime('%Y-%m-%d')

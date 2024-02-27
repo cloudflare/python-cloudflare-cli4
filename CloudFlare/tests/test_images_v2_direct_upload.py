@@ -5,6 +5,7 @@ import sys
 import json
 import random
 import datetime
+import pytz
 
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
@@ -15,8 +16,12 @@ import CloudFlare
 cf = None
 
 def rfc3339_iso8601_time(hour_delta=0, with_hms=False):
-    # format time (with an hour offset in RFC3339 ISO8601 format (and do it UTC time)
-    dt = (datetime.datetime.now(datetime.UTC).replace(microsecond=0) + datetime.timedelta(hours=hour_delta))
+    # format time (with an hour offset in RFC3339 or ISO8601 format (and do it UTC time)
+    if sys.version_info[:3][0] <= 3 and sys.version_info[:3][1] <= 10:
+        dt = datetime.datetime.utcnow().replace(microsecond=0, tzinfo=pytz.UTC)
+    else:
+        dt = datetime.datetime.now(datetime.UTC).replace(microsecond=0)
+    dt += datetime.timedelta(hours=hour_delta)
     if with_hms:
         return dt.isoformat().replace('+00:00', 'Z')
     return dt.strftime('%Y-%m-%d')
