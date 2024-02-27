@@ -2,18 +2,18 @@
 
 from urllib.parse import urlparse
 
-import requests
+from requests import Session, RequestException, ConnectionError
+from requests.exceptions import Timeout
 from requests.adapters import HTTPAdapter
 
-from .exceptions import CloudFlareAPIError
+class CFnetworkError(Exception):
+    """ errors for network calls """
 
 class CFnetwork():
-    """Network for Cloudflare API"""
+    """ CFnetwork """
 
-    def __init__(
-        self, use_sessions=True, global_request_timeout=5, max_request_retries=5
-    ):
-        """Network for Cloudflare API"""
+    def __init__(self, use_sessions=True, global_request_timeout=5, max_request_retries=5):
+        """ CFnetwork """
 
         self.use_sessions = use_sessions
         self.global_request_timeout = global_request_timeout
@@ -21,21 +21,33 @@ class CFnetwork():
         self.session = None
 
     def __call__(self, method, url, headers=None, params=None, data_str=None, data_json=None, files=None):
-        """Network for Cloudflare API"""
+        """ __call__ """
 
         if self.use_sessions:
             if self.session is None:
-                s = requests.Session()
+                s = Session()
                 if self.max_request_retries is not None:
-                    hostname = urlparse(url).netloc
-                    s.mount(
-                        f"https://{hostname}",
-                        HTTPAdapter(max_retries=self.max_request_retries),
-                    )
+                    prefix = 'https://%s' % (urlparse(url).netloc),
+                    s.mount(prefix, HTTPAdapter(max_retries=self.max_request_retries))
                 self.session = s
         else:
+            # only now do we import all of requests ... it's a rare case
+            import requests
             self.session = requests
 
+        try:
+             r = self._do_network(method, url, headers, params, data_str, data_json, files)
+        except RequestException as e:
+            raise CFnetworkError('network request exception error: %s' % (e)) from None
+        except Timeout as e:
+            raise CFnetworkError('network request timeout error: %s' % (e)) from None
+        except ConnectionError as e:
+            raise CFnetworkError('network request connection error: %s' % (e)) from None
+
+        return r
+
+    def _do_network(self, method, url, headers, params, data_str, data_json, files):
+        """ _do_network """
         method = method.upper()
 
         # https://docs.python-requests.org/en/latest/user/quickstart/#post-a-multipart-encoded-file
@@ -91,12 +103,12 @@ class CFnetwork():
             )
         else:
             # should never happen
-            raise CloudFlareAPIError(0, 'method not supported')
-
+            raise CFnetworkError('internal error - http method invalid: %s' % (method))
+        # success!
         return r
 
     def __del__(self):
-        """Network for Cloudflare API"""
+        """ __del__ """
 
         if self.use_sessions and self.session:
             self.session.close()

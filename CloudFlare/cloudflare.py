@@ -1,9 +1,8 @@
 """ Cloudflare v4 API"""
 import json
 import keyword
-from requests import RequestException as requests_RequestException, ConnectionError as requests_ConnectionError, exceptions as requests_exceptions
 
-from .network import CFnetwork
+from .network import CFnetwork, CFnetworkError
 from .logging_helper import CFlogger
 from .utils import user_agent, build_curl
 from .read_configs import read_configs, ReadConfigError
@@ -299,22 +298,14 @@ class CloudFlare():
 
             try:
                 response = self.network(method, url, headers, params, data_str, data_json, files)
-            except requests_ConnectionError as e:
+            except CFnetworkError as e:
                 if self.logger:
-                    self.logger.debug('Call: requests connection exception! "%s"', e)
-                raise CloudFlareAPIError(0, 'connection error') from None
-            except requests_exceptions.Timeout as e:
-                if self.logger:
-                    self.logger.debug('Call: requests timeout exception! "%s"', e)
-                raise CloudFlareAPIError(0, 'connection timeout') from None
-            except requests_RequestException as e:
-                if self.logger:
-                    self.logger.debug('Call: requests exception! "%s"', e)
-                raise CloudFlareAPIError(0, e) from None
+                    self.logger.debug('Call: network error: %s', e)
+                raise CloudFlareAPIError(0, str(e)) from None
             except Exception as e:
                 if self.logger:
-                    self.logger.debug('Call: exception! "%s"', e)
-                raise
+                    self.logger.debug('Call: network exception! %s', e)
+                raise CloudFlareAPIError(0, 'network exception: %s' % (e)) from None
 
             # Create response_{type|code|data}
             try:
