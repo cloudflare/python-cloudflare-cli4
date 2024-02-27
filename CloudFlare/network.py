@@ -2,7 +2,7 @@
 
 from urllib.parse import urlparse
 
-from requests import Session, RequestException, ConnectionError
+from requests import Session, RequestException, ConnectionError as requests_ConnectionError
 from requests.exceptions import Timeout
 from requests.adapters import HTTPAdapter
 
@@ -27,7 +27,7 @@ class CFnetwork():
             if self.session is None:
                 s = Session()
                 if self.max_request_retries is not None:
-                    prefix = 'https://%s' % (urlparse(url).netloc),
+                    prefix = 'https://%s' % (urlparse(url).netloc)
                     s.mount(prefix, HTTPAdapter(max_retries=self.max_request_retries))
                 self.session = s
         else:
@@ -37,12 +37,12 @@ class CFnetwork():
 
         try:
              r = self._do_network(method, url, headers, params, data_str, data_json, files)
-        except RequestException as e:
-            raise CFnetworkError('network request exception error: %s' % (e)) from None
         except Timeout as e:
             raise CFnetworkError('network request timeout error: %s' % (e)) from None
-        except ConnectionError as e:
+        except requests_ConnectionError as e:
             raise CFnetworkError('network request connection error: %s' % (e)) from None
+        except RequestException as e:
+            raise CFnetworkError('network request exception error: %s' % (e)) from None
 
         return r
 
