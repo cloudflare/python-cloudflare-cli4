@@ -12,7 +12,7 @@ with open('../CloudFlare/__init__.py', 'r') as f:
     version = _version_re.search(f.read()).group(1)
 
 project = 'python-cloudflare'
-copyright = 'Cloudflare (c) 2016 thru 2024'
+copyright = 'Copyright (c) 2016 thru 2024, Cloudflare. All rights reserved.'
 author = 'Martin J Levy'
 release = str(version)
 

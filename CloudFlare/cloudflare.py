@@ -1,4 +1,12 @@
-""" Cloudflare v4 API"""
+""" Cloudflare v4 API
+
+A Python interface Cloudflare's v4 API.
+
+See README.md for detailed/further reading.
+
+Copyright (c) 2016 thru 2024, Cloudflare. All rights reserved.
+"""
+
 import json
 import keyword
 
@@ -18,13 +26,30 @@ DEFAULT_GLOBAL_REQUEST_TIMEOUT = 5
 DEFAULT_MAX_REQUEST_RETRIES = 5
 
 class CloudFlare():
-    """ Cloudflare v4 API"""
+    """ A Python interface Cloudflare's v4 API.
+
+    :param email: Authentication email (if not provided by config methods).
+    :param key: Authentication key (if not provided by config methods).
+    :param token: Authentication token (if not provided by config methods).
+    :param certtoken: Authentication certtoken (if not provided by config methods).
+    :param debug: Debug is enabled by setting to True.
+    :param raw: Set to True to force raw responses so you can see paging.
+    :param use_sessions: The default is True; rarely needs changing.
+    :param profile: Profile name (default is "CloudFlare").
+    :param base_url: Rarely changed Cloudflare API URL.
+    :param global_request_timeout: Timeout value (default is 5 seconds).
+    :param max_request_retries: Number of retry times (default is 5 times).
+    :param http_headers: Additional HTTP headers (as a list).
+    :return: New instance of CloudFlare()
+
+    A Python interface Cloudflare's v4 API.
+    """
 
     class _v4base():
-        """ Cloudflare v4 API"""
+        """ :meta private: """
 
         def __init__(self, config):
-            """ Cloudflare v4 API"""
+            """ :meta private: """
 
             self.network = None
             self.config = config
@@ -684,7 +709,7 @@ class CloudFlare():
             return response.text
 
     class _CFbase():
-        """ Cloudflare v4 API"""
+        """ :meta private: """
 
         def __init__(self, base, parts, content_type=None):
             """ Cloudflare v4 API"""
@@ -762,7 +787,7 @@ class CloudFlare():
                 raise CloudFlareAPIError(e=e) from None
 
     class _CFbaseUnused(_CFbase):
-        """ Cloudflare v4 API"""
+        """ :meta private: """
 
         def __init__(self, base, parts, content_type):
             """ Cloudflare v4 API"""
@@ -771,7 +796,7 @@ class CloudFlare():
             self._do = self._base.do_not_available
 
     class _CFbaseNoAuth(_CFbase):
-        """ Cloudflare v4 API"""
+        """ :meta private: """
 
         def __init__(self, base, parts, content_type):
             """ Cloudflare v4 API"""
@@ -821,7 +846,7 @@ class CloudFlare():
                 raise CloudFlareAPIError(e=e) from None
 
     class _CFbaseAuth(_CFbase):
-        """ Cloudflare v4 API"""
+        """ :meta private: """
 
         def __init__(self, base, parts, content_type):
             """ Cloudflare v4 API"""
@@ -831,7 +856,7 @@ class CloudFlare():
             self._valid = True
 
     class _CFbaseAuthUnwrapped(_CFbase):
-        """ Cloudflare v4 API"""
+        """ :meta private: """
 
         def __init__(self, base, parts, content_type):
             """ Cloudflare v4 API"""
@@ -841,7 +866,7 @@ class CloudFlare():
             self._valid = True
 
     class _CFbaseAuthCert(_CFbase):
-        """ Cloudflare v4 API"""
+        """ :meta private: """
 
         def __init__(self, base, parts, content_type):
             """ Cloudflare v4 API"""
@@ -868,7 +893,18 @@ class CloudFlare():
         return v
 
     def add(self, t, p1, p2=None, p3=None, p4=None, p5=None, content_type=None):
-        """ add api call to class"""
+        """ add()
+
+        :param t: type of API call.
+        :param p1: part1 of API call.
+        :param p2: part1 of API call.
+        :param p3: part1 of API call.
+        :param p4: part1 of API call.
+        :param p5: part1 of API call.
+        :param content_type: optional value for the HTTP Content-Type for an API call.
+
+        add() is the core fuction that creates a new API endpoint that can be called later on.
+        """
 
         a = []
         if p1:
@@ -923,7 +959,13 @@ class CloudFlare():
         setattr(branch, CloudFlare.sanitize_verb(name), f)
 
     def find(self, cmd):
-        """ find """
+        """ find()
+
+        :param cmd: API in slash format
+        :return: fuction to call for that API
+
+        You can use this call to convert a string API command into the actual function call
+        """
         m = self
         for verb in cmd.split('/'):
             if verb == '' or verb[0] == ':':
@@ -935,11 +977,16 @@ class CloudFlare():
         return m
 
     def api_list(self):
-        """ recursive walk of the api tree returning a list of api calls"""
+        """ api_list()
+
+        :return: list of API calls
+
+        A recursive walk of the api tree returning a list of api calls
+        """
         return self._api_list(m=self)
 
     def _api_list(self, m=None, s=''):
-        """ recursive walk of the api tree returning a list of api calls"""
+        """ :meta private: """
         w = []
         for n in sorted(dir(m)):
             if n[0] == '_':
@@ -974,12 +1021,16 @@ class CloudFlare():
         return w
 
     def api_from_openapi(self, url=None):
-        """ Cloudflare v4 API"""
+        """ api_from_openapi()
+
+        :param url: OpenAPI URL or None if you use the built official URL
+
+        """
 
         return self._base.api_from_openapi(url)
 
     def __init__(self, email=None, key=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None, global_request_timeout=None, max_request_retries=None, http_headers=None):
-        """ Cloudflare v4 API"""
+        """ :meta private: """
 
         self._base = None
 
@@ -1050,30 +1101,30 @@ class CloudFlare():
             raise e
 
     def __del__(self):
-        """ Network for Cloudflare API"""
+        """ :meta private: """
 
         if self._base:
             del self._base
             self._base = None
 
     def __call__(self):
-        """ Cloudflare v4 API"""
+        """ :meta private: """
 
         raise TypeError('object is not callable')
 
     def __enter__(self):
-        """ Cloudflare v4 API"""
+        """ :meta private: """
         return self
 
     def __exit__(self, t, v, tb):
-        """ Cloudflare v4 API"""
+        """ :meta private: """
         if t is None:
             return True
         # pretend we didn't deal with raised error - which is true
         return False
 
     def __str__(self):
-        """ Cloudflare v4 API"""
+        """ :meta private: """
 
         if self._base.api_email is None:
             s = '["%s","%s"]' % (self._base.profile, 'REDACTED')
@@ -1082,7 +1133,7 @@ class CloudFlare():
         return s
 
     def __repr__(self):
-        """ Cloudflare v4 API"""
+        """ :meta private: """
 
         if self._base.api_email is None:
             s = '%s,%s("%s","%s","%s","%s",%s,"%s")' % (
@@ -1099,10 +1150,22 @@ class CloudFlare():
         return s
 
     def __getattr__(self, key):
-        """ __getattr__ """
+        """ :meta private: """
 
         # this code will expand later
         if key in dir(self):
             return self[key]
         # this is call to a non-existent endpoint
         raise AttributeError(key)
+
+class Cloudflare(CloudFlare):
+    """ A Python interface Cloudflare's v4 API.
+
+    Alternate upper/lowercase version.
+    """
+
+class cloudflare(CloudFlare):
+    """ A Python interface Cloudflare's v4 API.
+
+    Alternate upper/lowercase version.
+    """

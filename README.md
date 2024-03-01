@@ -1499,4 +1499,5 @@ An automatically generated CHANGELOG is provided [here](CHANGELOG.md).
 
 ## Copyright
 
-Portions copyright [Felix Wong (gnowxilef)](https://github.com/gnowxilef) 2015 and Cloudflare 2016 thru 2023.
+Copyright (c) 2016 thru 2024, Cloudflare. All rights reserved.
+Previous portions copyright [Felix Wong (gnowxilef)](https://github.com/gnowxilef).
