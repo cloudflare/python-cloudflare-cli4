@@ -102,6 +102,13 @@ sign:
 	ls -l tarball/$$v.tar.gz tarball/$$v.zip ; \
 	ls -l tarball/$$v.tar.gz.asc tarball/$$v.zip.asc ;
 
+docs: all
+	sphinx-apidoc -Mfe -o docs . setup.py
+	sphinx-build -j auto -b html docs docs/_build/html
+
+clean-docs: all
+	rm -rf docs/*.rst docs/_build/
+
 lint:
 	$(PYLINT) CloudFlare cli4
 
