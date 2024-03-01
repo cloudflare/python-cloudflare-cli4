@@ -6,11 +6,21 @@
 Welcome to python-cloudflare's documentation!
 =============================================
 
+This `python-cloudflare` package is a Python wrapper providing full access to the CloudFlare v4 API.
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-.. include:: modules.rst
+python-cloudflare
+=================
+
+.. toctree::
+   :maxdepth: 4
+
+   CloudFlare
+   cli4
+   examples
 
 Indices and tables
 ==================
