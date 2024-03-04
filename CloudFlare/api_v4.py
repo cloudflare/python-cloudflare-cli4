@@ -1,7 +1,8 @@
 """ API core commands for Cloudflare API"""
 
 def api_v4(self):
-    """ API core commands for Cloudflare API"""
+    """ :meta private: """
+
 
     # The API commands for /user/
     user(self)
@@ -80,7 +81,7 @@ def api_v4(self):
     from_developers(self)
 
 def user(self):
-    """ user """
+    """ :meta private: """
 
     self.add('AUTH', 'user')
     self.add('VOID', 'user/billing')
@@ -97,7 +98,7 @@ def user(self):
     self.add('AUTH', 'user/subscriptions')
 
 def zones(self):
-    """ zones """
+    """ :meta private: """
 
     self.add('AUTH', 'zones')
     self.add('AUTH', 'zones', 'activation_check')
@@ -135,7 +136,7 @@ def zones(self):
     self.add('AUTH', 'zones', 'subscription')
 
 def zones_settings(self):
-    """ zones settings """
+    """ :meta private: """
 
     self.add('AUTH', 'zones', 'settings')
     self.add('AUTH', 'zones', 'settings/0rtt')
@@ -210,7 +211,7 @@ def zones_settings(self):
     self.add('AUTH', 'zones', 'settings/zaraz/v2/workflow')
 
 def zones_analytics(self):
-    """ zones analytics """
+    """ :meta private: """
 
     self.add('VOID', 'zones', 'analytics')
 #   self.add('AUTH', 'zones', 'analytics/colos') # deprecated 2021-03-01 - expired!
@@ -219,7 +220,7 @@ def zones_analytics(self):
     self.add('AUTH', 'zones', 'analytics/latency/colos')
 
 def zones_firewall(self):
-    """ zones filewall """
+    """ :meta private: """
 
     self.add('VOID', 'zones', 'firewall')
     self.add('VOID', 'zones', 'firewall/access_rules')
@@ -234,25 +235,25 @@ def zones_firewall(self):
     self.add('AUTH', 'zones', 'firewall/waf/packages', 'rules')
 
 def zones_rate_limits(self):
-    """ zones rate_limits """
+    """ :meta private: """
 
     self.add('AUTH', 'zones', 'rate_limits')
 
 def zones_dns_analytics(self):
-    """ zones dns_analytics """
+    """ :meta private: """
 
     self.add('VOID', 'zones', 'dns_analytics')
     self.add('AUTH', 'zones', 'dns_analytics/report')
     self.add('AUTH', 'zones', 'dns_analytics/report/bytime')
 
 def zones_amp(self):
-    """ zones amp """
+    """ :meta private: """
 
     self.add('VOID', 'zones', 'amp')
     self.add('AUTH', 'zones', 'amp/sxg')
 
 def zones_logpush(self):
-    """ zones logpush """
+    """ :meta private: """
 
     self.add('VOID', 'zones', 'logpush')
     self.add('VOID', 'zones', 'logpush/datasets')
@@ -269,7 +270,7 @@ def zones_logpush(self):
     self.add('AUTH', 'zones', 'logpush/validate/origin')
 
 def zones_logs(self):
-    """ zones logs """
+    """ :meta private: """
 
     self.add('VOID', 'zones', 'logs')
     self.add('VOID', 'zones', 'logs/control')
@@ -280,40 +281,40 @@ def zones_logs(self):
     self.add('AUTH_UNWRAPPED', 'zones', 'logs/rayids')
 
 def railguns(self):
-    """ railguns """
+    """ :meta private: """
 
     self.add('AUTH', 'railguns')
     self.add('AUTH', 'railguns', 'zones')
 
 def certificates(self):
-    """ certificates """
+    """ :meta private: """
 
     self.add('CERT', 'certificates')
 
 def ips(self):
-    """ ips """
+    """ :meta private: """
 
     self.add('OPEN', 'ips')
 
 def live(self):
-    """ live """
+    """ :meta private: """
 
     self.add('AUTH', 'live')
 
 def zones_argo(self):
-    """ zones argo """
+    """ :meta private: """
 
     self.add('VOID', 'zones', 'argo')
     self.add('AUTH', 'zones', 'argo/tiered_caching')
     self.add('AUTH', 'zones', 'argo/smart_routing')
 
 def zones_dnssec(self):
-    """ zones dnssec """
+    """ :meta private: """
 
     self.add('AUTH', 'zones', 'dnssec')
 
 def zones_spectrum(self):
-    """ zones spectrum """
+    """ :meta private: """
 
     self.add('VOID', 'zones', 'spectrum')
     self.add('VOID', 'zones', 'spectrum/analytics')
@@ -325,7 +326,7 @@ def zones_spectrum(self):
     self.add('AUTH', 'zones', 'spectrum/apps')
 
 def zones_ssl(self):
-    """ zones ssl """
+    """ :meta private: """
 
     self.add('VOID', 'zones', 'ssl')
     self.add('AUTH', 'zones', 'ssl/analyze')
@@ -338,7 +339,7 @@ def zones_ssl(self):
     self.add('AUTH', 'zones', 'ssl/universal/settings')
 
 def zones_origin_tls_client_auth(self):
-    """ zones origin_tls_client_auth """
+    """ :meta private: """
 
     self.add('AUTH', 'zones', 'origin_tls_client_auth')
     self.add('AUTH', 'zones', 'origin_tls_client_auth/hostnames')
@@ -346,7 +347,7 @@ def zones_origin_tls_client_auth(self):
     self.add('AUTH', 'zones', 'origin_tls_client_auth/settings')
 
 def zones_workers(self):
-    """ zones workers """
+    """ :meta private: """
 
     self.add('VOID', 'zones', 'workers')
     self.add('AUTH', 'zones', 'workers/filters')
@@ -355,12 +356,12 @@ def zones_workers(self):
     self.add('AUTH', 'zones', 'workers/script/bindings')
 
 def zones_load_balancers(self):
-    """ zones load_balancers """
+    """ :meta private: """
 
     self.add('AUTH', 'zones', 'load_balancers')
 
 def zones_secondary_dns(self):
-    """ zones secondary_dns """
+    """ :meta private: """
 
     self.add('AUTH', 'zones', 'secondary_dns')
     self.add('AUTH', 'zones', 'secondary_dns/force_axfr')
@@ -372,7 +373,7 @@ def zones_secondary_dns(self):
     self.add('AUTH', 'zones', 'secondary_dns/outgoing/status')
 
 def user_load_balancers(self):
-    """ API user load_balancers """
+    """ :meta private: """
 
     self.add('VOID', 'user/load_balancers')
     self.add('AUTH', 'user/load_balancers/monitors')
@@ -385,18 +386,18 @@ def user_load_balancers(self):
     self.add('AUTH', 'user/load_balancers/pools', 'references')
 
 def user_audit_logs(self):
-    """ user audit_logs """
+    """ :meta private: """
 
     self.add('AUTH', 'user/audit_logs')
 
 def user_load_balancing_analytics(self):
-    """ user load_balancing_analytics """
+    """ :meta private: """
 
     self.add('VOID', 'user/load_balancing_analytics')
     self.add('AUTH', 'user/load_balancing_analytics/events')
 
 def user_tokens_verify(self):
-    """ user tokens """
+    """ :meta private: """
 
     self.add('AUTH', 'user/tokens')
     self.add('AUTH', 'user/tokens/permission_groups')
@@ -404,7 +405,7 @@ def user_tokens_verify(self):
     self.add('AUTH', 'user/tokens', 'value')
 
 def accounts(self):
-    """ accounts """
+    """ :meta private: """
 
     self.add('AUTH', 'accounts')
     self.add('VOID', 'accounts', 'billing')
@@ -523,7 +524,7 @@ def accounts(self):
     self.add('AUTH', 'accounts', 'workers/subdomain')
 
 def accounts_addressing(self):
-    """ accounts addressing """
+    """ :meta private: """
 
     self.add('VOID', 'accounts', 'addressing')
     self.add('AUTH', 'accounts', 'addressing/address_maps')
@@ -541,12 +542,12 @@ def accounts_addressing(self):
     self.add('AUTH', 'accounts', 'addressing/services')
 
 def accounts_audit_logs(self):
-    """ accounts audit_logs """
+    """ :meta private: """
 
     self.add('AUTH', 'accounts', 'audit_logs')
 
 def accounts_load_balancers(self):
-    """ accounts load_balancers """
+    """ :meta private: """
 
     self.add('VOID', 'accounts', 'load_balancers')
     self.add('AUTH', 'accounts', 'load_balancers/preview')
@@ -562,14 +563,14 @@ def accounts_load_balancers(self):
 
 
 def accounts_firewall(self):
-    """ accounts firewall """
+    """ :meta private: """
 
     self.add('VOID', 'accounts', 'firewall')
     self.add('VOID', 'accounts', 'firewall/access_rules')
     self.add('AUTH', 'accounts', 'firewall/access_rules/rules')
 
 def accounts_secondary_dns(self):
-    """ accounts secondary_dns """
+    """ :meta private: """
 
     self.add('VOID', 'accounts', 'secondary_dns')
 #   self.add('AUTH', 'accounts', 'secondary_dns/masters')
@@ -579,7 +580,7 @@ def accounts_secondary_dns(self):
     self.add('AUTH', 'accounts', 'secondary_dns/peers')
 
 def accounts_stream(self):
-    """ accounts stream """
+    """ :meta private: """
 
     self.add('AUTH', 'accounts', 'stream')
     self.add('AUTH', 'accounts', 'stream', 'audio')
@@ -600,24 +601,24 @@ def accounts_stream(self):
     self.add('AUTH', 'accounts', 'stream/live_inputs', 'outputs', 'enabled')
 
 def zones_media(self):
-    """ zones media """
+    """ :meta private: """
 
     self.add('AUTH', 'zones', 'media')
     self.add('AUTH', 'zones', 'media', 'embed')
     self.add('AUTH', 'zones', 'media', 'preview')
 
 def memberships(self):
-    """ memberships """
+    """ :meta private: """
 
     self.add('AUTH', 'memberships')
 
 def graphql(self):
-    """ graphql """
+    """ :meta private: """
 
     self.add('AUTH', 'graphql')
 
 def zones_access(self):
-    """ zones access """
+    """ :meta private: """
 
     self.add('VOID', 'zones', 'access')
     self.add('AUTH', 'zones', 'access/apps')
@@ -636,7 +637,7 @@ def zones_access(self):
     self.add('AUTH', 'zones', 'access/service_tokens')
 
 def accounts_access(self):
-    """ accounts access """
+    """ :meta private: """
 
     self.add('VOID', 'accounts', 'access')
 #   self.add('AUTH', 'accounts', 'access/bookmarks') # deprecated 2023-03-19
@@ -671,13 +672,13 @@ def accounts_access(self):
 
 
 def accounts_diagnostics(self):
-    """ accounts diagnostics """
+    """ :meta private: """
 
     self.add('VOID', 'accounts', 'diagnostics')
     self.add('AUTH', 'accounts', 'diagnostics/traceroute')
 
 def zones_waiting_rooms(self):
-    """ zones waiting_rooms """
+    """ :meta private: """
 
     self.add('AUTH', 'zones', 'waiting_rooms')
     self.add('AUTH', 'zones', 'waiting_rooms', 'events')
@@ -688,7 +689,7 @@ def zones_waiting_rooms(self):
     self.add('AUTH', 'zones', 'waiting_rooms/settings')
 
 def accounts_extras(self):
-    """ extras """
+    """ :meta private: """
 
     self.add('VOID', 'accounts', 'ai')
     self.add('AUTH', 'accounts', 'ai/run', content_type={'POST':['application/json','application/octet-stream']})
@@ -840,7 +841,7 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'd1/database', 'query')
 
 def zones_extras(self):
-    """ zones extras """
+    """ :meta private: """
 
     self.add('VOID', 'zones', 'acm')
     self.add('AUTH', 'zones', 'acm/total_tls')
@@ -886,7 +887,7 @@ def zones_extras(self):
     self.add('AUTH', 'zones', 'dcv_delegation/uuid')
 
 def zones_web3(self):
-    """ zones web3 """
+    """ :meta private: """
 
     self.add('VOID', 'zones', 'web3')
     self.add('AUTH', 'zones', 'web3/hostnames')
@@ -895,14 +896,14 @@ def zones_web3(self):
     self.add('AUTH', 'zones', 'web3/hostnames', 'ipfs_universal_path/content_list/entries')
 
 def accounts_email(self):
-    """ accounts email """
+    """ :meta private: """
 
     self.add('VOID', 'accounts', 'email')
     self.add('VOID', 'accounts', 'email/routing')
     self.add('AUTH', 'accounts', 'email/routing/addresses')
 
 def accounts_r2(self):
-    """ accounts r2 """
+    """ :meta private: """
 
     self.add('VOID', 'accounts', 'r2')
     self.add('AUTH', 'accounts', 'r2/buckets')
@@ -911,7 +912,7 @@ def accounts_r2(self):
     self.add('AUTH', 'accounts', 'r2/buckets', 'sippy')
 
 def zones_email(self):
-    """ zones email """
+    """ :meta private: """
 
     self.add('VOID', 'zones', 'email')
     self.add('AUTH', 'zones', 'email/routing')
@@ -922,7 +923,7 @@ def zones_email(self):
     self.add('AUTH', 'zones', 'email/routing/rules/catch_all')
 
 def zones_api_gateway(self):
-    """ zones api_gateway """
+    """ :meta private: """
 
     self.add('VOID', 'zones', 'api_gateway')
     self.add('AUTH', 'zones', 'api_gateway/configuration')
@@ -939,7 +940,7 @@ def zones_api_gateway(self):
 
 
 def radar(self):
-    """ radar """
+    """ :meta private: """
 
     self.add('VOID', 'radar')
     self.add('AUTH', 'radar/alerts')
@@ -1008,7 +1009,7 @@ def radar(self):
     self.add('AUTH', 'radar/traffic_anomalies/locations')
 
 def radar_as112(self):
-    """ radar_as112 """
+    """ :meta private: """
 
     self.add('VOID', 'radar/as112')
     self.add('VOID', 'radar/as112/summary')
@@ -1042,7 +1043,7 @@ def radar_as112(self):
     self.add('AUTH', 'radar/as112/top/locations/ip_version')
 
 def radar_attacks(self):
-    """ radar_attacks """
+    """ :meta private: """
 
     self.add('VOID', 'radar/attacks')
     self.add('VOID', 'radar/attacks/layer3')
@@ -1096,7 +1097,7 @@ def radar_attacks(self):
     self.add('AUTH', 'radar/attacks/layer7/top/vertical')
 
 def radar_bgp(self):
-    """ radar_bgp """
+    """ :meta private: """
 
     self.add('VOID', 'radar/bgp')
     self.add('VOID', 'radar/bgp/leaks')
@@ -1114,7 +1115,7 @@ def radar_bgp(self):
     self.add('AUTH', 'radar/bgp/routes/stats')
 
 def radar_email(self):
-    """ radar_email """
+    """ :meta private: """
 
     self.add('VOID', 'radar/email')
     self.add('VOID', 'radar/email/security')
@@ -1161,7 +1162,7 @@ def radar_email(self):
     self.add('AUTH', 'radar/email/security/top/locations/spf')
 
 def radar_http(self):
-    """ radar_http """
+    """ :meta private: """
 
     self.add('VOID', 'radar/http')
 
@@ -1217,7 +1218,8 @@ def radar_http(self):
     self.add('AUTH', 'radar/http/top/locations/tls_version')
 
 def from_developers(self):
-    """ from_developers """
+    """ :meta private: """
+
     self.add('VOID', 'accounts', 'analytics_engine')
     self.add('AUTH', 'accounts', 'analytics_engine/sql')
 
