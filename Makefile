@@ -103,11 +103,11 @@ sign:
 	ls -l tarball/$$v.tar.gz.asc tarball/$$v.zip.asc ;
 
 docs: all
-	sphinx-apidoc -Mfe -o docs . setup.py
-	sphinx-build -j auto -b html docs docs/_build/html
+	sphinx-apidoc --force --module-first --separate --full --ext-autodoc -A 'Martin J Levy' -R 2.20.0 -V 2.20.0 -o docs . 'setup.py'
+	sphinx-build -a -E -j auto -b html docs docs/_build/html
 
 clean-docs: all
-	rm -rf docs/*.rst docs/_build/
+	rm -rf docs/CloudFlare*.rst docs/cli4*.rst docs/examples*.rst docs/modules*.rst docs/_build docs/_static
 
 lint:
 	$(PYLINT) CloudFlare cli4

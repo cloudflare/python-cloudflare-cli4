@@ -6,37 +6,27 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-import re
-with open('../CloudFlare/__init__.py', 'r') as f:
-    _version_re = re.compile(r"__version__\s=\s'(.*)'")
-    version = _version_re.search(f.read()).group(1)
-
 project = 'python-cloudflare'
-copyright = 'Copyright (c) 2016 thru 2024, Cloudflare. All rights reserved.'
+copyright = '2024, Martin J Levy'
 author = 'Martin J Levy'
-release = str(version)
+
+version = '2.20.0'
+release = '2.20.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    'myst_parser',
     'sphinx.ext.autodoc',
-    'sphinx_rtd_theme',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.todo',
+    'sphinx.ext.autodoc',
 ]
-
-html_theme = "sphinx_rtd_theme"
 
 templates_path = ['_templates']
-exclude_patterns = [
-    'CloudFlare/__init__.py',
-    'CloudFlare/tests/__init__.py',
-    '_build',
-    'Thumbs.db',
-    '.DS_Store'
-]
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-autoclass_content = 'both'
+language = 'en'
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -44,6 +34,7 @@ autoclass_content = 'both'
 html_theme = 'alabaster'
 html_static_path = ['_static']
 
-import os
-import sys
-sys.path.insert(0, os.path.abspath('..'))
+# -- Options for todo extension ----------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/extensions/todo.html#configuration
+
+todo_include_todos = True
