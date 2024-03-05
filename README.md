@@ -17,6 +17,8 @@ Yes - that simple! (the sudo may not be needed in some cases).
 [![Downloads](https://static.pepy.tech/badge/cloudflare)](https://pepy.tech/project/cloudflare)
 [![Downloads](https://static.pepy.tech/badge/cloudflare/month)](https://pepy.tech/project/cloudflare)
 [![Downloads](https://static.pepy.tech/badge/cloudflare/week)](https://pepy.tech/project/cloudflare)
+[![Downloads](https://static.pepy.tech/badge/cloudflare/week)](https://pepy.tech/project/cloudflare)
+[![Downloads](https://img.shields.io/pypi/pyversions/cloudflare.svg)](https://pepy.tech/project/cloudflare)
 
 ### Via github
 
