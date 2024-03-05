@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'python-cloudflare'
-copyright = '2024, Martin J Levy'
+copyright = 'Copyright (c) 2016 thru 2024, Cloudflare. All rights reserved.'
 author = 'Martin J Levy'
 
 version = '2.20.0'

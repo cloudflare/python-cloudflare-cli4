@@ -5,6 +5,10 @@ PYLINT = pylint
 TWINE = twine
 PYTEST = pytest
 
+SPHINX_RELEASE = 2.20.0
+SPHINX_AUTHOR = Martin J. Levy
+SPHINX_COPYRIGHT = Copyright (c) 2016 thru 2024, Cloudflare. All rights reserved.
+
 EMAIL = "mahtin@mahtin.com"
 NAME = "cloudflare"
 
@@ -103,7 +107,8 @@ sign:
 	ls -l tarball/$$v.tar.gz.asc tarball/$$v.zip.asc ;
 
 docs: all
-	sphinx-apidoc --force --module-first --separate --full --ext-autodoc -A 'Martin J Levy' -R 2.20.0 -V 2.20.0 -o docs . 'setup.py'
+	@mkdir -p docs/_build docs/_static
+	sphinx-apidoc --force --module-first --separate --ext-autodoc -A "$(SPHINX_AUTHOR)" -R "$(SPHINX_RELEASE)" -V "$(SPHINX_RELEASE)" -o docs . 'setup.*'
 	sphinx-build -a -E -j auto -b html docs docs/_build/html
 
 clean-docs: all
