@@ -44,6 +44,10 @@ The User Guide
    :maxdepth: 4
    :caption: Contents:
 
+   CloudFlare
+   cli4
+   examples
+
 .. include:: modules.rst
 
 Indices and tables
