@@ -14,6 +14,10 @@ Use PyPi (see [package](https://pypi.python.org/pypi/cloudflare) details) or Git
 
 Yes - that simple! (the sudo may not be needed in some cases).
 
+[![Downloads](https://static.pepy.tech/badge/cloudflare)](https://pepy.tech/project/cloudflare)
+[![Downloads](https://static.pepy.tech/badge/cloudflare/month)](https://pepy.tech/project/cloudflare)
+[![Downloads](https://static.pepy.tech/badge/cloudflare/week)](https://pepy.tech/project/cloudflare)
+
 ### Via github
 
 ```bash
