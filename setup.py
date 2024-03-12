@@ -24,6 +24,11 @@ def main():
         author='Martin J. Levy',
         author_email='mahtin@mahtin.com',
         url='https://github.com/cloudflare/python-cloudflare',
+        project_urls={
+            "Documentation": "https://python-cloudflare.readthedocs.io/",
+            "API Documentaton": "https://developers.cloudflare.com/api/",
+            "Source Code": "https://github.com/cloudflare/python-cloudflare",
+        },
         license='MIT',
         options={"bdist_wheel": {"universal": True}},
         packages=['CloudFlare', 'CloudFlare/tests', 'cli4', 'examples'],
