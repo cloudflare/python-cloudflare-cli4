@@ -892,7 +892,12 @@ class CloudFlare():
             v = v.replace('-','_')
         return v
 
-    def add(self, t, p1, p2=None, p3=None, p4=None, p5=None, content_type=None):
+    def add_carefully(self, t, *parts, content_type=None):
+        """ add_carefully()
+        """
+        self.add(t, parts, content_type, auto=False)
+
+    def add(self, t, *parts, content_type=None, auto=True):
         """ add()
 
         :param t: type of API call.
@@ -906,38 +911,28 @@ class CloudFlare():
         add() is the core fuction that creates a new API endpoint that can be called later on.
         """
 
-        a = []
-        if p1:
-            a += p1.split('/')
-        if p2:
-            a += p2.split('/')
-        if p3:
-            a += p3.split('/')
-        if p4:
-            a += p4.split('/')
-        if p5:
-            a += p5.split('/')
-
-        parts = [p for p in [p1, p2, p3, p4, p5] if p is not None]
+        api_sections = []
+        for p in parts:
+            api_sections += p.split('/')
 
         branch = self
-        element = None
-        for element in a[0:-1]:
+        for api_part in api_sections[0:-1]:
             try:
-                branch = getattr(branch, CloudFlare.sanitize_verb(element))
+                branch = getattr(branch, CloudFlare.sanitize_verb(api_part))
             except AttributeError:
-                # missing path - should never happen unless api_v4 is a busted file
-                branch = None
-                break
+                # missing path - should never happen unless api_v4 is a busted file or add_all() used
+                if not auto:
+                    raise CloudFlareAPIError(0, 'api load: api_part **%s** missing when adding path /%s' % (api_part, '/'.join(api_sections))) from None
+                # create intermediate path as required
+                f = self._CFbaseUnused(self._base, parts, content_type=None)
+                setattr(branch, CloudFlare.sanitize_verb(api_part), f)
+                branch = getattr(branch, CloudFlare.sanitize_verb(api_part))
 
-        if not branch:
-            raise CloudFlareAPIError(0, 'api load: element **%s** missing when adding path /%s' % (element, '/'.join(a)))
-
-        name = a[-1]
+        api_part = api_sections[-1]
         try:
-            branch = getattr(branch, CloudFlare.sanitize_verb(name))
+            branch = getattr(branch, CloudFlare.sanitize_verb(api_part))
             # we only are here becuase the name already exists - don't let it overwrite - should never happen unless api_v4 is a busted file
-            raise CloudFlareAPIError(0, 'api load: duplicate name found: %s/**%s**' % ('/'.join(a[0:-1]), name))
+            raise CloudFlareAPIError(0, 'api load: duplicate api_part found: %s/**%s**' % ('/'.join(api_sections[0:-1]), api_part))
         except AttributeError:
             # this is the required behavior - i.e. it's a new node to create
             pass
@@ -956,7 +951,7 @@ class CloudFlare():
             # should never happen
             raise CloudFlareAPIError(0, 'api load type mismatch')
 
-        setattr(branch, CloudFlare.sanitize_verb(name), f)
+        setattr(branch, CloudFlare.sanitize_verb(api_part), f)
 
     def find(self, cmd):
         """ find()
