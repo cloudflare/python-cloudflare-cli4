@@ -34,8 +34,8 @@ def main():
 
     zone_id = zones[0]['id']
 
-    url_match = f"*.{zone_name}/url1*"
-    url_forwarded = f"http://{zone_name}/url2"
+    url_match = "*.%s/url1*" % (zone_name)
+    url_forwarded = "http://%s/url2" % (zone_name)
 
     targets = [{"target":"url","constraint":{"operator":"matches","value":url_match}}]
     actions = [{"id":"forwarding_url","value":{"status_code":302,"url":url_forwarded}}]
