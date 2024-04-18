@@ -69,6 +69,7 @@ def api_v4(self):
     accounts_stream(self)
     accounts_ai(self)
     accounts_extras(self)
+    accounts_cloudforce_one(self)
     accounts_email(self)
     accounts_r2(self)
 
@@ -115,6 +116,7 @@ def zones(self):
     self.add('AUTH', 'zones', 'dns_records/export')
     self.add('AUTH', 'zones', 'dns_records/import', content_type={'POST':'multipart/form-data'})
     self.add('AUTH', 'zones', 'dns_records/scan')
+    self.add('AUTH', 'zones', 'dns_settings')
     self.add('AUTH', 'zones', 'dns_settings/use_apex_ns')
     self.add('AUTH', 'zones', 'filters')
     self.add('AUTH', 'zones', 'filters/validate-expr')
@@ -454,7 +456,9 @@ def accounts(self):
     self.add('AUTH', 'accounts', 'workers/deployments/by-script', 'detail')
     self.add('AUTH', 'accounts', 'workers/dispatch/namespaces')
     self.add('AUTH', 'accounts', 'workers/dispatch/namespaces', 'scripts')
+    self.add('AUTH', 'accounts', 'workers/dispatch/namespaces', 'scripts', 'bindings')
     self.add('AUTH', 'accounts', 'workers/dispatch/namespaces', 'scripts', 'content', content_type={'PUT':'multipart/form-data'})
+    self.add('AUTH', 'accounts', 'workers/dispatch/namespaces', 'scripts', 'secrets')
     self.add('AUTH', 'accounts', 'workers/dispatch/namespaces', 'scripts', 'settings')
     self.add('AUTH', 'accounts', 'workers/dispatch/namespaces', 'scripts', 'tags')
     self.add('AUTH', 'accounts', 'workers/domains')
@@ -465,12 +469,16 @@ def accounts(self):
     self.add('AUTH', 'accounts', 'workers/scripts')
     self.add('AUTH', 'accounts', 'workers/scripts', 'content', content_type={'PUT':'multipart/form-data'})
     self.add('AUTH', 'accounts', 'workers/scripts', 'content/v2')
+    self.add('AUTH', 'accounts', 'workers/scripts', 'deployments')
     self.add('AUTH', 'accounts', 'workers/scripts', 'schedules')
+    self.add('AUTH', 'accounts', 'workers/scripts', 'script-settings')
     self.add('AUTH', 'accounts', 'workers/scripts', 'settings', content_type={'PATCH':'multipart/form-data'})
     self.add('AUTH', 'accounts', 'workers/scripts', 'tails')
     self.add('AUTH', 'accounts', 'workers/scripts', 'usage-model')
+    self.add('AUTH', 'accounts', 'workers/scripts', 'versions')
     self.add('AUTH', 'accounts', 'workers/services', 'environments', 'content', content_type={'PUT':'multipart/form-data'})
     self.add('AUTH', 'accounts', 'workers/services', 'environments', 'settings')
+
     self.add('AUTH', 'accounts', 'workers/subdomain')
 
 def accounts_addressing(self):
@@ -631,8 +639,11 @@ def zones_waiting_rooms(self):
 def accounts_ai(self):
     """ :meta private: """
 
+    self.add('AUTH', 'accounts', 'ai/authors/search')
+    self.add('AUTH', 'accounts', 'ai/finetunes')
+    self.add('AUTH', 'accounts', 'ai/finetunes', 'finetune-assets', content_type={'POST':'multipart/form-data'})
+    self.add('AUTH', 'accounts', 'ai/models/search')
     self.add('AUTH', 'accounts', 'ai/run', content_type={'POST':['application/json','application/octet-stream']})
-    self.add('AUTH', 'accounts', 'ai/run/proxy')
 
     self.add('AUTH', 'accounts', 'ai/run/@cf/baai/bge-base-en-v1.5')
     self.add('AUTH', 'accounts', 'ai/run/@cf/baai/bge-large-en-v1.5')
@@ -642,17 +653,27 @@ def accounts_ai(self):
     self.add('AUTH', 'accounts', 'ai/run/@cf/deepseek-ai/deepseek-math-7b-instruct')
     self.add('AUTH', 'accounts', 'ai/run/@cf/defog/sqlcoder-7b-2')
     self.add('AUTH', 'accounts', 'ai/run/@cf/facebook/bart-large-cnn')
-    self.add('AUTH', 'accounts', 'ai/run/@cf/facebook/detr-resnet-50')
+    self.add('AUTH', 'accounts', 'ai/run/@cf/facebook/detr-resnet-50', content_type={'POST':'application/octet-stream'})
+    self.add('AUTH', 'accounts', 'ai/run/@cf/google/gemma-2b-it-lora')
+    self.add('AUTH', 'accounts', 'ai/run/@cf/google/gemma-7b-it-lora')
     self.add('AUTH', 'accounts', 'ai/run/@cf/huggingface/distilbert-sst-2-int8')
+    self.add('AUTH', 'accounts', 'ai/run/@cf/inml/inml-roberta-dga')
     self.add('AUTH', 'accounts', 'ai/run/@cf/jpmorganchase/roberta-spam')
     self.add('AUTH', 'accounts', 'ai/run/@cf/lykon/dreamshaper-8-lcm')
+    self.add('AUTH', 'accounts', 'ai/run/@cf/meta-llama/llama-2-7b-chat-hf-lora')
     self.add('AUTH', 'accounts', 'ai/run/@cf/meta/llama-2-7b-chat-fp16')
     self.add('AUTH', 'accounts', 'ai/run/@cf/meta/llama-2-7b-chat-int8')
+    self.add('AUTH', 'accounts', 'ai/run/@cf/meta/llama-3-8b-instruct')
     self.add('AUTH', 'accounts', 'ai/run/@cf/meta/m2m100-1.2b')
     self.add('AUTH', 'accounts', 'ai/run/@cf/microsoft/phi-2')
-    self.add('AUTH', 'accounts', 'ai/run/@cf/microsoft/resnet-50')
+    self.add('AUTH', 'accounts', 'ai/run/@cf/microsoft/resnet-50', content_type={'POST':'application/octet-stream'})
     self.add('AUTH', 'accounts', 'ai/run/@cf/mistral/mistral-7b-instruct-v0.1')
-    self.add('AUTH', 'accounts', 'ai/run/@cf/openai/whisper')
+    self.add('AUTH', 'accounts', 'ai/run/@cf/mistral/mistral-7b-instruct-v0.1-vllm')
+    self.add('AUTH', 'accounts', 'ai/run/@cf/mistral/mistral-7b-instruct-v0.2-lora')
+    self.add('AUTH', 'accounts', 'ai/run/@cf/mistral/mixtral-8x7b-instruct-v0.1-awq')
+    self.add('AUTH', 'accounts', 'ai/run/@cf/openai/whisper', content_type={'POST':'application/octet-stream'})
+    self.add('AUTH', 'accounts', 'ai/run/@cf/openai/whisper-sherpa', content_type={'POST':'application/octet-stream'})
+    self.add('AUTH', 'accounts', 'ai/run/@cf/openai/whisper-tiny-en', content_type={'POST':'application/octet-stream'})
     self.add('AUTH', 'accounts', 'ai/run/@cf/openchat/openchat-3.5-0106')
     self.add('AUTH', 'accounts', 'ai/run/@cf/qwen/qwen1.5-0.5b-chat')
     self.add('AUTH', 'accounts', 'ai/run/@cf/qwen/qwen1.5-1.8b-chat')
@@ -661,12 +682,17 @@ def accounts_ai(self):
     self.add('AUTH', 'accounts', 'ai/run/@cf/runwayml/stable-diffusion-v1-5-img2img')
     self.add('AUTH', 'accounts', 'ai/run/@cf/runwayml/stable-diffusion-v1-5-inpainting')
     self.add('AUTH', 'accounts', 'ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0')
+    self.add('AUTH', 'accounts', 'ai/run/@cf/sven/test')
     self.add('AUTH', 'accounts', 'ai/run/@cf/thebloke/discolm-german-7b-v1-awq')
     self.add('AUTH', 'accounts', 'ai/run/@cf/thebloke/yarn-mistral-7b-64k-awq')
     self.add('AUTH', 'accounts', 'ai/run/@cf/tiiuae/falcon-7b-instruct')
     self.add('AUTH', 'accounts', 'ai/run/@cf/tinyllama/tinyllama-1.1b-chat-v1.0')
 
     self.add('AUTH', 'accounts', 'ai/run/@hf/baai/bge-base-en-v1.5')
+    self.add('AUTH', 'accounts', 'ai/run/@hf/google/gemma-7b-it')
+    self.add('AUTH', 'accounts', 'ai/run/@hf/mistral/mistral-7b-instruct-v0.2')
+    self.add('AUTH', 'accounts', 'ai/run/@hf/nexusflow/starling-lm-7b-beta')
+    self.add('AUTH', 'accounts', 'ai/run/@hf/nousresearch/hermes-2-pro-mistral-7b')
     self.add('AUTH', 'accounts', 'ai/run/@hf/sentence-transformers/all-minilm-l6-v2')
     self.add('AUTH', 'accounts', 'ai/run/@hf/thebloke/codellama-7b-instruct-awq')
     self.add('AUTH', 'accounts', 'ai/run/@hf/thebloke/deepseek-coder-6.7b-base-awq')
@@ -681,6 +707,9 @@ def accounts_ai(self):
     self.add('AUTH', 'accounts', 'ai/run/@hf/thebloke/starling-lm-7b-alpha-awq')
     self.add('AUTH', 'accounts', 'ai/run/@hf/thebloke/zephyr-7b-beta-awq')
 
+    self.add('AUTH', 'accounts', 'ai/run/proxy')
+    self.add('AUTH', 'accounts', 'ai/tasks/search')
+
 def accounts_extras(self):
     """ :meta private: """
 
@@ -692,12 +721,13 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'alerting/v3/history')
     self.add('AUTH', 'accounts', 'alerting/v3/policies')
 
+    self.add('AUTH', 'accounts', 'calls/apps')
+
     self.add('AUTH', 'accounts', 'custom_ns')
     self.add('AUTH', 'accounts', 'custom_ns/availability')
     self.add('AUTH', 'accounts', 'custom_ns/verify')
 
     self.add('AUTH', 'accounts', 'devices')
-
     self.add('AUTH', 'accounts', 'devices', 'override_codes')
     self.add('AUTH', 'accounts', 'devices/dex_tests')
     self.add('AUTH', 'accounts', 'devices/networks')
@@ -756,6 +786,12 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'intel-phishing/predict')
     self.add('AUTH', 'accounts', 'intel/asn')
     self.add('AUTH', 'accounts', 'intel/asn', 'subnets')
+    self.add('AUTH', 'accounts', 'intel/attack-surface-report', 'dismiss')
+    self.add('AUTH', 'accounts', 'intel/attack-surface-report/issue-types')
+    self.add('AUTH', 'accounts', 'intel/attack-surface-report/issues')
+    self.add('AUTH', 'accounts', 'intel/attack-surface-report/issues/class')
+    self.add('AUTH', 'accounts', 'intel/attack-surface-report/issues/severity')
+    self.add('AUTH', 'accounts', 'intel/attack-surface-report/issues/type')
     self.add('AUTH', 'accounts', 'intel/dns')
     self.add('AUTH', 'accounts', 'intel/domain')
     self.add('AUTH', 'accounts', 'intel/domain-history')
@@ -777,6 +813,10 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'magic/ipsec_tunnels')
     self.add('AUTH', 'accounts', 'magic/ipsec_tunnels', 'psk_generate')
     self.add('AUTH', 'accounts', 'magic/routes')
+    self.add('AUTH', 'accounts', 'magic/sites')
+    self.add('AUTH', 'accounts', 'magic/sites', 'acls')
+    self.add('AUTH', 'accounts', 'magic/sites', 'lans')
+    self.add('AUTH', 'accounts', 'magic/sites', 'wans')
 
     self.add('AUTH', 'accounts', 'pages/projects')
     self.add('AUTH', 'accounts', 'pages/projects', 'deployments', content_type={'POST':'multipart/form-data'})
@@ -790,6 +830,11 @@ def accounts_extras(self):
     self.add('AUTH', 'accounts', 'pcaps', 'download')
     self.add('AUTH', 'accounts', 'pcaps/ownership')
     self.add('AUTH', 'accounts', 'pcaps/ownership/validate')
+
+    self.add('AUTH', 'accounts', 'queues')
+    self.add('AUTH', 'accounts', 'queues', 'consumers')
+    self.add('AUTH', 'accounts', 'queues', 'messages/ack')
+    self.add('AUTH', 'accounts', 'queues', 'messages/pull')
 
     self.add('AUTH', 'accounts', 'teamnet/routes')
     self.add('AUTH', 'accounts', 'teamnet/routes/ip')
@@ -809,6 +854,11 @@ def accounts_extras(self):
 
     self.add('AUTH', 'accounts', 'd1/database')
     self.add('AUTH', 'accounts', 'd1/database', 'query')
+
+    self.add('AUTH', 'accounts', 'zt_risk_scoring')
+    self.add('AUTH', 'accounts', 'zt_risk_scoring', 'reset')
+    self.add('AUTH', 'accounts', 'zt_risk_scoring/behaviors')
+    self.add('AUTH', 'accounts', 'zt_risk_scoring/summary')
 
 def zones_extras(self):
     """ :meta private: """
@@ -832,8 +882,12 @@ def zones_extras(self):
     self.add('AUTH', 'zones', 'rulesets', 'versions')
     self.add('AUTH', 'zones', 'rulesets/phases', 'entrypoint')
     self.add('AUTH', 'zones', 'rulesets/phases', 'entrypoint/versions')
-    self.add('AUTH', 'zones', 'rulesets/phases/http_custom_errors/entrypoint')
     self.add('AUTH', 'zones', 'rulesets/phases', 'versions')
+    self.add('AUTH', 'zones', 'rulesets/phases/http_custom_errors/entrypoint')
+    self.add('AUTH', 'zones', 'rulesets/phases/http_config_settings/entrypoint')
+    self.add('AUTH', 'zones', 'rulesets/phases/http_request_dynamic_redirect/entrypoint')
+    self.add('AUTH', 'zones', 'rulesets/phases/http_request_origin/entrypoint')
+
     self.add('AUTH', 'zones', 'url_normalization')
 
     self.add('AUTH', 'zones', 'hostnames/settings')
@@ -869,6 +923,10 @@ def accounts_r2(self):
     self.add('AUTH', 'accounts', 'r2/buckets', 'objects')
     self.add('AUTH', 'accounts', 'r2/buckets', 'sippy')
 
+    self.add('AUTH', 'accounts', 'event_notifications/r2', 'configuration')
+    self.add('AUTH', 'accounts', 'event_notifications/r2', 'configuration/queues')
+
+
 def zones_email(self):
     """ :meta private: """
 
@@ -892,7 +950,6 @@ def zones_api_gateway(self):
     self.add('AUTH', 'zones', 'api_gateway/settings/schema_validation')
     self.add('AUTH', 'zones', 'api_gateway/user_schemas', content_type={'POST':'multipart/form-data'})
     self.add('AUTH', 'zones', 'api_gateway/user_schemas', 'operations')
-
 
 def radar(self):
     """ :meta private: """
@@ -1033,9 +1090,23 @@ def radar_bgp(self):
     self.add('AUTH', 'radar/bgp/routes/moas')
     self.add('AUTH', 'radar/bgp/routes/pfx2as')
     self.add('AUTH', 'radar/bgp/routes/stats')
+    self.add('AUTH', 'radar/bgp/routes/timeseries')
 
 def radar_email(self):
     """ :meta private: """
+
+    self.add('AUTH', 'radar/email/routing/summary/arc')
+    self.add('AUTH', 'radar/email/routing/summary/dkim')
+    self.add('AUTH', 'radar/email/routing/summary/dmarc')
+    self.add('AUTH', 'radar/email/routing/summary/encrypted')
+    self.add('AUTH', 'radar/email/routing/summary/ip_version')
+    self.add('AUTH', 'radar/email/routing/summary/spf')
+    self.add('AUTH', 'radar/email/routing/timeseries_groups/arc')
+    self.add('AUTH', 'radar/email/routing/timeseries_groups/dkim')
+    self.add('AUTH', 'radar/email/routing/timeseries_groups/dmarc')
+    self.add('AUTH', 'radar/email/routing/timeseries_groups/encrypted')
+    self.add('AUTH', 'radar/email/routing/timeseries_groups/ip_version')
+    self.add('AUTH', 'radar/email/routing/timeseries_groups/spf')
 
     self.add('AUTH', 'radar/email/security/summary/arc')
     self.add('AUTH', 'radar/email/security/summary/dkim')
@@ -1043,7 +1114,10 @@ def radar_email(self):
     self.add('AUTH', 'radar/email/security/summary/malicious')
     self.add('AUTH', 'radar/email/security/summary/spam')
     self.add('AUTH', 'radar/email/security/summary/spf')
+    self.add('AUTH', 'radar/email/security/summary/spoof')
     self.add('AUTH', 'radar/email/security/summary/threat_category')
+    self.add('AUTH', 'radar/email/security/summary/tls_version')
+
     self.add('AUTH', 'radar/email/security/timeseries/arc')
     self.add('AUTH', 'radar/email/security/timeseries/dkim')
     self.add('AUTH', 'radar/email/security/timeseries/dmarc')
@@ -1051,14 +1125,15 @@ def radar_email(self):
     self.add('AUTH', 'radar/email/security/timeseries/spam')
     self.add('AUTH', 'radar/email/security/timeseries/spf')
     self.add('AUTH', 'radar/email/security/timeseries/threat_category')
-
     self.add('AUTH', 'radar/email/security/timeseries_groups/arc')
     self.add('AUTH', 'radar/email/security/timeseries_groups/dkim')
     self.add('AUTH', 'radar/email/security/timeseries_groups/dmarc')
     self.add('AUTH', 'radar/email/security/timeseries_groups/malicious')
     self.add('AUTH', 'radar/email/security/timeseries_groups/spam')
     self.add('AUTH', 'radar/email/security/timeseries_groups/spf')
+    self.add('AUTH', 'radar/email/security/timeseries_groups/spoof')
     self.add('AUTH', 'radar/email/security/timeseries_groups/threat_category')
+    self.add('AUTH', 'radar/email/security/timeseries_groups/tls_version')
 
     self.add('AUTH', 'radar/email/security/top/ases')
     self.add('AUTH', 'radar/email/security/top/ases/arc')
@@ -1074,6 +1149,10 @@ def radar_email(self):
     self.add('AUTH', 'radar/email/security/top/locations/malicious')
     self.add('AUTH', 'radar/email/security/top/locations/spam')
     self.add('AUTH', 'radar/email/security/top/locations/spf')
+    self.add('AUTH', 'radar/email/security/top/tlds')
+    self.add('AUTH', 'radar/email/security/top/tlds/malicious')
+    self.add('AUTH', 'radar/email/security/top/tlds/spam')
+    self.add('AUTH', 'radar/email/security/top/tlds/spoof')
 
 def radar_http(self):
     """ :meta private: """
@@ -1158,6 +1237,7 @@ def from_developers(self):
     self.add('AUTH', 'accounts', 'rulesets/phases/http_request_firewall_custom/entrypoint')
     self.add('AUTH', 'accounts', 'rulesets/phases/http_request_firewall_managed/entrypoint')
 
+    self.add('AUTH', 'accounts', 'stream', 'captions', 'vtt')
     self.add('AUTH', 'accounts', 'stream/analytics/views')
     self.add('AUTH', 'accounts', 'stream/live_inputs', 'videos')
     self.add('AUTH', 'accounts', 'stream/storage-usage')
@@ -1188,3 +1268,17 @@ def from_developers(self):
     self.add('AUTH', 'accounts', 'mtls_certificates')
     self.add('AUTH', 'accounts', 'mtls_certificates', 'associations')
     self.add('AUTH', 'accounts', 'request-tracer/trace')
+
+def accounts_cloudforce_one(self):
+    """ :meta private: """
+
+    self.add('AUTH', 'accounts', 'cloudforce-one/requests')
+    self.add('AUTH', 'accounts', 'cloudforce-one/requests', 'message')
+    self.add('AUTH', 'accounts', 'cloudforce-one/requests', 'message/new')
+    self.add('AUTH', 'accounts', 'cloudforce-one/requests/constants')
+    self.add('AUTH', 'accounts', 'cloudforce-one/requests/new')
+    self.add('AUTH', 'accounts', 'cloudforce-one/requests/priority')
+    self.add('AUTH', 'accounts', 'cloudforce-one/requests/priority/new')
+    self.add('AUTH', 'accounts', 'cloudforce-one/requests/priority/quota')
+    self.add('AUTH', 'accounts', 'cloudforce-one/requests/quota')
+    self.add('AUTH', 'accounts', 'cloudforce-one/requests/types')
