@@ -1,6 +1,6 @@
 """ Cloudflare v4 API"""
 
-__version__ = '2.19.2'
+__version__ = '2.19.3'
 
 from .cloudflare import CloudFlare
 
