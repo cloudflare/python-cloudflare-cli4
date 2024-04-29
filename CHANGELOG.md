@@ -1,5 +1,35 @@
 # Change Log
 
+ - 2024-04-29 18:38:21 +0100 [1bda322](../../commit/1bda322ccb2093c262cb65777327b1d1133d2a5a) 2.19.4
+ - 2024-04-29 18:36:37 +0100 [a3cda63](../../commit/a3cda63d40e9bf25cbd90bef76b28ad16285c2ba) #186 - explain how to maps arguments
+ - 2024-04-29 18:28:56 +0100 [389029a](../../commit/389029a6c8c20cd125333c81f758ffb718169ab9) #188 - url now uses strings - as it should!
+ - 2024-04-29 18:07:15 +0100 [4bd76db](../../commit/4bd76dbd42a84a851719b7a5a3f47176db3a189f) #190 - remove Python 3.5 support because of f-string
+ - 2024-04-29 18:04:12 +0100 [02e513f](../../commit/02e513f1607be04f031ee9387872d6666cabeb1a) 2.19.3
+ - 2024-04-29 18:02:44 +0100 [8f2e7ad](../../commit/8f2e7ad974c71a4b507eb90ddc8d0210f318ab4e) Add version 3.0 code and pinning info to README
+ - 2024-04-29 18:01:58 +0100 [b4dbc6e](../../commit/b4dbc6e8ee954ae264f72e2ac38d4f9c47201e19) more api endpoints
+ - 2024-04-29 18:01:25 +0100 [63f1839](../../commit/63f18392d3346924f81e59e681a877a940cbd656) now that AI methods are in library - no need for CLOUDFLARE_API_EXTRAS code
+ - 2024-04-18 16:35:32 -0700 [0c1fb92](../../commit/0c1fb926b0bf0595b025272b9e80bc77ed7c5ad3) more api endpoints
+ - 2024-03-19 15:02:14 -0700 [839ac32](../../commit/839ac3206320206178fd67438a52e0f4357f3903) remove f-string for Python <3.6 compatibility
+ - 2024-03-11 22:25:20 -0300 [ab8a1aa](../../commit/ab8a1aaa189ac5afdab20f966ef44fd675e1437b) added documentation urls, etc for pypi
+ - 2024-03-11 22:21:01 -0300 [fc0e111](../../commit/fc0e1111e1824ea8c78cda43530b51343fb0a348) finally removed the VOID calls, added /ai/run endpoints
+ - 2024-03-04 19:50:56 -0500 [56ffcfc](../../commit/56ffcfc1557610ae4d18eb305fbeb418966f038e) still testing docs
+ - 2024-03-04 19:46:21 -0500 [82d2dcb](../../commit/82d2dcb2f8dc51bc72e3bca455bba38c55e66f8b) added more download stats
+ - 2024-03-04 19:32:03 -0500 [1ae9c2a](../../commit/1ae9c2aa7a67f8f15bce6cdabc3a2b71a8744c11) still testing docs
+ - 2024-03-04 19:29:14 -0500 [f9b565a](../../commit/f9b565a772c1ff06b2ed8a432734fa67ae2b24bc) added download stats
+ - 2024-03-04 00:02:19 -0500 [984284f](../../commit/984284f563e90c91e296a0c5d5d2f65dad9f8a4e) still testing docs
+ - 2024-03-04 00:01:25 -0500 [cf2b3d7](../../commit/cf2b3d7b6630f677e9224ed91ea4b8d462fbdd92) still testing docs
+ - 2024-03-01 12:05:09 -0800 [26f6af8](../../commit/26f6af8bc79ab6c3c8c0c8526a73012d46350c0d) still testing docs
+ - 2024-03-01 11:39:45 -0800 [35c0e06](../../commit/35c0e068df3459f6cfcb4c39cadd15f526386e4c) start of longstanding need for documentation, update of copyright string
+ - 2024-03-01 10:15:38 -0800 [4fe03ee](../../commit/4fe03eed3c7bcc2130846b1be6ea4c9427a1bb99) readthedocs initial setup - long overdue
+ - 2024-02-26 23:33:35 -0800 [77fee2e](../../commit/77fee2e5fcf9e3246f6f2d9f194dbb65e54cdcf4) pylint fixes
+ - 2024-02-26 23:30:57 -0800 [e7cc964](../../commit/e7cc96452fb84338525ed1537e3523157ba634de) moved all requests code/exceptions into network where it belongs, import cleanup, exception handling cleanup
+ - 2024-02-26 23:20:06 -0800 [dbaf7d6](../../commit/dbaf7d67c53e0baaf7a1ab6f33ee860c50672686) handle python < 3.10 to get utc time correctly
+ - 2024-02-23 16:47:01 -0800 [036c5ed](../../commit/036c5edeac4d40e8bd9584541ce4a84f2e686d20) document cli4 having --header flag
+ - 2024-02-23 16:39:32 -0800 [6eed220](../../commit/6eed2201254769b9bbcea69252fdad51bae62aa2) cli4 has --header flag, plus http_headers needed some more syntax checking
+ - 2024-02-22 19:03:24 -0800 [dec9835](../../commit/dec98352d027e205bed762bebdbc8ea0eecbd7c5) added Python 3.5 note
+ - 2024-02-22 15:10:24 -0800 [b3cf637](../../commit/b3cf637c2318e6aa09150a3f5f55e5a8a90221f3) remove excessive import statements
+ - 2024-02-22 15:09:41 -0800 [c5a5587](../../commit/c5a5587abff4213ffc9fdeac515390a0982f73ee) improved date/time rfc/iso code, lint fixes
+ - 2024-02-22 13:49:22 +0900 [9dca32b](../../commit/9dca32b2eb2511ce7b5ae3585ffec17b0eab8278) CHANGELOG.md pushed to github
  - 2024-02-22 13:49:15 +0900 [28b768a](../../commit/28b768a0d02309cef9f150bfc41cb9c3d9c2eecd) 2.19.2
  - 2024-02-22 13:48:52 +0900 [11d1270](../../commit/11d1270b65ce089b87b029483f517c56d288bff5) typo
  - 2024-02-22 13:37:13 +0900 [287c8a7](../../commit/287c8a790b3adf80352972d9ca63c14eab2f8c3a) CHANGELOG.md pushed to github
