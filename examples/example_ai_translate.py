@@ -10,9 +10,6 @@ use_find = False
 
 def doit(account_name, english_text):
 
-    # Or place these in your cloudflare.cfg file
-    os.environ['CLOUDFLARE_API_EXTRAS'] = '/accounts/:id/ai/run/@cf/meta/m2m100-1.2b'
-
     # We set the timeout because these AI calls take longer than normal API calls
     cf = CloudFlare.CloudFlare(global_request_timeout=120)
 

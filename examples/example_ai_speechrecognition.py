@@ -22,9 +22,6 @@ def user_agent():
 
 def doit(account_name, audio_data):
 
-    # Or place these in your cloudflare.cfg file
-    os.environ['CLOUDFLARE_API_EXTRAS'] = '/accounts/:id/ai/run/@cf/openai/whisper'
-
     # We set the timeout because these AI calls take longer than normal API calls
     cf = CloudFlare.CloudFlare(global_request_timeout=120)
 
