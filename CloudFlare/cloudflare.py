@@ -289,14 +289,14 @@ class CloudFlare():
                 if identifiers[1] is None:
                     url = (self.base_url + '/'
                            + parts[0] + '/'
-                           + identifiers[0] + '/'
+                           + str(identifiers[0]) + '/'
                            + parts[1])
                 else:
                     url = (self.base_url + '/'
                            + parts[0] + '/'
-                           + identifiers[0] + '/'
+                           + str(identifiers[0]) + '/'
                            + parts[1] + '/'
-                           + identifiers[1])
+                           + str(identifiers[1]))
             else:
                 if identifiers[0] is None:
                     url = (self.base_url + '/'
@@ -304,16 +304,16 @@ class CloudFlare():
                 else:
                     url = (self.base_url + '/'
                            + parts[0] + '/'
-                           + identifiers[0])
+                           + str(identifiers[0]))
 
             if len(parts) > 2 and parts[2]:
                 url += '/' + parts[2]
                 if identifiers[2]:
-                    url += '/' + identifiers[2]
+                    url += '/' + str(identifiers[2])
                 if len(parts) > 3 and parts[3]:
                     url += '/' + parts[3]
                     if identifiers[3]:
-                        url += '/' + identifiers[3]
+                        url += '/' + str(identifiers[3])
                     if len(parts) > 4 and parts[4]:
                         url += '/' + parts[4]
 
