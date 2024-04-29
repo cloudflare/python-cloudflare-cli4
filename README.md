@@ -34,6 +34,20 @@ When you see this README complete change you will know that `3.x` has been relea
 [![Downloads](https://static.pepy.tech/badge/cloudflare/week)](https://pepy.tech/project/cloudflare)
 [![Downloads](https://img.shields.io/pypi/pyversions/cloudflare.svg)](https://pepy.tech/project/cloudflare)
 
+## Instant how-to-use example
+
+If you want to call the following API call:
+```
+    https://api.cloudflare.com/client/v4/zones/{zone_id}/dns_records/{dns_record_id}
+```
+
+It would translates to the following Python code:
+```python
+    results = cf.zones.dns_records(zone_id, dns_record_id)
+```
+
+Many more examples are below and/or in the `examples` folder.
+
 ## Installation
 
 Two methods are provided to install this software.
@@ -1516,7 +1530,7 @@ As of January 2020 the code is Python3.8 clean. The new `SyntaxWarning` messages
 
 As of late 2023 the code is Python3.11 clean.
 
-As of February 2024 the code is officially marked as 3.x only (3.5 and above to be specific) such that it can become PEP561 specific.
+As of April 2024 the code is officially marked as 3.x only (3.6 and above to be specific) such that it can become PEP561 specific.
 
 ## pypi and GitHub signed releases
 
