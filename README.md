@@ -1,5 +1,39 @@
 # cloudflare-python
 
+> [!WARNING]
+> Soon there will be two Python packages for accessing Cloudflare's API.
+>
+> 1. This original [package](https://github.com/cloudflare/python-cloudflare), which was initially introduced [here](https://blog.cloudflare.com/python-cloudflare/).
+> 2. A ground-up rewrite of the SDK, released under `3.x`, at some point in the future. See [here](https://github.com/cloudflare/python-cloudflare/discussions/191)
+>
+> If you like using this package in it's present form, it is highly recommended that you pin to the `2.x` releases now.
+>
+> ```bash
+> $ cat ${YOUR_PROJECT}/requirements.txt
+> cloudflare==2.19.*
+> $
+> ```
+>
+> For manual upgrades; the following will work cleanly:
+> ```bash
+> $ pip install --upgrade cloudflare==2.19.*
+> ...
+> Successfully installed cloudflare-2.19.3
+> $
+
+> [!WARNING]
+> Release `3.x` will not be code-compatible/call-compatible with previous releases (i.e. release `1.x` and `2.x`).
+
+When you see this README complete change you will know that `3.x` has been released; however, until then, this code will be released under a `2.19.x` release number.
+
+## Package stats
+
+[![Downloads](https://static.pepy.tech/badge/cloudflare)](https://pepy.tech/project/cloudflare)
+[![Downloads](https://static.pepy.tech/badge/cloudflare/month)](https://pepy.tech/project/cloudflare)
+[![Downloads](https://static.pepy.tech/badge/cloudflare/week)](https://pepy.tech/project/cloudflare)
+[![Downloads](https://static.pepy.tech/badge/cloudflare/week)](https://pepy.tech/project/cloudflare)
+[![Downloads](https://img.shields.io/pypi/pyversions/cloudflare.svg)](https://pepy.tech/project/cloudflare)
+
 ## Installation
 
 Two methods are provided to install this software.
@@ -8,26 +42,20 @@ Use PyPi (see [package](https://pypi.python.org/pypi/cloudflare) details) or Git
 ### Via PyPI
 
 ```bash
-    $ sudo pip install cloudflare
-    $
+$ sudo pip install cloudflare
+$
 ```
 
 Yes - that simple! (the sudo may not be needed in some cases).
 
-[![Downloads](https://static.pepy.tech/badge/cloudflare)](https://pepy.tech/project/cloudflare)
-[![Downloads](https://static.pepy.tech/badge/cloudflare/month)](https://pepy.tech/project/cloudflare)
-[![Downloads](https://static.pepy.tech/badge/cloudflare/week)](https://pepy.tech/project/cloudflare)
-[![Downloads](https://static.pepy.tech/badge/cloudflare/week)](https://pepy.tech/project/cloudflare)
-[![Downloads](https://img.shields.io/pypi/pyversions/cloudflare.svg)](https://pepy.tech/project/cloudflare)
-
 ### Via github
 
 ```bash
-    $ git clone https://github.com/cloudflare/python-cloudflare
-    $ cd python-cloudflare
-    $ ./setup.py build
-    $ sudo ./setup.py install
-    $
+$ git clone https://github.com/cloudflare/python-cloudflare
+$ cd python-cloudflare
+$ ./setup.py build
+$ sudo ./setup.py install
+$
 ```
 
 Or whatever variance of that you want to use.
@@ -214,26 +242,26 @@ If you are using only the API Token, then don't include the API Email. If you ar
 ```python
 import CloudFlare
 
-    # A minimal call - reading values from environment variables or configuration file
-    cf = CloudFlare.CloudFlare()
+# A minimal call - reading values from environment variables or configuration file
+cf = CloudFlare.CloudFlare()
 
-    # A minimal call with debug enabled
-    cf = CloudFlare.CloudFlare(debug=True)
+# A minimal call with debug enabled
+cf = CloudFlare.CloudFlare(debug=True)
 
-    # An authenticated call using an API Token (note the missing email)
-    cf = CloudFlare.CloudFlare(token='00000000000000000000000000000000')
+# An authenticated call using an API Token (note the missing email)
+cf = CloudFlare.CloudFlare(token='00000000000000000000000000000000')
 
-    # An authenticated call using an API Email and API Key
-    cf = CloudFlare.CloudFlare(email='user@example.com', key='00000000000000000000000000000000')
+# An authenticated call using an API Email and API Key
+cf = CloudFlare.CloudFlare(email='user@example.com', key='00000000000000000000000000000000')
 
-    # An authenticated call using an API Token and CA-Origin info
-    cf = CloudFlare.CloudFlare(token='00000000000000000000000000000000', certtoken='v1.0-...')
+# An authenticated call using an API Token and CA-Origin info
+cf = CloudFlare.CloudFlare(token='00000000000000000000000000000000', certtoken='v1.0-...')
 
-    # An authenticated call using an API Email, API Key, and CA-Origin info
-    cf = CloudFlare.CloudFlare(email='user@example.com', key='00000000000000000000000000000000', certtoken='v1.0-...')
+# An authenticated call using an API Email, API Key, and CA-Origin info
+cf = CloudFlare.CloudFlare(email='user@example.com', key='00000000000000000000000000000000', certtoken='v1.0-...')
 
-    # An authenticated call using using a stored profile (see below)
-    cf = CloudFlare.CloudFlare(profile="CompanyX"))
+# An authenticated call using using a stored profile (see below)
+cf = CloudFlare.CloudFlare(profile="CompanyX"))
 ```
 
 If the account email and API key are not passed when you create the class, then they are retrieved from either the users exported shell environment variables or the .cloudflare.cfg or ~/.cloudflare.cfg or ~/.cloudflare/cloudflare.cfg files, in that order.
