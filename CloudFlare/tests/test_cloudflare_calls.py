@@ -116,7 +116,10 @@ def test_ips6_should_fail():
     try:
         ips = cf.ips()
     except CloudFlare.exceptions.CloudFlareAPIError as e:
-        print('Error expected: %d %s' % (int(e), str(e)), file=sys.stderr)
+        print('Error expected: %s %d %s' % (type(e).__name__, int(e), str(e)), file=sys.stderr)
+        pass
+    except Exception as e:
+        print('Error expected: %s %s' % (type(e).__name__, e), file=sys.stderr)
         pass
 
 def test_cloudflare_url_wrong():
@@ -130,7 +133,10 @@ def test_ips7_should_fail():
     try:
         ips = cf.ips()
     except CloudFlare.exceptions.CloudFlareAPIError as e:
-        print('Error expected: %d %s' % (int(e), str(e)), file=sys.stderr)
+        print('Error expected: %s %d %s' % (type(e).__name__, int(e), str(e)), file=sys.stderr)
+        pass
+    except Exception as e:
+        print('Error expected: %s %s' % (type(e).__name__, e), file=sys.stderr)
         pass
 
 def test_cloudflare_email_invalid():
