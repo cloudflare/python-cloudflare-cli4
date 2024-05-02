@@ -42,7 +42,7 @@ test: all
 	@if pip show pytest-cov > /dev/null; \
 	then \
 		if [ ! -s .coverage ] ; then touch -t 202001011200 .coverage ; fi ; \
-		if [ `find CloudFlare CloudFlare/tests cli4 examples setup.py setup.cfg -type f -depth 1 -name '*.py' -newer .coverage | wc -l` != 0 ]; \
+		if [ `find CloudFlare CloudFlare/tests cli4 examples pyproject.toml -type f -depth 1 -name '*.py' -newer .coverage | wc -l` != 0 ]; \
 		then \
 			echo $(PYTEST) --cov=CloudFlare ; \
 			$(PYTEST) --cov=CloudFlare ; \
