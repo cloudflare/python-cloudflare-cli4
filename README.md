@@ -1,302 +1,47 @@
-# cloudflare-python
+# cloudflare-cli4
 
-> [!WARNING]
-> Soon there will be two Python packages for accessing Cloudflare's API.
->
-> 1. This original [package](https://github.com/cloudflare/python-cloudflare), which was initially introduced [here](https://blog.cloudflare.com/python-cloudflare/).
-> 2. A ground-up rewrite of the SDK, released under `3.x`, at some point in the future. See [here](https://github.com/cloudflare/python-cloudflare/discussions/191)
->
-> If you like using this package in it's present form, it is highly recommended that you pin to the `2.x` releases now.
->
-> ```bash
-> $ cat ${YOUR_PROJECT}/requirements.txt
-> cloudflare==2.19.*
-> $
-> ```
->
-> For manual upgrades; the following will work cleanly:
-> ```bash
-> $ pip install --upgrade cloudflare==2.19.*
-> ...
-> Successfully installed cloudflare-2.19.3
-> $
-
-> [!WARNING]
-> Release `3.x` will not be code-compatible/call-compatible with previous releases (i.e. release `1.x` and `2.x`).
-
-When you see this README complete change you will know that `3.x` has been released; however, until then, this code will be released under a `2.19.x` release number.
-
-## Package stats
-
-[![Downloads](https://static.pepy.tech/badge/cloudflare)](https://pepy.tech/project/cloudflare)
-[![Downloads](https://static.pepy.tech/badge/cloudflare/month)](https://pepy.tech/project/cloudflare)
-[![Downloads](https://static.pepy.tech/badge/cloudflare/week)](https://pepy.tech/project/cloudflare)
-[![Downloads](https://static.pepy.tech/badge/cloudflare/week)](https://pepy.tech/project/cloudflare)
-[![Downloads](https://img.shields.io/pypi/pyversions/cloudflare.svg)](https://pepy.tech/project/cloudflare)
-
-## Instant how-to-use example
-
-If you want to call the following API call:
-```
-    https://api.cloudflare.com/client/v4/zones/{zone_id}/dns_records/{dns_record_id}
+```shell
+$ pip install cloudflare-cli4
+$ cli4 --help
+usage: cli4 [-V|--version] [-h|--help] [-v|--verbose] [-e|--examples] [-q|--quiet] [-j|--json] [-y|--yaml] [-n|--ndjson] [-i|--image] [-r|--raw] [-d|--dump] [-A|--openapi url] [-b|--binary] [-p|--profile profile-name] [-h|--header additional-header] [--get|--patch|--post|--put|--delete] [item=value|item=@filename|@filename ...] /command ...
 ```
 
-It would translates to the following Python code:
-```python
-    results = cf.zones.dns_records(zone_id, dns_record_id)
+This repository is a snapshot of the `cli4` Python tool originally packaged alongside
+[cloudflare](https://pypi.org/project/cloudflare/).
+
+Starting with `cloudflare` v3 this Python CLI will be packaged separately and won't be actively developped anymore.
+
+## Install
+
+### Using `rye`
+
+```shell
+$ git clone https://github.com/stainless-api/python-cloudflare-cli4
+$ cd python-cloudflare-cli4
+$ rye sync
 ```
 
-Many more examples are below and/or in the `examples` folder.
+### Using `pip`
 
-## Installation
-
-Two methods are provided to install this software.
-Use PyPi (see [package](https://pypi.python.org/pypi/cloudflare) details) or GitHub (see [package](https://github.com/cloudflare/python-cloudflare) details).
-
-### Via PyPI
-
-```bash
-$ sudo pip install cloudflare
-$
+```shell
+$ git clone https://github.com/stainless-api/python-cloudflare-cli4
+$ cd python-cloudflare-cli4
+$ pyton -m pip install .
 ```
-
-Yes - that simple! (the sudo may not be needed in some cases).
-
-### Via github
-
-```bash
-$ git clone https://github.com/cloudflare/python-cloudflare
-$ cd python-cloudflare
-$ ./setup.py build
-$ sudo ./setup.py install
-$
-```
-
-Or whatever variance of that you want to use.
-There is a Makefile included.
-
-## Cloudflare name change - dropping the capital F
-
-In Sepember/October 2016 the company modified its company name and dropped the capital F.
-However, for now (and for backward compatibility reasons) the class name stays the same.
-
-## Cloudflare API version 4
-
-The Cloudflare API can be found [here](https://api.cloudflare.com/).
-Each API call is provided via a similarly named function within the **CloudFlare** class.
-A full list is provided below.
-
-## Example code
-
-All example code is available on GitHub (see [package](https://github.com/cloudflare/python-cloudflare) in the [examples](https://github.com/cloudflare/python-cloudflare/tree/master/examples) folder).
-
-## Blog
-
-This package was initially introduced [here](https://blog.cloudflare.com/python-cloudflare/) via Cloudflare's [blog](https://blog.cloudflare.com/).
-
-## Getting Started
-
-A very simple listing of zones within your account; including the IPv6 status of the zone.
-
-```python
-import CloudFlare
-
-def main():
-    cf = CloudFlare.CloudFlare()
-    zones = cf.zones.get()
-    for zone in zones:
-        zone_id = zone['id']
-        zone_name = zone['name']
-        print("zone_id=%s zone_name=%s" % (zone_id, zone_name))
-
-if __name__ == '__main__':
-    main()
-```
-
-This example works when there are less than 50 zones (50 is the default number of values returned from a query like this).
-
-Now lets expand on that and add code to show the IPv6 and SSL status of the zones. Lets also query 100 zones.
-
-```python
-import CloudFlare
-
-def main():
-    cf = CloudFlare.CloudFlare()
-    zones = cf.zones.get(params = {'per_page':100})
-    for zone in zones:
-        zone_id = zone['id']
-        zone_name = zone['name']
-
-        settings_ssl = cf.zones.settings.ssl.get(zone_id)
-        ssl_status = settings_ssl['value']
-
-        settings_ipv6 = cf.zones.settings.ipv6.get(zone_id)
-        ipv6_status = settings_ipv6['value']
-
-        print("zone_id=%s zone_name=%s" % (zone_id, zone_name))
-        print("ssl_status=%s ipv6_status=%s" % (ssl_status, ipv6_status))
-
-if __name__ == '__main__':
-    main()
-```
-
-In order to query more than a single page of zones, we would have to use the raw mode (described more below).
-We can loop over many get calls and pass the page parameter to facilitate the paging.
-
-Raw mode is only needed when a get request has the possibility of returning many items.
-
-```python
-import CloudFlare
-
-def main():
-    cf = CloudFlare.CloudFlare(raw=True)
-    page_number = 0
-    while True:
-        page_number += 1
-        raw_results = cf.zones.get(params={'per_page':5,'page':page_number})
-        zones = raw_results['result']
-
-        for zone in zones:
-            zone_id = zone['id']
-            zone_name = zone['name']
-            print("zone_id=%s zone_name=%s" % (zone_id, zone_name))
-
-        total_pages = raw_results['result_info']['total_pages']
-        if page_number == total_pages:
-            break
-
-if __name__ == '__main__':
-    main()
-```
-
-A more complex example follows.
-
-```python
-import CloudFlare
-
-def main():
-    zone_name = 'example.com'
-
-    cf = CloudFlare.CloudFlare()
-
-    # query for the zone name and expect only one value back
-    try:
-        zones = cf.zones.get(params = {'name':zone_name,'per_page':1})
-    except CloudFlare.exceptions.CloudFlareAPIError as e:
-        exit('/zones.get %d %s - api call failed' % (e, e))
-    except Exception as e:
-        exit('/zones.get - %s - api call failed' % (e))
-
-    if len(zones) == 0:
-        exit('No zones found')
-
-    # extract the zone_id which is needed to process that zone
-    zone = zones[0]
-    zone_id = zone['id']
-
-    # request the DNS records from that zone
-    try:
-        dns_records = cf.zones.dns_records.get(zone_id)
-    except CloudFlare.exceptions.CloudFlareAPIError as e:
-        exit('/zones/dns_records.get %d %s - api call failed' % (e, e))
-
-    # print the results - first the zone name
-    print("zone_id=%s zone_name=%s" % (zone_id, zone_name))
-
-    # then all the DNS records for that zone
-    for dns_record in dns_records:
-        r_name = dns_record['name']
-        r_type = dns_record['type']
-        r_value = dns_record['content']
-        r_id = dns_record['id']
-        print('\t', r_id, r_name, r_type, r_value)
-
-    exit(0)
-
-if __name__ == '__main__':
-    main()
-```
-
-## Providing Cloudflare Username and API Key
-
-When you create a **CloudFlare** class you can pass some combination of these four core parameters.
-
- * `email` - The account email (only if an API Key is being used)
- * `api` - The API Key (if coding prior to Issue-114 being merged)
- * `token` - The API Token (if coding after to Issue-114)
- * `certtoken` - Optional Origin-CA Certificate Token
-
-This parameter controls how the data is returned from a successful call (see notes below).
-
- * `raw` - An optional Raw flag (True/False) - defaults to False
-
-Timeouts (10s) and Retries (5) are configured by default. Should you wish to override them, use these settings:
-* `global_request_timeout` - How long before each API call to Cloudflare should time out (in seconds)
-* `max_requests_retries` - How many times to retry an API call when DNS lookups, socket connections, or connect timeouts occur.
-
-> NOTE: `max_request_retries` is only available when `use_sessions` is not disabled.
-
-The following paramaters are for debug and/or development usage
-
- * `debug` - An optional Debug flag (True/False) - defaults to False
- * `use_sessions` - An optional Use-Sessions flag (True/False) - defaults to True
- * `profile` - An optional Profile name (the default is `Cloudflare`)
- * `base_url` - An optional Base URL (only used for development)
-
-email=None, key=None, token=None, certtoken=None, debug=False, raw=False, use_sessions=True, profile=None, base_url=None):
-
-### Issue-114
-
-After [Issue-114](https://github.com/cloudflare/python-cloudflare/issues/114) was coded and merged, the use of `token` and `key` changed; however, is backward compatible (amazingly!).
-
-If you are using only the API Token, then don't include the API Email. If you are coding prior to Issue-114, then the API Key can also be used as an API Token if the API Email is not used.
-
-### Python code to create class
-
-```python
-import CloudFlare
-
-# A minimal call - reading values from environment variables or configuration file
-cf = CloudFlare.CloudFlare()
-
-# A minimal call with debug enabled
-cf = CloudFlare.CloudFlare(debug=True)
-
-# An authenticated call using an API Token (note the missing email)
-cf = CloudFlare.CloudFlare(token='00000000000000000000000000000000')
-
-# An authenticated call using an API Email and API Key
-cf = CloudFlare.CloudFlare(email='user@example.com', key='00000000000000000000000000000000')
-
-# An authenticated call using an API Token and CA-Origin info
-cf = CloudFlare.CloudFlare(token='00000000000000000000000000000000', certtoken='v1.0-...')
-
-# An authenticated call using an API Email, API Key, and CA-Origin info
-cf = CloudFlare.CloudFlare(email='user@example.com', key='00000000000000000000000000000000', certtoken='v1.0-...')
-
-# An authenticated call using using a stored profile (see below)
-cf = CloudFlare.CloudFlare(profile="CompanyX"))
-```
-
-If the account email and API key are not passed when you create the class, then they are retrieved from either the users exported shell environment variables or the .cloudflare.cfg or ~/.cloudflare.cfg or ~/.cloudflare/cloudflare.cfg files, in that order.
-
-If you're using an API Token, any `cloudflare.cfg` file must either not contain an `email` and `key` attribute (or they can be zero length strings) and the `CLOUDFLARE_EMAIL` `CLOUDFLARE_API_KEY` environment variable must be unset (or zero length strings), otherwise the token (`CLOUDFLARE_API_TOKEN` or `token` attribute) will not be used.
-
-There is one call that presently doesn't need any email or token certification (the */ips* call); hence you can test without any values saved away.
 
 ### Using shell environment variables
 
 Note (for latest version of code):
 
- * `CLOUDFLARE_EMAIL` has replaced `CF_API_EMAIL`.
- * `CLOUDFLARE_API_KEY` has replaced `CF_API_KEY`.
- * `CLOUDFLARE_API_TOKEN` has replaced `CF_API_TOKEN`.
- * `CLOUDFLARE_API_CERTKEY` has replaced `CF_API_CERTKEY`.
+- `CLOUDFLARE_EMAIL` has replaced `CF_API_EMAIL`.
+- `CLOUDFLARE_API_KEY` has replaced `CF_API_KEY`.
+- `CLOUDFLARE_API_TOKEN` has replaced `CF_API_TOKEN`.
+- `CLOUDFLARE_API_CERTKEY` has replaced `CF_API_CERTKEY`.
 
 Additionally, these two variables are available for testing purposes:
 
- * `CLOUDFLARE_API_EXTRAS` has replaced `CF_API_EXTRAS`.
- * `CLOUDFLARE_API_URL` has replaced `CF_API_URL`.
+- `CLOUDFLARE_API_EXTRAS` has replaced `CF_API_EXTRAS`.
+- `CLOUDFLARE_API_URL` has replaced `CF_API_URL`.
 
 The older environment variable names can still be used.
 
@@ -314,6 +59,7 @@ $ export CLOUDFLARE_API_TOKEN='00000000000000000000000000000000'
 $ export CLOUDFLARE_API_CERTKEY='v1.0-...'
 $
 ```
+
 These are optional environment variables; however, they do override the values set within a configuration file.
 
 ### Using configuration file to store email and keys
@@ -355,18 +101,6 @@ $ cli4 --profile Home /zones | jq '.[]|.name' | wc -l
 $
 ```
 
-Here is the same in code.
-
-```python
-#!/usr/bin/env python
-
-import CloudFlare
-
-def main():
-    cf = CloudFlare.CloudFlare(profile="Work")
-    ...
-```
-
 ### Passing your own HTTP headers to API calls
 
 There are very specific case where a user of the library needs to add custom headers to all HTTP calls.
@@ -386,24 +120,11 @@ http_headers =
 ...
 $
 ```
+
 Each line should have a header noun, a colon, and a verb.
 
-You can also pass these via Python calls.
-```python
-    import CloudFlare
-
-    http_headers = [
-        'X-Header1:value',
-        'X-Header2: value1 value2 value3',
-        'X-Header3: "this is life as we know it"',
-        'X-Header4: \'two single quotes\'',
-        'X-Header5:',
-    ]
-    cf = CloudFlare.CloudFlare(http_headers=http_headers)
-...
-```
-
 These header values can also be passed via `cli4` command (many times) - use the `-v` option to see the debug messages:
+
 ```
 $ cli4 -v --header 'X-something:' --header 'X-whatever:whatever' /zones > /tmp/results.json
 ...
@@ -444,12 +165,12 @@ This can be used with email values also.
 
 ### About /certificates and certtoken
 
-The *CLOUDFLARE_API_CERTKEY* or *certtoken* values are used for the Origin-CA */certificates* API calls.
-You can leave *certtoken* in the configuration with a blank value (or omit the option variable fully).
+The _CLOUDFLARE_API_CERTKEY_ or _certtoken_ values are used for the Origin-CA _/certificates_ API calls.
+You can leave _certtoken_ in the configuration with a blank value (or omit the option variable fully).
 
-The *extras* values are used when adding API calls outside of the core codebase.
+The _extras_ values are used when adding API calls outside of the core codebase.
 Technically, this is only useful for internal testing within Cloudflare.
-You can leave *extras* in the configuration with a blank value (or omit the option variable fully).
+You can leave _extras_ in the configuration with a blank value (or omit the option variable fully).
 
 ## Exceptions and return values
 
@@ -458,103 +179,7 @@ You can leave *extras* in the configuration with a blank value (or omit the opti
 The response is build from the JSON in the API call.
 It contains the **results** values; but does not contain the paging values.
 
-You can return all the paging values by calling the class with raw=True. Here's an example without paging.
-
-```python
-#!/usr/bin/env python
-
-import json
-import CloudFlare
-
-def main():
-    cf = CloudFlare.CloudFlare()
-    zones = cf.zones.get(params={'per_page':5})
-    print("len=%d" % (zones.length()))
-
-if __name__ == '__main__':
-    main()
-```
-
-The results are as follows.
-
-```
-5
-```
-
-When you add the raw option; the APIs full structure is returned. This means the paging values can be seen.
-
-```python
-#!/usr/bin/env python
-
-import json
-import CloudFlare
-
-def main():
-    cf = CloudFlare.CloudFlare(raw=True)
-    zones = cf.zones.get(params={'per_page':5})
-    print("len=%d" % (zones.length()))
-    print(json.dumps(zones, indent=4, sort_keys=True))
-
-if __name__ == '__main__':
-    main()
-```
-
-This produces.
-
-```
-5
-{
-    "result": [
-        ...
-    ],
-    "result_info": {
-        "count": 5,
-        "page": 1,
-        "per_page": 5,
-        "total_count": 31,
-        "total_pages": 7
-    }
-}
-```
-
-A full example of paging is provided below.
-
-### Exceptions
-
-The library will raise **CloudFlareAPIError** when the API call fails.
-The exception returns both an integer and textual message in one value.
-
-```python
-import CloudFlare
-
-    ...
-    try
-        r = ...
-    except CloudFlare.exceptions.CloudFlareAPIError as e:
-        exit('api error: %d %s' % (e, e))
-    ...
-```
-
-The other raised response is **CloudFlareInternalError** which can happen when calling an invalid method.
-
-In some cases more than one error is returned. In this case the return value `e` is also an array.
-You can iterate over that array to see the additional error.
-
-```python
-import sys
-import CloudFlare
-
-    ...
-    try
-        r = ...
-    except CloudFlare.exceptions.CloudFlareAPIError as e:
-        if len(e) > 0:
-            sys.stderr.write('api error - more than one error value returned!\n')
-            for x in e:
-                sys.stderr.write('api error: %d %s\n' % (x, x))
-        exit('api error: %d %s' % (e, e))
-    ...
-```
+You can return all the paging values by calling the class with raw=True.
 
 ### Exception handling
 
@@ -585,6 +210,7 @@ $ cli4 /user/organizations /user/invites
 ...
 $
 ```
+
 Note that the output is presently two JSON structures one after the other - so less useful that you may think.
 
 Finally, a command that provides more than one error response.
@@ -639,63 +265,6 @@ U:\Users\Bobby>python -V
 Python 3.8.3
 
 U:\Users\Bobby>
-```
-
-Upgrading from an older version of Python is always recommended. Upgrading from Win7 is by-default even more important!
-
-## A DNS zone code example
-
-```python
-#!/usr/bin/env python
-
-import sys
-import CloudFlare
-
-def main():
-    zone_name = sys.argv[1]
-    cf = CloudFlare.CloudFlare()
-    zone_info = cf.zones.post(data={'jump_start':False, 'name': zone_name})
-    zone_id = zone_info['id']
-
-    dns_records = [
-        {'name':'foo', 'type':'AAAA', 'content':'2001:d8b::1'},
-        {'name':'foo', 'type':'A', 'content':'192.168.0.1'},
-        {'name':'duh', 'type':'A', 'content':'10.0.0.1', 'ttl':120},
-        {'name':'bar', 'type':'CNAME', 'content':'foo'},
-        {'name':'shakespeare', 'type':'TXT', 'content':"What's in a name? That which we call a rose by any other name ..."}
-    ]
-
-    for dns_record in dns_records:
-        r = cf.zones.dns_records.post(zone_id, data=dns_record)
-    exit(0)
-
-if __name__ == '__main__':
-    main()
-```
-
-## A DNS zone delete code example (be careful)
-
-```python
-#!/usr/bin/env python
-
-import sys
-import CloudFlare
-
-def main():
-    zone_name = sys.argv[1]
-    cf = CloudFlare.CloudFlare()
-    zone_info = cf.zones.get(params={'name': zone_name})
-    zone_id = zone_info['id']
-
-    dns_name = sys.argv[2]
-    dns_records = cf.zones.dns_records.get(zone_id, params={'name':dns_name + '.' + zone_name})
-    for dns_record in dns_records:
-        dns_record_id = dns_record['id']
-        r = cf.zones.dns_records.delete(zone_id, dns_record_id)
-    exit(0)
-
-if __name__ == '__main__':
-    main()
 ```
 
 ## CLI
@@ -763,16 +332,16 @@ The `--image` flag will return the data in the same format as the API's results.
 
 ### Simple CLI calls
 
- * `cli4 /user/billing/profile`
- * `cli4 /user/invites`
+- `cli4 /user/billing/profile`
+- `cli4 /user/invites`
 
- * `cli4 /zones/:example.com`
- * `cli4 /zones/:example.com/dnssec`
- * `cli4 /zones/:example.com/settings/ipv6`
- * `cli4 --put /zones/:example.com/activation_check`
- * `cli4 /zones/:example.com/keyless_certificates`
+- `cli4 /zones/:example.com`
+- `cli4 /zones/:example.com/dnssec`
+- `cli4 /zones/:example.com/settings/ipv6`
+- `cli4 --put /zones/:example.com/activation_check`
+- `cli4 /zones/:example.com/keyless_certificates`
 
- * `cli4 /zones/:example.com/analytics/dashboard`
+- `cli4 /zones/:example.com/analytics/dashboard`
 
 ### More complex CLI calls
 
@@ -1082,20 +651,6 @@ $ cli4 --post file=@zone.txt /zones/:example.com/dns_records/import
 $
 ```
 
-### Zone file upload (i.e. import) Python calls (uses BIND format files)
-
-Because `import` is a keyword (or reserved word) in Python we append a `_` (underscore) to the verb in order to use.
-The `cli4` command does not need this edit.
-
-```python
-    #
-    # "import" is a reserved word and hence we add '_' to the end of verb.
-    #
-    r = cf.zones.dns_records.import_.post(zone_id, files={'file':fd})
-```
-
-See [examples/example_dns_import.py](https://github.com/cloudflare/python-cloudflare/tree/master/examples/example_dns_import.py) for working code.
-
 ### Zone file download (i.e. export) CLI calls (uses BIND format files)
 
 The following is documented within the **Advanced** option of the DNS page within the Cloudflare portal.
@@ -1118,31 +673,6 @@ $
 ```
 
 The egrep is used for documentation brevity.
-
-This can also be done via Python code with the following example.
-
-```python
-#!/usr/bin/env python
-import sys
-import CloudFlare
-
-def main():
-    zone_name = sys.argv[1]
-    cf = CloudFlare.CloudFlare()
-
-    zones = cf.zones.get(params={'name': zone_name})
-    zone_id = zones[0]['id']
-
-    dns_records = cf.zones.dns_records.export.get(zone_id)
-    for l in dns_records.splitlines():
-        if len(l) == 0 or l[0] == ';':
-            continue
-        print(l)
-    exit(0)
-
-if __name__ == '__main__':
-    main()
-```
 
 ### Cloudflare Workers
 
@@ -1267,7 +797,7 @@ Refer to the Cloudflare Workers API documentation for more information.
 ## Cloudflare Instant Logs
 
 Please see https://developers.cloudflare.com/logs/instant-logs for all the information on how to use this feature.
-The `cli4` command along with the Python libaries can be used to control the instant logs; however, the websocket reading is outside the scope of this library.
+The `cli4` command can be used to control the instant logs; however, the websocket reading is outside the scope of this library.
 
 To query the states of the instant logs:
 
@@ -1317,7 +847,7 @@ $
 
 ## Cloudflare GraphQL
 
-The GraphQL interface can be accessed via the command line or via Python.
+The GraphQL interface can be accessed via the command line.
 
 ```
     query="""
@@ -1375,24 +905,6 @@ along with https://developers.cloudflare.com/workers-ai/models/ for the nitty gr
 
 There are three AI calls included within the example folder.
 
-### Image creation.
-
-```bash
-$ python examples/example_ai_images.py A happy llama running through an orange cloud > /tmp/image.png
-$
-$ file /tmp/image.png
-/tmp/image.png: PNG image data, 1024 x 1024, 8-bit/color RGB, non-interlaced
-$
-```
-
-### Translation.
-
-```bash
-$ python examples/example_ai_translate.py I\'ll have an order of the moule frites
-Je vais avoir une commande des frites de moule
-$
-```
-
 ### Speech Recognition with the openai/whisper model.
 
 The following downloads a speech as an mp3 file and passes it to the AI API.
@@ -1400,68 +912,10 @@ It does a very good job transcribing; however, there's a good chance these mp3 f
 That said, the example code is here to show how the API works vs testing the AI/ML quality.
 
 ```bash
-$ python examples/example_ai_speechrecognition.py
-mp3 received: length=700367
-My fellow Americans, Michelle and I have been so touched by all the well wishes that we've received over the past few weeks. But tonight, tonight it's my turn to say thanks.
-$
-```
-
-This is presently work-in-progress because of the non-Python calling method. The syntax could change in the future.
-
-They can also be called via `cli4`.
-
-```bash
 $ cli4 --image --post text="I'll have an order of the moule frites" source_lang=english target_lang=french /accounts/:AccountID/ai/run/@cf/meta/m2m100-1.2b
 {'translated_text': 'Je vais avoir une commande des frites de moule'}
 $
 ```
-
-Presently you will need the following in your `cloudflare.cfg` file.
-
-```bash
-$ cat ~/.cloudflare/cloudflare.cfg
-[CloudFlare]
-global_request_timeout = 120
-max_request_retries = 1
-extras =
-    /accounts/:id/ai/run/@cf/meta/llama-2-7b-chat-fp16
-    /accounts/:id/ai/run/@cf/meta/llama-2-7b-chat-int8
-    /accounts/:id/ai/run/@cf/mistral/mistral-7b-instruct-v0.1
-    /accounts/:id/ai/run/@cf/openai/whisper
-    /accounts/:id/ai/run/@cf/meta/m2m100-1.2b
-    /accounts/:id/ai/run/@cf/huggingface/distilbert-sst-2-int8
-    /accounts/:id/ai/run/@cf/microsoft/resnet-50
-    /accounts/:id/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0
-    /accounts/:id/ai/run/@cf/baai/bge-base-en-v1.5
-    /accounts/:id/ai/run/@cf/baai/bge-large-en-v1.5
-    /accounts/:id/ai/run/@cf/baai/bge-small-en-v1.5
-
-$
-```
-
-As the `@` (at) symbol and the `.` (dot) symbol aren't allowed in python variable names; you'll have the replace `@cf` with `at_cf` and `.` with `_`.
-There's already notes above that state that `-` (dash) is replaced with `_` in the code.
-That will be needed with some model names.
-
-The `cli4` command does not need this edit. It is done on the fly!
-
-For example, the following code is valid:
-```python
-    r = cf.accounts.ai.run.at_cf.openai.whisper.post(account_id, data=audio_data)
-    r = cf.accounts.ai.run.at_cf.meta.m2m100_1_2b.post(account_id, data=translate_data)
-    r = cf.accounts.ai.run.at_cf.stabilityai.stable_diffusion_xl_base_1_0.post(account_id, data=image_create_data)
-```
-
-Or you can use the `find()` call can will do this conversion for you.
-```python
-    translate_data = {'text':"I'll have an order of the moule frites", 'source_lang':'english', 'target_lang':'french'}
-
-    m = cf.find('/accounts/:id/ai/run/@cf/meta/m2m100-1.2b')
-    r = m.post(account_id, data=translate_data)
-    print(r['translated_text'])
-```
-
-You will also have to run with a version of the library above `2.18.2`.
 
 ## Implemented API calls
 
@@ -1534,12 +988,14 @@ As of April 2024 the code is officially marked as 3.x only (3.6 and above to be 
 
 ## pypi and GitHub signed releases
 
-As of October/2022, the code is signed by the maintainers personal email address: `mahtin@mahtin.com` `7EA1 39C4 0C1C 842F 9D41 AAF9 4A34 925D 0517 2859`
+As of October 2022, the code is signed by the maintainers personal email address: `mahtin@mahtin.com` `7EA1 39C4 0C1C 842F 9D41 AAF9 4A34 925D 0517 2859`
+As of May 2024, the code has been moved to [Stainless Inc.](https://github.com/stainless-api) GitHub's organization.
 
 ## Credit
 
-This is based on work by [Felix Wong (gnowxilef)](https://github.com/gnowxilef) found [here](https://github.com/cloudflare-api/python-cloudflare-v4).
-It has been seriously expanded upon.
+Based on original work from [Felix Wong (gnowxilef)](https://github.com/gnowxilef) found [here](https://github.com/cloudflare-api/python-cloudflare-v4).
+Maintained until 2024 by [Martin J. Levy (mahtin)](https://github.com/mahtin).
+The ownership has been officially transferred to [Stainless Inc](http://stainlessapi.com) in 2024.
 
 ## Changelog
 
@@ -1548,4 +1004,5 @@ An automatically generated CHANGELOG is provided [here](CHANGELOG.md).
 ## Copyright
 
 Copyright (c) 2016 thru 2024, Cloudflare. All rights reserved.
+Copyright (c) 2024 onward, Stainless Inc. All rights reserved.
 Previous portions copyright [Felix Wong (gnowxilef)](https://github.com/gnowxilef).
