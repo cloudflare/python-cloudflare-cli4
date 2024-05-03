@@ -7,7 +7,7 @@ PYTEST = pytest
 
 SPHINX_RELEASE = 2.20.0
 SPHINX_AUTHOR = Martin J. Levy
-SPHINX_COPYRIGHT = Copyright (c) 2016 thru 2024, Cloudflare. All rights reserved.
+SPHINX_COPYRIGHT = Copyright (c) 2016 thru 2024, Cloudflare. 2024 onward, Stainless Inc. All rights reserved.
 
 EMAIL = "mahtin@mahtin.com"
 NAME = "cloudflare"
@@ -16,7 +16,7 @@ NAME = "cloudflare"
 all:	CHANGELOG.md build
 
 # README.rst: README.md
-# 	$(PANDOC) --wrap=none --from=markdown --to=rst < README.md > README.rst 
+# 	$(PANDOC) --wrap=none --from=markdown --to=rst < README.md > README.rst
 
 CHANGELOG.md: FORCE
 	@ tmp=/tmp/_$$$$.md ; \

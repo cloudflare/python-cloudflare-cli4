@@ -5,6 +5,7 @@ A Python interface Cloudflare's v4 API.
 See README.md for detailed/further reading.
 
 Copyright (c) 2016 thru 2024, Cloudflare. All rights reserved.
+Copyright (c) 2024 onward, Stainless Inc. All rights reserved.
 """
 
 import json
