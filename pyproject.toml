@@ -1,11 +1,11 @@
 [project]
 name = "cloudflare-cli4"
-version = "2.19.4"
+version = "2.19.4-2"
 readme = "README.md"
-description = "Python wrapper for the Cloudflare v4 API"
+description = "Command line tool to interact with Cloudflare API v4"
 authors = [
-    { name = "Martin J. Levy", email = "mahtin@mahtin.com" },
     { name = "Stainless Inc.", email = "support@stainlessapi.com" },
+    { name = "Martin J. Levy", email = "mahtin@mahtin.com" },
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -29,9 +29,8 @@ keywords = ["cloudflare", "API", "wrapper"]
 dependencies = ["requests", "pyyaml", "jsonlines"]
 
 [project.urls]
-documentation = "https://python-cloudflare.readthedocs.io/"
-api-documentation = "https://developers.cloudflare.com/api/"
-source-code = "https://github.com/cloudflare/python-cloudflare"
+documentation = "https://github.com/stainless-api/python-cloudflare-cli4"
+source-code = "https://github.com/stainless-api/python-cloudflare-cli4"
 
 [project.scripts]
 cli4 = "cli4.__main__:main"
