@@ -16,7 +16,7 @@ Starting with `cloudflare` v3 this Python CLI will be packaged separately and wo
 ### Using `rye`
 
 ```shell
-$ git clone https://github.com/stainless-api/python-cloudflare-cli4
+$ git clone https://github.com/cloudflare/python-cloudflare-cli4
 $ cd python-cloudflare-cli4
 $ rye sync
 ```
@@ -24,7 +24,7 @@ $ rye sync
 ### Using `pip`
 
 ```shell
-$ git clone https://github.com/stainless-api/python-cloudflare-cli4
+$ git clone https://github.com/cloudflare/python-cloudflare-cli4
 $ cd python-cloudflare-cli4
 $ pyton -m pip install .
 ```
@@ -989,11 +989,12 @@ As of April 2024 the code is officially marked as 3.x only (3.6 and above to be 
 ## pypi and GitHub signed releases
 
 As of October 2022, the code is signed by the maintainers personal email address: `mahtin@mahtin.com` `7EA1 39C4 0C1C 842F 9D41 AAF9 4A34 925D 0517 2859`
-As of May 2024, the code has been moved to [Stainless Inc.](https://github.com/stainless-api) GitHub's organization.
+As of May 2024, the code has been moved from [cloudflare/cloudflare-python](https://github.com/cloudflare/cloudflare-python) to [cloudflare/python-cloudflare-cli4](https://github.com/cloudflare/python-cloudflare-cli4).
 
 ## Credit
 
 Based on original work from [Felix Wong (gnowxilef)](https://github.com/gnowxilef) found [here](https://github.com/cloudflare-api/python-cloudflare-v4).
+
 Maintained until 2024 by [Martin J. Levy (mahtin)](https://github.com/mahtin).
 
 ## Changelog
@@ -1003,4 +1004,5 @@ An automatically generated CHANGELOG is provided [here](CHANGELOG.md).
 ## Copyright
 
 Copyright (c) 2016 thru 2024, Cloudflare. All rights reserved.
+
 Previous portions copyright [Felix Wong (gnowxilef)](https://github.com/gnowxilef).

@@ -29,8 +29,8 @@ keywords = ["cloudflare", "API", "wrapper"]
 dependencies = ["requests", "pyyaml", "jsonlines"]
 
 [project.urls]
-documentation = "https://github.com/stainless-api/python-cloudflare-cli4"
-source-code = "https://github.com/stainless-api/python-cloudflare-cli4"
+documentation = "https://github.com/cloudflare/python-cloudflare-cli4"
+source-code = "https://github.com/cloudflare/python-cloudflare-cli4"
 
 [project.scripts]
 cli4 = "cli4.__main__:main"
