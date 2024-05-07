@@ -7,7 +7,7 @@ PYTEST = pytest
 
 SPHINX_RELEASE = 2.20.0
 SPHINX_AUTHOR = Martin J. Levy
-SPHINX_COPYRIGHT = Copyright (c) 2016 thru 2024, Cloudflare. 2024 onward, Stainless Inc. All rights reserved.
+SPHINX_COPYRIGHT = Copyright (c) 2016 thru 2024, Cloudflare. All rights reserved.
 
 EMAIL = "mahtin@mahtin.com"
 NAME = "cloudflare"

@@ -995,7 +995,6 @@ As of May 2024, the code has been moved to [Stainless Inc.](https://github.com/s
 
 Based on original work from [Felix Wong (gnowxilef)](https://github.com/gnowxilef) found [here](https://github.com/cloudflare-api/python-cloudflare-v4).
 Maintained until 2024 by [Martin J. Levy (mahtin)](https://github.com/mahtin).
-The ownership has been officially transferred to [Stainless Inc](http://stainlessapi.com) in 2024.
 
 ## Changelog
 
@@ -1004,5 +1003,4 @@ An automatically generated CHANGELOG is provided [here](CHANGELOG.md).
 ## Copyright
 
 Copyright (c) 2016 thru 2024, Cloudflare. All rights reserved.
-Copyright (c) 2024 onward, Stainless Inc. All rights reserved.
 Previous portions copyright [Felix Wong (gnowxilef)](https://github.com/gnowxilef).
