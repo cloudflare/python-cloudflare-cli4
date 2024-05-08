@@ -1,6 +1,6 @@
 [project]
 name = "cloudflare-cli4"
-version = "2.19.4-2"
+version = "2.19.4-3"
 readme = "README.md"
 description = "Command line tool to interact with Cloudflare API v4"
 authors = [

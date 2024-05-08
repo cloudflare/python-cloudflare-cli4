@@ -5,33 +5,58 @@
 #   pre: false
 #   features: []
 #   all-features: true
+#   with-sources: false
 
 -e file:.
 astroid==3.1.0
+    # via pylint
 attrs==23.2.0
+    # via jsonlines
 certifi==2024.2.2
+    # via requests
 charset-normalizer==3.3.2
+    # via requests
 coverage==7.5.0
+    # via pytest-cov
 dill==0.3.8
+    # via pylint
 exceptiongroup==1.2.1
+    # via pytest
 idna==3.7
+    # via requests
 iniconfig==2.0.0
+    # via pytest
 isort==5.13.2
+    # via pylint
 jsonlines==4.0.0
+    # via cloudflare-cli4
 mccabe==0.7.0
+    # via pylint
 packaging==24.0
+    # via pytest
+pip==24.0
 platformdirs==4.2.1
+    # via pylint
 pluggy==1.5.0
+    # via pytest
 pylint==3.1.0
 pytest==8.2.0
+    # via pytest-cov
 pytest-cov==5.0.0
 pytz==2024.1
 pyyaml==6.0.1
+    # via cloudflare-cli4
 requests==2.31.0
-tomli==2.0.1
-tomlkit==0.12.4
-typing-extensions==4.11.0
-urllib3==2.2.1
-# The following packages are considered to be unsafe in a requirements file:
-pip==24.0
+    # via cloudflare-cli4
 setuptools==69.5.1
+tomli==2.0.1
+    # via coverage
+    # via pylint
+    # via pytest
+tomlkit==0.12.4
+    # via pylint
+typing-extensions==4.11.0
+    # via astroid
+    # via pylint
+urllib3==2.2.1
+    # via requests

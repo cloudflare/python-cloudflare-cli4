@@ -38,9 +38,12 @@ Build a tarball and publish it:
 $ git clone https://github.com/cloudflare/python-cloudflare-cli4.git
 $ cd ./python-cloudflare-cli4
 
+# ensure latest rye
+$ rye self update
+
 $ rye sync --all-features
 $ rye build
-$ rye run hatch publish
+$ rye publish --token $YOUR_PYPI_TOKEN
 ```
 
 If the version has already been released, update the version in `pyproject.toml` and start the process again.

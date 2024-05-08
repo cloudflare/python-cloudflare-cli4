@@ -5,13 +5,22 @@
 #   pre: false
 #   features: []
 #   all-features: true
+#   with-sources: false
 
 -e file:.
 attrs==23.2.0
+    # via jsonlines
 certifi==2024.2.2
+    # via requests
 charset-normalizer==3.3.2
+    # via requests
 idna==3.7
+    # via requests
 jsonlines==4.0.0
+    # via cloudflare-cli4
 pyyaml==6.0.1
+    # via cloudflare-cli4
 requests==2.31.0
+    # via cloudflare-cli4
 urllib3==2.2.1
+    # via requests
