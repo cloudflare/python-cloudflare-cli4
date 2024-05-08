@@ -2,9 +2,9 @@ class CloudflareCli4 < Formula
   include Language::Python::Virtualenv
 
   desc "CLI for Cloudflare API v4"
-  homepage "https://github.com/stainless-api/python-cloudflare-cli4"
-  url "https://github.com/stainless-api/python-cloudflare-cli4/archive/refs/tags/2.19.4.tar.gz"
-  sha256 "1e6d108602f28ebc6cae480244e02d7620063e0f57bfe9b7b6d710071ec5a430"
+  homepage "https://github.com/cloudflare/python-cloudflare-cli4"
+  url "https://github.com/cloudflare/python-cloudflare-cli4/archive/refs/tags/2.19.4.tar.gz"
+  sha256 "7a3e9b71cad0a995d59b0c3e285e1cf16bd08d9998509f44d7c321abe803d22b"
   license "MIT"
 
   depends_on "libyaml"
@@ -55,15 +55,6 @@ class CloudflareCli4 < Formula
   end
 
   test do
-    # `test do` will create, run in and delete a temporary directory.
-    #
-    # This test will fail and we won't accept that! For Homebrew/homebrew-core
-    # this will need to be a test that verifies the functionality of the
-    # software. Run the test with `brew test cloudflare-cli4`. Options passed
-    # to `brew install` such as `--HEAD` also need to be provided to `brew test`.
-    #
-    # The installed folder is not in the path, so use the entire path to any
-    # executables being tested: `system "#{bin}/program", "do", "something"`.
     system "#{bin}/program", "--help"
   end
 end

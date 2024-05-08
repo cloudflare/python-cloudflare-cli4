@@ -57,7 +57,7 @@ The file `./brew-formula-cloudflare-cli4.rb` contains a working Homebrew formula
 To create a new formula, if needed:
 
 ```shell
-$ brew tab --force homebrew/core
+$ brew tap --force homebrew/core
 # Create a formula from a git tag. Homebrew only accept stable releases.
 $ brew create --python --set-name cloudflare-cli4 'https://github.com/cloudflare/python-cloudflare-cli4/archive/refs/tags/<VERSION>.tar.gz'
 
