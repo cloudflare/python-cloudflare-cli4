@@ -26,7 +26,7 @@ def main():
         url='https://github.com/cloudflare/python-cloudflare',
         project_urls={
             "Documentation": "https://python-cloudflare.readthedocs.io/",
-            "API Documentaton": "https://developers.cloudflare.com/api/",
+            "API Documentation": "https://developers.cloudflare.com/api/",
             "Source Code": "https://github.com/cloudflare/python-cloudflare",
         },
         license='MIT',

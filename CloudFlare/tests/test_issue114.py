@@ -157,14 +157,14 @@ class TestCloudflare:
             r = None
 
         if email is None and key is None and token == self._token:
-            print('SUCCESS (as expeced): email = ', self._obfuscate(email), 'key = ', self._obfuscate(key), 'token = ', self._obfuscate(token), file=sys.stderr)
+            print('SUCCESS (as expected): email = ', self._obfuscate(email), 'key = ', self._obfuscate(key), 'token = ', self._obfuscate(token), file=sys.stderr)
             assert isinstance(r, list)
             assert len(r) == 1
             assert isinstance(r[0], dict)
             return
 
         if email is None and key == self._token and token is None:
-            print('SUCCESS (as expeced): email = ', self._obfuscate(email), 'key = ', self._obfuscate(key), 'token = ', self._obfuscate(token), file=sys.stderr)
+            print('SUCCESS (as expected): email = ', self._obfuscate(email), 'key = ', self._obfuscate(key), 'token = ', self._obfuscate(token), file=sys.stderr)
             assert isinstance(r, list)
             assert isinstance(r, list)
             assert len(r) == 1
@@ -172,21 +172,21 @@ class TestCloudflare:
             return
 
         if email == self._email and key == self._key and token is None:
-            print('SUCCESS (as expeced): email = ', self._obfuscate(email), 'key = ', self._obfuscate(key), 'token = ', self._obfuscate(token), file=sys.stderr)
+            print('SUCCESS (as expected): email = ', self._obfuscate(email), 'key = ', self._obfuscate(key), 'token = ', self._obfuscate(token), file=sys.stderr)
             assert isinstance(r, list)
             assert len(r) == 1
             assert isinstance(r[0], dict)
             return
 
         if email == self._email and key is None and token == self._key:
-            print('SUCCESS (as expeced): email = ', self._obfuscate(email), 'key = ', self._obfuscate(key), 'token = ', self._obfuscate(token), file=sys.stderr)
+            print('SUCCESS (as expected): email = ', self._obfuscate(email), 'key = ', self._obfuscate(key), 'token = ', self._obfuscate(token), file=sys.stderr)
             assert isinstance(r, list)
             assert len(r) == 1
             assert isinstance(r[0], dict)
             return
 
         # Nothing else should work!
-        print('FAILED  (as expeced): email = ', self._obfuscate(email), 'key = ', self._obfuscate(key), 'token = ', self._obfuscate(token), file=sys.stderr)
+        print('FAILED  (as expected): email = ', self._obfuscate(email), 'key = ', self._obfuscate(key), 'token = ', self._obfuscate(token), file=sys.stderr)
         assert r is None
 
     def _setup(self):

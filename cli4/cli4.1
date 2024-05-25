@@ -41,7 +41,7 @@ Display program version number and exit.
 .IP "[\-h, \-\-help]"
 This information (in a terse form).
 .IP "[\-v, \-\-verbose]"
-Provide some protcol debugging information.
+Provide some protocol debugging information.
 .IP "[\-e, \-\-example]"
 Show the path to the examples folder/directory.
 .IP "[\-q, \-\-quiet]"
@@ -77,18 +77,18 @@ Send HTTP request as a \fBPUT\fR.
 .IP "\-\-delete"
 Send HTTP request as a \fBDELETE\fR.
 .IP "item=\fIvalue\fR"
-Set a paramater or data value to send with a \fBGET\fR, \fBPATCH\fR, \fBPOST\fR, \fBPUT\fR or \fBDELETE\fR command. The value is sent as a string.
+Set a parameter or data value to send with a \fBGET\fR, \fBPATCH\fR, \fBPOST\fR, \fBPUT\fR or \fBDELETE\fR command. The value is sent as a string.
 .IP item:=\fIvalue\fR
-Set a paramater or data value to send with a \fBGET\fR, \fBPATCH\fR, \fBPOST\fR, \fBPUT\fR or \fBDELETE\fR command. The value is sent as an interger.
+Set a parameter or data value to send with a \fBGET\fR, \fBPATCH\fR, \fBPOST\fR, \fBPUT\fR or \fBDELETE\fR command. The value is sent as an integer.
 .IP item=@\fIfilename\fR
-Set a paramater or data value to send with a \fBPOST\fR or \fBPUT\fR command. The value is based on the content of the file.
+Set a parameter or data value to send with a \fBPOST\fR or \fBPUT\fR command. The value is based on the content of the file.
 .IP "\fI/command ...\fR"
 The API command(s) to execute.
 
 .SH COMMAND(S)
-The command string uses slash (\fB/\fR) to seperate the verbs in the same way that the Cloudflare v4 API documentation does.
+The command string uses slash (\fB/\fR) to separate the verbs in the same way that the Cloudflare v4 API documentation does.
 Any verb starting with colon (\fB:\fR) is either converted to zone_id, user_id, organtization_id, or otherwise.
-Any verb starting with coloe (\fB:\fR) and followed by 32 hex chracters is passed thru raw.
+Any verb starting with coloe (\fB:\fR) and followed by 32 hex characters is passed thru raw.
 Any verb starting with two colons (\fB::\fR) is passed thru raw.
 
 .SH RESULTS
@@ -96,7 +96,7 @@ The output is either JSON or YAML formatted.
 
 .SH EXAMPLES
 .B cli4 /zones
-List infomation for all zones.
+List information for all zones.
 
 .B cli4 /zones/:example.com
 List specific zone info.
@@ -120,10 +120,10 @@ Purge cache for a specific zone.
 List available plans for a zone.
 
 .B cli4 --patch status=active /zones/:example.com/dnssec
-Make DNSSEC active for specfic zone.
+Make DNSSEC active for specific zone.
 
 .B cli4 /zones/:example.com/dnssec
-List DNSSEC infomation and status for a specific zone.
+List DNSSEC information and status for a specific zone.
 
 .SH SEE ALSO
 The Cloudflare API can be found https://api.cloudflare.com/. Each API call is provided via a similarly named function within the Cloudflare class.
