@@ -170,7 +170,7 @@ def run_command(cf, method, command, params=None, content=None, files=None):
     if command[-1] == '/':
         command = command[:-1]
 
-    # break down command into it's seperate pieces
+    # break down command into it's separate pieces
     # these are then checked against the Cloudflare class
     # to confirm there is a method that matches
     parts = command.split('/')

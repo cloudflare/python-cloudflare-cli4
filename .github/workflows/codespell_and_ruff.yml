@@ -15,5 +15,5 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - run: pip install --user codespell[toml] ruff
-    - run: codespell --skip="*.lock" || true  # --ignore-words-list=""
+    - run: codespell --ignore-words-list="varius" --skip="*.lock"
     - run: ruff check --output-format=github --target-version=py38 .

@@ -336,7 +336,7 @@ class CloudFlare():
             try:
                 response_type = response.headers['Content-Type']
                 if ';' in response_type:
-                    # remove the ;paramaters part (like charset=, etc.)
+                    # remove the ;parameters part (like charset=, etc.)
                     response_type = response_type[0:response_type.rfind(';')]
                 response_type = response_type.strip().lower()
             except KeyError:
@@ -411,7 +411,7 @@ class CloudFlare():
                 # 510 Not Extended
                 # 511 Network Authentication Required
 
-                # the libary doesn't deal with these errors, just pass upwards!
+                # the library doesn't deal with these errors, just pass upwards!
                 # there's no value to add and the returned data is questionable or not useful
                 response.raise_for_status()
 
@@ -552,7 +552,7 @@ class CloudFlare():
 
             response_data = self._raw(method, self.headers, parts, identifiers, params, data_str, data_json, files)
 
-            # Sanatize the returned results - just in case API is messed up
+            # Sanitize the returned results - just in case API is messed up
             if 'success' not in response_data:
                 # { "data": null, "errors": [ { "message": "request must be a POST", "path": null, "extensions": { "timestamp": "20...
                 # XXX/TODO should be retested and aybe recoded/deleted
@@ -628,17 +628,17 @@ class CloudFlare():
 
             if self.raw:
                 result = {}
-                # theres always a result value - unless it's a graphql query
+                # there's always a result value - unless it's a graphql query
                 try:
                     result['result'] = response_data['result']
                 except KeyError:
                     result['result'] = response_data
-                # theres may not be a result_info on every call
+                # there's may not be a result_info on every call
                 if 'result_info' in response_data:
                     result['result_info'] = response_data['result_info']
                 # no need to return success, errors, or messages as they return via an exception
             else:
-                # theres always a result value - unless it's a graphql query
+                # there's always a result value - unless it's a graphql query
                 try:
                     result = response_data['result']
                 except KeyError:
@@ -908,7 +908,7 @@ class CloudFlare():
         :param p5: part1 of API call.
         :param content_type: optional value for the HTTP Content-Type for an API call.
 
-        add() is the core fuction that creates a new API endpoint that can be called later on.
+        add() is the core function that creates a new API endpoint that can be called later on.
         """
 
         api_sections = []
@@ -931,7 +931,7 @@ class CloudFlare():
         api_part = api_sections[-1]
         try:
             branch = getattr(branch, CloudFlare.sanitize_verb(api_part))
-            # we only are here becuase the name already exists - don't let it overwrite - should never happen unless api_v4 is a busted file
+            # we only are here because the name already exists - don't let it overwrite - should never happen unless api_v4 is a busted file
             raise CloudFlareAPIError(0, 'api load: duplicate api_part found: %s/**%s**' % ('/'.join(api_sections[0:-1]), api_part))
         except AttributeError:
             # this is the required behavior - i.e. it's a new node to create
@@ -957,7 +957,7 @@ class CloudFlare():
         """ find()
 
         :param cmd: API in slash format
-        :return: fuction to call for that API
+        :return: function to call for that API
 
         You can use this call to convert a string API command into the actual function call
         """

@@ -29,7 +29,7 @@ import CloudFlare
 # A note about version numbers.
 # this code works with 2.14.2 in a simple way
 # this code works with 2.18.0 is a simple way
-# released between then require at-least one paramater send via files= in order to not trigger a backend API bug
+# released between then require at-least one parameter send via files= in order to not trigger a backend API bug
 #
 
 def rfc3339_iso8601_time(hour_delta=0, with_hms=False):

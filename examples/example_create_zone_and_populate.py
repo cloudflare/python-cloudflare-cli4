@@ -60,7 +60,7 @@ def main():
             r = cf.zones.dns_records.post(zone_id, data=dns_record)
         except CloudFlare.exceptions.CloudFlareAPIError as e:
             exit('/zones.dns_records.post %s %s - %d %s' % (zone_name, dns_record['name'], e, e))
-        # Print respose info - they should be the same
+        # Print response info - they should be the same
         dns_record = r
         print('\t%s %30s %6d %-5s %s ; proxied=%s proxiable=%s' % (
             dns_record['id'],
