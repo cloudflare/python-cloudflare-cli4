@@ -18,7 +18,7 @@ def read_configs(profile=None):
     # We return all these values
     config = {'email': None, 'key': None, 'token': None, 'certtoken': None, 'extras': None, 'base_url': None, 'openapi_url': None, 'profile': None}
 
-    # envioronment variables override config files - so setup first
+    # environment variables override config files - so setup first
     config['email'] = os.getenv('CLOUDFLARE_EMAIL') if os.getenv('CLOUDFLARE_EMAIL') is not None else os.getenv('CF_API_EMAIL')
     config['key'] = os.getenv('CLOUDFLARE_API_KEY') if os.getenv('CLOUDFLARE_API_KEY') is not None else os.getenv('CF_API_KEY')
     config['token'] = os.getenv('CLOUDFLARE_API_TOKEN') if os.getenv('CLOUDFLARE_API_TOKEN') is not None else os.getenv('CF_API_TOKEN')
@@ -69,7 +69,7 @@ def read_configs(profile=None):
             try:
                 config_value = cp.get(profile, option)
                 if option == 'extras':
-                    # we join all values together as one space seperated strings
+                    # we join all values together as one space separated strings
                     config[option] = re.sub(r"\s+", ' ', config_value)
                 elif option == 'http_headers':
                     # we keep lines as is for now

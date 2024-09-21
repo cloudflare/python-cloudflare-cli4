@@ -9,7 +9,7 @@ usage: cli4 [-V|--version] [-h|--help] [-v|--verbose] [-e|--examples] [-q|--quie
 This repository is a snapshot of the `cli4` Python tool originally packaged alongside
 [cloudflare](https://pypi.org/project/cloudflare/).
 
-Starting with `cloudflare` v3 this Python CLI will be packaged separately and won't be actively developped anymore.
+Starting with `cloudflare` v3 this Python CLI will be packaged separately and won't be actively developed anymore.
 
 ## Install
 
@@ -26,7 +26,7 @@ $ rye sync
 ```shell
 $ git clone https://github.com/cloudflare/python-cloudflare-cli4
 $ cd python-cloudflare-cli4
-$ pyton -m pip install .
+$ python -m pip install .
 ```
 
 ### Using shell environment variables
@@ -106,7 +106,7 @@ $
 There are very specific case where a user of the library needs to add custom headers to all HTTP calls.
 This is rarly needed.
 
-The addition headers can be passed via the confuration file as follows:
+The addition headers can be passed via the configuration file as follows:
 
 ```bash
 $ cat ~/.cloudflare/cloudflare.cfg
@@ -148,7 +148,7 @@ $
 ```
 
 When a GET call is processed then the second token is used. For all other calls the first token is used.
-Here's a more explict verion of that config:
+Here's a more explicit version of that config:
 
 ```bash
 $ cat ~/.cloudflare/cloudflare.cfg
@@ -324,10 +324,10 @@ Data can also be uploaded from file contents. Using the `item=@filename` format 
 
 The default output from the CLI command is in JSON.
 It can also output YAML format (i.e. human readable).
-This is controled by the `--yaml` or `--json` flags (JSON is the default).
+This is controlled by the `--yaml` or `--json` flags (JSON is the default).
 There is also a `--ndjson` flag for use with line based JSON data - this is mainly used for log data.
 
-Additonally the output can be plain text or binary image format depending on the results from the API call (some calls results in non JSON results).
+Additionally the output can be plain text or binary image format depending on the results from the API call (some calls results in non JSON results).
 The `--image` flag will return the data in the same format as the API's results.
 
 ### Simple CLI calls
@@ -481,7 +481,7 @@ $
 The `--raw` command provides access to the paging returned values.
 See the API documentation for all the info.
 Here's an example of how to page thru a list of zones (it's included in the examples folder as `example_paging_thru_zones.sh`).
-Note the use of `==` to pass a number vs a string as paramater.
+Note the use of `==` to pass a number vs a string as parameter.
 
 ```bash
 :
@@ -523,7 +523,7 @@ COUNT=5 PAGE=6 PER_PAGE=5 TOTAL_COUNT=31 TOTAL_PAGES=7 -- vivamus.example
 
 ### Paging thru lists (using cursors)
 
-Some API calls use cursors to read beyond the initally returned values. See the API page in order to see which API calls do this.
+Some API calls use cursors to read beyond the initially returned values. See the API page in order to see which API calls do this.
 
 ```bash
 $ ACCOUNT_ID="00000000000000000000000000000000"

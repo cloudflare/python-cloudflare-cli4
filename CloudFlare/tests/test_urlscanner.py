@@ -1,4 +1,4 @@
-""" urlscanner tests - PNG data retured """
+""" urlscanner tests - PNG data returned """
 
 import os
 import sys

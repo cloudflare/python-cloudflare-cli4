@@ -52,7 +52,7 @@ def do_dns_update(cf, zone_name, zone_id, dns_name, ip_address, ip_address_type)
 
         if ip_address_type != old_ip_address_type:
             # only update the correct address type (A or AAAA)
-            # we don't see this becuase of the search params above
+            # we don't see this because of the search params above
             print('IGNORED: %s %s ; wrong address family' % (dns_name, old_ip_address))
             continue
 
@@ -82,7 +82,7 @@ def do_dns_update(cf, zone_name, zone_id, dns_name, ip_address, ip_address_type)
     if updated:
         return
 
-    # no exsiting dns record to update - so create dns record
+    # no existing dns record to update - so create dns record
     dns_record = {
         'name':dns_name,
         'type':ip_address_type,
