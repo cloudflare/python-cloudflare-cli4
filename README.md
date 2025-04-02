@@ -26,7 +26,7 @@ $ rye sync
 ```shell
 $ git clone https://github.com/cloudflare/python-cloudflare-cli4
 $ cd python-cloudflare-cli4
-$ pyton -m pip install .
+$ python -m pip install .
 ```
 
 ### Using shell environment variables
